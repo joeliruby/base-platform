@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.userservice.mapper.UserRoleMapper">
+
+	<select id="getUserRoleAll" parameterType="Map" resultType="com.matariky.userservice.bean.UserRole">
+				SELECT
+					r.id,
+					r.tenant_id,
+					r.role_name,
+					r.create_time,
+					r.description,
+					r.update_time,
+					r.delete_time,
+					r.COMMENT,
+					r.created_by,
+					r.updated_by,
+					group_concat(DISTINCT ap.application_name) as application_name,
+					t.tenant_name
+				FROM
+					user_role r,
+					user_tenant t,
+					user_application ap,
+					user_r_application_tenant ar
+				WHERE
+					r.tenant_id = ap.tenant_id
+				AND r.tenant_id = t.tenant_code
+				AND t.tenant_code = ar.application_id
+				AND r.delete_time =0 and ap.delete_time=0 and ap.is_active=1
+				<if test="params.tenantId != null and params.tenantId !=''">
+            	AND r.tenant_id= #{params.tenantId}
+        		</if>
+        		<if test="params.applicationId != null and params.applicationId !=''">
+            	AND ar.application_id= #{params.applicationId}
+        		</if>
+        		<if test="params.roleName != null and params.roleName !=''">
+            	AND r.role_name like '%${params.roleName}%'
+        		</if>
+				<if test="params.begin != null and params.begin !=''">
+           		AND r.create_time >= ${params.begin}
+        		</if>
+        		<if test="params.end !=null and params.end!=''">
+        		<![CDATA[  AND r.create_time <= ${params.end}  ]]>
+        		</if>
+				GROUP BY
+					r.id
+	</select>
+
+	<select id="getUserRoleAllCount" parameterType="Map" resultType="int">
+        select count(1) from user_role
+	</select>
+
+	<insert id="createUserRole" parameterType="com.matariky.userservice.bean.UserRole">
+        insert into user_role(id,tenant_id,role_name,create_time,description,update_time,delete_time,comment,created_by,updated_by)
+        values(#{id},#{tenantId},#{roleName},#{createTime},#{description},#{updateTime},#{deleteTime},#{comment},#{createdBy},#{updatedBy})
+	</insert>
+
+	<update id="updateUserRole" parameterType="com.matariky.userservice.bean.UserRole">
+        update user_role
+        set id=#{params.id}
+        <if test="params.tenantId != null ">
+        	,tenant_id=#{params.tenantId}
+        </if>
+        <if test="params.roleName != null ">
+        	 ,role_name=#{params.roleName}
+        </if>
+
+       <if test="params.createTime != null ">
+        ,create_time=#{params.createTime}
+       </if>
+       <if test="params.description != null ">
+        ,description=#{params.description}
+       </if>
+       <if test="params.updateTime != null ">
+        ,update_time=#{params.updateTime}
+        </if>
+        <if test="params.deleteTime != null ">
+        ,delete_time=#{params.deleteTime}
+        </if>
+        <if test="params.comment != null ">
+        ,comment=#{params.comment}
+        </if>
+        <if test="params.createdBy != null ">
+        ,created_by=#{params.createdBy}
+        </if>
+        <if test="params.updatedBy != null ">
+        updated_by=#{params.updatedBy}
+        </if>
+        where id = #{params.id}
+	</update>
+
+	<delete id="delUserRoleById" parameterType="int">
+        delete from user_role where id=#{value}
+	</delete>
+
+	<select id="getUserRoleById"  parameterType="java.lang.Long" resultType="com.matariky.userservice.bean.UserRole" >
+        select id,tenant_id,role_name,create_time,description,update_time,delete_time,comment,created_by,updated_by from user_role where id=#{value}
+	</select>
+
+
+	<select id="getRoleCountById" resultType="java.lang.Integer">
+		SELECT
+			count( 1 )
+		FROM
+			user_user u
+				INNER JOIN user_r_user_role r ON u.id = r.user_id
+				INNER JOIN user_role e ON r.role_id = e.id
+		WHERE
+			u.delete_time = 0
+		  AND e.delete_time = 0
+		  AND e.id = #{roleId}
+	</select>
+
+	<select id="selectRole"  resultType="com.matariky.userservice.bean.UserRole" >
+		SELECT id,role_name FROM user_role WHERE delete_time=0 AND tenant_id = #{tenant_id}
+	</select>
+
+	<!-- 逻辑删除 包括批量 -->
+  	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
+    	update user_role
+    	<set >
+        	delete_time = unix_timestamp()
+    	</set>
+    	where id in
+    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  	</update>
+
+
+  	<!-- 查询角色权限 -->
+  	<select id="getPermissionByRole"  resultType="com.matariky.userservice.bean.TreeModel">
+			SELECT
+				p.id,
+				p.parent_id AS pid,
+				p.permission_name AS name
+			FROM
+				user_role r,
+				user_r_role_permission rp,
+				user_permission p
+			WHERE
+				r.id =rp.role_id
+				AND rp.permission_id = p.id
+				AND p.tenant_id = #{tenantId,jdbcType=VARCHAR}
+				AND p.application_id = #{applicationId,jdbcType=BIGINT}
+				AND p.is_active = 1
+				AND r.id=#{roleId,jdbcType=BIGINT}
+			GROUP BY p.id
+  	</select>
+
+</mapper>

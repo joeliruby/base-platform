@@ -1,0 +1,16 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+
+	<bean id="httpProcessor" class="com.matariky.processor.config.HttpProcessor" ></bean>
+
+
+    <camelContext id="configcontext" xmlns="http://camel.apache.org/schema/blueprint">
+			<route id="routeconfig">
+				<from uri="jetty:http://0.0.0.0:9191/updateConfig?disableCache=true"/>
+				<process ref="httpProcessor"/>
+			</route>
+	</camelContext>
+
+
+
+</blueprint>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.loginlog.mapper.CommonLoginLogMapper">
+
+
+	<select id="getCommonLoginLogDynamicCondition" parameterType="Map" resultType="com.matariky.commonservice.loginlog.bean.CommonLoginLog">
+        select id,login_time,user_id,real_name,ip,client,application_id,application_name,is_success,fail_message,account_name,tenant_id,tenant_name,login_address from common_login_log
+        where 1=1
+        <if test="params.startTime != null and params.startTime !=''">
+            and  login_time >= #{params.startTime}
+        </if>
+        <if test="params.endTime != null and params.endTime !=''">
+        <![CDATA[  AND login_time <=  #{params.endTime}  ]]>
+        </if>
+        <if test="params.userId != null and params.userId !=''">
+            and  user_id= #{params.userId}
+        </if>
+		<if test="params.applicationId != null and params.applicationId !=''">
+            and application_id = '${params.applicationId}'
+        </if>
+        <if test="params.applicationName != null and params.applicationName !=''">
+            and application_name  = '${params.applicationName}'
+        </if>
+        <if test="params.accountName != null and params.accountName !=''">
+            and account_name  = '${params.accountName}'
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and tenant_id  = '${params.tenantId}'
+        </if>
+         <if test="params.tenantName != null and params.tenantName !=''">
+            and tenant_name  = '${params.tenantName}'
+        </if>
+        <if test="params.ip != null and params.ip !=''">
+            and ip  = '${params.ip}'
+        </if>
+        order by  login_time  desc
+    </select>
+
+	<select id="getCommonLoginLogByIds" resultType="com.matariky.commonservice.loginlog.bean.CommonLoginLog">
+		select id,login_time,user_id,real_name,ip,client,application_id,application_name,is_success,fail_message,account_name,tenant_id,tenant_name,login_address from common_login_log
+
+    	where id in
+    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  	</select>
+
+	<select id="getCommonLoginLogAll" parameterType="Map" resultType="com.matariky.commonservice.loginlog.bean.CommonLoginLog">
+        select id,login_time,user_id,real_name,ip,client,application_id,application_name,is_success,fail_message,account_name,tenant_id,tenant_name,login_address from common_login_log
+	</select>
+
+	<select id="getCommonLoginLogAllCount" parameterType="Map" resultType="int">
+        select count(1) from common_login_log
+	</select>
+
+	<insert id="createCommonLoginLog" parameterType="com.matariky.commonservice.loginlog.bean.CommonLoginLog">
+        insert into common_login_log(id,login_time,user_id,real_name,ip,client,application_id,application_name,is_success,fail_message,account_name,tenant_id,tenant_name,login_address)
+        values(#{id},#{loginTime},#{userId},#{realName},#{ip},#{client},#{applicationId},#{applicationName},#{isSuccess},#{failMessage},#{accountName},#{tenantId},#{tenantName},#{loginAddress})
+	</insert>
+
+	<update id="updatecommon_login_log" parameterType="com.matariky.commonservice.loginlog.bean.CommonLoginLog">
+        update CommonLoginLog
+        set login_time=#{loginTime},user_id=#{userId},real_name=#{realName},ip=#{ip},client=#{client},application_id=#{applicationId},application_Name=#{applicationName},is_success=#{isSuccess},fail_message=#{failMessage},account_name=#{account_name},tenant_id=#{tenantId},tenant_name=#{tenantName},login_address=#{loginAddress}
+        where id = #{id}
+	</update>
+
+	<delete id="delCommonLoginLogById" parameterType="int">
+        delete from common_login_log where id=#{value}
+	</delete>
+
+	<select id="getCommonLoginLogById"  parameterType="Integer" resultType="com.matariky.commonservice.loginlog.bean.CommonLoginLog" >
+        select id,login_time,user_id,real_name,ip,client,application_id,application_name,is_success,fail_message,account_name,tenant_id,tenant_name,login_address from common_login_log where id=#{value}
+	</select>
+
+</mapper>

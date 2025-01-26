@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.jobs.jobsService.assetitm.base.mapper.JobTapeReaderMapper">
+
+    <!-- 查询读写器基础信息 -->
+    <select id="selectBasicList" resultType="com.matariky.jobs.jobsService.assetitm.base.bo.BasicReaderBo">
+        SELECT
+            t1.`code` AS reader_code,
+            t2.rack_code
+        FROM
+            biz_tape_reader t1
+        INNER JOIN biz_tape_rack t2 ON t2.id = t1.rack_id
+        WHERE
+            t1.location_id LIKE concat(#{locationId}, '%')
+          <if test="rackIds != null and rackIds.size() > 0">
+              AND t1.rack_id IN
+              <foreach collection="rackIds" item="rackId" open="(" separator="," close=")">
+                  #{rackId}
+              </foreach>
+          </if>
+          AND t1.delete_time = 0
+    </select>
+
+
+</mapper>

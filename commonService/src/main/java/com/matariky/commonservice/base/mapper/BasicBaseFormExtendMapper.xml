@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseFormExtendMapper">
+
+<sql id="baseQueryListSql">
+ SELECT t.id,t.business_id,t.field_0,t.field_1,t.field_2,t.field_3,t.field_4,t.field_5,t.field_6,t.field_7,t.field_8,t.field_9,t.field_10,t.field_11,t.field_12,t.field_13,t.field_14,t.field_15,t.field_16,t.field_17,t.field_18,t.field_19,t.field_20,t.field_21,t.field_22,t.field_23,t.field_24,t.field_25,t.field_26,t.field_27,t.field_28,t.field_29,t.field_30,t.field_31,t.field_32,t.field_33,t.field_34,t.field_35,t.field_36,t.field_37,t.field_38,t.field_39,t.field_40,t.field_41,t.field_42,t.field_43,t.field_44,t.field_45,t.field_46,t.field_47,t.field_48,t.field_49,t.field_50,t.remark,t.create_time,t.update_time,t.delete_time,t.create_by,t.update_by,t.operator_org_code,t.operator_self_org_code,t.tenant_id
+ FROM
+    basic_base_form_extend t
+ WHERE
+    t.delete_time = 0
+ </sql>
+ <sql id="baseQueryCountSql">
+   SELECT
+    count(1)
+ FROM
+    basic_base_form_extend t
+ WHERE
+    t.delete_time = 0
+ </sql>
+	<select id="getBasicBaseFormExtendAll" parameterType="Map" resultType="com.matariky.commonservice.base.bean.BasicBaseFormExtend">
+        select id,business_id,field_0,field_1,field_2,field_3,field_4,field_5,field_6,field_7,field_8,field_9,field_10,field_11,field_12,field_13,field_14,field_15,field_16,field_17,field_18,field_19,field_20,field_21,field_22,field_23,field_24,field_25,field_26,field_27,field_28,field_29,field_30,field_31,field_32,field_33,field_34,field_35,field_36,field_37,field_38,field_39,field_40,field_41,field_42,field_43,field_44,field_45,field_46,field_47,field_48,field_49,field_50,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id from basic_base_form_extend t where delete_time=0
+	</select>
+
+    <select id="getBasicBaseFormExtendCount" resultType="java.lang.Integer" >
+        select  count(1)  from basic_base_form_extend t
+        <where>
+            delete_time = 0
+
+            <if test="params.businessIds != null and params.businessIds.size() > 0">
+              and  business_id in
+                <foreach collection="params.businessIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+
+            <if test="params.field0!=null and params.field0!='' ">
+               and field_0 is not null and  field_0 != ''
+            </if>
+            <if test="params.field1!=null and params.field1!='' ">
+                and field_1 is not null and  field_1 != ''
+            </if>
+            <if test="params.field2!=null and params.field2!='' ">
+                and field_2 is not null and  field_2 != ''
+            </if>
+            <if test="params.field3!=null and params.field3!='' ">
+                and field_3 is not null and  field_3 != ''
+            </if>
+            <if test="params.field4!=null and params.field4!='' ">
+                and field_4 is not null and  field_4 != ''
+            </if>
+            <if test="params.field5!=null and params.field5!='' ">
+                and field_5 is not null and  field_5 != ''
+            </if>
+            <if test="params.field6!=null and params.field6!='' ">
+                and field_6 is not null and  field_6 != ''
+            </if>
+            <if test="params.field7!=null and params.field7!='' ">
+                and field_7 is not null and  field_7 != ''
+            </if>
+            <if test="params.field8!=null and params.field8!='' ">
+                and field_8 is not null and  field_8 != ''
+            </if>
+            <if test="params.field9!=null and params.field9!='' ">
+                and field_9 is not null and  field_9 != ''
+            </if>
+            <if test="params.field10!=null and params.field10!='' ">
+                and field_10 is not null and  field_10 != ''
+            </if>
+            <if test="params.field11!=null and params.field11!='' ">
+                and field_11 is not null and  field_11 != ''
+            </if>
+            <if test="params.field12!=null and params.field12!='' ">
+                and field_12 is not null and  field_12 != ''
+            </if>
+            <if test="params.field13!=null and params.field13!='' ">
+                and field_13 is not null and  field_13 != ''
+            </if>
+            <if test="params.field14!=null and params.field14!='' ">
+                and field_14 is not null and  field_14 != ''
+            </if>
+            <if test="params.field15!=null and params.field15!='' ">
+                and field_15 is not null and  field_15 != ''
+            </if>
+            <if test="params.field16!=null and params.field16!='' ">
+                and field_16 is not null and  field_16 != ''
+            </if>
+            <if test="params.field17!=null and params.field17!='' ">
+                and field_17 is not null and  field_17 != ''
+            </if>
+            <if test="params.field18!=null and params.field18!='' ">
+                and field_18 is not null and  field_18 != ''
+            </if>
+            <if test="params.field19!=null and params.field19!='' ">
+                and field_19 is not null and  field_19 != ''
+            </if>
+            <if test="params.field20!=null and params.field20!='' ">
+                and field_20 is not null and  field_20 != ''
+            </if>
+            <if test="params.field21!=null and params.field21!='' ">
+                and field_21 is not null and  field_21 != ''
+            </if>
+            <if test="params.field22!=null and params.field22!='' ">
+                and field_22 is not null and  field_22 != ''
+            </if>
+            <if test="params.field23!=null and params.field23!='' ">
+                and field_23 is not null and  field_23 != ''
+            </if>
+            <if test="params.field24!=null and params.field24!='' ">
+                and field_24 is not null and  field_24 != ''
+            </if>
+            <if test="params.field25!=null and params.field25!='' ">
+                and field_25 is not null and  field_25 != ''
+            </if>
+            <if test="params.field26!=null and params.field26!='' ">
+                and field_26 is not null and  field_26 != ''
+            </if>
+            <if test="params.field27!=null and params.field27!='' ">
+                and field_27 is not null and  field_27 != ''
+            </if>
+            <if test="params.field28!=null and params.field28!='' ">
+                and field_28 is not null and  field_28 != ''
+            </if>
+            <if test="params.field29!=null and params.field29!='' ">
+                and field_29 is not null and  field_29 != ''
+            </if>
+            <if test="params.field30!=null and params.field30!='' ">
+                and field_30 is not null and  field_30 != ''
+            </if>
+            <if test="params.field31!=null and params.field31!='' ">
+                and field_31 is not null and  field_31 != ''
+            </if>
+            <if test="params.field32!=null and params.field32!='' ">
+                and field_32 is not null and  field_32 != ''
+            </if>
+            <if test="params.field33!=null and params.field33!='' ">
+                and field_33 is not null and  field_33 != ''
+            </if>
+            <if test="params.field34!=null and params.field34!='' ">
+                and field_34 is not null and  field_34 != ''
+            </if>
+            <if test="params.field35!=null and params.field35!='' ">
+                and field_35 is not null and  field_35 != ''
+            </if>
+            <if test="params.field36!=null and params.field36!='' ">
+                and field_36 is not null and  field_36 != ''
+            </if>
+            <if test="params.field37!=null and params.field37!='' ">
+                and field_37 is not null and  field_37 != ''
+            </if>
+            <if test="params.field38!=null and params.field38!='' ">
+                and field_38 is not null and  field_38 != ''
+            </if>
+            <if test="params.field39!=null and params.field39!='' ">
+                and field_39 is not null and  field_39 != ''
+            </if>
+            <if test="params.field40!=null and params.field40!='' ">
+                and field_40 is not null and  field_40 != ''
+            </if>
+            <if test="params.field41!=null and params.field41!='' ">
+                and field_41 is not null and  field_41 != ''
+            </if>
+            <if test="params.field42!=null and params.field42!='' ">
+                and field_42 is not null and  field_42 != ''
+            </if>
+            <if test="params.field43!=null and params.field43!='' ">
+                and field_43 is not null and  field_43 != ''
+            </if>
+            <if test="params.field44!=null and params.field44!='' ">
+                and field_44 is not null and  field_44 != ''
+            </if>
+            <if test="params.field45!=null and params.field45!='' ">
+                and field_45 is not null and  field_45 != ''
+            </if>
+            <if test="params.field46!=null and params.field46!='' ">
+                and field_46 is not null and  field_46 != ''
+            </if>
+            <if test="params.field47!=null and params.field47!='' ">
+                and field_47 is not null and  field_47 != ''
+            </if>
+            <if test="params.field48!=null and params.field48!='' ">
+                and field_48 is not null and  field_48 != ''
+            </if>
+            <if test="params.field49!=null and params.field49!='' ">
+                and field_49 is not null and  field_49 != ''
+            </if>
+            <if test="params.field50!=null and params.field50!='' ">
+                and field_50 is not null and  field_50 != ''
+            </if>
+        </where>
+
+    </select>
+
+	<select id="getBasicBaseFormExtendAllCount" parameterType="Map" resultType="int">
+        select count(1) from basic_base_form_extend where delete_time=0
+	</select>
+
+	<insert id="createBasicBaseFormExtend" parameterType="com.matariky.commonservice.base.bean.BasicBaseFormExtend">
+        insert into basic_base_form_extend(id,business_id,field_0,field_1,field_2,field_3,field_4,field_5,field_6,field_7,field_8,field_9,field_10,field_11,field_12,field_13,field_14,field_15,field_16,field_17,field_18,field_19,field_20,field_21,field_22,field_23,field_24,field_25,field_26,field_27,field_28,field_29,field_30,field_31,field_32,field_33,field_34,field_35,field_36,field_37,field_38,field_39,field_40,field_41,field_42,field_43,field_44,field_45,field_46,field_47,field_48,field_49,field_50,remark,create_time,update_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id)
+        values(#{id},#{businessId},#{field0},#{field1},#{field2},#{field3},#{field4},#{field5},#{field6},#{field7},#{field8},#{field9},#{field10},#{field11},#{field12},#{field13},#{field14},#{field15},#{field16},#{field17},#{field18},#{field19},#{field20},#{field21},#{field22},#{field23},#{field24},#{field25},#{field26},#{field27},#{field28},#{field29},#{field30},#{field31},#{field32},#{field33},#{field34},#{field35},#{field36},#{field37},#{field38},#{field39},#{field40},#{field41},#{field42},#{field43},#{field44},#{field45},#{field46},#{field47},#{field48},#{field49},#{field50},#{remark},#{createTime},#{updateTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode},#{tenantId})
+	</insert>
+
+    <select id="selectExtendClearList" resultType="com.matariky.commonservice.base.bean.BasicBaseFormExtend">
+        SELECT
+            e.*
+        FROM
+            basic_base_form_extend e
+        WHERE
+            e.delete_time = 0
+          AND EXISTS (
+            SELECT
+                1
+            FROM
+                basic_base_goods g
+            WHERE
+                g.id = e.business_id)
+    </select>
+
+	<update id="updateBasicBaseFormExtend" parameterType="com.matariky.commonservice.base.bean.BasicBaseFormExtend">
+        update basic_base_form_extend
+        set id=#{params.id}
+<if test="params.businessId != null ">
+        	,business_id=#{params.businessId}
+        </if>
+<if test="params.field0 != null ">
+        	,field_0=#{params.field0}
+        </if>
+<if test="params.field1 != null ">
+        	,field_1=#{params.field1}
+        </if>
+<if test="params.field2 != null ">
+        	,field_2=#{params.field2}
+        </if>
+<if test="params.field3 != null ">
+        	,field_3=#{params.field3}
+        </if>
+<if test="params.field4 != null ">
+        	,field_4=#{params.field4}
+        </if>
+<if test="params.field5 != null ">
+        	,field_5=#{params.field5}
+        </if>
+<if test="params.field6 != null ">
+        	,field_6=#{params.field6}
+        </if>
+<if test="params.field7 != null ">
+        	,field_7=#{params.field7}
+        </if>
+<if test="params.field8 != null ">
+        	,field_8=#{params.field8}
+        </if>
+<if test="params.field9 != null ">
+        	,field_9=#{params.field9}
+        </if>
+<if test="params.field10 != null ">
+        	,field_10=#{params.field10}
+        </if>
+<if test="params.field11 != null ">
+        	,field_11=#{params.field11}
+        </if>
+<if test="params.field12 != null ">
+        	,field_12=#{params.field12}
+        </if>
+<if test="params.field13 != null ">
+        	,field_13=#{params.field13}
+        </if>
+<if test="params.field14 != null ">
+        	,field_14=#{params.field14}
+        </if>
+<if test="params.field15 != null ">
+        	,field_15=#{params.field15}
+        </if>
+<if test="params.field16 != null ">
+        	,field_16=#{params.field16}
+        </if>
+<if test="params.field17 != null ">
+        	,field_17=#{params.field17}
+        </if>
+<if test="params.field18 != null ">
+        	,field_18=#{params.field18}
+        </if>
+<if test="params.field19 != null ">
+        	,field_19=#{params.field19}
+        </if>
+<if test="params.field20 != null ">
+        	,field_20=#{params.field20}
+        </if>
+<if test="params.field21 != null ">
+        	,field_21=#{params.field21}
+        </if>
+<if test="params.field22 != null ">
+        	,field_22=#{params.field22}
+        </if>
+<if test="params.field23 != null ">
+        	,field_23=#{params.field23}
+        </if>
+<if test="params.field24 != null ">
+        	,field_24=#{params.field24}
+        </if>
+<if test="params.field25 != null ">
+        	,field_25=#{params.field25}
+        </if>
+<if test="params.field26 != null ">
+        	,field_26=#{params.field26}
+        </if>
+<if test="params.field27 != null ">
+        	,field_27=#{params.field27}
+        </if>
+<if test="params.field28 != null ">
+        	,field_28=#{params.field28}
+        </if>
+<if test="params.field29 != null ">
+        	,field_29=#{params.field29}
+        </if>
+<if test="params.field30 != null ">
+        	,field_30=#{params.field30}
+        </if>
+<if test="params.field31 != null ">
+        	,field_31=#{params.field31}
+        </if>
+<if test="params.field32 != null ">
+        	,field_32=#{params.field32}
+        </if>
+<if test="params.field33 != null ">
+        	,field_33=#{params.field33}
+        </if>
+<if test="params.field34 != null ">
+        	,field_34=#{params.field34}
+        </if>
+<if test="params.field35 != null ">
+        	,field_35=#{params.field35}
+        </if>
+<if test="params.field36 != null ">
+        	,field_36=#{params.field36}
+        </if>
+<if test="params.field37 != null ">
+        	,field_37=#{params.field37}
+        </if>
+<if test="params.field38 != null ">
+        	,field_38=#{params.field38}
+        </if>
+<if test="params.field39 != null ">
+        	,field_39=#{params.field39}
+        </if>
+<if test="params.field40 != null ">
+        	,field_40=#{params.field40}
+        </if>
+<if test="params.field41 != null ">
+        	,field_41=#{params.field41}
+        </if>
+<if test="params.field42 != null ">
+        	,field_42=#{params.field42}
+        </if>
+<if test="params.field43 != null ">
+        	,field_43=#{params.field43}
+        </if>
+<if test="params.field44 != null ">
+        	,field_44=#{params.field44}
+        </if>
+<if test="params.field45 != null ">
+        	,field_45=#{params.field45}
+        </if>
+<if test="params.field46 != null ">
+        	,field_46=#{params.field46}
+        </if>
+<if test="params.field47 != null ">
+        	,field_47=#{params.field47}
+        </if>
+<if test="params.field48 != null ">
+        	,field_48=#{params.field48}
+        </if>
+<if test="params.field49 != null ">
+        	,field_49=#{params.field49}
+        </if>
+<if test="params.field50 != null ">
+        	,field_50=#{params.field50}
+        </if>
+<if test="params.remark != null ">
+        	,remark=#{params.remark}
+        </if>
+<if test="params.createTime != null ">
+        	,create_time=#{params.createTime}
+        </if>
+<if test="params.updateTime != null ">
+        	,update_time=#{params.updateTime}
+        </if>
+<if test="params.deleteTime != null ">
+        	,delete_time=#{params.deleteTime}
+        </if>
+<if test="params.createBy != null ">
+        	,create_by=#{params.createBy}
+        </if>
+<if test="params.updateBy != null ">
+        	,update_by=#{params.updateBy}
+        </if>
+<if test="params.operatorOrgCode != null ">
+        	,operator_org_code=#{params.operatorOrgCode}
+        </if>
+<if test="params.operatorSelfOrgCode != null ">
+        	,operator_self_org_code=#{params.operatorSelfOrgCode}
+        </if>
+<if test="params.tenantId != null ">
+        	,tenant_id=#{params.tenantId}
+        </if>
+        where id = #{params.id} and delete_time=0
+	</update>
+
+	<update id="delBasicBaseFormExtendById" parameterType="java.lang.Long">
+        update  basic_base_form_extend set delete_time=now() where id=#{id}
+	</update>
+
+	<select id="getBasicBaseFormExtendById"  parameterType="java.lang.Long" resultType="com.matariky.commonservice.base.bean.BasicBaseFormExtend" >
+        select id,business_id,field_0,field_1,field_2,field_3,field_4,field_5,field_6,field_7,field_8,field_9,field_10,field_11,field_12,
+                field_13,field_14,field_15,field_16,field_17,field_18,field_19,field_20,
+               field_21,field_22,field_23,field_24,field_25,field_26,field_27,field_28,field_29,field_30,field_31,field_32,field_33,
+               field_34,field_35,field_36,field_37,field_38,field_39,field_40,field_41,field_42,field_43,field_44,field_45,field_46,
+               field_47,field_48,field_49,field_50,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,
+               operator_self_org_code,tenant_id from basic_base_form_extend where id=#{id} and delete_time=0
+	</select>
+
+<select id="getBasicBaseFormExtendDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
+   <if test="params.strategyCode =='1'.toString()">
+  <include refid="baseQueryCountSql" />
+    <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+       and  t.operator_self_org_code=#{params.selfOrgCode}
+    </if>
+   <if test="params.tenantId != null and params.tenantId !=''">
+     and t.tenant_id  = #{params.tenantId}
+ </if>
+       <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+   or t.operator_self_org_code in
+	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+        #{soc}
+    </foreach>
+    </if>
+         <if test="params.sharingOrgCodes != null  and params.sharingOrgCodes.size()>0  ">
+        or   t.operator_org_code in
+    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+            #{oc}
+        </foreach>
+    </if>
+</if>
+   <if test=" params.strategyCode =='0'.toString()">
+  <include refid="baseQueryCountSql" />
+       <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+       </if>
+   </if>
+   <if test=" params.strategyCode =='2'.toString()">
+  <include refid="baseQueryCountSql" />
+       <if test="params.orgCode != null and params.orgCode !=''">
+        and   t.operator_org_code=#{params.orgCode}
+    </if>
+   <if test="params.tenantId != null and params.tenantId !=''">
+        and t.tenant_id  = #{params.tenantId}
+    </if>
+   <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
+            or  t.operator_self_org_code in
+    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+            #{soc}
+        </foreach>
+   </if>
+   <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+             or   t.operator_org_code in
+     	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+             #{oc}
+         </foreach>
+         </if>
+ </if>
+   <if test=" params.strategyCode =='3'.toString()">
+  <include refid="baseQueryCountSql" />
+        <if test="params.orgCode != null and params.orgCode !=''">
+         and  t.operator_org_code like concat(#{params.orgCode}, '%')
+   		</if>
+       <if test="params.tenantId != null and params.tenantId !=''">
+         and t.tenant_id  = #{params.tenantId}
+       </if>
+   	   <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+             or   t.operator_self_org_code in
+     	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+             #{soc}
+         </foreach>
+        </if>
+   <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+             or t.operator_org_code in
+     	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+             #{oc}
+         </foreach>
+         </if>
+ </if>
+</select>
+<select id="getBasicBaseFormExtendDAC" parameterType="java.util.Map" resultType="com.matariky.commonservice.base.bean.BasicBaseFormExtend">
+<if test="params.strategyCode =='1'.toString()">
+  <include refid="baseQueryListSql" />
+   <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+       and  t.operator_self_org_code=#{params.selfOrgCode}
+   </if>
+   <if test="params.tenantId != null and params.tenantId !=''">
+       and t.tenant_id  = #{params.tenantId}
+   </if>
+   <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes.size()>0">
+      union
+  <include refid="baseQueryListSql" />
+     <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size()>0">
+      and t.operator_self_org_code in
+  	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+        #{soc}
+      </foreach>
+       </if>
+       <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+       </if>
+  </if>
+  <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes.size()>0">
+      union
+  <include refid="baseQueryListSql" />
+        <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0  ">
+         and   t.operator_org_code in
+  	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+          #{oc}
+       </foreach>
+       </if>
+       <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+     </if>
+    <if test="params.order != null and params.order !=''">
+     #{params.order}
+   </if>
+ </if>
+ <if test=" params.strategyCode =='0'.toString()">
+  <include refid="baseQueryListSql" />
+    <if test="params.tenantId != null and params.tenantId !=''">
+       and t.tenant_id  = #{params.tenantId}
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+    </if>
+    <if test="params.order != null and params.order !=''">
+     #{params.order}
+    </if>
+</if>
+ <if test=" params.strategyCode =='2'.toString()">
+  <include refid="baseQueryListSql" />
+   <if test="params.orgCode != null and params.orgCode !=''">
+        and   t.operator_org_code=#{params.orgCode}
+     </if>
+     <if test="params.tenantId != null and params.tenantId !=''">
+        and t.tenant_id  = #{params.tenantId}
+    </if>
+     <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+      union
+     <include refid="baseQueryListSql" />
+        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
+            and  t.operator_self_org_code in
+    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+           #{soc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+    <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+      union
+     <include refid="baseQueryListSql" />
+         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+            and   t.operator_org_code in
+    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+            #{oc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and t.tenant_id  = #{params.tenantId}
+        </if>
+     </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+    </if>
+    <if test="params.order != null and params.order !=''">
+      #{params.order}
+    </if>
+</if>
+<if test=" params.strategyCode =='3'.toString()">
+  <include refid="baseQueryListSql" />
+     <if test="params.orgCode != null and params.orgCode !=''">
+        and  t.operator_org_code like concat(#{params.orgCode}, '%')
+    </if>
+    <if test="params.tenantId != null and params.tenantId !=''">
+        and t.tenant_id  = #{params.tenantId}
+    </if>
+     <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+      union
+      <include refid="baseQueryListSql" />
+        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+            and   t.operator_self_org_code in
+   	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+           #{soc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+     <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+      union
+      <include refid="baseQueryListSql" />
+       		<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+            and t.operator_org_code in
+    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+            #{oc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+    </if>
+    <if test="params.order != null and params.order !=''">
+     #{params.order}
+   </if>
+ </if>
+ <if test="params.pageStart != null and params.pageSize != null  ">
+     limit #{params.pageStart}, #{params.pageSize}
+  </if>
+</select>
+</mapper>

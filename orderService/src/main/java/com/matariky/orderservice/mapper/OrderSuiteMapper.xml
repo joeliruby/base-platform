@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.orderservice.mapper.OrderSuiteMapper">
+
+<sql id="baseQueryListSql"> 
+ SELECT t.id,t.operator_org_code,t.operator_self_org_code,t.tenant_id,t.suite_code,t.suite_name,t.suite_notes,t.suite_status,t.created_by,t.create_time,t.update_by,t.update_time,t.delete_time 
+ FROM
+    order_suite t 
+ WHERE 
+    t.delete_time = 0 
+ </sql> 
+ <sql id="baseQueryCountSql"> 
+   SELECT 
+    count(1) 
+ FROM 
+    order_suite t 
+ WHERE 
+    t.delete_time = 0 
+ </sql> 
+	<select id="getOrderSuiteAll" parameterType="Map" resultType="com.matariky.orderservice.bean.OrderSuite">
+        select id,operator_org_code,operator_self_org_code,tenant_id,suite_code,suite_name,suite_notes,suite_status,created_by,create_time,update_by,update_time,delete_time from order_suite where delete_time=0 
+	</select>
+
+	<select id="getOrderSuiteAllCount" parameterType="Map" resultType="int">
+        select count(1) from order_suite where delete_time=0 
+	</select>
+
+	<insert id="createOrderSuite" parameterType="com.matariky.orderservice.bean.OrderSuite">
+        insert into order_suite(id,operator_org_code,operator_self_org_code,tenant_id,suite_code,suite_name,suite_notes,suite_status,created_by,create_time,update_by,update_time,delete_time) 
+        values(#{id},#{operatorOrgCode},#{operatorSelfOrgCode},#{tenantId},#{suiteCode},#{suiteName},#{suiteNotes},#{suiteStatus},#{createdBy},#{createTime},#{updateBy},#{updateTime},#{deleteTime})
+	</insert>
+
+	<update id="updateOrderSuite" parameterType="com.matariky.orderservice.bean.OrderSuite">
+        update order_suite 
+        set operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode},tenant_id=#{tenantId},suite_code=#{suiteCode},suite_name=#{suiteName},suite_notes=#{suiteNotes},suite_status=#{suiteStatus},created_by=#{createdBy},create_time=#{createTime},update_by=#{updateBy},update_time=#{updateTime},delete_time=#{deleteTime}
+        where id = #{id} and delete_time=0 
+	</update>
+
+	<update id="delOrderSuiteById" parameterType="int">
+        update  order_suite set delete_time=now() where id=#{value}
+	</update>
+
+	<select id="getOrderSuiteById"  parameterType="Long" resultType="com.matariky.orderservice.bean.OrderSuite" >
+        select id,operator_org_code,operator_self_org_code,tenant_id,suite_code,suite_name,suite_notes,suite_status,created_by,create_time,update_by,update_time,delete_time from order_suite where id=#{value} and delete_time=0
+	</select>
+
+<select id="getOrderSuiteDACCount" parameterType="com.matariky.orderservice.param.QueryTapeOrderSuiteParam" resultType="java.lang.Long">
+    SELECT
+        count(1)
+    FROM
+        order_suite t
+    WHERE
+        t.delete_time = 0
+    <if test="suiteName != null and suiteName !=''">
+        and  t.suite_name like concat('%', #{suiteName}, '%')
+    </if>
+    <if test="suiteStatus != null and suiteStatus !=''">
+        and  t.suite_status=#{suiteStatus}
+    </if>
+
+</select>
+<select id="getOrderSuiteDAC" parameterType="com.matariky.orderservice.param.QueryTapeOrderSuiteParam" resultType="com.matariky.orderservice.bean.OrderSuite">
+    SELECT t.id,t.operator_org_code,t.operator_self_org_code,t.tenant_id,t.suite_code,t.suite_name,
+           t.suite_notes,t.suite_status,t.created_by,t.create_time,t.update_by,t.update_time,t.delete_time
+    FROM
+        order_suite t
+    WHERE
+        t.delete_time = 0
+    <if test="suiteName != null and suiteName !=''">
+        and  t.suite_name like concat('%', #{suiteName}, '%')
+    </if>
+    <if test="suiteStatus != null and suiteStatus !=''">
+        and  t.suite_status=#{suiteStatus}
+    </if>
+
+    order by t.create_time desc
+    <if test="isPage and pageStart != null and pageSize != null  ">
+        limit #{pageStart}, #{pageSize}
+    </if>
+</select>
+
+<insert id="insertOrderSuites" >
+    insert into order_suite(operator_org_code,operator_self_org_code,tenant_id,suite_code,
+                            suite_name,suite_notes,suite_status,created_by,create_time,update_by,
+                            update_time,delete_time)
+    values
+    <foreach collection="orderSuites" item="item" index="index" separator=",">
+        ( #{item.operatorOrgCode},#{item.operatorSelfOrgCode},#{item.tenantId},#{item.suiteCode},#{item.suiteName},
+         #{item.suiteNotes},#{item.suiteStatus},#{item.createdBy},#{item.createTime},#{item.updateBy},#{item.updateTime},#{item.deleteTime} )
+    </foreach>
+</insert>
+
+
+    <select id="selectOrderSuitesIsUsed" parameterType="Map" resultType="com.matariky.orderservice.bean.OrderSuite">
+        SELECT
+            os.*
+        FROM
+            order_suite AS os,
+            order_info AS o,
+            user_user AS u
+        WHERE
+            os.suite_code = o.suite_code
+          AND o.order_code = u.order_code
+          AND os.suite_code = #{params.suiteCode}
+          AND o.order_status = 1
+    </select>
+</mapper>

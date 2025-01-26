@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.datasharing.mapper.CommonSharingPoolMapper">
+
+	<select id="getCommonSharingPoolAll" parameterType="Map" resultType="com.matariky.commonservice.datasharing.bean.CommonSharingPool">
+        select sp.receiving_org_code as resourceTableName,  sp.id,sp.sharer_type,sp.receiver_type,sp.resource_table_name,uo1.organization_name as receiving_org_code,sp.created_by,sp.create_time,sp.updated_by,sp.update_time,ut.tenant_name as tenant_id,sp.delete_time,uo.organization_name as original_owner_org_code from common_sharing_pool sp  join  user_organization uo on sp.original_owner_org_code=uo.organization_code  join user_organization uo1 on sp.receiving_org_code=uo1.organization_code  join user_tenant ut on sp.tenant_id = ut.tenant_code where sp.delete_time=0 
+	</select>
+
+	<select id="getCommonSharingPoolAllCount" parameterType="Map" resultType="int">
+        select count(1) from common_sharing_pool 
+	</select>
+
+	<insert id="createCommonSharingPool" parameterType="com.matariky.commonservice.datasharing.bean.CommonSharingPool">
+        insert into common_sharing_pool(id,sharer_type,receiver_type,resource_table_name,receiving_org_code,created_by,create_time,updated_by,update_time,tenant_id,delete_time,original_owner_org_code,resource_id) 
+        values(#{id},#{sharerType},#{receiverType},#{resourceTableName},#{receivingOrgCode},#{createdBy},#{createTime},#{updatedBy},#{updateTime},#{tenantId},#{deleteTime},#{originalOwnerOrgCode},#{resourceId})
+	</insert>
+
+	<update id="updatecommon_sharing_pool" parameterType="com.matariky.commonservice.datasharing.bean.CommonSharingPool">
+        update CommonSharingPool 
+         set id=#{params.id} 
+					<if test="params.sharerType != null ">
+		        	,sharer_type=#{params.sharerType}
+		        </if>
+		<if test="params.receiverType != null ">
+		        	,receiver_type=#{params.receiverType}
+		        </if>
+		<if test="params.resourceTableName != null ">
+		        	,resource_table_name=#{params.resourceTableName}
+		        </if>
+		<if test="params.receivingOrgCode != null ">
+		        	,receiving_org_code=#{params.receivingOrgCode}
+		        </if>
+		<if test="params.createdBy != null ">
+		        	,created_by=#{params.createdBy}
+		        </if>
+		<if test="params.createTime != null ">
+		        	,create_time=#{params.createTime}
+		        </if>
+		<if test="params.updatedBy != null ">
+		        	,updated_by=#{params.updatedBy}
+		        </if>
+		<if test="params.updateTime != null ">
+		        	,update_time=#{params.updateTime}
+		        </if>
+		<if test="params.tenantId != null ">
+		        	,tenant_id=#{params.tenantId}
+		        </if>
+		<if test="params.deleteTime != null ">
+		        	,delete_time=#{params.deleteTime}
+		        </if>
+		<if test="params.originalOwnerOrgCode != null ">
+		        	,original_owner_org_code=#{params.originalOwnerOrgCode}
+		        </if>
+		<if test="params.resourceId != null ">
+		        	,resource_id=#{params.resourceId}
+		        </if>
+
+        where id = #{params.id} and delete_time=0
+	</update>
+
+	<update id="delCommonSharingPoolById" parameterType="Long">
+        delete from   common_sharing_pool where id=#{value}
+	</update>
+
+	<select id="getCommonSharingPoolById"  parameterType="Integer" resultType="com.matariky.commonservice.datasharing.bean.CommonSharingPool" >
+        select id,sharer_type,receiver_type,resource_table_name,receiving_org_code,created_by,create_time,updated_by,update_time,tenant_id,delete_time,original_owner_org_code,resource_id from common_sharing_pool where id=#{value} 
+	</select>
+
+	<select id="selectOriginalOwnerOrgCodes" resultType="java.lang.String">
+		SELECT
+			sp.original_owner_org_code
+		FROM
+			common_sharing_pool sp
+		WHERE
+			sp.delete_time = 0
+        AND (sp.receiving_org_code = #{orgCode} OR sp.receiving_org_code = #{selfOrgCode})
+	</select>
+
+</mapper>

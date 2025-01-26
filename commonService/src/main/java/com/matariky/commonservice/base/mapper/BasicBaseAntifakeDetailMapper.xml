@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseAntifakeDetailMapper">
+
+
+	<select id="getBasicBaseAntifakeDetailAll" resultType="com.matariky.commonservice.base.bean.BasicBaseAntifakeDetail">
+        select d.id,d.antifake_id,p.validate_batch_code,p.ip_address,p.validate_url,p.validate_tiime,d.device_id,b.device_code,d.validate_result,d.goods_id,g.goods_code,g.goods_name,g.goods_image,g.goods_describe,d.tid,d.remark,d.create_time,d.update_time,d.delete_time,d.create_by,d.update_by,d.operator_org_code,d.operator_self_org_code , u.real_name
+        from basic_base_antifake_detail d left join  basic_base_antifake p on p.id=d.antifake_id left join basic_base_goods g on d.goods_id=g.id left join basic_base_device b on d.device_id=b.id left join  user_user u on d.create_by = u.id
+        <where>
+        d.delete_time=0
+        <if test="antifakeId!=null">
+            and p.id = #{antifakeId}
+        </if>
+        <if test="validateBatchCode!=null and validateBatchCode!='' ">
+            and p.validate_batch_code like concat('%',#{validateBatchCode},'%')
+        </if>
+        <if test="goodsName!=null and goodsName!='' ">
+            and g.goods_name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="goodsCode!=null and goodsCode!='' ">
+            and g.goods_code like concat('%',#{goodsCode},'%')
+        </if>
+        <if test="validateResult!=null and validateResult!=''  ">
+            and d.validate_result  = #{validateResult}
+        </if>
+        <if test="tid!=null  and  typeId!=''  ">
+            and d.tid = #{tid}
+        </if>
+        <if test="validationTimeStart!=null and validationTimeStart!='' ">
+            <!--  开始时间检索  -->
+            and DATE_FORMAT(FROM_UNIXTIME(p.validate_tiime / 1000), '%Y-%m-%d %H:%i:%s') &gt;= #{validationTimeStart}
+        </if>
+        <if test="validationTimeEnd!=null and validationTimeEnd!='' ">
+            <!--  结束时间检索  -->
+            and DATE_FORMAT(FROM_UNIXTIME(p.validate_tiime / 1000), '%Y-%m-%d %H:%i:%s')  &lt;= #{validationTimeEnd}
+        </if>
+        <if test="tenantId!=null and tenantId!='' ">
+            and p.tenant_id = #{tenantId}
+        </if>
+        </where>
+        order by  d.create_time desc
+	</select>
+
+	<insert id="createBasicBaseAntifakeDetail" parameterType="com.matariky.commonservice.base.bean.BasicBaseAntifakeDetail">
+        insert into basic_base_antifake_detail(id,antifake_id,device_id,validate_result,goods_id,tid,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code)
+        values(#{id},#{antifakeId},#{deviceId},#{validateResult},#{goodsId},#{tid},#{remark},#{createTime},#{updateTime},#{deleteTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode})
+	</insert>
+
+	<update id="updateBasicBaseAntifakeDetail" parameterType="com.matariky.commonservice.base.bean.BasicBaseAntifakeDetail">
+        update basic_base_antifake_detail
+        set antifake_id=#{antifakeId},device_id=#{deviceId},validate_result=#{validateResult},goods_id=#{goodsId},tid=#{tid},remark=#{remark},create_time=#{createTime},update_time=#{updateTime},delete_time=#{deleteTime},create_by=#{createBy},update_by=#{updateBy},operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode}
+        where id = #{id} and delete_time=0
+	</update>
+
+	<update id="delBasicBaseAntifakeDetailById" parameterType="java.lang.Long">
+        update  basic_base_antifake_detail set delete_time=now() where id=#{id}
+	</update>
+
+	<select id="getBasicBaseAntifakeDetailById"  parameterType="java.lang.Long" resultType="com.matariky.commonservice.base.bean.BasicBaseAntifakeDetail" >
+        select id,antifake_id,device_id,validate_result,goods_id,tid,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code
+        from basic_base_antifake_detail where id=#{id} and delete_time=0
+	</select>
+
+</mapper>

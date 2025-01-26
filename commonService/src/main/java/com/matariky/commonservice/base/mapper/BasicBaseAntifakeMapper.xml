@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseAntifakeMapper">
+
+
+
+
+	<select id="getBasicBaseAntifakeAll" resultType="com.matariky.commonservice.base.bean.BasicBaseAntifake">
+        select a.id,a.validate_batch_code,a.ip_address,a.validate_url,a.validate_num,a.success_num,a.fail_num,a.validate_status,a.validate_tiime,a.remark,a.create_time,a.update_time,a.delete_time,a.create_by,a.update_by,a.operator_org_code,a.operator_self_org_code,a.tenant_id , u.real_name
+        from basic_base_antifake a left join  user_user u on a.create_by = u.id
+        <where>
+            a.delete_time=0
+            <if test="params.validateStatus!=null and params.validateStatus!=''  ">
+                and a.validate_status  = #{params.validateStatus}
+            </if>
+        <if test="params.validationTimeStart!=null and params.validationTimeStart!='' ">
+            <!--  开始时间检索  -->
+            and DATE_FORMAT(FROM_UNIXTIME(a.validate_tiime / 1000), '%Y-%m-%d %H:%i:%s') &gt;= #{params.validationTimeStart}
+        </if>
+        <if test="params.validationTimeEnd!=null and params.validationTimeEnd!='' ">
+            <!--  结束时间检索  -->
+            and DATE_FORMAT(FROM_UNIXTIME(a.validate_tiime / 1000), '%Y-%m-%d %H:%i:%s')  &lt;= #{params.validationTimeEnd}
+        </if>
+        </where>
+        order by  a.create_time desc
+	</select>
+
+	<insert id="createBasicBaseAntifake" parameterType="com.matariky.commonservice.base.bean.BasicBaseAntifake">
+        insert into basic_base_antifake(id,validate_batch_code,ip_address,validate_url,validate_num,success_num,fail_num,validate_status,validate_tiime,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code)
+        values(#{id},#{validateBatchCode},#{ipAddress},#{validateUrl},#{validateNum},#{successNum},#{failNum},#{validateStatus},#{validateTiime},#{remark},#{createTime},#{updateTime},#{deleteTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode})
+	</insert>
+
+	<update id="updateBasicBaseAntifake" parameterType="com.matariky.commonservice.base.bean.BasicBaseAntifake">
+        update basic_base_antifake
+        set validate_batch_code=#{validateBatchCode},ip_address=#{ipAddress},validate_url=#{validateUrl},validate_num=#{validateNum},success_num=#{successNum},fail_num=#{failNum},validate_status=#{validateStatus},validate_tiime=#{validateTiime},remark=#{remark},create_time=#{createTime},update_time=#{updateTime},delete_time=#{deleteTime},create_by=#{createBy},update_by=#{updateBy},operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode}
+        where id = #{id} and delete_time=0
+	</update>
+
+	<update id="delBasicBaseAntifakeById" parameterType="java.lang.Long">
+        update  basic_base_antifake set delete_time=now() where id=#{id}
+	</update>
+
+	<select id="getBasicBaseAntifakeById"  parameterType="java.lang.Long" resultType="com.matariky.commonservice.base.bean.BasicBaseAntifake" >
+        select id,validate_batch_code,ip_address,validate_url,validate_num,success_num,fail_num,validate_status,validate_tiime,
+               remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code
+        from basic_base_antifake where id=#{id} and delete_time=0
+	</select>
+
+</mapper>

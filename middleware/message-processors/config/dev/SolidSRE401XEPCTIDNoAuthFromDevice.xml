@@ -1,0 +1,26 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+
+	
+	
+	<bean id="solidSRE401XEPCTIDNoAuthNormailizer"  class="com.matariky.normalizers.epctid.solid.SRE401X.SolidSRE401XEPCTIDNoAuthNormailizer">
+	</bean>
+	
+	<bean id="signozTracerClient" class="com.matariky.processor.tracer.OpentelemetryTracerProcessor">
+		<property name="tracerUrl" value="http://172.28.1.17:4318/v1/traces"></property>
+	</bean>
+
+
+	
+    <camelContext id="EPCTIDRead" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+			<route id="EPCTIDRead">
+			  <from uri="paho-mqtt5:sld-mqtt/+/tags?brokerUrl=tcp://172.28.1.17:1883&amp;userName=yxadmin&amp;password=yxadmin123." />
+				<process ref="solidSRE401XEPCTIDNoAuthNormailizer"></process>
+			  <to uri="paho-mqtt5:normalizednoauth-mqtt?brokerUrl=tcp://172.28.1.17:1883&amp;userName=yxadmin&amp;password=yxadmin123."/>
+			  <process ref="signozTracerClient"></process>
+			</route>
+	</camelContext>
+
+
+
+</blueprint>

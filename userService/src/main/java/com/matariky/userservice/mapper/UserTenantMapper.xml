@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.userservice.mapper.UserTenantMapper">
+
+	<select id="getUserTenantAll" parameterType="Map" resultType="com.matariky.userservice.bean.UserTenant">
+			    SELECT
+					tenant_code,
+					tenant_name,
+					update_time,
+					delete_time,
+					create_time,
+					id,
+					created_by,
+					updated_by,
+					address,
+					liaison,
+					liaison_mobile,
+					is_active,
+					domain_name,
+					parent_id,
+					theme,
+					order_num,
+					description
+				FROM
+					user_tenant 
+				WHERE
+					delete_time = 0 
+				<if test="params.tenantId !=null and params.tenantId !=''">
+            		AND  id like '%${params.tenantId}%'
+        		</if>
+        		<if test="params.tenantName !=null and params.tenantName !=''">
+            		AND  tenant_name like '%${params.tenantName}%'
+        		</if>
+        		<if test="params.liaison !=null and params.liaison !=''">
+            		AND  liaison like '%${params.value}%'
+        		</if>
+        		<if test="params.is_active != null and params.is_active !=''">
+            		AND  is_active  = #{params.is_active}
+        		</if>
+        		<if test="params.theme != null and params.theme !=''">
+            		AND  theme  = #{params.theme}
+        		</if>
+        		<if test="params.begin != null and params.begin !=''">
+           			AND  create_time >= ${params.begin}
+        		</if>
+        		<if test="params.end !=null and params.end!=''">
+        		<![CDATA[  AND  create_time <= ${params.end}   ]]>     
+        		</if>
+<!--        		<if test="params.tenantId != null and params.tenantId !=''">-->
+<!--           			AND ( tenant_code = ${params.tenantId} or tenant_code like concat('${params.tenantId}_', '%'))-->
+<!--        		</if>-->
+	</select>
+
+	<select id="getUserTenantAllCount" parameterType="Map" resultType="int">
+        select count(1) from user_tenant 
+	</select>
+
+	<insert id="createUserTenant" parameterType="com.matariky.userservice.bean.UserTenant">
+        insert into user_tenant(tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description) 
+        values(#{tenantCode},#{tenantName},#{updateTime},#{deleteTime},#{createTime},#{id},#{createdBy},#{updatedBy},#{address},#{liaison},#{liaisonMobile},#{isActive},#{domainName},#{parentId},#{theme},#{orderNum},#{description})
+	</insert>
+
+	<update id="updateUserTenant" parameterType="com.matariky.userservice.bean.UserTenant">
+        update user_tenant
+        	 set id=#{params.id} 
+			<if test="params.tenantCode != null ">
+        	,tenant_code=#{params.tenantCode}
+        </if>
+		<if test="params.tenantName != null ">
+		        	,tenant_name=#{params.tenantName}
+		        </if>
+		<if test="params.updateTime != null ">
+		        	,update_time=#{params.updateTime}
+		        </if>
+		<if test="params.deleteTime != null ">
+		        	,delete_time=#{params.deleteTime}
+		        </if>
+		<if test="params.createTime != null ">
+		        	,create_time=#{params.createTime}
+		        </if>
+		<if test="params.createdBy != null ">
+		        	,created_by=#{params.createdBy}
+		        </if>
+		<if test="params.updatedBy != null ">
+		        	,updated_by=#{params.updatedBy}
+		        </if>
+		<if test="params.address != null ">
+		        	,address=#{params.address}
+		        </if>
+		<if test="params.liaison != null ">
+		        	,liaison=#{params.liaison}
+		        </if>
+		<if test="params.liaisonMobile != null ">
+		        	,liaison_mobile=#{params.liaisonMobile}
+		        </if>
+		<if test="params.isActive != null ">
+		        	,is_active=#{params.isActive}
+		        </if>
+		<if test="params.domainName != null ">
+		        	,domain_name=#{params.domainName}
+		        </if>
+		<if test="params.parentId != null ">
+		        	,parent_id=#{params.parentId}
+		        </if>
+		<if test="params.theme != null ">
+		        	,theme=#{params.theme}
+		        </if>
+		<if test="params.orderNum != null ">
+		        	,order_num=#{params.orderNum}
+		        </if>
+		<if test="params.description != null ">
+		        	,description=#{params.description}
+		        </if>
+        where id = #{params.id} and delete_time=0
+ 
+        
+	</update>
+
+	<delete id="delUserTenantById" parameterType="int">
+        delete from user_tenant where id=#{value}
+	</delete>
+
+	<select id="getUserTenantById"  parameterType="String" resultType="com.matariky.userservice.bean.UserTenant" >
+        select tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description from user_tenant where id=#{value} 
+	</select>
+	
+	<select id="selectByTenantCode"  parameterType="String" resultType="com.matariky.userservice.bean.UserTenant" >
+        select id,tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description from user_tenant where tenant_code=#{tenantCode} 
+	</select>
+	
+	<!-- 逻辑删除 包括批量 -->
+  	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
+    	update user_tenant
+    	<set >
+        	delete_time = unix_timestamp()
+    	</set>
+    	where id in
+    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  	</update>
+	
+	
+	<!--批量删除租户和应用的中间表数据 -->
+	<delete id="deleteApplicationByTenantCodes" >
+		DELETE FROM user_r_application_tenant WHERE tenant_code  in
+		<foreach item="tenantCode" collection="array" open="(" separator="," close=")">
+            #{tenantCode}
+        </foreach>
+	</delete>
+	
+	<!-- 向用户和租户和组织机构的中间表插入数据 -->
+	<insert id="saveRApplicationTenant" parameterType="Map" >
+            INSERT INTO user_r_application_tenant (application_id,tenant_id,tenant_code, application_name)
+                 values
+                    (#{application_id},#{tenant_id},#{tenant_code},#{application_name});
+    </insert>
+	
+	<!-- 分组下拉框 -->
+<!-- 	<select id="selectTenant"  resultType="com.matariky.userservice.bean.UserTenant"> -->
+<!-- 			SELECT tenant_code as id,tenant_name FROM user_tenant WHERE  delete_time=0 	    -->
+<!-- 	</select> -->
+
+</mapper>

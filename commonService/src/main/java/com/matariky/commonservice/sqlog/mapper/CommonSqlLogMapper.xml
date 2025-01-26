@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.sqlog.mapper.CommonSqlLogMapper">
+
+	
+	
+	<select id="getCommonSQLLogDynamicCondition" parameterType="com.matariky.commonservice.sqlog.bean.CommonSqlLog" resultType="com.matariky.commonservice.sqlog.bean.CommonSqlLog">
+        select id,sql_statemant,created_by,create_time,execution_time from common_sql_log 
+        where 1=1 
+        <if test="startTime != null and startTime !=''">
+            and  create_time >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime !=''">
+        <![CDATA[  AND create_time <=  #{endTime}  ]]>
+        </if>
+        <if test="executionDuration != null and executionDuration!=''">
+            and  execution_time >= #{executionDuration}
+       </if>
+        
+<!--         <if test="orderField != null and orderField !=''"> -->
+<!--         order by  #{orderField} -->
+<!--         </if> -->
+<!--         <if test="order != null and order !=''"> -->
+<!--          #{order} -->
+<!--         </if> -->
+	</select>
+	
+
+	<select id="getCommonSqlLogAll" parameterType="Map" resultType="com.matariky.commonservice.sqlog.bean.CommonSqlLog">
+        select id,sql_statemant,created_by,create_time,execution_time from common_sql_log 
+	</select>
+
+	<select id="getCommonSqlLogAllCount" parameterType="Map" resultType="int">
+        select count(1) from common_sql_log 
+	</select>
+
+	<insert id="createCommonSqlLog" parameterType="com.matariky.commonservice.sqlog.bean.CommonSqlLog">
+        insert into common_sql_log(id,sql_statemant,created_by,create_time,execution_time) 
+        values(#{id},#{sqlStatemant},#{createdBy},#{createTime},#{executionTime})
+	</insert>
+
+	<update id="updatecommon_sql_log" parameterType="com.matariky.commonservice.sqlog.bean.CommonSqlLog">
+        update CommonSqlLog 
+        set sql_statemant=#{sqlStatemant},created_by=#{createdBy},create_time=#{createTime},execution_time=#{executionTime}
+        where id = #{id}
+	</update>
+
+	<delete id="delCommonSqlLogById" parameterType="int">
+        delete from common_sql_log where id=#{value}
+	</delete>
+
+	<select id="getCommonSqlLogById"  parameterType="Integer" resultType="com.matariky.commonservice.sqlog.bean.CommonSqlLog" >
+        select id,sql_statemant,created_by,create_time,execution_time from common_sql_log where id=#{value} 
+	</select>
+
+</mapper>

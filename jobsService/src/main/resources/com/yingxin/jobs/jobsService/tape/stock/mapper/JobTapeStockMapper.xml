@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.jobs.jobsService.assetitm.stock.mapper.JobTapeStockMapper">
+
+    <!-- 查询库存集合 -->
+    <select id="selectStockLabelList" resultType="com.matariky.jobs.jobsService.assetitm.stock.vo.TapeStockLabelVo">
+        SELECT
+           t.label_id,
+           l.epc,
+           s.location_id,
+           s.library_id
+        FROM biz_tape_stock_detail t
+        LEFT JOIN biz_tape_stock s on t.stock_id = s.id
+        LEFT JOIN biz_tape_label l ON t.label_id = l.id
+        WHERE
+        t.delete_time = 0
+        AND s.delete_time = 0
+        AND s.location_id like concat(#{locationId}, '%')
+        <if test="rackIds != null and rackIds.size() > 0">
+            AND s.library_id IN
+            <foreach collection="rackIds" item="rackId" open="(" separator="," close=")">
+                #{rackId}
+            </foreach>
+        </if>
+    </select>
+</mapper>

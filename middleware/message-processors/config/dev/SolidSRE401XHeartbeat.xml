@@ -1,0 +1,53 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" init-method="afterPropertiesSet">
+	  <property name="hostName" value="172.28.1.17" />
+	  <property name="port" value="26379" />
+	  <property name="password" value="network-signoz-redis" />
+	  <property name="database" value="9" />
+	</bean>
+
+
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" init-method="afterPropertiesSet">
+		<property name="connectionFactory" ref="redisConnectionFactory" />
+
+
+		<property name="keySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer">
+		</bean>
+  </property>
+  </bean>
+  
+  <bean id="solidSRE401XheartbeatNormalizer" class="com.matariky.normalizers.heartbeat.solid.SRE401X.SolidSRE401XHeartbeatNormalizer">
+	</bean>
+	
+	<bean id="signozTracerClient" class="com.matariky.processor.tracer.OpentelemetryTracerProcessor">
+		<property name="tracerUrl" value="http://172.28.1.17:4318/v1/traces"></property>
+	</bean>
+
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+        <route>
+            <from uri="paho-mqtt5:sld-mqtt/+/heartbeat?brokerUrl=tcp://172.28.1.17:1883&amp;userName=yxadmin&amp;password=yxadmin123." />
+              <process ref="solidSRE401XheartbeatNormalizer"/>
+			  <convertBodyTo type="String"/>
+			  <setHeader name="CamelRedis.Key">
+				 <jsonpath>$.concat("device_online:",$.deviceCode)</jsonpath>
+			  </setHeader>
+			  <setHeader name="CamelRedis.Value">
+				<jsonpath>$.deviceCode</jsonpath>
+			  </setHeader>
+			   <setHeader name="CamelRedis.Timeout">
+				<simple>120</simple>
+			  </setHeader>
+			  <to uri="spring-redis://172.28.1.17:26379?redisTemplate=#redisTemplate&amp;autowiredEnabled=true&amp;command=SETEX"/>
+			  <process ref="signozTracerClient"/>
+        </route>
+    </camelContext>
+
+
+
+</blueprint>

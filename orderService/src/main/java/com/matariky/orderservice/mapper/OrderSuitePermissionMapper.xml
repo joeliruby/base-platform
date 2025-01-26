@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.orderservice.mapper.OrderSuitePermissionMapper">
+
+<sql id="baseQueryListSql"> 
+ SELECT t.id,t.suite_code,t.permission_id 
+ FROM
+    order_suite_permission t 
+ WHERE 
+    t.delete_time = 0 
+ </sql> 
+ <sql id="baseQueryCountSql"> 
+   SELECT 
+    count(1) 
+ FROM 
+    order_suite_permission t 
+ WHERE 
+    t.delete_time = 0 
+ </sql> 
+	<select id="getOrderSuitePermissionAll" parameterType="Map" resultType="com.matariky.orderservice.bean.OrderSuitePermission">
+        select id,suite_code,permission_id from order_suite_permission where delete_time=0 
+	</select>
+
+	<select id="getOrderSuitePermissionAllCount" parameterType="Map" resultType="int">
+        select count(1) from order_suite_permission where delete_time=0 
+	</select>
+
+	<insert id="createOrderSuitePermission" parameterType="com.matariky.orderservice.bean.OrderSuitePermission">
+        insert into order_suite_permission(id,suite_code,permission_id) 
+        values(#{id},#{suiteCode},#{permissionId})
+	</insert>
+
+	<update id="updateOrderSuitePermission" parameterType="com.matariky.orderservice.bean.OrderSuitePermission">
+        update order_suite_permission 
+        set suite_code=#{suiteCode},permission_id=#{permissionId}
+        where id = #{id} and delete_time=0 
+	</update>
+
+	<update id="delOrderSuitePermissionById" parameterType="int">
+        update  order_suite_permission set delete_time=now() where id=#{value}
+	</update>
+
+	<select id="getOrderSuitePermissionById"  parameterType="Integer" resultType="com.matariky.orderservice.bean.OrderSuitePermission" >
+        select id,suite_code,permission_id from order_suite_permission where id=#{value} and delete_time=0
+	</select>
+
+<select id="getOrderSuitePermissionDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
+   <if test="params.strategyCode =='1'.toString()">
+  <include refid="baseQueryCountSql" />
+    <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+       and  t.operator_self_org_code=#{params.selfOrgCode}
+    </if>
+   <if test="params.tenantId != null and params.tenantId !=''">
+     and t.tenant_id  = #{params.tenantId}
+ </if>
+       <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+   or t.operator_self_org_code in
+	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+        #{soc}
+    </foreach>
+    </if>
+         <if test="params.sharingOrgCodes != null  and params.sharingOrgCodes.size()>0  ">
+        or   t.operator_org_code in 
+    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+            #{oc}
+        </foreach>
+    </if>
+</if>
+   <if test=" params.strategyCode =='0'.toString()">
+  <include refid="baseQueryCountSql" />
+       <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+       </if>
+   </if>
+   <if test=" params.strategyCode =='2'.toString()">
+  <include refid="baseQueryCountSql" />
+       <if test="params.orgCode != null and params.orgCode !=''">
+        and   t.operator_org_code=#{params.orgCode} 
+    </if>
+   <if test="params.tenantId != null and params.tenantId !=''">
+        and t.tenant_id  = #{params.tenantId}
+    </if>
+   <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
+            or  t.operator_self_org_code in
+    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+            #{soc}
+        </foreach>
+   </if>
+   <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+             or   t.operator_org_code in
+     	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+             #{oc}
+         </foreach>
+         </if>
+ </if>
+   <if test=" params.strategyCode =='3'.toString()">
+  <include refid="baseQueryCountSql" />
+        <if test="params.orgCode != null and params.orgCode !=''">
+         and  t.operator_org_code like concat(#{params.orgCode}, '%') 
+   		</if>
+       <if test="params.tenantId != null and params.tenantId !=''">
+         and t.tenant_id  = #{params.tenantId}
+       </if>
+   	   <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+             or   t.operator_self_org_code in
+     	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+             #{soc}
+         </foreach>
+        </if>
+   <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+             or t.operator_org_code in
+     	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+             #{oc}
+         </foreach>
+         </if>
+ </if>
+</select>
+<select id="getOrderSuitePermissionDAC" parameterType="java.util.Map" resultType="com.matariky.orderservice.bean.OrderSuitePermission">
+<if test="params.strategyCode =='1'.toString()">
+  <include refid="baseQueryListSql" />
+   <if test="params.selfOrgCode != null and params.selfOrgCode !=''"> 
+       and  t.operator_self_org_code=#{params.selfOrgCode} 
+   </if>
+   <if test="params.tenantId != null and params.tenantId !=''">
+       and t.tenant_id  = #{params.tenantId}
+   </if>
+   <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes.size()>0">
+      union  
+  <include refid="baseQueryListSql" />
+     <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size()>0">  
+      and t.operator_self_org_code in
+  	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+        #{soc}
+      </foreach>
+       </if>
+       <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+       </if>
+  </if>
+  <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes.size()>0">
+      union  
+  <include refid="baseQueryListSql" />
+        <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0  "> 
+         and   t.operator_org_code in
+  	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+          #{oc}
+       </foreach>
+       </if>
+       <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+     </if>
+    <if test="params.order != null and params.order !=''">
+     #{params.order}
+   </if>
+ </if>
+ <if test=" params.strategyCode =='0'.toString()">
+  <include refid="baseQueryListSql" />
+    <if test="params.tenantId != null and params.tenantId !=''"> 
+       and t.tenant_id  = #{params.tenantId}
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+    </if>
+    <if test="params.order != null and params.order !=''">
+     #{params.order}
+    </if>
+</if>
+ <if test=" params.strategyCode =='2'.toString()">
+  <include refid="baseQueryListSql" />
+   <if test="params.orgCode != null and params.orgCode !=''"> 
+        and   t.operator_org_code=#{params.orgCode} 
+     </if>
+     <if test="params.tenantId != null and params.tenantId !=''">
+        and t.tenant_id  = #{params.tenantId}
+    </if>
+     <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+      union  
+     <include refid="baseQueryListSql" />
+        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
+            and  t.operator_self_org_code in
+    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+           #{soc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+    <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+      union  
+     <include refid="baseQueryListSql" />
+         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+            and   t.operator_org_code in 
+    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+            #{oc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and t.tenant_id  = #{params.tenantId}
+        </if>
+     </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+    </if>
+    <if test="params.order != null and params.order !=''">
+      #{params.order}
+    </if>
+</if>
+<if test=" params.strategyCode =='3'.toString()">
+  <include refid="baseQueryListSql" />
+     <if test="params.orgCode != null and params.orgCode !=''">
+        and  t.operator_org_code like concat(#{params.orgCode}, '%') 
+    </if>
+    <if test="params.tenantId != null and params.tenantId !=''">
+        and t.tenant_id  = #{params.tenantId}
+    </if>
+     <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+      union  
+      <include refid="baseQueryListSql" />
+        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0"> 
+            and   t.operator_self_org_code in
+   	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+           #{soc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+     <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+      union  
+      <include refid="baseQueryListSql" />
+       		<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+            and t.operator_org_code in 
+    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+            #{oc}
+        </foreach>
+        </if>
+        <if test="params.tenantId != null and params.tenantId !=''">
+           and t.tenant_id  = #{params.tenantId}
+        </if>
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
+    order by  #{params.orderField}
+    </if>
+    <if test="params.order != null and params.order !=''">
+     #{params.order}
+   </if>
+ </if>
+ <if test="params.pageStart != null and params.pageSize != null  ">
+     limit #{params.pageStart}, #{params.pageSize}
+  </if>
+</select>
+
+
+
+    <insert id="insertOrderSuitePermissions" >
+        insert into order_suite_permission(suite_code,permission_id )
+        values
+        <foreach collection="orderSuitePermissions" item="item" index="index" separator=",">
+            ( #{item.suiteCode},#{item.permissionId})
+        </foreach>
+    </insert>
+
+    <delete id="delOrderSuitePermissionsBySuiteCode" parameterType="String">
+        delete from order_suite_permission where suite_code = #{suiteCode}
+    </delete>
+
+
+    <select id="selectOrderSuitePermissionsByTenantId" parameterType="java.util.Map" resultType="com.matariky.orderservice.bean.OrderSuitePermission" >
+        select osp.* from order_info as o,order_suite_permission as osp where o.suite_code = osp.suite_code and  o.order_tenant_id = #{params.orderTenantId}
+    </select>
+</mapper>

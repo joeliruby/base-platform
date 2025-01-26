@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseDeviceTypeMapper">
+
+	<select id="getBasicBaseDevicetypeAll" resultType="com.matariky.commonservice.base.vo.BasicBaseDeviceTypeInfoVO" parameterType="com.matariky.commonservice.base.vo.BasicBaseDeviceTypeListVO">
+        select t.id,t.type_code,t.type_name,t.device_factory,t.device_model,t.device_describe,t.current_version,t.remark,t.create_time,
+               t.update_time,t.delete_time,t.create_by,t.update_by,t.operator_org_code,t.operator_self_org_code, u.real_name ,
+               t.is_auto_upgrade  ,  t.status
+        from basic_base_devicetype t left join   user_user u on t.update_by = u.id
+        <where>
+            t.delete_time=0
+            <if test="params.deviceFactory!=null and params.deviceFactory!='' ">
+                and  t.device_factory like concat('%' , #{params.deviceFactory} , '%')
+            </if>
+            <if test="params.deviceModel!=null and params.deviceModel!='' ">
+               and   t.device_model like concat('%', #{params.deviceModel} , '%')
+            </if>
+            <if test="params.typeKey!=null and params.typeKey!='' ">
+                and t.type_key =#{params.typeKey}
+            </if>
+            <if test="params.isAutoUpgrade!=null and params.isAutoUpgrade!='' ">
+                and t.is_auto_upgrade =#{params.isAutoUpgrade}
+            </if>
+            <if test="params.status!=null  ">
+                and t.status =#{params.status}
+            </if>
+        </where>
+         order by t.create_time desc
+	</select>
+
+    <select id="getOptionList" resultType="com.matariky.commonservice.base.vo.DeviceTypeOption" parameterType="com.matariky.model.QueryDataIsolation">
+        select t.id typeId ,t.type_code,t.type_name,t.device_factory,t.device_model from basic_base_devicetype t  where  t.delete_time = 0
+    </select>
+
+
+	<select id="getBasicBaseDevicetypeAllCount" parameterType="Map" resultType="int">
+        select count(1) from basic_base_devicetype where delete_time=0
+	</select>
+
+	<insert id="createBasicBaseDevicetype" parameterType="com.matariky.commonservice.base.bean.BasicBaseDeviceType">
+        insert into basic_base_devicetype(id,type_code,type_name,device_factory,device_model,device_describe,current_version,remark,create_time,update_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id,type_key,is_auto_upgrade)
+        values(#{id},#{typeCode},#{typeName},#{deviceFactory},#{deviceModel},#{deviceDescribe},#{currentVersion},#{remark},#{createTime},#{updateTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode},#{tenantId},#{typeKey},#{isAutoUpgrade})
+	</insert>
+
+	<update id="updateBasicBaseDevicetype" parameterType="com.matariky.commonservice.base.bean.BasicBaseDeviceType">
+        update basic_base_devicetype
+        set type_code=#{typeCode},type_name=#{typeName},device_factory=#{deviceFactory},device_model=#{deviceModel},device_describe=#{deviceDescribe},current_version=#{currentVersion},remark=#{remark},create_time=#{createTime},update_time=#{updateTime},delete_time=#{deleteTime},create_by=#{createBy},update_by=#{updateBy},operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode}
+        where id = #{id} and delete_time=0
+	</update>
+
+	<update id="delBasicBaseDevicetypeById" parameterType="java.lang.Long">
+        update  basic_base_devicetype set delete_time=now() where id=#{value}
+	</update>
+
+	<select id="getBasicBaseDevicetypeById"  parameterType="java.lang.Long" resultType="com.matariky.commonservice.base.bean.BasicBaseDeviceType" >
+        select id,type_key,type_code,type_name,device_factory,device_model,device_describe,current_version,remark,create_time,update_time,
+               delete_time,create_by,update_by,operator_org_code,operator_self_org_code ,  status ,is_auto_upgrade ,protocol_type
+               from basic_base_devicetype where id=#{id} and delete_time=0
+	</select>
+
+</mapper>

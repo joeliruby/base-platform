@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.message.mapper.UserMessageMapper">
+
+    <!-- 插入或修改 -->
+    <insert id="saveOrUpdate" parameterType="com.matariky.commonservice.message.bean.UserMessage">
+        INSERT INTO common_user_message ( id, message_id, user_id, is_read )
+        VALUES
+            ( #{id}, #{messageId}, #{userId}, #{isRead} )
+            ON DUPLICATE KEY UPDATE is_read = #{isRead}
+    </insert>
+
+
+</mapper>

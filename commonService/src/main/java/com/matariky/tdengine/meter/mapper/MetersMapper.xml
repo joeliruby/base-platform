@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.matariky.tdengine.meter.mapper.MetersMapper">
+    <insert id="insertOne">
+        INSERT INTO ${code}
+            USING meters TAGS (#{code})
+        VALUES (#{ts}, #{current}, #{voltage}, #{phase})
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ${table} (ts, current, voltage,phase) values
+        <foreach separator=" " collection="list" item="m" index="index">
+            (#{m.ts}, #{m.current}, #{m.voltage}, #{m.phase})
+        </foreach>
+    </insert>
+
+    <select id="selectByTime" resultType="com.matariky.tdengine.meter.vo.MetersVO">
+        select *
+        from ${code}
+        where ts >= #{startTime}
+        and ts <![CDATA[<=]]> #{endTime}
+    </select>
+
+    <delete id="deleteAll">
+        delete from ${table}
+    </delete>
+</mapper>

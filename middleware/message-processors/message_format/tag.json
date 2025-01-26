@@ -1,0 +1,35 @@
+{
+  "deviceType":   "SRE401",
+  "deviceCode":     "SRE801_1_gate1_1",
+  "timestamp":"2023-06-28T07:24:00.277766184Z",
+  "hostname":"impinj-14-2f-f4",
+  "eventType":"tagInventory",
+  "tagInventoryEvent":[{
+    "epc":"4sRRo6UBH6APNUaT",
+    "epcHex":"E2C451A3A5011FA00F354693",
+    "tid":"4sRRoyAAJpN5qv0A",
+    "tidHex":"E2C451A32000269379AAFD00",
+    "pc":"NAA=",
+    "antennaPort":2,
+    "antennaName":"MQTT",
+    "peakRssiCdbm":-5750,
+    "frequency":921625,
+    "transmitPowerCdbm":1000,
+    "lastSeenTime":"2023-06-28T07:24:00.225324Z",
+    "phaseAngle":208.82,
+    "tagMemoryData":[
+      {
+        "memoryBank":"user",
+        "wordOffset":0,
+        "tagDataHex":""
+      }
+    ],
+    "tagAuthenticationResponse":{
+      "messageHex":"054CB6BBC56A",
+      "responseHex":"EE69413D90DE7AA7",
+      "tidHex":"51A3269379AAFD00"
+    }
+  }],
+  "originalMessage": "",
+  "operation":"tag"
+}

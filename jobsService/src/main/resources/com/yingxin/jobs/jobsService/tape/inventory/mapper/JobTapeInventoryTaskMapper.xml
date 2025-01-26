@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.jobs.jobsService.assetitm.inventory.mapper.JobTapeInventoryTaskMapper">
+
+    <!-- 查询盘点中的任务名称 -->
+    <select id="selectInInventoryTaskName" resultType="java.lang.String">
+        SELECT
+            t.task_name
+        FROM
+            biz_tape_inventory_task t
+        LEFT JOIN biz_tape_inventory_subtask st ON st.task_id = t.id
+        WHERE
+            t.location_id LIKE CONCAT(#{firstLocationId}, '%')
+          AND #{locationId} LIKE CONCAT(t.location_id, '%' )
+          <if test="arrayRackIds != null and arrayRackIds != ''">
+              AND ( t.library_ids IS NULL OR JSON_LENGTH(t.library_ids) = 0 OR JSON_OVERLAPS( t.library_ids, #{arrayRackIds}))
+          </if>
+          AND t.id != #{filterTaskId}
+          AND t.process_status = 2
+          AND st.status = 0
+        GROUP BY t.id
+        LIMIT 1
+    </select>
+</mapper>

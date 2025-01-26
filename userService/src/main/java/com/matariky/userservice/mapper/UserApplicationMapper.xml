@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.userservice.mapper.UserApplicationMapper">
+
+	<select id="getUserApplicationAll" parameterType="Map" resultType="com.matariky.userservice.bean.UserApplication">
+				SELECT
+					id,
+					is_active,
+					business_type,
+					application_type,
+					application_name,
+					version_number,
+					icon,
+					description,
+					create_time,
+					update_time,
+					tenant_id,
+					created_by,
+					updated_by,
+					entry_url,
+					expiry_time,
+					delete_time,
+					activity_timeout 
+				FROM
+					user_application 
+				WHERE
+					delete_time = 0
+				<if test="params.isActive != null and params.isActive !=''">
+					and is_active = ${params.isActive}
+				</if>
+				<if test="params.tenantId !=null and params.tenantId !=''">
+            		AND  tenant_id = '${params.tenantId}'
+        		</if>
+        		<if test="params.applicationType !=null and params.applicationType !=''">
+            		AND  application_type = ${params.applicationType}
+        		</if>
+        		<if test="params.businessType !=null and params.businessType !=''">
+            		AND  business_type = ${params.businessType}
+        		</if>
+        		<if test="params.applicationName !=null and params.applicationName !=''">
+            		AND  application_name like '%${params.applicationName}%'
+        		</if>
+	</select>
+	
+	
+	<select id="getUserApplicationAllWithUserId" parameterType="Map" resultType="com.matariky.userservice.bean.UserApplication">
+				SELECT
+					ua.id,
+					ua.is_active,
+					ua.business_type,
+					ua.application_type,
+					ua.application_name,
+					ua.version_number,
+					ua.icon,
+					ua.description,
+					ua.create_time,
+					ua.update_time,
+					ua.tenant_id,
+					ua.created_by,
+					ua.updated_by,
+					ua.entry_url,
+					ua.expiry_time,
+					ua.delete_time,
+					ua.activity_timeout
+				FROM
+					user_application ua, user_r_user_application urua
+				WHERE
+					ua.delete_time = 0  and ua.is_active=1
+        		<if test="params.applicationType !=null and params.applicationType !=''">
+            		AND  ua.application_type = ${params.applicationType}
+        		</if>
+        		<if test="params.businessType !=null and params.businessType !=''">
+            		AND  ua.business_type = ${params.businessType}
+        		</if>
+        		<if test="params.applicationName !=null and params.applicationName !=''">
+            		AND  ua.application_name like '%${params.applicationName}%'
+        		</if>
+        		and ua.id=urua.application_id and urua.user_id=#{params.userId}  and urua.tenant_id=#{params.tenantId}  
+	</select>
+	
+	
+	
+	<select id="getUserApplicationByTenant" parameterType="Map" resultType="com.matariky.userservice.bean.UserApplication">
+			SELECT 
+				a.id,
+				a.is_active,
+				a.business_type,
+				a.application_type,
+				a.application_name,
+				a.version_number,
+				a.icon,
+				a.description,
+				a.create_time,
+				a.update_time,
+				a.tenant_id,
+				a.created_by,
+				a.updated_by,
+				a.entry_url,
+				a.expiry_time,
+				a.delete_time,
+				a.activity_timeout
+ 			FROM 
+ 				user_application a
+ 			WHERE 
+ 			1 =1 
+ 			AND a.delete_time = 0 and a.is_active=1 
+ 			<if test="params.tenantId !=null and params.tenantId !=''">
+            AND  a.tenant_id = '${params.tenantId}'
+        	</if>
+        	
+        	<if test="params.applicationName !=null and params.applicationName !=''">
+            AND  a.application_name = '${params.applicationName}'
+        	</if>
+	</select>
+	
+
+	<select id="getUserApplicationAllCount" parameterType="Map" resultType="int">
+        select count(1) from user_application where delete_time=0
+
+		<if test="params.isActive != null and params.isActive !=''">
+			and is_active = ${params.isActive}
+		</if>
+		<if test="params.tenantId !=null and params.tenantId !=''">
+			AND  tenant_id = '${params.tenantId}'
+		</if>
+		<if test="params.applicationType !=null and params.applicationType !=''">
+			AND  application_type = ${params.applicationType}
+		</if>
+		<if test="params.businessType !=null and params.businessType !=''">
+			AND  business_type = ${params.businessType}
+		</if>
+		<if test="params.applicationName !=null and params.applicationName !=''">
+			AND  application_name like '%${params.applicationName}%'
+		</if>
+	</select>
+
+	<insert id="createUserApplication" parameterType="com.matariky.userservice.bean.UserApplication">
+        insert into user_application(id,is_active,application_type,application_name,version_number,icon,description,create_time,update_time,tenant_id,created_by,updated_by,entry_url,expiry_time,delete_time,business_type,activity_timeout) 
+        values(#{id},#{isActive},#{applicationType},#{applicationName},#{versionNumber},#{icon},#{description},#{createTime},#{updateTime},#{tenantId},#{createdBy},#{updatedBy},#{entryUrl},#{expiryTime},#{deleteTime},#{businessType}, #{activityTimeout})
+	</insert>
+
+	<update id="updateUserApplication" parameterType="com.matariky.userservice.bean.UserApplication">
+        update user_application 
+           set id=#{params.id} 
+			<if test="params.isActive != null ">
+        	,is_active=#{params.isActive}
+        </if>
+			<if test="params.applicationType != null ">
+			        	,application_type=#{params.applicationType}
+			        </if>
+			<if test="params.applicationName != null ">
+			        	,application_name=#{params.applicationName}
+			        </if>
+			<if test="params.versionNumber != null ">
+			        	,version_number=#{params.versionNumber}
+			        </if>
+			<if test="params.icon != null ">
+			        	,icon=#{params.icon}
+			        </if>
+			<if test="params.description != null ">
+			        	,description=#{params.description}
+			        </if>
+			<if test="params.createTime != null ">
+			        	,create_time=#{params.createTime}
+			        </if>
+			<if test="params.updateTime != null ">
+			        	,update_time=#{params.updateTime}
+			        </if>
+			<if test="params.tenantId != null ">
+			        	,tenant_id=#{params.tenantId}
+			        </if>
+			<if test="params.createdBy != null ">
+			        	,created_by=#{params.createdBy}
+			        </if>
+			<if test="params.updatedBy != null ">
+			        	,updated_by=#{params.updatedBy}
+			        </if>
+			<if test="params.entryUrl != null ">
+			        	,entry_url=#{params.entryUrl}
+			        </if>
+			<if test="params.expiryTime != null ">
+			        	,expiry_time=#{params.expiryTime}
+			        </if>
+			<if test="params.deleteTime != null ">
+			        	,delete_time=#{params.deleteTime}
+			        </if>
+			<if test="params.businessType != null ">
+			        	,business_type=#{params.businessType}
+			        </if>
+			<if test="params.activityTimeout != null ">
+			        	,activity_timeout=#{params.activityTimeout}
+			        </if>
+
+        where id = #{params.id} and delete_time=0
+	</update>
+	
+	<update id="updateDeleteTimeById">
+    	update user_application
+    	<set >
+        	delete_time = unix_timestamp()
+    	</set>
+    	where id in
+    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  	</update>
+
+	<delete id="delUserApplicationById" parameterType="Long">
+        delete from user_application where id=#{value}
+	</delete>
+
+	<select id="getUserApplicationById"  parameterType="Long" resultType="com.matariky.userservice.bean.UserApplication" >
+        select id,is_active,application_type,application_name,version_number,icon,description,create_time,update_time,tenant_id,created_by,updated_by,entry_url,expiry_time,delete_time,business_type,activity_timeout from user_application where id=#{value} 
+	</select>
+	
+	
+	<select id="selectApplication" parameterType="Long" resultType="com.matariky.userservice.bean.UserApplication" >
+		SELECT id,application_name,activity_timeout FROM user_application WHERE delete_time=0  and is_active=1
+		<if test="tenantId !=null and tenantId !=''">
+            	AND tenant_id=#{tenantId}
+        </if>
+	</select>
+	
+	
+	<!--批量删除应用和租户的中间表数据 -->
+	<delete id="deleteTenantByApplicationIds" >
+		DELETE FROM user_r_application_tenant WHERE application_id  in
+		 <foreach item="applicationId" collection="array" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+	</delete>
+	
+	<delete id="delUserTenant" >
+		DELETE FROM user_r_application_tenant WHERE application_id  in
+		 <foreach item="applicationId" collection="array" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+	</delete>
+	
+	
+	<!--批量删除应用和资源的中间表数据 -->
+	<delete id="deletePermissionByApplicationIds" >
+		DELETE FROM user_r_application_permission WHERE application_id  in
+		 <foreach item="applicationId" collection="array" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+	</delete>
+	
+	
+	
+	<!-- 向应用和租户中间表插入数据 -->
+	<insert id="saveRApplicationTenant" parameterType="Map" >
+		INSERT INTO user_r_application_tenant ( application_id, tenant_id, tenant_code, application_name )
+		VALUES
+		(#{application_id},#{tenant_id},#{tenant_code},#{application_name});
+    </insert>
+    
+    
+    <select id="getTreeListByApplicationId"  resultType="com.matariky.userservice.bean.TreeModel">
+    		SELECT
+				p.id,
+				p.parent_id AS pid,
+				p.permission_name AS NAME 
+			FROM
+				user_permission p,
+				user_r_application_permission ap,
+				user_application a 
+			WHERE
+				p.delete_time = 0 and a.delete_time=0 and a.is_active=1 
+			AND p.id = ap.permission_id 
+			AND ap.application_id = a.id 
+			AND p.is_active = 1
+			AND a.id=#{applicationId}
+  	</select>
+  	
+  	
+  	<select id="getTreeListByTenantId"  resultType="com.matariky.userservice.bean.TreeModel">
+    		SELECT
+				p.id,
+				p.parent_id AS pid,
+				p.permission_name AS NAME 
+			FROM
+				user_permission p
+			WHERE
+				p.delete_time = 0 
+			AND p.is_active = 1
+			AND p.tenant_id=#{tenantId}
+  	</select>
+  	
+  	
+  	
+  	
+  	<select id="getPermissionIdList"  resultType="java.lang.Long">
+<!--   		SELECT orig_id FROM user_permission WHERE application_id=#{applicationId} and delete_time=0 and is_active=1 -->
+		select permission_id from user_r_application_permission where application_id=#{applicationId}
+  	</select>
+    
+<!--     <select id="getPermissionIdList"  resultType="java.lang.Long"> -->
+<!--   		SELECT permission_id FROM user_r_application_tenant_permission WHERE application_id=#{applicationId} -->
+<!--   	</select> -->
+  	
+  	
+  	<select id="getAppList" parameterType="String" resultType="com.matariky.userservice.bean.UserApplication" >
+  	   SELECT
+			a.id,
+			a.application_name
+		FROM
+			user_application a 
+		WHERE
+			a.delete_time = 0 
+		AND a.is_active = 1 
+		AND a.id NOT IN ( SELECT application_id FROM user_r_application_tenant WHERE tenant_id = #{tenantId} )
+	</select>
+	
+	
+  	
+ 	<select id="getRApplicationTenantPermission"  resultType="com.matariky.userservice.bean.TreeModel" >
+  	   		SELECT
+				p.id,
+				p.parent_id AS pid,
+				p.permission_name AS NAME 
+			FROM
+				user_permission p,
+				user_r_application_tenant_permission ap,
+				user_application a 
+			WHERE
+				p.delete_time = 0 and a.is_active=1 and a.delete_time=0 
+				AND p.id = ap.permission_id 
+				AND ap.r_app_tenant_id = a.id 
+				AND p.is_active = 1 
+				AND a.id = #{applicationId}
+	</select>
+    
+    
+    
+		    
+	
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.jobs.jobsService.assetitm.inventory.mapper.JobTapeInventorySubtaskMapper">
+
+    <!-- 查询需要取消差异的子任务-->
+    <select id="selectDiscrepancySubtask" resultType="com.matariky.jobs.jobsService.assetitm.inventory.bean.TapeInventorySubtask">
+        SELECT
+          st.*
+        FROM
+          biz_tape_inventory_subtask st
+        LEFT JOIN biz_tape_inventory_task t ON t.id = st.task_id AND t.last_subtask_id = st.id
+        WHERE
+        t.location_id LIKE CONCAT(#{firstLocationId}, '%')
+        AND #{locationId} LIKE CONCAT(t.location_id, '%' )
+        <if test="arrayRackIds != null and arrayRackIds != ''">
+            AND ( t.library_ids IS NULL OR JSON_LENGTH(t.library_ids) = 0 OR JSON_OVERLAPS( t.library_ids, #{arrayRackIds}))
+        </if>
+        AND st.status = 1
+    </select>
+
+</mapper>

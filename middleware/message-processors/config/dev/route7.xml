@@ -1,0 +1,44 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" init-method="afterPropertiesSet">
+	  <property name="hostName" value="172.28.1.13" />
+	  <property name="port" value="7002" />
+	  <property name="password" value="af970b3691a0356b2a5acde1371e14cd9e5db3591564f0eb789c2324cc02362f" />
+	  <property name="database" value="1" />
+	</bean>
+
+
+
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" init-method="afterPropertiesSet">
+		<property name="connectionFactory" ref="redisConnectionFactory" />
+
+
+		<property name="keySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer">
+		</bean>
+  </property>
+  </bean>
+
+
+
+	<bean id="rfidTaskProcessor" class="com.matariky.processor.solid.RFIDTaskProcessor"></bean>
+
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+
+			<route>
+				<from uri="paho-mqtt5:sld-mqtt/+/heartbeat?brokerUrl=tcp://120.78.95.25:1883&amp;userName=yxadmin&amp;password=yxadmin123." />
+				 <process ref="rfidTaskProcessor"/>
+				  <to uri="spring-redis://172.28.1.13:7002?redisTemplate=#redisTemplate&amp;autowiredEnabled=true&amp;command=set"/>
+			</route>
+
+
+
+    </camelContext>
+
+
+
+</blueprint>

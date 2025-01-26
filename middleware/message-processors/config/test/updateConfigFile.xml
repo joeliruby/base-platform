@@ -1,0 +1,16 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+
+	<bean id="httpProcessor" class="com.matariky.processor.config.HttpProcessor" ></bean>
+
+
+    <camelContext id="configcontext" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+			<route id="routeconfig">
+				<from uri="jetty:http://network-signoz-karaf:9191/updateConfig"/>
+				<process ref="httpProcessor"/>
+			</route>
+	</camelContext>
+
+
+
+</blueprint>

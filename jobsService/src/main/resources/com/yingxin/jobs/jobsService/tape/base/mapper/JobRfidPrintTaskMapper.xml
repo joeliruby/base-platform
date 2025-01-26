@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.jobs.jobsService.assetitm.base.mapper.JobRfidPrintTaskMapper">
+
+    <!-- 查询标签打印的信息 -->
+    <select id="getBasicBaseRfidPrintById"  parameterType="java.lang.Long" resultType="com.matariky.jobs.jobsService.assetitm.base.bean.TapeRfidPrintTask" >
+        select a.id,a.task_name,a.print_type,a.task_time,a.device_id,a.goods_id,a.print_num,a.printed_num,a.unprint_num,a.epc_rule,a.is_lock_epc,a.epc_password,a.is_odcode,a.od_fixed_content,a.is_qrcode,a.qr_fixed_content,a.rfid_img,a.remark,a.create_time,a.update_time,a.delete_time,a.create_by,a.update_by,a.operator_org_code,a.operator_self_org_code,b.goods_name,b.goods_code,concat("打印机（",c.device_code,"）") as print_name
+        from basic_base_rfidprint a left join basic_base_goods b on a.goods_id=b.id
+        left join basic_base_device c on a.device_id=c.id
+        left join basic_base_codingrules d on a.epc_rule=d.id and d.status = 1
+        where a.id=#{value} and a.delete_time=0
+    </select>
+
+    <select id="getBasicBaseRfidPrintParameterById" parameterType="java.lang.Long" resultType="com.matariky.jobs.jobsService.assetitm.base.bean.TapeRfidPrintParameterTask">
+        select id,print_id,rfid_id,epc,tid,is_print,print_time,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code from basic_base_rfidprint_detail  where print_id=#{value} and delete_time=0
+    </select>
+
+    <update id="updateBasicBaseRfidPrint" parameterType="com.matariky.jobs.jobsService.assetitm.base.bean.TapeRfidPrintTask">
+        update basic_base_rfidfactory
+        set task_status=#{taskStatus},is_file_create=#{isFileCreate},download_url=#{downloadUrl}
+        where id = #{id} and delete_time=0
+    </update>
+
+    <insert id="createBasicBaseRfidprintDetail" parameterType="com.matariky.jobs.jobsService.assetitm.base.bean.TapeRfidPrintDetailTask">
+        insert into basic_base_rfidprint_detail(id,print_id,rfid_id,epc,tid,is_print,print_time,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code)
+        values(#{id},#{printId},#{rfidId},#{epc},#{tid},#{isPrint},#{printTime},#{remark},#{createTime},#{updateTime},#{deleteTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode})
+    </insert>
+
+</mapper>

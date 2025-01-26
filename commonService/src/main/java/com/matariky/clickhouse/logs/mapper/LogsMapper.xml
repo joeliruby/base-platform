@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.clickhouse.logs.mapper.LogsMapper">
+
+
+
+	<select id="getAppTracesAll" parameterType="com.matariky.clickhouse.logs.entity.Logs" resultType="com.matariky.clickhouse.logs.entity.Logs">
+        select
+        	stringTagMap['sampler.type'] as tenantId,
+			serviceName as appName,
+			name as operationName,
+			events as message,
+			stringTagMap['kind'] as logType,
+			stringTagMap['msgOperation'] as tidEpc,
+			stringTagMap['dbOperation'] as operator,
+			stringTagMap['hasError'] as hasError,
+			stringTagMap['ip'] as ip,
+			stringTagMap['client-uuid'] as mac,
+			stringTagMap['parentSpanID'] as tenantName,
+			stringTagMap['deviceType'] as deviceType,
+			stringTagMap['deviceCode'] as deviceCode,
+			timestamp
+
+        from signoz_traces.distributed_signoz_index_v2
+        <where>
+             stringTagMap['parentSpanID']!=''
+            <if test="params.tenantId!=null and params.tenantId!='' ">
+                and stringTagMap['sampler.type'] =#{params.tenantId}
+            </if>
+            <if test="params.appName!=null and params.appName!='' ">
+                and serviceName like concat( #{params.appName}, '%')
+            </if>
+           <if test="params.operationName!=null and params.operationName!='' ">
+               and name like  concat( #{params.operationName} , '%')
+           </if>
+           <if test="params.tidEpc!=null and params.tidEpc!='' ">
+               and stringTagMap['msgOperation'] like concat('%', #{params.tidEpc} , '%')
+           </if>
+            <if test="params.logType!=null and params.logType!='' ">
+               and  stringTagMap['kind'] =#{params.logType}
+            </if>
+            <if test="params.operator!=null and params.operator!='' ">
+                 and  stringTagMap['dbOperation'] =#{params.operator}
+            </if>
+            <if test="params.hasError!=null and params.hasError!='' ">
+                 and  stringTagMap['hasError'] =#{params.hasError}
+            </if>
+            <if test="params.ip!=null and params.ip!='' ">
+                 and  stringTagMap['ip'] =#{params.ip}
+            </if>
+
+            <if test="params.mac!=null and params.mac!='' ">
+                 and  stringTagMap['client-uuid'] =#{params.mac}
+            </if>
+
+			 <if test="params.deviceType!=null and params.deviceType!='' ">
+				  and stringTagMap['deviceType'] = #{params.deviceType}
+            </if>
+            
+            <if test="params.deviceCode!=null and params.deviceCode!='' ">
+				  and stringTagMap['deviceCode'] = #{params.deviceCode}
+            </if>
+			
+            <if test="params.tenantName!=null and params.tenantName!='' ">
+                 and  stringTagMap['parentSpanID'] =#{params.tenantName}
+            </if>
+
+            <if test="params.timeStart!=null and params.timeStart!='' ">
+				and timestamp >= #{params.timeStart}
+            </if>
+
+            <if test="params.timeEnd!=null and params.timeEnd!='' ">
+				  and #{params.timeEnd} >= timestamp
+            </if>
+            
+           
+
+        </where>
+       order by timestamp desc
+       <if test="params.offSet!=null and params.perPage !=null ">
+           limit #{params.offSet}, #{params.perPage}
+       </if>
+	</select>
+
+	<select id="getAppTracesCount" parameterType="com.matariky.clickhouse.logs.entity.Logs" resultType="long">
+        select count(*) from signoz_traces.distributed_signoz_index_v2
+        <where>
+             stringTagMap['parentSpanID']!=''
+            <if test="params.tenantId!=null and params.tenantId!='' ">
+                and stringTagMap['sampler.type'] =#{params.tenantId}
+            </if>
+            <if test="params.appName!=null and params.appName!='' ">
+                and serviceName like concat( #{params.appName}, '%')
+            </if>
+           <if test="params.operationName!=null and params.operationName!='' ">
+               and name like  concat( #{params.operationName} , '%')
+           </if>
+           <if test="params.tidEpc!=null and params.tidEpc!='' ">
+               and stringTagMap['msgOperation'] like concat('%', #{params.tidEpc} , '%')
+           </if>
+            <if test="params.logType!=null and params.logType!='' ">
+               and  stringTagMap['kind'] =#{params.logType}
+            </if>
+            <if test="params.operator!=null and params.operator!='' ">
+                 and  stringTagMap['dbOperation'] =#{params.operator}
+            </if>
+            <if test="params.hasError!=null and params.hasError!='' ">
+                 and  stringTagMap['hasError'] =#{params.hasError}
+            </if>
+            <if test="params.ip!=null and params.ip!='' ">
+                 and  stringTagMap['ip'] =#{params.ip}
+            </if>
+            <if test="params.mac!=null and params.mac!='' ">
+                 and  stringTagMap['client-uuid'] =#{params.mac}
+            </if>
+
+             <if test="params.tenantName!=null and params.tenantName!='' ">
+                 and  stringTagMap['os.description'] =#{params.tenantName}
+            </if>
+            
+             <if test="params.deviceType!=null and params.deviceType!='' ">
+				  and stringTagMap['deviceType'] = #{params.deviceType}
+            </if>
+            
+            <if test="params.deviceCode!=null and params.deviceCode!='' ">
+				  and stringTagMap['deviceCode'] = #{params.deviceCode}
+            </if>
+
+            <if test="params.timeStart!=null and params.timeStart!='' ">
+				and timestamp >= #{params.timeStart}
+            </if>
+
+             <if test="params.timeEnd!=null and params.timeEnd!='' ">
+				 and #{params.timeEnd} >= timestamp
+            </if>
+            
+           
+
+        </where>
+	</select>
+
+</mapper>

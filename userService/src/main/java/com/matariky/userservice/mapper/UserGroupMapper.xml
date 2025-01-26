@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.userservice.mapper.UserGroupMapper">
+
+	<select id="getUserGroupAll" parameterType="Map" resultType="com.matariky.userservice.bean.UserGroup">
+				SELECT g.id, g.tenant_id, g.description, g.create_time, g.update_time, g.delete_time, g.COMMENT, g.created_by, g.updated_by, g.sort, g.group_name,
+group_concat( DISTINCT a.application_name ) AS application_name, t.tenant_name, group_concat( DISTINCT r.role_name ) AS role_name, group_concat( DISTINCT u.login_name ) AS login_name
+FROM user_group g
+INNER JOIN user_tenant t ON g.tenant_id = t.tenant_code
+LEFT JOIN user_application a ON t.tenant_code = a.tenant_id and a.delete_time=0 and t.delete_time=0 and a.is_active=1
+LEFT JOIN user_r_group_role gr ON g.id = gr.group_id and g.delete_time=0
+LEFT JOIN user_role r ON gr.role_id = r.id and r.delete_time=0
+LEFT JOIN user_r_group_user gu ON g.id = gu.group_id and g.delete_time=0 and g.tenant_id = '1'
+LEFT JOIN user_user u ON gu.user_id = u.id and u.delete_time=0 and u.is_active=1
+LEFT JOIN user_r_application_tenant ar ON t.tenant_code = ar.tenant_code and t.delete_time=0
+where 1=1 and g.delete_time=0
+				<if test="params.applicationId != null and params.applicationId !=''">
+            	AND ar.application_id= #{params.applicationId}
+        		</if>
+        		<if test="params.tenantId !=null and params.tenantId !=''">
+            		AND  g.tenant_id = '${params.tenantId}'
+        		</if>
+        		<if test="params.groupName != null and params.groupName !=''">
+            	AND g.group_name like '%${params.groupName}%'
+        		</if>
+				<if test="params.begin != null and params.begin !=''">
+           		AND g.create_time >= ${params.begin}
+        		</if>
+        		<if test="params.end !=null and params.end!=''">
+        		<![CDATA[  AND g.create_time <= ${params.end}  ]]>
+        		</if>
+			GROUP BY
+				g.id
+	</select>
+
+	<select id="getUserGroupAllCount" parameterType="Map" resultType="int">
+        select count(1) from user_group
+	</select>
+
+	<insert id="createUserGroup" parameterType="com.matariky.userservice.bean.UserGroup">
+        insert into user_group(id,group_name,tenant_id,description,create_time,update_time,delete_time,comment,created_by,updated_by,sort,org_code)
+        values(#{id},#{groupName},#{tenantId},#{description},#{createTime},#{updateTime},#{deleteTime},#{comment},#{createdBy},#{updatedBy},#{sort},#{orgCode})
+	</insert>
+
+	<update id="updateUserGroup" parameterType="com.matariky.userservice.bean.UserGroup">
+        update user_group
+        set id=#{params.id}
+			<if test="params.groupName != null ">
+			        	,group_name=#{params.groupName}
+			        </if>
+			<if test="params.tenantId != null ">
+			        	,tenant_id=#{params.tenantId}
+			        </if>
+			<if test="params.description != null ">
+			        	,description=#{params.description}
+			        </if>
+			<if test="params.createTime != null ">
+			        	,create_time=#{params.createTime}
+			        </if>
+			<if test="params.updateTime != null ">
+			        	,update_time=#{params.updateTime}
+			        </if>
+			<if test="params.deleteTime != null ">
+			        	,delete_time=#{params.deleteTime}
+			        </if>
+			<if test="params.comment != null ">
+			        	,comment=#{params.comment}
+			        </if>
+			<if test="params.createdBy != null ">
+			        	,created_by=#{params.createdBy}
+			        </if>
+			<if test="params.updatedBy != null ">
+			        	,updated_by=#{params.updatedBy}
+			        </if>
+			<if test="params.sort != null ">
+			        	,sort=#{params.sort}
+			        </if>
+			<if test="params.orgCode != null ">
+			        	,org_code=#{params.orgCode}
+			        </if>
+
+        where id = #{params.id} and delete_time=0
+	</update>
+
+	<delete id="delUserGroupById" parameterType="int">
+        delete from user_group where id=#{value}
+	</delete>
+
+	<select id="getUserGroupById"  parameterType="java.lang.Long" resultType="com.matariky.userservice.bean.UserGroup" >
+        select id,group_name,tenant_id,description,create_time,update_time,delete_time,comment,created_by,updated_by,sort,org_code from user_group where id=#{value}
+	</select>
+
+	<select id="selectGroup" parameterType="java.lang.String" resultType="com.matariky.userservice.bean.UserGroup">
+			SELECT id,group_name , org_code FROM user_group WHERE  delete_time=0 AND tenant_id  = #{tenantId}
+	</select>
+
+
+	<select id="searchByGroupNamePrefix" parameterType="java.lang.String" resultType="com.matariky.userservice.bean.UserGroup">
+			SELECT id,group_name, org_code FROM user_group WHERE  delete_time=0 AND tenant_id=#{tenantId}	and group_name like concat(#{groupNamePrefix},'%')
+	</select>
+
+
+	<!--批量删除组和角色的中间表数据 -->
+	<delete id="deleteUserByGroupIds" >
+		DELETE FROM user_r_group_user WHERE group_id  in
+		 <foreach item="groupId" collection="array" open="(" separator="," close=")">
+            #{groupId}
+        </foreach>
+	</delete>
+
+	<!-- 向组和用户中间表插入数据 -->
+	<insert id="savaRGoupAndUser" parameterType="java.lang.Long" >
+            INSERT INTO user_r_group_user (group_id,user_id)
+                 values
+                    (#{groupId},#{userId});
+    </insert>
+
+
+    <!--批量删除组和角色的中间表数据 -->
+	<delete id="deleteRoleByGroupIds" >
+		DELETE FROM user_r_group_role WHERE group_id  in
+		 <foreach item="groupId" collection="array" open="(" separator="," close=")">
+            #{groupId}
+        </foreach>
+	</delete>
+
+	<!-- 向组和角色中间表插入数据 -->
+	<insert id="savaRGoupAndRole" parameterType="java.lang.Long" >
+            INSERT INTO user_r_group_role (group_id,role_id)
+                 values
+                    (#{groupId},#{roleId});
+    </insert>
+
+   	<!-- 查看分组权限  个人和角色的合集去掉重复 -->
+	<select id="getPermissionByUserAndRoleAndGroup"  resultType="com.matariky.userservice.bean.TreeModel">
+							<!-- 组对应的角色的资源 -->
+							SELECT
+								p.id,
+								p.parent_id AS pid,
+								p.permission_name AS name
+							FROM
+								user_group g,
+								user_r_group_role gr,
+								user_role r,
+								user_r_role_permission rp,
+								user_permission p
+							WHERE
+								g.id = gr.group_id
+								AND gr.role_id = r.id
+								AND r.id = rp.role_id
+								AND rp.permission_id = p.id
+								AND p.application_id = #{applicationId,jdbcType=BIGINT}
+								AND p.is_active = 1
+								AND g.id=#{groupId,jdbcType=BIGINT}
+								UNION
+							<!-- 组对应的人员的资源 -->
+							SELECT
+								p.id,
+								p.parent_id AS pid,
+								p.permission_name AS name
+							FROM
+								user_group g,
+								user_r_group_user ug,
+								user_user u,
+								user_r_user_permission up,
+								user_permission p
+							WHERE
+								g.id = ug.group_id
+								AND ug.user_id = u.id
+								AND u.id = up.user_id
+								AND up.permission_id = p.id
+								AND p.application_id = #{applicationId,jdbcType=BIGINT}
+								AND p.is_active = 1
+								AND g.id =#{groupId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 根据租户id查询对应的应用 -->
+	<select id="getApplicationByTenantId"  resultType="java.util.LinkedHashMap">
+			SELECT
+				t1.id,
+				t1.application_name
+			FROM
+				user_application t1
+			WHERE
+				t1.tenant_id =#{tenantId,jdbcType=VARCHAR} and t1.is_active=1 and t1.delete_time=0 order by create_time asc limit 1
+  	</select>
+  	<!-- 逻辑删除 -->
+  	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
+    	update user_group
+    	<set >
+        	delete_time = unix_timestamp()
+    	</set>
+    	where id in
+    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  	</update>
+
+  	<!--  select id="getGroupIdsByTenantIdAndGroupNames" resultType="java.util.List">
+
+  		select id from user_group where tenant_id=#{tenantId,jdbcType=VARCHAR} and group_name in
+		<foreach item="groupNames" collection="array" open="(" separator="," close=")">
+            #{groupNames,jdbcType=VARCHAR}
+        </foreach>
+	</select-->
+
+	<select id="getRoleIdList" resultType="long">
+			SELECT
+				r.role_id
+			FROM
+		  		user_group g,
+				user_r_group_role r
+			WHERE
+				r.group_id = #{value}
+			AND g.id= r.group_id
+			AND g.delete_time =0
+    </select>
+
+	<select id="getRoleIdCount" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			user_group g
+				INNER JOIN user_r_group_role r ON g.id = r.group_id
+		WHERE
+			g.delete_time = 0
+		  AND r.role_id = #{roleId}
+	</select>
+
+	<select id="getUserIdList" resultType="long">
+		SELECT
+			u.user_id
+		FROM
+			user_group g,
+			user_r_group_user u
+		WHERE
+			u.group_id = #{value}
+		AND g.id = u.group_id
+		AND g.delete_time =0
+    </select>
+</mapper>

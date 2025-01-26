@@ -1,0 +1,42 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+
+	<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" init-method="afterPropertiesSet">
+	  <property name="hostName" value="network-signoz-redis" />
+	  <property name="port" value="6379" />
+	  <property name="password" value="network-signoz-redis" />
+	  <property name="database" value="9" />
+	</bean>
+
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" init-method="afterPropertiesSet">
+		<property name="connectionFactory" ref="redisConnectionFactory" />
+		<property name="keySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer">
+		</bean>
+		</property>
+	</bean>
+
+    <camelContext id="acceptUpgradeCommand" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+			<route id="acceptUpgradeRoute">
+				<from uri="paho-mqtt5:sld-mqtt/solid001_2?brokerUrl=tcp://network-signoz-emqx2:1883&amp;userName=yxadmin&amp;password=yxadmin123." />
+				<log message="${body}"/>
+			  <setHeader name="CamelRedis.Key">
+				 <simple>"sld-mqtt/solid001_2/upgrade"</simple>
+			  </setHeader>
+			  <setHeader name="CamelRedis.Value">
+				 <constant>${body}</constant>
+			  </setHeader>
+			  <setHeader name="CamelRedis.Timeout">
+				<simple>120</simple>
+			  </setHeader>
+			  <to uri="spring-redis://network-signoz-redis:6379?redisTemplate=#redisTemplate&amp;autowiredEnabled=true&amp;command=SETEX"/>
+			</route>
+	</camelContext>
+
+
+
+</blueprint>

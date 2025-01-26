@@ -1,0 +1,10 @@
+
+  __  __   _ _____ _   ___ ___ _  ____   __
+ |  \/  | /_\_   _/_\ | _ \_ _| |/ /\ \ / /
+ | |\/| |/ _ \| |/ _ \|   /| || ' <  \ V /
+ |_|  |_/_/ \_\_/_/ \_\_|_\___|_|\_\  |_|
+
+                                                                                      
+
+database design: http://localhost:9008/design/index
+code gen:http://localhost:9008/admin/index

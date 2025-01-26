@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.orderservice.mapper.OrderInfoMapper">
+
+<sql id="baseQueryListSql">
+ SELECT t.id,t.operator_org_code,t.operator_self_org_code,t.order_code,t.order_show_code,t.contract_code,t.tenant_id,t.order_tenant_id,t.suite_code,t.suite_config_code,
+        t.contacts,t.contacts_phone,t.expiration_start_time,t.expiration_end_time,t.account_number,t.charge_mode,t.price,t.discount_price,t.payment_time,
+        t.payment_voucher_path,t.order_status,t.remark,t.created_by,t.create_time,t.update_by,t.update_time,t.delete_time
+ FROM
+    order_info t
+ WHERE
+    t.delete_time = 0
+ </sql>
+ <sql id="baseQueryCountSql">
+   SELECT
+    count(1)
+ FROM
+    order_info t
+ WHERE
+    t.delete_time = 0
+ </sql>
+	<select id="getOrderInfoAll" parameterType="Map" resultType="com.matariky.orderservice.bean.OrderInfo">
+        select id,operator_org_code,operator_self_org_code,order_code,order_show_code,contract_code,tenant_id,order_tenant_id,suite_code,suite_config_code,contacts,contacts_phone,expiration_start_time,expiration_end_time,account_number,charge_mode,price,discount_price,payment_time,payment_voucher_path,order_status,remark,created_by,create_time,update_by,update_time,delete_time from order_info where delete_time=0
+	</select>
+
+	<select id="getOrderInfoAllCount" parameterType="Map" resultType="int">
+        select count(1) from order_info where delete_time=0
+	</select>
+
+	<insert id="createOrderInfo" parameterType="com.matariky.orderservice.bean.OrderInfo">
+        insert into order_info(id,operator_org_code,operator_self_org_code,order_code,order_show_code,contract_code,tenant_id,order_tenant_id,suite_code,suite_config_code,contacts,contacts_phone,expiration_start_time,expiration_end_time,account_number,charge_mode,price,discount_price,payment_time,payment_voucher_path,order_status,remark,created_by,create_time,update_by,update_time,delete_time)
+        values(#{id},#{operatorOrgCode},#{operatorSelfOrgCode},#{orderCode},#{orderShowCode},#{contractCode},#{tenantId},#{orderTenantId},#{suiteCode},#{suiteConfigCode},#{contacts},#{contactsPhone},#{expirationStartTime},#{expirationEndTime},#{accountNumber},#{chargeMode},#{price},#{discountPrice},#{paymentTime},#{paymentVoucherPath},#{orderStatus},#{remark},#{createdBy},#{createTime},#{updateBy},#{updateTime},#{deleteTime})
+	</insert>
+
+	<update id="updateOrderInfo" parameterType="com.matariky.orderservice.bean.OrderInfo">
+        update order_info
+        set operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode},order_code=#{orderCode},order_show_code=#{orderShowCode},contract_code=#{contractCode},tenant_id=#{tenantId},order_tenant_id=#{orderTenantId},
+            suite_code=#{suiteCode},suite_config_code=#{suiteConfigCode},contacts=#{contacts},contacts_phone=#{contactsPhone},expiration_start_time=#{expirationStartTime},expiration_end_time=#{expirationEndTime},account_number=#{accountNumber},
+            charge_mode=#{chargeMode},price=#{price},discount_price=#{discountPrice},payment_time=#{paymentTime},payment_voucher_path=#{paymentVoucherPath},
+            order_status=#{orderStatus},remark=#{remark},created_by=#{createdBy},create_time=#{createTime},update_by=#{updateBy},update_time=#{updateTime},
+            delete_time=#{deleteTime}
+        where id = #{id} and delete_time=0
+	</update>
+
+	<update id="delOrderInfoById" parameterType="java.lang.Long">
+        update  order_info set delete_time=now() where id=#{value}
+	</update>
+
+	<select id="getOrderInfoById"  parameterType="Integer" resultType="com.matariky.orderservice.bean.OrderInfo" >
+        select id,operator_org_code,operator_self_org_code,order_code,order_show_code,contract_code,tenant_id,order_tenant_id,suite_code,suite_config_code,contacts,contacts_phone,expiration_start_time,expiration_end_time,account_number,charge_mode,price,discount_price,payment_time,payment_voucher_path,order_status,remark,created_by,create_time,update_by,update_time,delete_time from order_info where id=#{value} and delete_time=0
+	</select>
+
+<select id="getOrderInfoDACCount" parameterType="com.matariky.orderservice.param.QueryTapeOrderInfoParam" resultType="java.lang.Long">
+    SELECT
+    count( 1 )
+    FROM
+    (
+    SELECT
+    t.id,
+    t.operator_org_code,
+    t.operator_self_org_code,
+    t.order_code,
+    t.order_show_code,
+    t.contract_code,
+    t.tenant_id,
+    t.order_tenant_id,
+    t.suite_code,
+    t.suite_config_code,
+    t.contacts,
+    t.contacts_phone,
+    t.expiration_start_time,
+    t.expiration_end_time,
+    t.account_number,
+    t.charge_mode,
+    t.price,
+    t.discount_price,
+    t.payment_time,
+    t.payment_voucher_path,
+    t.order_status,
+    t.remark,
+    t.created_by,
+    t.create_time,
+    t.update_by,
+    t.update_time,
+    t.delete_time,
+    ut.tenant_name,
+    os.suite_name,
+    os.suite_notes,
+    u.real_name,
+    ( SELECT count(*) FROM user_user AS au WHERE au.tenant_id = t.order_tenant_id ) AS already_accountNumber
+    FROM
+    order_info t,
+    user_tenant AS ut,
+    order_suite AS os,
+    user_user AS u
+    WHERE
+    t.delete_time = 0
+    AND t.order_tenant_id = ut.id
+    AND ut.delete_time = 0
+    AND t.suite_code = os.suite_code
+    AND os.delete_time = 0
+    AND u.id = t.created_by
+    AND u.delete_time = 0
+
+    <if test="orderTenantId != null and orderTenantId !=''">
+        AND t.order_tenant_id = #{orderTenantId}
+    </if>
+    <if test="tenantName != null and tenantName !=''">
+        and  ut.tenant_name like concat('%', #{tenantName}, '%')
+    </if>
+    <if test="orderCode != null and orderCode !=''">
+        and  t.order_code like concat('%', #{orderCode}, '%')
+    </if>
+    <if test="suiteName != null and suiteName !=''">
+        and  os.suite_name like concat('%', #{suiteName}, '%')
+    </if>
+    <if test="orderStatus != null and orderStatus !=''">
+        and  t.order_status=#{orderStatus}
+    </if>
+    <if test="startTime != null and startTime != '' ">
+        AND t.expiration_end_time  <![CDATA[ >= ]]> #{startTime}
+    </if>
+    <if test="endTime != null and endTime != '' ">
+        AND t.expiration_end_time  <![CDATA[ <= ]]> #{endTime}
+    </if>
+    ) AS a
+
+</select>
+<select id="getOrderInfoDAC" parameterType="com.matariky.orderservice.param.QueryTapeOrderInfoParam" resultType="com.matariky.orderservice.vo.OrderInfoPageVo">
+    SELECT
+    t.id,
+    t.operator_org_code,
+    t.operator_self_org_code,
+    t.order_code,
+    t.order_show_code,
+    t.contract_code,
+    t.tenant_id,
+    t.order_tenant_id,
+    t.suite_code,
+    t.suite_config_code,
+    t.contacts,
+    t.contacts_phone,
+    t.expiration_start_time,
+    t.expiration_end_time,
+    t.account_number,
+    t.charge_mode,
+    t.price,
+    t.discount_price,
+    t.payment_time,
+    t.payment_voucher_path,
+    t.order_status,
+    t.remark,
+    t.created_by,
+    t.create_time,
+    t.update_by,
+    t.update_time,
+    t.delete_time,
+    ut.tenant_name,
+    os.suite_name,
+    os.suite_notes,
+    u.real_name,
+    ( SELECT count(au.id) FROM user_user AS au,user_tenant as ut WHERE ut.tenant_code = au.tenant_id  and ut.id = t.order_tenant_id ) AS already_accountNumber
+    FROM
+        order_info t  INNER JOIN  user_tenant ut on   t.order_tenant_id = ut.id
+        INNER JOIN  order_suite  os  on  t.suite_code = os.suite_code
+        left join  user_user  u  on   u.id = t.created_by  AND u.delete_time = 0
+    WHERE
+    t.delete_time = 0
+    AND ut.delete_time = 0
+    AND os.delete_time = 0
+
+    <if test="orderTenantId != null and orderTenantId !=''">
+    AND t.order_tenant_id = #{orderTenantId}
+    </if>
+    <if test="tenantName != null and tenantName !=''">
+        and  ut.tenant_name like concat('%', #{tenantName}, '%')
+    </if>
+    <if test="orderCode != null and orderCode !=''">
+        and  t.order_code like concat('%', #{orderCode}, '%')
+    </if>
+    <if test="suiteName != null and suiteName !=''">
+        and  os.suite_name like concat('%', #{suiteName}, '%')
+    </if>
+    <if test="orderStatus != null and orderStatus !=''">
+        and  t.order_status=#{orderStatus}
+    </if>
+    <if test="startTime != null and startTime != '' ">
+        AND t.expiration_end_time  <![CDATA[ >= ]]> #{startTime}
+    </if>
+    <if test="endTime != null and endTime != '' ">
+        AND t.expiration_end_time  <![CDATA[ <= ]]> #{endTime}
+    </if>
+    ORDER BY CURDATE() <![CDATA[ >= ]]> date_sub(FROM_UNIXTIME(t.expiration_end_time/1000,'%Y-%m-%d'),interval 30 day)  desc, t.order_status asc, t.create_time desc
+    <if test="isPage and pageStart != null and pageSize != null  ">
+        limit #{pageStart}, #{pageSize}
+    </if>
+</select>
+
+
+    <select id="selectCountByOrderTenantId" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+            count( 1 )
+        FROM
+            user_user
+        WHERE
+            tenant_id = #{orderTenantId}
+    </select>
+
+
+    <select id="selectOrderInfoByOrderTenantId" parameterType="java.util.Map" resultType="com.matariky.orderservice.bean.OrderInfo" >
+        SELECT
+            t.id,
+            t.operator_org_code,
+            t.operator_self_org_code,
+            t.order_code,
+            t.order_show_code,
+            t.contract_code,
+            t.tenant_id,
+            t.order_tenant_id,
+            t.suite_code,
+            t.suite_config_code,
+            t.contacts,
+            t.contacts_phone,
+            t.expiration_start_time,
+            t.expiration_end_time,
+            t.account_number,
+            t.charge_mode,
+            t.price,
+            t.discount_price,
+            t.payment_time,
+            t.payment_voucher_path,
+            t.order_status,
+            t.remark,
+            t.created_by,
+            t.create_time,
+            t.update_by,
+            t.update_time,
+            t.delete_time
+        FROM
+            order_info t
+        WHERE
+            t.delete_time = 0
+        AND t.order_status IN(1)
+        AND t.order_tenant_id = #{params.orderTenantId}
+    </select>
+
+    <select id="selectByOrderTenantId" parameterType="java.util.Map" resultType="com.matariky.orderservice.bean.OrderInfo" >
+        SELECT
+            t.id,
+            t.operator_org_code,
+            t.operator_self_org_code,
+            t.order_code,
+            t.order_show_code,
+            t.contract_code,
+            t.tenant_id,
+            t.order_tenant_id,
+            t.suite_code,
+            t.suite_config_code,
+            t.contacts,
+            t.contacts_phone,
+            t.expiration_start_time,
+            t.expiration_end_time,
+            t.account_number,
+            t.charge_mode,
+            t.price,
+            t.discount_price,
+            t.payment_time,
+            t.payment_voucher_path,
+            t.order_status,
+            t.remark,
+            t.created_by,
+            t.create_time,
+            t.update_by,
+            t.update_time,
+            t.delete_time
+        FROM
+            order_info t
+        WHERE
+            t.delete_time = 0
+        AND t.order_status = 1
+        AND t.order_tenant_id = #{params.orderTenantId}
+        <if test="params.endTime != null and params.endTime != '' ">
+            AND t.expiration_start_time  <![CDATA[ <= ]]> #{params.endTime}
+        </if>
+        <if test="params.endTime != null and params.endTime != '' ">
+            AND t.expiration_end_time  <![CDATA[ >= ]]> #{params.endTime}
+        </if>
+    </select>
+
+
+
+    <update id="updateUserOrderCodeByTenantId"  parameterType="java.util.Map" >
+        update user_user set order_code = #{params.orderCode} where tenant_id = #{params.tenantId}
+    </update>
+
+
+    <update id="updateUserOrderCodeByOrderCode"  parameterType="java.util.Map" >
+        update user_user set order_code = '' where order_code = #{params.orderCode}
+    </update>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.area.mapper.CommonAreaMapper">
+
+	<select id="getCommonAreaAll" parameterType="Map" resultType="com.matariky.commonservice.area.bean.CommonArea">
+        select id,area_code,area_name,level,city_code,center,parent_id, remark from common_area 
+	</select>
+
+	<select id="getCommonAreaAllCount" parameterType="Map" resultType="int">
+        select count(1) from common_area 
+	</select>
+
+	<insert id="createCommonArea" parameterType="com.matariky.commonservice.area.bean.CommonArea">
+        insert into common_area(id,area_code,area_name,level,city_code,center,parent_id,remark) 
+        values(#{id},#{areaCode},#{areaName},#{level},#{cityCode},#{center},#{parentId},#{remark})
+	</insert>
+
+	<update id="updatecommonArea" parameterType="com.matariky.commonservice.area.bean.CommonArea">
+        update common_area 
+        set id=#{params.id} 
+		<if test="params.areaCode != null ">
+		        	,area_code=#{params.areaCode}
+		        </if>
+		<if test="params.areaName != null ">
+		        	,area_name=#{params.areaName}
+		        </if>
+		<if test="params.level != null ">
+		        	,level=#{params.level}
+		        </if>
+		<if test="params.cityCode != null ">
+		        	,city_code=#{params.cityCode}
+		        </if>
+		<if test="params.center != null ">
+		        	,center=#{params.center}
+		        </if>
+		<if test="params.parentId != null ">
+		        	,parent_id=#{params.parentId}
+		        </if>
+		<if test="params.remark != null ">
+		        	,remark=#{params.remark}
+		        </if>
+
+        where id = #{params.id} and delete_time=0
+	</update>
+
+	<delete id="delCommonAreaById" parameterType="int">
+        delete from common_area where id=#{value}
+	</delete>
+
+	<select id="getCommonAreaById"  parameterType="Integer" resultType="com.matariky.commonservice.area.bean.CommonArea" >
+        select id,area_code,area_name,level,city_code,center,parent_id, remark from common_area where id=#{value} 
+	</select>
+	
+	
+	
+
+</mapper>

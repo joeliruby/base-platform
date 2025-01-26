@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.commondict.mapper.CommonDictMapper">
+
+	<select id="getCommonDictAll" parameterType="Map" resultType="com.matariky.commonservice.commondict.bean.CommonDict">
+        select id,dict_name,dict_type_id,dict_value,tenant_id,comment,create_time,update_time,is_active,created_by,updated_by,dict_key from common_dict 
+        where 1=1 
+        and  delete_time=0 
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and  tenant_id= #{params.tenantId}
+        </if>
+        <if test="params.dictTypeId != null and params.dictTypeId !=''">
+            and  dict_type_id= #{params.dictTypeId}
+        </if>
+		<if test="params.dictName != null and params.dictName !=''">
+            and dict_name like '%${params.dictName}%'
+        </if>
+        <if test="params.dictKey != null and params.dictKey !=''">
+            and dict_key  like '%${params.dictKey}%'
+        </if>
+        <if test="params.orderField != null and params.orderField !=''">
+        order by  #{params.orderField}
+        </if>
+        <if test="params.order != null and params.order !=''">
+         #{params.order}
+        </if>
+	</select>
+
+	<select id="getCommonDictAllCount" parameterType="Map" resultType="int">
+        select count(1) from common_dict 
+        where 1=1 
+        and  delete_time=0
+        <if test="params.tenantId != null and params.tenantId !=''">
+            and  tenant_id= #{params.tenantId}
+        </if>
+        <if test="params.dictTypeId != null and params.dictTypeId !=''">
+            and  dict_type_id= #{params.dictTypeId}
+        </if>
+		<if test="params.dictName != null and params.dictName !=''">
+            and dict_name like '%${params.dictName}%'
+        </if>
+        <if test="params.dictKey != null and params.dictKey !=''">
+            and dict_key  like '%${params.dictKey}%'
+        </if>
+        <if test="params.orderField != null and params.orderField !=''">
+        order by  #{params.orderField}
+        </if>
+        <if test="params.order != null and params.order !=''">
+         #{params.order}
+        </if>
+	</select>
+
+	<insert id="createCommonDict" parameterType="com.matariky.commonservice.commondict.bean.CommonDict">
+        insert into common_dict(dict_name,dict_type_id,dict_value,tenant_id,comment,create_time,update_time,is_active,created_by,updated_by,dict_key) 
+        values(#{dictName},#{dictTypeId},#{dictValue},#{tenantId},#{comment},#{createTime},#{updateTime},#{isActive},#{createdBy},#{updatedBy},#{dictKey})
+	</insert>
+
+	<update id="updateCommonDict" parameterType="com.matariky.commonservice.commondict.bean.CommonDict">
+        update Common_Dict 
+        set id=#{params.id} 
+			<if test="params.dictName != null ">
+        	,dict_name=#{params.dictName}
+        </if>
+			<if test="params.dictTypeId != null ">
+			        	,dict_type_id=#{params.dictTypeId}
+			        </if>
+			<if test="params.dictValue != null ">
+			        	,dict_value=#{params.dictValue}
+			        </if>
+			<if test="params.tenantId != null ">
+			        	,tenant_id=#{params.tenantId}
+			        </if>
+			<if test="params.comment != null ">
+			        	,comment=#{params.comment}
+			        </if>
+			<if test="params.createTime != null ">
+			        	,create_time=#{params.createTime}
+			        </if>
+			<if test="params.updateTime != null ">
+			        	,update_time=#{params.updateTime}
+			        </if>
+			<if test="params.isActive != null ">
+			        	,is_active=#{params.isActive}
+			        </if>
+			<if test="params.createdBy != null ">
+			        	,created_by=#{params.createdBy}
+			        </if>
+			<if test="params.updatedBy != null ">
+			        	,updated_by=#{params.updatedBy}
+			        </if>
+			<if test="params.dictKey != null ">
+			        	,dict_key=#{params.dictKey}
+			        </if>
+			<if test="params.deleteTime != null ">
+			        	,delete_time=#{params.deleteTime}
+			        </if>
+        where id = #{params.id} and delete_time=0
+	</update>
+
+	<delete id="delCommonDictById" parameterType="int">
+        delete from common_dict where id=#{value}
+	</delete>
+
+	<select id="getCommonDictById"  parameterType="java.lang.String" resultType="com.matariky.commonservice.commondict.bean.CommonDict" >
+        select id,dict_name,dict_type_id,dict_value,tenant_id,comment,create_time,update_time,is_active,created_by,updated_by,dict_key from common_dict where id=#{value} 
+	</select>
+	
+	<select id="getCommonDictByIdTenantIdAndDictType"   resultType="com.matariky.commonservice.commondict.bean.CommonDict" >
+       select id,dict_name as dictName,dict_type_id as dictTypeId,dict_value as dictValue,tenant_id as tenantId,comment,create_time as createTime,update_time as updateTime,is_active as isActive,created_by as createdBy ,updated_by as updatedBy,dict_key as dictKey from common_dict where tenant_id =#{tenantId,jdbcType=VARCHAR} and dict_key=#{permissionId,jdbcType=VARCHAR} 
+        <if test="dictTypeId != null and dictTypeId !=''">
+	       AND dict_type_id =#{dictTypeId} 
+	    </if>
+	</select>
+	
+	
+	
+	<update id="updateValueByKeyAndTenantId">
+        UPDATE common_dict 
+		SET 
+			dict_value =  #{dictValue,jdbcType=VARCHAR}
+		WHERE
+		dict_key =  #{dictKey,jdbcType=VARCHAR}
+		AND 
+		tenant_id = #{tenantId,jdbcType=VARCHAR}
+		<if test="dictTypeId != null and dictTypeId !=''">
+            AND  dict_type_id= #{dictTypeId,jdbcType=VARCHAR}
+        </if>
+    </update>
+    
+	<update id="updateDeleteTimeById">
+   		update common_dict
+   		<set >
+       	delete_time = unix_timestamp()
+   		</set>
+   		where id in
+   	  <foreach item="id" collection="array" open="(" separator="," close=")">
+           #{id}
+       </foreach>
+  	</update>
+
+</mapper>

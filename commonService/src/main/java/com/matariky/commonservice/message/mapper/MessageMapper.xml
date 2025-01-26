@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matariky.commonservice.message.mapper.MessageMapper">
+
+    <!-- 查询消息 -->
+    <select id="selectMessagePage" resultType="com.matariky.commonservice.message.vo.MessageVo">
+        SELECT
+            t.content,
+            t.create_time,
+            t.target,
+            t.msg_type,
+            IFNULL( um.is_read, 0 ) AS is_read
+        FROM
+            common_message t
+        LEFT JOIN common_user_message um ON um.message_id = t.id AND um.user_id = #{params.userId}
+        <where>
+            <if test="params.isRead != null">
+                AND um.is_read = #{params.isRead}
+            </if>
+        </where>
+        ORDER BY t.create_time DESC
+    </select>
+
+
+</mapper>
