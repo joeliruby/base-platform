@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.matariky</groupId>
+  <artifactId>base-platform</artifactId>
+  <version>2</version>
+  <packaging>pom</packaging>
+
+  <name>base-platform</name>
+  <url>http://maven.apache.org</url>
+  <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
+	<properties>
+		<java.version>17</java.version>
+        <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
+        <minio.version>8.0.3</minio.version>
+		<mybatis.generator.version>1.3.2</mybatis.generator.version>
+		<compiler-plugin.version>3.8.1</compiler-plugin.version>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<surefire-plugin.version>2.22.1</surefire-plugin.version>
+		<spring.version>5.3.30</spring.version>
+		<jwt.version>0.11.1</jwt.version>
+		<runtime.version>7.0.0.Final</runtime.version>
+		<jakata.version>1.3.5</jakata.version>
+		<commons.version>2.6</commons.version>
+		<spring.boot.version>2.5.3</spring.boot.version>
+		<druid-spring-boot-starter.version>1.1.9</druid-spring-boot-starter.version>
+		<servlet.version>3.0-alpha-1</servlet.version>
+		<tomcat.embed.versoin>9.0.37</tomcat.embed.versoin>
+		<joda.time.version>2.9.9</joda.time.version>
+		<mybatis.starter.version>3.4.3.4</mybatis.starter.version>
+		<mybatis.spring.version>2.0.6</mybatis.spring.version>
+		<mybatis.spring.starter.version>2.2.1</mybatis.spring.starter.version>
+		<mybatis.version>3.4.6</mybatis.version>
+		<swagger.version>2.9.1</swagger.version>
+		<kaptcha.version>0.0.9</kaptcha.version>
+		<mybatis.pagehelper.version>1.3.0</mybatis.pagehelper.version>
+		<mybatis.mapper.version>2.1.0</mybatis.mapper.version>
+		<commons.version>2.5</commons.version>
+		<apache.commons.version>2.5.0</apache.commons.version>
+		<lombok.version>1.18.20</lombok.version>
+		<jedis.version>3.3.0</jedis.version>
+		<datasource.starter.version>4.2.0</datasource.starter.version>
+		<spring.plugin.version>2.0.0.RELEASE</spring.plugin.version>
+		<keycloak.version>23.0.0</keycloak.version>
+		<jackson.version>2.15.2</jackson.version>
+		<zxing.version>3.4.0</zxing.version>
+		<poi.ooxml.version>3.16</poi.ooxml.version>
+		<spring.data.redis.version>2.3.5.RELEASE</spring.data.redis.version>
+		<jsqlparser.version>4.0</jsqlparser.version>
+		<hutool.version>5.8.9</hutool.version>
+		<common.collections.version>3.2.2</common.collections.version>
+		<fastjson.version>1.2.47</fastjson.version>
+		<opentelemetry.version>1.25.0</opentelemetry.version>
+	</properties>
+	  <modules>
+		<module>userService</module>
+		<module>bizService</module>
+		<module>automation</module>
+		<module>commonService</module>
+		<module>middleware</module>
+		<module>jobsService</module>
+        <module>orderService</module>
+        <module>customer-userprovider</module>
+      </modules>
+
+ 
+<!-- <distributionManagement>  -->
+    <!--repository>  
+        <id>central</id>  
+        <url>http://47.107.131.160:8081/artifactory/releases-local</url>  
+    </repository-->  
+<!--</distributionManagement>  -->
+
+<!--	<repositories>  -->
+    <!--repository>  
+        <id>centralrepo</id>  
+        <url>http://47.107.131.160:8081/artifactory/repo</url>  
+        
+    </repository-->  
+    <!--repository>  
+        <id>libs-releases</id>  
+        <url>http://47.107.131.160:8081/artifactory/libs-releases</url>  
+    </repository-->  
+<!--	</repositories> -->
+	
+	<!--pluginRepositories>  
+	    <pluginRepository>  
+	        <id>centralplugin</id>  
+	        <url>http://47.107.131.160:8081/artifactory/repo</url>  
+	    </pluginRepository>  
+	</pluginRepositories-->  
+	
+	<distributionManagement>
+    	<repository>
+    		<id>maven-yx-dev</id>
+    		<name>yxmvnrepo</name>
+    		<url>http://10.10.10.15:8082/artifactory/yxmvrepo-libs-release</url>
+    	</repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    	<repository>
+            <id>maven-yx-dev</id>
+            <name>yxmvnrepo</name>
+            <url>http://10.10.10.15:8082/artifactory/yxmvrepo-libs-release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+	
+	
+	 <build>
+    	<plugins>
+    		<plugin>
+		        <groupId>org.sonarsource.scanner.maven</groupId>
+		        <artifactId>sonar-maven-plugin</artifactId>
+		        <version>3.7.0.1746</version>
+		    </plugin>
+    	</plugins>
+    </build>
+    
+</project>
