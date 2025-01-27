@@ -82,6 +82,6 @@ public class CustomerRealmAdapterTest {
         customerRealmAdapter.invalidateFlag();
 
         // Then
-        assertThat(customerRealmAdapter.invalidated).isTrue();
+        assertThat(customerRealmAdapter.isInvalidated()).isTrue();
     }
 }

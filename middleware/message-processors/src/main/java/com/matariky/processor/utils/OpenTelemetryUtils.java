@@ -75,4 +75,8 @@ public class OpenTelemetryUtils {
     public static Tracer getTracer() {
         return tracer;
     }
+
+    public static void setTracer(Tracer setTracer) {
+        tracer = setTracer;
+    }
 }
