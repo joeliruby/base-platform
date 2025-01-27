@@ -48,6 +48,6 @@ logging:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-#自定义 Configuration 文件
+#自定义 Configuration  File
 file:
   url: d:\amation\dist

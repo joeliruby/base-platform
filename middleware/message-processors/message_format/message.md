@@ -50,7 +50,7 @@ Upgrade
 {
 "deviceType": "SRE401", //设备类型
 "deviceCode": "SRE801_1_gate1_1", //设备 Code
-"status": 0, //返回状态码 0: Upgrade 成功 1： Version 一致 2：文件下载失败 3：校验 Error
+"status": 0, //返回状态码 0: Upgrade 成功 1： Version 一致 2： File 下载失败 3：校验 Error
 "msg": "", // Error 码说明
 "originalMessage": ""//原 Message 体串
 }

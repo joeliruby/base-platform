@@ -5,13 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
-/**
- * @description: Label Print Task bean
- * @author: chenyajun
- * @create: 2024/2/08 9:48
- **/
 @TableName(value = "basic_base_rfidprint", autoResultMap = true)
 @Data
 public class TapeRfidPrintTask implements Serializable {

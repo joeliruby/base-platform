@@ -13,7 +13,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * 订单过期JOB
+ * Order expire JOB
  */
 public class DeviceUpgradeJob implements BaseJob {
 
@@ -25,7 +25,7 @@ public class DeviceUpgradeJob implements BaseJob {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("执行 Device  Upgrade  Scheduled  Task ");
+        System.out.println("implement Device  Upgrade  Scheduled  Task ");
         Long packageId = Long.valueOf(context.getJobDetail().getJobDataMap().get("packageId").toString());
         Long deviceId = Long.valueOf(context.getJobDetail().getJobDataMap().get("deviceId").toString());
         BasicBaseDevicePackage devicePackage = basicBaseDevicePackageMapper.selectById(packageId);

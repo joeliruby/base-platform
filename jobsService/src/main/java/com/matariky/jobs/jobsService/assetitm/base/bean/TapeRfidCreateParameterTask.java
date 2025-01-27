@@ -5,14 +5,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @description:  Label  Generation  Task bean
- * @author: chenyajun
- * @create: 2024/2/08 9:48
- **/
 @TableName(value = "basic_base_rfidfactory_parameter", autoResultMap = true)
 @Data
-public class TapeRfidCreateParameterTask   implements Serializable {
+public class TapeRfidCreateParameterTask implements Serializable {
     /**
      *
      */

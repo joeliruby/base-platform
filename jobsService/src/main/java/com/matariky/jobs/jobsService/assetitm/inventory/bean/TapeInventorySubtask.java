@@ -5,11 +5,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @description: 磁带盘点子 Task 实体类
- * @author: bo.chen
- * @create: 2023/9/22 14:49
- **/
 @Data
 @TableName("biz_tape_inventory_subtask")
 public class TapeInventorySubtask implements Serializable {
@@ -25,27 +20,27 @@ public class TapeInventorySubtask implements Serializable {
     private Long id;
 
     /**
-     * 主 Task id
+     * host Task id
      */
     private Long taskId;
 
     /**
-     * 盘点 Quantity
+     * inventory Quantity
      */
     private Integer quantity;
 
     /**
-     * 实际 Quantity
+     * actual Quantity
      */
     private Integer actualQuantity;
 
     /**
-     * Wether 有差异：0=否 ,1=是
+     * Wether Different：0=No ,1=Yes
      */
     private Boolean isDiscrepancy;
 
     /**
-     * Status ：1等待Update,2=无须Update,3=已Update,4=取消
+     * Status ：1wait Update,2=No need to Update,3= Updated,4=Cancel
      */
     private Integer status;
 

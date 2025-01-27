@@ -25,8 +25,7 @@ import com.matariky.utils.OrgCodeUtil;
  * @author AUTOMATION
  */
 @Service
-public class UserTenantService extends BaseServiceImpl<UserTenantMapper, UserTenant>
-		implements BaseService<UserTenant> {
+public class UserTenantService extends BaseServiceImpl<UserTenantMapper, UserTenant> {
 
 	@Autowired
 	private UserTenantMapper userTenantMapper;
@@ -85,25 +84,17 @@ public class UserTenantService extends BaseServiceImpl<UserTenantMapper, UserTen
 		bean.setIsActive(true);
 		userTenantMapper.createUserTenant(bean);
 
-		// Configuration Tenant Code
-		//
-		// userTenantMapper.updateTenantCodeById(bean.getId(),selectByTenantCode.getTenantCode()+"_"+bean.getId());
+		// New Tenant System AutomaticCreate, the first -level organization of Tenant,
+		// the institution name is Tenant Name
+		// , and under its institution
+		// One external contact node, tenant administrator login can maintain its
+		// organization but cannot be update and delete external contacts.
 
-		// Save Tenant 和 App 关系 user_r_application_tenant
-		saveOrUpdateApplication(bean);
-
-		// New Tenant System AutomaticCreate 该 Tenant 的第一级组织机构 ,机构 Name为 Tenant Name
-		// ,并在其机构下Create
-		// one 外部联系人节点 , Tenant 管理员 Login 后可维护其组织机构但不能 Update和Delete 外部联系人这个节点。
-
-		// 先初始化此 Tenant 下第 one 组织
+		// First initialize this one ONE organization under this TENANT
 		UserOrganization parentOrganization = new UserOrganization();
 
 		String code = "";
-		// int countByParentId =
-		// userOrganizationMapper.getCountByParentId(0l,bean.getParentId().toString())+1;
-
-		parentOrganization.setOrganizationCode(code);// 要写活
+		parentOrganization.setOrganizationCode(code);// Write to work
 		parentOrganization.setOrganizationName(bean.getTenantName());
 		parentOrganization.setCreateTime(DateUtil.getCurrentDateAndTime().getTime());
 		parentOrganization.setDescription(bean.getTenantName());
@@ -116,59 +107,17 @@ public class UserTenantService extends BaseServiceImpl<UserTenantMapper, UserTen
 
 		code = OrgCodeUtil.generateDeparmentOrganzationCode(selectByTenantCode.getId(), parentOrganization.getId());// "org_0"+"_"+parentOrganization.getId();
 
-		// Configuration组织 Code
+		// Configuration organize Code
 		userOrganizationMapper.updateOrganizationCodeById(parentOrganization.getId(), code);
 
-		// organization_code 组织机构 Code
-		// organization_name 组织机构 Name
-		// create_time Create Time
-		// description 组织机构 Description
-		// tenant_id Tenant Code
-		// org_type 组织机构Type ：1机构 ,2部门 ,3小组
-		// order_num 排序
-		// parent_id 父组织机构ID
-
-		// 然后再 Generation 第 one 儿子组织机构
-		// UserOrganization sonOrganization=new UserOrganization();
-		//
-		// sonOrganization.setOrganizationName("外部联系人");
-		// sonOrganization.setOrganizationCode(code);
-		// sonOrganization.setCreateTime(DateUtil.getCurrentDateAndTime().getTime());
-		// sonOrganization.setDescription("外部联系人");
-		// sonOrganization.setTenantId(selectByTenantCode.getTenantCode()+"_"+bean.getId());
-		// sonOrganization.setOrgType(2);
-		// sonOrganization.setOrderNum(1);
-		// sonOrganization.setParentId(parentOrganization.getId());
-		//
-		// userOrganizationMapper.createUserOrganization(sonOrganization);
-		//
-		//
-		//
-		// userOrganizationMapper.updateOrganizationCodeById(sonOrganization.getId(),code+"_"+sonOrganization.getId());
-
-	}
-
-	public void saveOrUpdateApplication(UserTenant bean) {
-
-		// 先Delete Tenant 和 App 的关系
-		// deleteApplicationByTenantCodes(new String []{bean.getTenantCode()});
-
-		// Tenant 没有 one App 的情况
-		if (CollectionUtils.isEmpty(bean.getApplicationIds())) {
-			return;
-		}
-
-		// Save Tenant 和 App 关系
-		// for (Map<String,Object> applicationId:bean.getApplicationIds()) {
-		// Map<String,Object> map =new HashMap<>();
-		//
-		// map.put("application_id",
-		// Long.parseLong(applicationId.get("id").toString()));
-		// map.put("tenant_id", bean.getId());
-		// map.put("tenant_code", bean.getTenantCode());
-		// map.put("application_name", applicationId.get("applicationName").toString());
-		// user_tenantMapper.saveRApplicationTenant(map);
-		// }
+		// Organization_Code Organization Code
+		// organize_name organization name
+		// Create_time Create time
+		// Descripting organizational organization Description
+		// Tenant_id Tenant Code
+		// ORG_TYPE Organization Type: 1 Agency, 2 departments, 3 groups
+		// Order_num Sort
+		// Parent_id Father Organization ID
 
 	}
 
@@ -193,8 +142,6 @@ public class UserTenantService extends BaseServiceImpl<UserTenantMapper, UserTen
 		userTenantMapper.updateUserTenant(bean);
 
 		// Save Tenant 和 App 关系
-		saveOrUpdateApplication(bean);
-
 		tokenService.expireAllLoginUsersAfterCredentialChanges(bean);
 	}
 

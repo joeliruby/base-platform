@@ -34,8 +34,7 @@ import cn.hutool.core.collection.CollUtil;
  * @author AUTOMATION
  */
 @Service
-public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMapper, UserOrganization>
-        implements BaseService<UserOrganization> {
+public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMapper, UserOrganization> {
 
     @Autowired
     private UserOrganizationMapper userOrganizationMapper;
@@ -130,7 +129,7 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
         }
         userOrganizationMapper.insert(bean);
 
-        // Configuration组织 Code
+        // Configuration organize Code
         UserOrganization parentOrg = userOrganizationMapper.selectById(bean.getParentId());
         String codeString = OrgCodeUtil.generateOrgCodeFromOrgBean(parentOrg.getOrganizationCode(), bean.getId(),
                 bean.getOrgType());

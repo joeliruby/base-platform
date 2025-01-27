@@ -9,7 +9,7 @@ import org.apache.ibatis.executor.Executor;
 import java.sql.Connection;
 
 /**
- * @description: 分页拦截器
+ * @description: Pagination 拦截器
  * @author: bo.chen
  * @create: 2023/1/3 16:46
  **/

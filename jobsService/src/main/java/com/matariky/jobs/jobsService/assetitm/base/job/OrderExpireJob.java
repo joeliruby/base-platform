@@ -7,7 +7,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * 订单过期JOB
+ * Order expire JOB
  */
 public class OrderExpireJob implements BaseJob {
 
@@ -16,7 +16,8 @@ public class OrderExpireJob implements BaseJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long currentTime = System.currentTimeMillis();
-        int update = jdbcTemplate.update("update  basic_rfid_platform.order_info set order_status = 3 where " + currentTime +  "  > expiration_end_time  and  order_status = 1 ");
-        System.out.println("订单过期数： " + update);
+        int update = jdbcTemplate.update("update  basic_rfid_platform.order_info set order_status = 3 where "
+                + currentTime + "  > expiration_end_time  and  order_status = 1 ");
+        System.out.println("Order excessive number： " + update);
     }
 }

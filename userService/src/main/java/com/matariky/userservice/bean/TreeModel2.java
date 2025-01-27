@@ -5,31 +5,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class TreeModel2 extends TreeNode<Object>{
-	
+@EqualsAndHashCode(callSuper = false)
+public class TreeModel2 extends TreeNode<Object> {
+
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private Long pid;
 	private String label;
 	private String code;
-	
-	//链接 Address 
+
+	// Link Address
 	private String url;
-	
-	//资源Type 
+
+	// resource Type
 	private Integer resourceType;
-	
-	//所属  App 
+
+	// connect App
 	private String applicationName;
-	
-	//图标
+
+	// icon
 	private String icon;
-	
-	// Wether 隐藏
+
+	// Wether hide
 	private boolean isActive;
-	
-	//排序
+
+	// Sort
 	private Long sortOrder;
-	
+
 }

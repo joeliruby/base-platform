@@ -45,7 +45,7 @@ feature:install camel-blueprint
 里面只需要写简单的 java processor 处理 Message 格式处理逻辑。打成 jar 包后放置在 deploy 目录即可完成部署
 ![deply.png](.\deply.png)
 
-7 上图中 test.xml 是 one camel-blueprint 的 spring xml Configurationxml Configuration 文件
+7 上图中 test.xml 是 one camel-blueprint 的 spring xml Configurationxml Configuration File
 路由转发 ,格式转换等规则可以动态改变动态生效
 
 ![springxml.png](.\springxml.png)
@@ -56,8 +56,8 @@ feature:install camel-blueprint
 list 查看 Current 部署的 osgi bundle 和状态
 bundle:diag 123 查看 id 为 123 的 bundle 的依赖解析情况帮助查问题
 log：clear 清空 Log
-log:tai 持续查看最新 Log
-log:打印最新 Log 不跟踪
+log:tai 持续查看 Latest Log
+log:打印 Latest Log 不跟踪
 start 1234:启动 id 为 1234 的 bundle
 stop 1234:停止 id 为 1234 的 bundle
 resolve 1234:为 id 为 1234 的 bundle 装载依赖

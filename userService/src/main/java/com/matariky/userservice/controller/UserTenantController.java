@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +32,6 @@ import com.matariky.commonservice.commondict.service.CommonDictService;
 import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.minio.utils.MinioUtil;
 import com.matariky.commonservice.upload.constant.MessageKey;
-import com.matariky.commonservice.upload.utils.Result;
 import com.matariky.exception.QslException;
 import com.matariky.userservice.bean.UserTenant;
 import com.matariky.userservice.service.UserTenantService;
@@ -73,11 +71,7 @@ public class UserTenantController {
 	public Object list(
 			HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
-			@PathVariable("tenantId") String tenantId
-	/*
-	 * @ApiParam(value = "JWT Token", required =
-	 * true) @RequestHeader("Authorization") String jwt
-	 */) {
+			@PathVariable("tenantId") String tenantId) {
 
 		int pageIndex = 1;
 		int perPage = 20;
@@ -90,9 +84,6 @@ public class UserTenantController {
 			perPage = Integer.parseInt(map.get("perPage").toString());
 		}
 
-		// if(!StringUtil.isEmpty(tenantId)) {
-		// map.put("tenantId", tenantId);
-		// }
 		PageHelper.startPage(pageIndex, perPage);
 
 		String beginst = null;
@@ -106,7 +97,7 @@ public class UserTenantController {
 			endst = map.get("end").toString();
 		}
 
-		// 把 Time 转成longType
+		// Turn time into longType
 		if (StringUtil.isNotEmpty(beginst)) {
 			long begin = DateUtil.string2Dateyyyymmdd(beginst).getTime();
 			map.put("begin", begin);
@@ -120,7 +111,6 @@ public class UserTenantController {
 
 		PageInfo<UserTenant> page = new PageInfo<UserTenant>(userTenantList);
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
-		// return page;
 	}
 
 	@RequestMapping(value = "/userTenant/edit", method = RequestMethod.GET)
@@ -133,7 +123,7 @@ public class UserTenantController {
 		}
 		UserTenant bean = userTenantService.getUserTenantById(id);
 
-		// 上级 Tenant Name
+		// Superior Tenant Name
 		if (bean.getParentId() != null) {
 			UserTenant userTenant = userTenantService.getUserTenantById(bean.getParentId().toString());
 			if (userTenant != null) {
@@ -143,10 +133,10 @@ public class UserTenantController {
 			}
 		}
 
-		// Tenant App 去中间表 Query 一遍
+		// Tenant AppGo to the middle table Query Once again
 		List<Map<String, Object>> applicationList = userTenantService.selectApplication(bean.getTenantCode());
 
-		// 多个 App
+		// Multiple App
 		bean.setApplicationIds(applicationList);
 
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
@@ -163,7 +153,7 @@ public class UserTenantController {
 		String tenantCode = selectBytenantCode.getTenantCode();
 
 		String code = "";
-		// Code Automatic Generation 01父 00x子
+		// Code Automatic Generation 01 Father 00x child
 		int countByParentId = userTenantService.getCountByParentId(selectBytenantCode.getId()) + 1;
 
 		code = tenantCode + "_" + countByParentId;
@@ -181,7 +171,7 @@ public class UserTenantController {
 			HttpServletResponse response,
 			@PathVariable("tenantId") String tenantId) {
 		try {
-			// Tenant Name保持 Unique
+			// Tenant Name Keep Unique
 			if (StringUtils.isEmpty(tenantId)) {
 				throw new QslException(MessageKey.EMPTY_PARENT_TENANT_ID);
 			} else {
@@ -200,7 +190,6 @@ public class UserTenantController {
 				throw new QslException(MessageKey.TENANT_NAME_ERR);
 			}
 			userTenantService.save(bean);
-			// userTenantService.insert(bean);
 			Map<String, Object> typeParam = new HashMap<>();
 			typeParam.put("tenantId", tenantId);
 			List<CommonDictType> dictTypeList = commonDictTypeService.getCommonDictTypeAll(typeParam);
@@ -229,7 +218,6 @@ public class UserTenantController {
 			}
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
 		} catch (Exception e) {
-			// throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);;
 			throw new QslException(e.getMessage());
 		}
 	}
@@ -237,9 +225,6 @@ public class UserTenantController {
 	@RequestMapping(value = "/userTenant", method = RequestMethod.PUT)
 	public Object update(@RequestBody UserTenant bean, HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("tenantId") String tenantId) {
-		// if(StringUtils.isEmpty(bean.getParentCode())) {
-		// throw new QslException(MessageKey.EMPTY_PARENT_TENANT_ID);
-		// }
 		if (StringUtils.isEmpty(bean.getTenantName())) {
 			throw new QslException(MessageKey.EMPTY_TENANT_NAME);
 		}
@@ -267,7 +252,7 @@ public class UserTenantController {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
 	}
 
-	// 切换主题
+	// Switch theme
 	@RequestMapping(value = "/userTenant/{theme}", method = RequestMethod.PUT)
 	public Object switchThem(@PathVariable("tenantId") String tenantId, @PathVariable("theme") String theme,
 			HttpServletRequest request) {
@@ -304,7 +289,7 @@ public class UserTenantController {
 		}
 	}
 
-	// Tenant 下拉框
+	// Tenant Drop -down box
 	@GetMapping("/subTenants")
 	public Object selectTenant(@PathVariable("tenantId") String tenantId, HttpServletRequest request) {
 		UserTenant tenant = userTenantService.selectBytenantCode(tenantId);

@@ -4,20 +4,20 @@ import com.matariky.jobs.jobsService.job.base.BaseJob;
 
 /**
  * <p>
- * Scheduled Task 反射工具类
+ * Scheduled Task reflection utility class
  * </p>
  *
  * @package: com.matariky.jobs.jobsService.util
- * @description: Scheduled Task 反射工具类
+ * @description: Scheduled Task reflection utility class
  * @version: V1.0
  */
 public class JobUtil {
     /**
-     * 根据全类 Name RetrieveJob实例
+     * Retrieve Job instance based on full class name
      *
-     * @param classname Job全类 Name
-     * @return {@link BaseJob} 实例
-     * @throws Exception 泛型 Retrieve异常
+     * @param classname Full class name of the Job
+     * @return {@link BaseJob} instance
+     * @throws Exception Generic retrieval exception
      */
     public static BaseJob getClass(String classname) throws Exception {
         Class<?> clazz = Class.forName(classname);

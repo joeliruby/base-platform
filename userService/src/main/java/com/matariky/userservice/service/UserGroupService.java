@@ -71,24 +71,24 @@ public class UserGroupService extends BaseServiceImpl<UserGroupMapper, UserGroup
 		bean.setTenantId(tenantId);
 		userGroupMapper.createUserGroup(bean);
 
-		// 角色中间表
+		// Character middle watch
 		saveOrUpdateRole(bean.getId(), bean.getRoleIdList());
 
-		// User 中间表
+		// User Intermediate table
 		saveOrUpdateUser(bean.getId(), bean.getUserIdList());
 	}
 
 	public void saveOrUpdateUser(Long groupId, List<Long> userIdList) {
 
-		// 先Delete 组和 User 关系
+		// First DELETE group and user relationship
 		deleteUserByGroupIds(new Long[] { groupId });
 
-		// 组没有 one User 的情况
+		// The group does not have one user situation
 		if (CollUtil.isEmpty(userIdList)) {
 			return;
 		}
 
-		// Save 组和 User 关系
+		// Save group and user relationship
 		for (Long userId : userIdList) {
 			userGroupMapper.savaRGoupAndUser(groupId, userId);
 		}
@@ -102,15 +102,15 @@ public class UserGroupService extends BaseServiceImpl<UserGroupMapper, UserGroup
 
 	public void saveOrUpdateRole(Long groupId, List<Long> roleIdList) {
 
-		// 先Delete 组和 User 关系
+		// First DELETE group and user relationship
 		deleteRoleByGroupIds(new Long[] { groupId });
 
-		// 组没有 one User 的情况
+		// The group does not have one user situation
 		if (CollUtil.isEmpty(roleIdList)) {
 			return;
 		}
 
-		// Save 组和角色关系
+		// Save Group and role relationship
 		for (Long roleId : roleIdList) {
 			userGroupMapper.savaRGoupAndRole(groupId, roleId);
 
@@ -127,10 +127,10 @@ public class UserGroupService extends BaseServiceImpl<UserGroupMapper, UserGroup
 
 		userGroupMapper.updateUserGroup(bean);
 
-		// 角色中间表
+		// Character middle watch
 		saveOrUpdateRole(bean.getId(), bean.getRoleIdList());
 
-		// User 中间表
+		// User Intermediate table
 		saveOrUpdateUser(bean.getId(), bean.getUserIdList());
 
 		tokenService.expireAllLoginUsersAfterCredentialChanges(bean);
@@ -166,7 +166,7 @@ public class UserGroupService extends BaseServiceImpl<UserGroupMapper, UserGroup
 
 	public int updateDeleteTimeById(String[] id) {
 		Long count = userOrganizationMapper.selectCount(Wrappers.lambdaQuery(UserOrganization.class)
-				.in(UserOrganization::getUserGroupId, id)
+				.in(UserOrganization::getUserGroupId, (Object[]) id)
 				.eq(UserOrganization::getDeleteTime, 0));
 		if (count > 0) {
 			throw new QslException(MessageKey.ORG_CODE_USED_BY_USER);

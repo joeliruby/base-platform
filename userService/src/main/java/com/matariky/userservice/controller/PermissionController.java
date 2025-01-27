@@ -54,7 +54,6 @@ import com.matariky.constant.PermissionConstant;
 import com.matariky.constant.RedisKey;
 import com.matariky.exception.QslException;
 import com.matariky.redis.RedisUtils;
-//import com.matariky.orderservice.service.OrderInfoService;
 import com.matariky.userservice.bean.Permission;
 import com.matariky.userservice.bean.TreeModel;
 import com.matariky.userservice.bean.User;
@@ -120,9 +119,6 @@ public class PermissionController {
     @Autowired
     private RedisUtils redisUtils;
 
-    // @Autowired
-    // OrderInfoService orderInfoService;
-
     @UserLoginToken
     @GetMapping("/permission/")
     @RequirePermission
@@ -132,13 +128,9 @@ public class PermissionController {
         PageHelper.startPage(pageIndex, perPage);
         Page<Permission> page = permissionMapper.getPermissionByTenantId(tenantId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
-        // return page;
     }
 
-    // @UserLoginToken
     @PutMapping("/permission/{permissionId}/{dataPermissionFlag}")
-    // @RequirePermission
-    // @VerifyTenantId
     public Object setDataPermission(HttpServletRequest request, @PathVariable("tenantId") String tenantId,
             @PathVariable("permissionId") Long permissionId,
             @PathVariable("dataPermissionFlag") String dataPermissionFlag, @RequestHeader("Authorization") String jwt) {
@@ -151,7 +143,6 @@ public class PermissionController {
             throw new QslException(MessageKey.INVALID_COMMON_DATA_ACCESS_FLAG);
         }
 
-        // DATA_ACCESS_PERMISSION 每个 Tenant 只有 one Data 权限的 Dictionary 组
         CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
                 TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
         if (commonDictType == null) {
@@ -175,7 +166,6 @@ public class PermissionController {
             dict.setDictValue(dataPermissionFlag.toString());
             commonDictService.updateValueByKeyAndTenantId(commonDictType.getId().toString(), dict.getDictKey(),
                     dict.getDictValue(), tenantId);
-            // return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
             return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
         }
 
@@ -195,8 +185,6 @@ public class PermissionController {
                 permissionService.findPermissionsByPermissionNamePrefix(tenantId, applicationId, permissionName));
     }
 
-    // @UserLoginToken
-    // @VerifyTenantId
     @GetMapping("/application/{applicationId}/permission/url/")
     public Object getDataPermissionLevelByAlias(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt, @PathVariable("applicationId") Long applicationId,
@@ -214,9 +202,6 @@ public class PermissionController {
         } else
             return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,
                     permissionList.get(0).getResourceAttribute());
-        // return permissionList.get(0).getResourceAttribute();
-        // return permissionService.findPermissionsByPermissionNamePrefix(tenantId,
-        // applicationId,permissionName);
     }
 
     /*
@@ -233,7 +218,8 @@ public class PermissionController {
             @RequestParam("applicationId") String applicationIds,
             HttpServletRequest request) {
 
-        // 非管理员不能分配 Code Rule 菜单权限 Tenant 1 ,不受限制 ,因为他是最大的管理员
+        // Non -administrators cannot allocate the Code Rule menu permission Tenant 1,
+        // not limited, because he is the largest administrator
         String permissionsStr = map.get("permissions").toString();
         List<String> permissionsIdList = Arrays.stream(permissionsStr.split(",")).collect(Collectors.toList());
         String backTenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -277,7 +263,7 @@ public class PermissionController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, obj);
     }
 
-    // 角色授权
+    // Role authorization
     @PostMapping("/permission/role/{roleId}")
     public Object assignPermissionToRole(
             @PathVariable("tenantId") String tenantId,
@@ -294,7 +280,7 @@ public class PermissionController {
         if (StringUtil.isEmpty(permissions)) {
             throw new QslException(MessageKey.EMPTY_PERMISSION_ID);
         }
-        // 先Delete 中间关系 user_r_role_permission
+        // First delete intermediate relationship user_r_role_permission
         Set<String> permissionIds = new HashSet<String>();
         permissionIds.addAll(Arrays.asList(permissions.split(",")));
         permissionService.deleteRRolePermission(roleId);
@@ -304,21 +290,10 @@ public class PermissionController {
         return new AjaxResult(HttpStatus.OK.value(), commonDictService
                 .getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "RESOURCE_ASSIGNED_TO_ROLE", true, tenantId)
                 .getString("message"));
-        // return new
-        // ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","RESOURCE_ASSIGNED_TO_ROLE",true,
-        // tenantId), HttpStatus.OK);
     }
 
     @PostMapping("/permission/userGroup/{groupId}")
     public Object assignPermissionToGroup(@PathVariable("tenantId") String tenantId,
-            /*
-             * @ApiParam(value = "JWT Token", required =
-             * true) @RequestHeader("Authorization") String jwt,
-             */
-            // @ApiParam(value = "资源ID用逗号隔开", required = true) @RequestParam("permissions")
-            // String permissions,
-            // @ApiParam(value = "分组id", required = true) @PathVariable("groupId") Long
-            // groupId
             @RequestBody Map<String, String> params,
             HttpServletRequest httpServletRequest) {
         String groupId = params.get("groupId");
@@ -334,7 +309,7 @@ public class PermissionController {
             throw new QslException(MessageKey.EMPTY_PERMISSION_ID);
         }
 
-        // Delete 分组之前的权限 Binding
+        // DeletePermission before grouping Binding
         userGroupService.deletePreviousGroupPermissionBound(groupId);
 
         for (String permId : permissions.split(",")) {
@@ -343,10 +318,6 @@ public class PermissionController {
         return new AjaxResult(HttpStatus.OK.value(), commonDictService
                 .getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "RESOURCE_ASSIGNED_TO_GROUP", true, tenantId)
                 .getString("message"));
-        // return new
-        // ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","RESOURCE_ASSIGNED_TO_GROUP",true,tenantId),
-        // HttpStatus.OK);
-
     }
 
     @GetMapping("/userInfo")
@@ -381,26 +352,19 @@ public class PermissionController {
         userInfo.put("userName", user.getLoginName());
         userInfo.put("userImage", user.getUserImg());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userInfo);
-        // return userInfo;
     }
 
-    // @UserLoginToken
     @GetMapping("/permissionTree/application/{applicationId}/user/{userId}")
-    // @RequirePermission
-    // @VerifyTenantId
     public Object getPermissionTree(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt,
             @PathVariable("applicationId") Long applicationId,
             @PathVariable("userId") Long userId) {
         Map<Long, JSONObject> permissionTreeMap = new TreeMap<Long, JSONObject>();
-        // Configuration根节点
+        // Configuration Root node
         JSONObject root = new JSONObject();
         root.put("id", 0L);
         permissionTreeMap.put(0l, root);
-        // 所有节点进map
-        // Set<Permission> permSet=
-        // permissionService.getPermissionTreeByTenantIdApplicationIdUserId(tenantId,
-        // applicationId,userId);
+        // All nodes enter MAp
         UserTenant tenant = tenantService.selectBytenantCode(tenantId);
 
         Set<Permission> permSet1 = new HashSet<>();
@@ -410,7 +374,7 @@ public class PermissionController {
         HashMap<Long, Permission> permMap = new HashMap<>();
         if (tenant != null) {
             permSet1 = permissionService.selectPermissionByTenantId(tenant.getId().toString());
-            if (CollectionUtils.isEmpty(permSet1) || tenant.getId() == 1l) {//// 顶级 Tenant 没有订单
+            if (CollectionUtils.isEmpty(permSet1) || tenant.getId() == 1l) {//// The top tenant has no orders
                 permSet1 = permissionService.getPermissionTreeByTenantIdApplicationIdUserId(tenantId, applicationId,
                         userId);
             }
@@ -420,7 +384,7 @@ public class PermissionController {
             }
         }
 
-        // 去除token中没有的资源
+        // Remove the resources not in the token
         List<String> permsFromToken = TokenUtils.extractPermissionIdsFromToken(jwt);
         for (Permission per : permSet1) {
             if (permsFromToken.contains(per.getId().toString())) {
@@ -430,7 +394,7 @@ public class PermissionController {
         for (Permission per : permSet2) {
             origIdSet.add(per.getOrigId());
         }
-        // 去除 App 中没有的资源
+        // Remove the resources not in the app
         for (Permission per : permMap.values()) {
             if (!origIdSet.contains(per.getId())) {
                 permMap.remove(per.getId());
@@ -439,7 +403,7 @@ public class PermissionController {
         permSet.addAll(permMap.values());
         permSet = permSet1;
         String locale = TokenUtils.extractLocaleFromToken(jwt);
-        // 所有权限放入map key:权限id value:权限 Object 转成的 jsonobject
+        // Ownership in Map Key: Permanent ID VALUE: Permanent Object jsonobject
 
         for (Permission perm : permSet) {
             perm.setId(perm.getOrigId());
@@ -447,9 +411,6 @@ public class PermissionController {
                 String pName = (String) redisUtils.hGet(RedisKey.MENU_NAMES + "CN", perm.getOrigId() + "");
                 if (pName != null)
                     perm.setPermissionName(pName);
-                // else {
-                // System.out.println("pname null:"+perm.getOrigId());
-                // }
             }
             JSONObject permTreeNode = extractJSONObject(perm);
             if (perm.getId() != null) {
@@ -457,9 +418,9 @@ public class PermissionController {
             }
         }
 
-        // 构建资源树
+        // Build a resource tree
         for (Long permId : permissionTreeMap.keySet()) {
-            // map中所有节点追溯到根节点 ,包括根
+            // mapAll nodes are back to the root node, including root
             traceRoot(permId, permissionTreeMap);
 
         }
@@ -469,7 +430,7 @@ public class PermissionController {
         // return tree;
     }
 
-    // 角色授权回显
+    // Role authorization back
     @RequestMapping(value = "/permission/and/application/all/role/{roleId}", method = RequestMethod.GET)
     public Object getPermissionAndApplicationByRole(
             HttpServletRequest request,
@@ -480,7 +441,7 @@ public class PermissionController {
         if (tenantStr != null && tenantStr.length > 1) {
             tenantIdData = tenantStr[1];
         }
-        // 此 Tenant 下的 App
+        // This tenantApp
         List<Map<String, Object>> appByTenantId = userGroupService.getAppByTenantId(tenantId);
         for (Map<String, Object> map : appByTenantId) {
             Long applicationId = Long.parseLong(map.get("id").toString());
@@ -488,7 +449,7 @@ public class PermissionController {
             // checkId: [],
             List<Long> list = new ArrayList<Long>();
 
-            // 先 Query 角色和资源表 Wether 有 Data
+            // First query character and resource list Wether Data
             list = userRoleService.getPermissionIdByRoleId(roleId);
 
             if (CollUtil.isNotEmpty(list)) {
@@ -497,17 +458,6 @@ public class PermissionController {
             } else {
                 map.put("hasCheck", false);
             }
-            // QueryWrapper<Permission>queryWrapper=new QueryWrapper<>();
-            // queryWrapper.eq("tenant_id", tenantId)
-            // .eq("application_id", applicationId);
-            // List<TreeModel> treeLis1t=permissionService.selectTreeList(queryWrapper);
-            // List<TreeModel>
-            // treeList=permissionService.getTreeByApplicationId(tenantId,applicationId);
-            // if(CollUtil.isNotEmpty(treeList)) {
-            // map.put("tree",treeList);
-            // }else {
-            // map.put("hasCheck", false);
-            // }
             if (StringUtils.isNotEmpty(tenantId) && !tenantId.equals("1")) {
                 Map<String, Object> params = new HashMap<>();
                 params.put("applicationId", applicationId);
@@ -564,7 +514,7 @@ public class PermissionController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, appByTenantId);
     }
 
-    // 分组授权回显
+    // Grouping authorization back
     @RequestMapping(value = "/permission/and/application/all/group/{groupId}", method = RequestMethod.GET)
     public Object getPermissionAndApplicationByGroup(
             HttpServletRequest request,
@@ -575,7 +525,7 @@ public class PermissionController {
         if (tenantStr != null && tenantStr.length > 1) {
             tenantIdData = tenantStr[1];
         }
-        // 此 Tenant 下的 App
+        // The app under this tenant
         List<Map<String, Object>> appByTenantId = userGroupService.getAppByTenantId(tenantId);
         UserGroup grp = userGroupService.selectById(groupId);
         for (Map<String, Object> map : appByTenantId) {
@@ -584,7 +534,7 @@ public class PermissionController {
             // checkId: [],
             List<Long> list = new ArrayList<Long>();
             map.put("group_name", grp.getGroupName());
-            // 先 Query 分组和资源表 Wether 有 Data
+            // First query grouping and resource list Wether has DATA
             list = userGroupService.getPermissionIdByGroupId(groupId);
 
             if (CollUtil.isNotEmpty(list)) {
@@ -593,8 +543,6 @@ public class PermissionController {
             } else {
                 map.put("hasCheck", false);
             }
-            // List<TreeModel>
-            // treeList=permissionService.getTreeByApplicationId(tenantId,applicationId);
             List<Permission> permissions = new ArrayList<>();
             if (StringUtils.isNotEmpty(tenantId) && !tenantId.equals("1")) {
                 Map<String, Object> params = new HashMap<>();
@@ -649,7 +597,7 @@ public class PermissionController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, appByTenantId);
     }
 
-    // Retrieve Tenant App 关联的资源下拉框
+    // Retrieve Tenant App Related resource drop -down box
     @RequestMapping(value = "/permission/and/application/all/user/{userId}", method = RequestMethod.GET)
     public Object getPermissionAndApplicationByAll(
             HttpServletRequest request,
@@ -661,7 +609,7 @@ public class PermissionController {
         if (tenantStr != null && tenantStr.length > 1) {
             tenantIdData = tenantStr[1];
         }
-        // 找到个人归属 App user_id tenant_id
+        // Find personal belongingApp user_id tenant_id
         List<Map<String, Object>> listMaps = userService.getApplicationByUser(userId, tenantIdData);
         StringBuilder appIdSB = new StringBuilder();
 
@@ -671,7 +619,7 @@ public class PermissionController {
 
         }
 
-        // 此 Tenant 下的 App
+        // The app under this tenant
         List<Map<String, Object>> appByTenantId = userGroupService.getAppByTenantId(tenantId);
         String string = appIdSB.toString();
         for (Map<String, Object> map : appByTenantId) {
@@ -682,7 +630,7 @@ public class PermissionController {
             // checkId: [],
             List<Long> list = new ArrayList<Long>();
             List<Long> permissionIds = new ArrayList<Long>();
-            // 先 Query User 和资源表 Wether 有 Data
+            // First Query User and Resource Table WETHER Data
             list = userService.getPermissionIdByUserIdR(userId);
 
             QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
@@ -705,13 +653,13 @@ public class PermissionController {
                     for (TreeModel model : noTreeList) {
                         list.add(model.getId());
                     }
-                    // ?还需要筛选一遍 此 App 下 Wether 有此资源
+                    // You also need to screen for the WETHER with this resource under this APP
                 }
                 list.retainAll(permissionIds);
                 map.put("checkId", list);
             }
 
-            // 还需要筛选一遍 此 App 下 Wether 有此资源
+            // You also need to screen for the WETHER with this resource under this APP
             if (CollUtil.isNotEmpty(list) && CollUtil.isNotEmpty(permissionIds)) {
                 list.retainAll(permissionIds);
                 map.put("checkId", list);
@@ -737,8 +685,6 @@ public class PermissionController {
 
                 List<TreeModel> treeList = TreeUtils.build(_treeList);
 
-                // List<TreeModel> treeList=permissionService.selectTreeList(new
-                // QueryWrapper<Permission>().eq("tenant_id",tenantId).eq("application_id",applicationId));
                 if (CollUtil.isNotEmpty(treeList)) {
 
                     map.put("tree", treeList);
@@ -759,7 +705,6 @@ public class PermissionController {
 
         }
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, appByTenantId);
-        // return appByTenantId;
     }
 
     @UserLoginToken
@@ -769,11 +714,11 @@ public class PermissionController {
     public Object getDataPermissionTree(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt, @PathVariable("applicationId") Long applicationId) {
         Map<Long, JSONObject> permissionTreeMap = new ConcurrentHashMap<Long, JSONObject>();
-        // Configuration根节点
+        // Configuration Root node
         JSONObject root = new JSONObject();
         root.put("id", 0L);
         permissionTreeMap.put(0l, root);
-        // 所有节点进map
+        // All nodes entermap
         Set<Permission> permSet = permissionService.getDataPermissionTreeByTenantIdApplicationId(tenantId,
                 applicationId);
         for (Permission perm : permSet) {
@@ -781,13 +726,15 @@ public class PermissionController {
             permissionTreeMap.put(perm.getId(), permTreeNode);
         }
 
-        // 资源本身在 Data 权限控制 ,父级不在,把带 Data 权限控制的资源的所有上级节点加入构建树的map
+        // The resource itself is controlled by DATA permissions, and the parent -level
+        // is not there. All superiors with the resource controlled by DATA permissions
+        // are added to the MAP of the build tree
         for (Long permId : permissionTreeMap.keySet()) {
             pullAncestors(permissionTreeMap.get(permId), permissionTreeMap);
 
         }
 
-        // 构建资源树
+        // Build a resource tree
         for (Long permId : permissionTreeMap.keySet()) {
             traceDPRoot(permId, permissionTreeMap);
         }
@@ -818,18 +765,13 @@ public class PermissionController {
                     .contains(permission.getResourceType())) {
                 throw new QslException(MessageKey.INVALID_RESOURCE_TYPE);
             }
-            // if(!ConstantUtil.getAllConstantValuesByCategory(PermissionConstant.class,
-            // "ACCESS_TYPE").contains(permission.getAccessType())) {
-            // throw new QslException(MessageKey.INVALID_ACCESS_TYPE);
-            // }
             if (!ConstantUtil.getAllConstantValuesByCategory(PermissionConstant.class, "RESOURCE_ATTRIBUTE")
                     .contains(permission.getResourceAttribute())) {
                 throw new QslException(MessageKey.INVALID_RESOURCE_ATTRIBUTE);
             }
         }
         if (permission.getResourceType().equals(PermissionConstant.RESOURCE_TYPE_RESTAPI)) {
-            // Interface权限
-            // 增
+            // Interface Authority
             Permission addP = new Permission();
             addP.setParentId(permission.getParentId());
             addP.setIsActive(true);
@@ -837,9 +779,9 @@ public class PermissionController {
             addP.setId(Long.parseLong(permission.getParentId().toString() + "1"));
             addP.setPermissionName(permission.getPermissionName() + "New Interface");
             addP.setTenantId(tenantId);
-            // 加上 App id
+            // Add App id
             addP.setApplicationId(applicationId);
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             addP.setCreateTime(System.currentTimeMillis());
             addP.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -847,17 +789,17 @@ public class PermissionController {
             Boolean success = permissionService.insert(addP);
             addP.setOrigId(addP.getId());
             permissionService.updateById(addP);
-            // 删
+            // delete
             Permission deleteP = new Permission();
             deleteP.setTenantId(tenantId);
             deleteP.setIsActive(true);
             deleteP.setResourceType(PermissionConstant.RESOURCE_TYPE_RESTAPI);
             deleteP.setId(Long.parseLong(permission.getParentId().toString() + "2"));
             deleteP.setPermissionName(permission.getPermissionName() + "Delete  Interface");
-            // 加上 App id
+            // Add App id
             deleteP.setApplicationId(applicationId);
             deleteP.setParentId(permission.getParentId());
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             deleteP.setCreateTime(System.currentTimeMillis());
             deleteP.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -865,7 +807,7 @@ public class PermissionController {
             success = permissionService.insert(deleteP);
             deleteP.setOrigId(deleteP.getId());
             permissionService.updateById(deleteP);
-            // 改
+            // change
             Permission updateP = new Permission();
             updateP.setIsActive(true);
             updateP.setTenantId(tenantId);
@@ -873,9 +815,9 @@ public class PermissionController {
             updateP.setParentId(permission.getParentId());
             updateP.setPermissionName(permission.getPermissionName() + "  Update Interface");
             updateP.setId(Long.parseLong(permission.getParentId().toString() + "3"));
-            // 加上 App id
+            // Add App id
             updateP.setApplicationId(applicationId);
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             updateP.setCreateTime(System.currentTimeMillis());
             updateP.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -883,7 +825,7 @@ public class PermissionController {
             success = permissionService.insert(updateP);
             updateP.setOrigId(updateP.getId());
             permissionService.updateById(updateP);
-            // 查
+            // check
             Permission getP = new Permission();
             getP.setIsActive(true);
             getP.setResourceType(PermissionConstant.RESOURCE_TYPE_RESTAPI);
@@ -891,9 +833,9 @@ public class PermissionController {
             getP.setParentId(permission.getParentId());
             getP.setPermissionName(permission.getPermissionName() + "查看 Interface");
             getP.setId(Long.parseLong(permission.getParentId().toString() + "4"));
-            // 加上 App id
+            // Add an app ID
             getP.setApplicationId(applicationId);
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             getP.setCreateTime(System.currentTimeMillis());
             getP.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -901,17 +843,17 @@ public class PermissionController {
             success = permissionService.insert(getP);
             getP.setOrigId(getP.getId());
             permissionService.updateById(getP);
-            // 批量Import
+            // batchImport
             Permission batchInP = new Permission();
             batchInP.setResourceType(PermissionConstant.RESOURCE_TYPE_RESTAPI);
             batchInP.setTenantId(tenantId);
             batchInP.setParentId(permission.getParentId());
             batchInP.setId(Long.parseLong(permission.getParentId().toString() + "5"));
             batchInP.setPermissionName(permission.getPermissionName() + "批量Import Interface");
-            // 加上 App id
+            // Add App id
             batchInP.setApplicationId(applicationId);
             batchInP.setIsActive(true);
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             batchInP.setCreateTime(System.currentTimeMillis());
             batchInP.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -919,17 +861,17 @@ public class PermissionController {
             success = permissionService.insert(batchInP);
             batchInP.setOrigId(batchInP.getId());
             permissionService.updateById(batchInP);
-            // 批量 Export
+            // batch Export
             Permission batchOutP = new Permission();
             batchOutP.setResourceType(PermissionConstant.RESOURCE_TYPE_RESTAPI);
             batchOutP.setTenantId(tenantId);
             batchOutP.setParentId(permission.getParentId());
             batchOutP.setPermissionName(permission.getPermissionName() + "批量 Export  Interface");
-            // 加上 App id
+            // Add App id
             batchOutP.setApplicationId(applicationId);
             batchOutP.setIsActive(true);
             batchOutP.setId(Long.parseLong(permission.getParentId().toString() + "6"));
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             batchOutP.setCreateTime(System.currentTimeMillis());
             batchOutP.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -945,9 +887,9 @@ public class PermissionController {
         }
         try {
             permission.setTenantId(tenantId);
-            // 加上 App id
+            // Add App id
             permission.setApplicationId(applicationId);
-            // 加上 App 和资源的关系
+            // Add the relationship between APP and resources
             permission.setCreateTime(System.currentTimeMillis());
             permission.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(
                     ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest())));
@@ -968,7 +910,7 @@ public class PermissionController {
     }
 
     /**
-     * 上级资源的 Data Source
+     * Superior resource Data Source
      *
      * @param tenantId      Tenant id
      * @param applicationId App id
@@ -1039,20 +981,20 @@ public class PermissionController {
     }
 
     private void traceRoot(Long permId, Map<Long, JSONObject> permissionTreeMap) {
-        if (permId.equals(0l))// 根节点0退出
+        if (permId.equals(0l))// Root node 0 exit
             return;
         JSONObject jo = permissionTreeMap.get(permId);
         JSONObject parentJo = permissionTreeMap.get(Long.parseLong(jo.get("parentId").toString()));
-        if (parentJo == null) {// 没有父节点退出
+        if (parentJo == null) {// No parent node exits
             return;
         }
-        if (jo.getInteger("resourceType") != 2) {// 不是页面元素加入到children中
+        if (jo.getInteger("resourceType") != 2) {// 不The page element is added to Children
             TreeMap<Long, JSONObject> children = toMap((Collection<JSONObject>) parentJo.get("children"));
             if (children == null) {
                 children = new TreeMap<Long, JSONObject>();
                 children.put(jo.getLong("sortOrder"), jo);
                 parentJo.put("children", children.values());
-            } else {// 有children ,New
+            } else {// children ,New
                 children.put(jo.getLong("sortOrder"), jo);
                 parentJo.replace("children", children.values());
             }
@@ -1114,7 +1056,7 @@ public class PermissionController {
         return permTreeNode;
     }
 
-    // 资源树 查看此 Tenant 下的所有资源
+    // Resource tree view all resources under this TENANT
     @GetMapping("/permissionTree/{disabled}/{applicationId}")
     public AjaxResult getPermissionTreeByTenantId(@PathVariable("tenantId") String tenantId,
             @PathVariable("applicationId") Long applicationId,
@@ -1137,7 +1079,7 @@ public class PermissionController {
         }
     }
 
-    // 资源树 查看此 Tenant 下的所有资源
+    // Resource tree view all resources under this TENANT
     @GetMapping("/order/permissionTree/{disabled}/{applicationId}")
     public Object getPermissionOrderTreeByTenantId(@PathVariable("tenantId") String tenantId,
             @PathVariable("applicationId") Long applicationId,
@@ -1159,20 +1101,19 @@ public class PermissionController {
                 });
             }
             return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, TreeUtils.build(list, redisUtils, locale));
-            // return TreeUtils.build(list,redisUtils,locale);
         } else {
             return null;
         }
 
     }
 
-    // App 管理中资源分页
+    // App Management resources Pagination
     @GetMapping("/permission/list/{applicationId}")
     public Object list(
             @PathVariable("tenantId") String tenantId,
             @PathVariable("applicationId") Long applicationId,
             @RequestParam Map<String, Object> map) {
-        // 要 Query 中间表的关于此 App id对应的所有的资源
+        // To all resources about this app ID of query intermediate table
         String resourceType = null;
         if (map.containsKey("resourceType")) {
             resourceType = (String) map.get("resourceType");
@@ -1207,7 +1148,7 @@ public class PermissionController {
                 queryWrapper.eq("permission_name", name);
             }
             selectList = permissionMapper.selectList(queryWrapper);
-        } // permissionService.selectList(queryWrapper);
+        }
         if (CollUtil.isNotEmpty(selectList)) {
             for (Permission permission : selectList) {
 
@@ -1229,21 +1170,18 @@ public class PermissionController {
             build = new ArrayList<>();
         }
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, build);
-        // return new Result<List<TreeModel>>().ok(build);
     }
 
-    // App 管理中资源 Update和查看
+    // AppManagement resource UPDATE and viewing
     @RequestMapping(value = "/permission/edit", method = RequestMethod.GET)
     public Object edit(String id) {
 
         PermissionInfoVO bean = permissionService.getPermissionsById(id);
 
-        // UserApplication bean = userApplicationService.getUserApplicationById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
-        // return new Result<PermissionInfoVO>().ok(bean);
     }
 
-    // Update资源
+    // Update resource
     @RequestMapping(value = "/permission", method = RequestMethod.PUT)
     public Object update(@RequestBody Permission bean) {
 
@@ -1251,7 +1189,6 @@ public class PermissionController {
             int success = permissionService.updatePermission(bean);
             if (success > 0) {
                 return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
-                // return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
             } else {
                 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
             }
@@ -1261,7 +1198,7 @@ public class PermissionController {
         }
     }
 
-    // Delete 资源
+    // Delete resource
     @RequestMapping(value = "/permission", method = RequestMethod.DELETE)
     public Object del(String id, HttpServletRequest request, HttpServletResponse response,
             @PathVariable("tenantId") String tenantId) {
@@ -1273,7 +1210,7 @@ public class PermissionController {
             split = new String[] { id };
         }
 
-        // 有子集的不能Delete 做校验
+        // You can't delete for verification
         if (ArrayUtil.isNotEmpty(split)) {
             for (int i = 0; i < split.length; i++) {
                 QueryWrapper<Permission> wrapper = new QueryWrapper<>();
@@ -1302,23 +1239,24 @@ public class PermissionController {
         }
     }
 
-    // Retrieve此资源下 Data 权限 Tenant id 资源id
+    // DATA permissions Tenant ID resource ID under this resource
     @RequestMapping(value = "/permission/{permissionId}/data", method = RequestMethod.GET)
     public Object getDataPermissionById(
             @PathVariable("tenantId") String tenantId,
             @PathVariable("permissionId") String permissionId,
             HttpServletRequest request) {
-        // 查到此 Tenant 下的 Data 权限的 Dictionary 组
+        // Find the DICTIONARY group of Data permissions under TENANT
         CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(tenantId,
                 PermissionConstant.DATA_ACCESS_PERMISSION);
         if (commonDictType == null) {
             throw new QslException(MessageKey.COMMONDICTTYPE_NOT_EXIST);
         }
-        // 然后根据 Tenant id and 资源id and Dictionary 组id Query Dictionary Detail 实体
+        // Then based on the Tenant id and resource ID and dictionary group ID Query
+        // Dictionary Detail entity
         String value = commonDictService.getDictValueByTenantIdAndKeyAndDictTypeId(tenantId, "dp" + permissionId,
                 commonDictType.getId().toString());
         if (StringUtil.isEmpty(value)) {
-            // 此资源没有 Data 权限
+            // This resource does not have data permissions
             value = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;
         }
         JSONObject jo = new JSONObject();
@@ -1347,22 +1285,21 @@ public class PermissionController {
         HSSFWorkbook xssfWorkbook = null;
         try {
             is = new FileInputStream(file);
-            // 得到Excel工作簿 Object
+            // Get the excel workbook Object
             xssfWorkbook = new HSSFWorkbook(is);
-            // 得到Excel工作表 Object
+            // Get Excel worksheet Object
             HSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
             BigDecimal totalRows = new BigDecimal(xssfSheet.getLastRowNum());
-            // 得到Excel工作表的指定行 Object
+            // Get the designated line of the excel worksheet Object
             for (int i = 1; i <= xssfSheet.getLastRowNum(); i++) {
                 HSSFRow xssfRow = xssfSheet.getRow(i);
-                // 得到Excel工作表指定行的单元格
+                // Get the cells specified by the excel work table
                 Permission permission = null;
                 try {
                     permission = excelRowToPermission(xssfRow, tenantId);
                 } catch (Exception e) {
                     failureCount++;
                     processedCount++;
-                    // failedUserList.add(user);
                     BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
                             BigDecimal.ROUND_HALF_UP);
                     redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
@@ -1442,7 +1379,7 @@ public class PermissionController {
         resultMap.put("repeatCount", repeatCount);
         resultMap.put("existingUserList", existingPermissionList);
         resultMap.put("failedUserList", failedUserList);
-        // 得到单元格样式
+        // Get the cell style
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, resultMap);
 
     }

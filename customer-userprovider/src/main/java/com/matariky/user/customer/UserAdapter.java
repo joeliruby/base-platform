@@ -15,9 +15,6 @@ import org.keycloak.models.RealmModel;
 import org.keycloak.models.RoleModel;
 import org.keycloak.models.SubjectCredentialManager;
 import org.keycloak.models.UserModel;
-import org.keycloak.models.UserModel.RequiredAction;
-import org.keycloak.models.UserProvider;
-import org.keycloak.models.utils.RoleUtils;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageUtil;
 import org.keycloak.storage.adapter.AbstractUserAdapterFederatedStorage;
@@ -37,16 +34,16 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
 		this.storageId = new StorageId(storageProviderModel.getId(), user.getUsername());
 		this.user = user;
 	}
-	
+
 	@Override
 	public void grantRole(RoleModel role) {
 		super.grantRole(role);
 	}
-	
+
 	@Override
-    public void joinGroup(GroupModel group) {
+	public void joinGroup(GroupModel group) {
 		super.joinGroup(group);
-    }
+	}
 
 	@Override
 	public String getUsername() {
@@ -108,7 +105,8 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
 	@Override
 	protected Set<RoleModel> getRoleMappingsInternal() {
 		if (user.getRoles() != null) {
-			return user.getRoles().stream().map(roleName -> new UserRoleModel(roleName, realm)).collect(Collectors.toSet());
+			return user.getRoles().stream().map(roleName -> new UserRoleModel(roleName, realm))
+					.collect(Collectors.toSet());
 		}
 		return Set.of();
 	}
@@ -137,7 +135,6 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
 	public void removeRequiredAction(RequiredAction action) {
 		getFederatedStorage().removeRequiredAction(realm, this.getId(), action.name());
 	}
-
 
 	@Override
 	public void setAttribute(String name, List<String> values) {
@@ -190,10 +187,7 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
 
 	@Override
 	public void setUsername(String username) {
-		
-		
+
 	}
-	
-	
 
 }

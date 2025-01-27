@@ -96,10 +96,6 @@ import com.matariky.utils.TokenUtils;
 import cn.hutool.core.collection.CollUtil;
 import io.jsonwebtoken.lang.Collections;
 
-/**
- *
- * @date 20:45
- */
 @RestController
 @RequestMapping("api/v1/tenant/{tenantId}")
 @Component
@@ -154,7 +150,6 @@ public class UserController {
 	@Autowired
 	private UserMapper userMapper;
 
-	// @UserLoginToken
 	@PostMapping("/password/reset/user/{userId}")
 	@RequirePermission()
 	@VerifyTenantId
@@ -166,16 +161,11 @@ public class UserController {
 		}
 		user.setPazzword(EncryptionUtils.getHash3(pazzword, "SHA"));
 		userService.updateById(user);
-		// return new ResponseEntity<JSONObject>(
-		//
-		// commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
-		// MessageKey.PASSWORD_RESET, true,tenantId),
-		// HttpStatus.OK);
 
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
 	}
 
-	// 指定 User Execl Export
+	// designation User Execl Export
 	@RequestMapping(value = "/user/list/excel/{fileName}", method = RequestMethod.POST)
 	public @ResponseBody String listExcelForSpecificUsers(HttpServletResponse response,
 			@RequestBody List<Map<String, Object>> userList,
@@ -184,10 +174,7 @@ public class UserController {
 			@RequestHeader("Authorization") String jwt)
 
 	{
-		// response.setContentType("multipart/form-data");
 		response.setContentType("application/x-msdownload");
-		// response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		// response.setContentType("application/octet-stream; charset=utf-8");
 		response.setCharacterEncoding("UTF-8");
 		try {
 			ServletOutputStream out = response.getOutputStream();
@@ -217,10 +204,6 @@ public class UserController {
 		JSONObject jo = JSONObject.parseObject(fileStoreConfigJson);
 		String fileFolder = jo.getString("localPath");
 		String fullPath = fileFolder + File.separator + "tmp" + File.separator + fileName + ".xlsx";
-		// CommonOss co = new CommonOss();
-		// co.setUrl(fullPath);
-		// List<CommonOss> coList = new ArrayList<CommonOss>();
-		// coList.add(co);
 		BufferedInputStream in = null;
 		BufferedOutputStream out = null;
 		File file = null;
@@ -247,26 +230,19 @@ public class UserController {
 				out.close();
 			}
 			if (file != null) {
-				// Delete 临时文件
+				// Delete temporary File
 				file.delete();
 			}
 		}
-		// return fileName+".xlsx";
-		// ossService.downloadZipByCOList(response, coList,fileName);
 
 	}
 
-	// User 动态 Query Execl Export
+	// User dynamic Query Execl Export
 	@RequestMapping(value = "/user/list/excel/{fileName}", method = RequestMethod.GET)
 	public void listExcel(HttpServletResponse response,
 			@RequestParam Map<String, Object> map,
 			@PathVariable("tenantId") String tenantId,
-			@PathVariable("fileName") String fileName)
-	/*
-	 * @ApiParam(value = "JWT Token", required =
-	 * true) @RequestHeader("Authorization") String jwt)
-	 */
-	{
+			@PathVariable("fileName") String fileName) {
 
 		map.put("tenantId", tenantId);
 
@@ -274,7 +250,7 @@ public class UserController {
 			String organizationCode = map.get("organizationCode").toString();
 			if (StringUtils.isNotEmpty(organizationCode)) {
 				Long[] ids = userOrganizationService.getChildrenOrganization(organizationCode, tenantId);
-				// 通过递归 Query 选择组织的下面的所有部门
+				// Choose all departments below the organization through recursively Query
 				map.put("organizations", ids);
 			}
 		}
@@ -290,7 +266,7 @@ public class UserController {
 			endst = map.get("end").toString();
 		}
 
-		// 把 Time 转成longType
+		// Turn time intolongType
 		try {
 			if (StringUtil.isNotEmpty(beginst)) {
 				long begin = DateUtil.string2Datetime(beginst).getTime();
@@ -325,22 +301,16 @@ public class UserController {
 	@RequestMapping(value = "/user/list/override", method = RequestMethod.PUT)
 	public Object overrideUsers(HttpServletResponse response,
 			@RequestBody List<User> userList,
-			@PathVariable("tenantId") String tenantId)
-	/*
-	 * @ApiParam(value = "JWT Token", required =
-	 * true) @RequestHeader("Authorization") String jwt)
-	 */
-	{
+			@PathVariable("tenantId") String tenantId) {
 		for (User user : userList) {
 			User fetched = userService.findByUsername(user.getLoginName());
 			user.setId(fetched.getId());
 			userService.forcedUpdate(user);
 		}
 		return new AjaxResult(response.getStatus(), AjaxResult.SUCCESS, null);
-		// return new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
 	}
 
-	// 指定 User ID Query Execl Export
+	// designation User ID Query Execl Export
 	@RequestMapping(value = "/selecteduser/list/excel/{fileName}", method = RequestMethod.POST, produces = "application/octet-stream")
 	public String getExcel(HttpServletResponse response,
 			@RequestBody Map<String, String> map,
@@ -361,7 +331,6 @@ public class UserController {
 
 			String[] titles = { " Tenant   Code ", " Name ", "账号", "性别", "所属角色", "机构 Code ", "所属分组", "手机号", " Status ",
 					"Creater" };
-			// ExcelUtils.writeExcel(response, userList );
 			return exportExcel(titles, out, userList, fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -373,33 +342,36 @@ public class UserController {
 	private String exportExcel(String[] titles, ServletOutputStream out, List<Map<String, Object>> userList,
 			String fileName) throws Exception {
 		try {
-			// 第一步 ,Create one workbook ,对应 one Excel文件
+			// The first step, Create One Workbook, corresponding one Excel File
 			HSSFWorkbook workbook = new HSSFWorkbook();
 
-			// 第二步 ,在webbook中 Add one sheet,对应Excel文件中的sheet
+			// The second step is the ADD One Sheet in WebBook, corresponding to the excel
+			// filesheet
 			HSSFSheet hssfSheet = workbook.createSheet("sheet1");
 
-			// 第三步 ,在sheet中 Add 表头第0行,注意老 Versionpoi对Excel的行数列数有限制short
+			// The third step is the 0th line of ADD head head in Sheet. Note that the old
+			// VersionPoi has a limit on the number of rows of Excelshort
 
 			HSSFRow row = hssfSheet.createRow(0);
-			// 第四步 ,Create 单元格 ,并 Configuration值表头 Configuration表头居中
+			// The fourth step, Create cells, and configuration value watch head
+			// Configuration
 			HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
 
-			// 居中样式
+			// Centered style
 			hssfCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 
 			HSSFCell hssfCell = null;
 			for (int i = 0; i < titles.length; i++) {
-				hssfCell = row.createCell(i);// 列索引从0 Start
-				hssfCell.setCellValue(titles[i]);// 列 Name 1
-				hssfCell.setCellStyle(hssfCellStyle);// 列居中显示
+				hssfCell = row.createCell(i);// Column index from0 Start
+				hssfCell.setCellValue(titles[i]);// List Name 1
+				hssfCell.setCellStyle(hssfCellStyle);// Liney Display
 			}
 
 			for (int i = 0; i < userList.size(); i++) {
 				row = hssfSheet.createRow(i + 1);
 				Map<String, Object> person = (Map<String, Object>) userList.get(i);
 
-				// 第六步 ,Create 单元格 ,并 Configuration值
+				// 第Six steps, create cells, and configuration value
 				String tenantId = null;
 				if (person.get("tenantId") != null) {
 					tenantId = (String) person.get("tenantId");
@@ -480,10 +452,9 @@ public class UserController {
 				}
 			}
 
-			// 第七步 ,将文件输出到Client Browser
+			// Step 7, output file to Client Browser
 
 			try {
-				// workbook.write(out);
 				String fileStoreConfigJson = commonDictService
 						.getDictValueByTenantIdAndKey(TokenUtils.extractTenantIdFromHttpReqeust(
 								((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes()))
@@ -498,8 +469,6 @@ public class UserController {
 				outputStream.close();
 				workbook.close();
 				return fileName + ".xlsx";
-				// out.flush();
-				// out.close();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -516,23 +485,12 @@ public class UserController {
 	// Pagination
 	@RequestMapping(value = "/user/list", method = RequestMethod.GET)
 	public AjaxResult list(HttpServletRequest request, @RequestParam Map<String, Object> map,
-			@PathVariable("tenantId") String tenantId)
-	/*
-	 * @ApiParam(value = "JWT Token", required =
-	 * true) @RequestHeader("Authorization") String jwt)
-	 */
-	{
+			@PathVariable("tenantId") String tenantId) {
 
 		map.put("tenantId", TokenUtils.extractTenantIdFromHttpReqeust(request));
 
 		if (map.containsKey("organizationCode")) {
 			String organizationCode = map.get("organizationCode").toString();
-			/*
-			 * if(StringUtils.isNotEmpty(organizationCode)) { Long[] ids =
-			 * userOrganizationService.getChildrenOrganization(organizationCode, tenantId);
-			 * // 通过递归 Query 选择组织的下面的所有部门 if(ArrayUtil.isNotEmpty(ids)) {
-			 * map.put("organizations", ids); } }
-			 */
 			map.put("organizations", organizationCode);
 		}
 		int pageIndex = 1;
@@ -557,7 +515,7 @@ public class UserController {
 			endst = map.get("end").toString();
 		}
 
-		// 把 Time 转成longType
+		// Turn time intolongType
 		if (StringUtil.isNotEmpty(beginst)) {
 			long begin = DateUtil.string2Dateyyyymmdd(beginst).getTime();
 			map.put("begin", begin);
@@ -569,7 +527,7 @@ public class UserController {
 
 		List<User> userList = userService.getUserAll(map);
 
-		// 组织机构 Name 遍历赋值
+		// Organizational Name traversed to assignment
 		for (User user : userList) {
 			String depCode = user.getDepartmentOrganizationCode();
 			String[] codes;
@@ -581,7 +539,8 @@ public class UserController {
 					codes = new String[] { depCode };
 				}
 
-				// 根据组织 Code Query 组织 Name （多个拼接而成）
+				// According to the organization Code Query organization name (multiple
+				// stitching)
 				String name = userOrganizationService.getOrgNamesByCode(codes);
 				if (StringUtils.isNotEmpty(name)) {
 					user.setOrganizationName(name);
@@ -601,11 +560,10 @@ public class UserController {
 
 		User bean = userService.getUserById(id);
 
-		// 本身就有组织机构
-
-		// 角色集合
+		// There is an organization in itself
+		// Role collection
 		List<Long> roleIdList = userService.getRoleIdList(id);
-		// 分组集合
+		// Packet collection
 		List<Long> groupIdList = userService.getGroupIdList(id);
 
 		List<String> applicationIdList = applicationService.getApplicationIdList(id);
@@ -633,7 +591,7 @@ public class UserController {
 		}
 		if (StringUtils.isNotEmpty(bean.getDepartmentOrganizationCode())) {
 
-			// 多个组织 Code 用逗号隔开
+			// Multi -organization CODE is separated by comma
 			String code = bean.getDepartmentOrganizationCode();
 
 			String[] codes;
@@ -675,7 +633,7 @@ public class UserController {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
 	}
 
-	// 查看个人授权 permission
+	// View personal authorization permission
 	@RequestMapping(value = "/user/permission", method = RequestMethod.GET)
 	public Object getPermissionByUser(HttpServletRequest request, Long id, @PathVariable("tenantId") String tenantId) {
 		String tenantIdData = "";
@@ -683,7 +641,7 @@ public class UserController {
 		if (tenantStr != null && tenantStr.length > 1) {
 			tenantIdData = tenantStr[1];
 		}
-		// 找到个人归属 App user_id tenant_id
+		// Find personal belonging App user_id tenant_id
 		List<Map<String, Object>> listMaps = userService.getApplicationByUser(id, tenantIdData);
 
 		for (Map<String, Object> map : listMaps) {
@@ -695,13 +653,13 @@ public class UserController {
 		// return listMaps;
 	}
 
-	// 查看最终授权
+	// Check the final authorization
 	@RequestMapping(value = "/user/permission/all", method = RequestMethod.GET)
 	public Object getPermissionByAll(HttpServletRequest request,
 			Long id,
 			@PathVariable("tenantId") String tenantId) {
 
-		// 找到个人归属 App user_id tenant_id
+		// Find personal belonging App user_id tenant_id
 		String tenantIdData = "";
 		String[] tenantStr = tenantId.split("_");
 		if (tenantStr != null && tenantStr.length > 1) {
@@ -716,7 +674,6 @@ public class UserController {
 		}
 
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, listMaps);
-		// return listMaps;
 	}
 
 	// Save Operation
@@ -724,48 +681,45 @@ public class UserController {
 	public Object save(@RequestBody User bean,
 			@PathVariable("tenantId") String tenantId,
 			HttpServletRequest request, HttpServletResponse response) {
-		// 账号：需要做 Unique 性认证 ,整个 System中的 User 账号必须 Unique
-		// ,若输入的账号重复 , System需要展示推荐账号 ,如lafee重复 ,则 System需要展示推荐lafee2020、lafee_2020类似。
+		// Account number: Need to do unique certification, the User account in the
+		// entire system must Unique
+		// If the input account is repeated, System needs to display the recommended
+		// account. If Lafee repeats, System needs to display the recommendation of
+		// lafee2020, lafee_2020 similar。
 		Map<String, Object> columnMap = new HashMap<>();
-		// 表单直接传过来的 Tenant id
+		// 表Directly passed over Tenant id
 		String tenantId2 = bean.getTenantId();
 
-		// columnMap.put("tenant_id", tenantId2);
 		columnMap.put("delete_time", 0);
 		columnMap.put("login_name", bean.getLoginName());
 
 		List<User> selectByMap = userService.selectByMap(columnMap);
 
 		if (selectByMap != null && selectByMap.size() > 0) {
-			// Calendar cal = Calendar.getInstance();
-			// int year = cal.get(Calendar.YEAR);
-			// StringBuilder msg = new StringBuilder();
-			// msg.append(bean.getLoginName() + "_" + year);
-			// return new ResponseEntity<String>(msg.toString(), HttpStatus.BAD_REQUEST);
 			throw new QslException(MessageKey.USER_EXISTED);
 		}
 		bean.setTenantId(tenantId2);
-		// loginName账号不能为空
+		// loginName The account cannot be empty
 		if (StringUtil.isEmpty(bean.getLoginName())) {
 			throw new QslException(MessageKey.USER_NOT_LOGINNAME_EXIST);
 		}
 
-		// realName Name 不能为空
+		// realName Name Can't be empty
 		if (StringUtil.isEmpty(bean.getRealName())) {
 			throw new QslException(MessageKey.USER_NOT_REALNAME_EXIST);
 		}
 
-		// cellPhone 手机号不能为空
+		// cellPhone The mobile phone number cannot be empty
 		if (StringUtil.isEmpty(bean.getCellPhone())) {
 			throw new QslException(MessageKey.USER_NOT_CELLPHONE_EXIST);
 		}
 
-		// 所属 Tenant 不能为空 tenantId
+		// 联系 Tenant Can't be empty tenantId
 		if (StringUtil.isEmpty(bean.getTenantId())) {
 			throw new QslException(MessageKey.USER_NOT_TENANTID_EXIST);
 		}
 
-		// 性别不能为空
+		// Gender cannot be empty
 		if (bean.getGender() == null) {
 			throw new QslException(MessageKey.USER_NOT_GENDER_EXIST);
 		}
@@ -790,29 +744,15 @@ public class UserController {
 			}
 		}
 
-		// department_organization_code User 所在部门组织机构 Code
-		// List<String[]> organizationCodeList = bean.getOrganizationCodeList();
 		String orgCodeString = bean.getOrganizationCodesString();
 
-		// List<String[]> longestCodeList =getLongest(organizationCodeList);
 		if (!StringUtils.isBlank(orgCodeString)) {
-			// StringBuilder codeStrings = new StringBuilder();
-			// List<String[]> longestCodeList=User.toEmbeddedList(orgCodeString);
-			// for (int i = 0; i < longestCodeList.size(); i++) {
-			// String[] codes = longestCodeList.get(i);
-			// String last = codes[codes.length - 1];
-			// if (i == longestCodeList.size() - 1) {
-			// codeStrings.append(last);
-			// } else {
-			// codeStrings.append(last).append(",");
-			// }
-			// }
 			bean.setDepartmentOrganizationCode(orgCodeString);
 		} else {
 			throw new QslException(MessageKey.USER_NOT_ORG_EXIST);
 		}
 
-		// 根据 Code Query 组织id
+		// According to Code Queryid
 		try {
 			userService.save(bean);
 			if (!Collections.isEmpty(bean.getApplicationIdList())) {
@@ -826,29 +766,10 @@ public class UserController {
 
 			}
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-			// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
-	}
-
-	private List<String[]> getLongest(List<String[]> organizationCodeList) {
-		String[] tmp = null;
-		if (Collections.isEmpty(organizationCodeList))
-			return new ArrayList<String[]>();
-		for (String[] ss : organizationCodeList) {
-			if (tmp == null) {
-				tmp = ss;
-			} else {
-				if (ss.length > tmp.length) {
-					tmp = ss;
-				}
-			}
-		}
-		List<String[]> returnList = new ArrayList<String[]>();
-		returnList.add(tmp);
-		return returnList;
 	}
 
 	// Update Operation
@@ -856,65 +777,44 @@ public class UserController {
 	public Object update(@RequestBody User bean, @PathVariable("tenantId") String tenantId, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		// loginName账号不能为空
+		// loginNameThe account cannot be empty
 		if (StringUtil.isEmpty(bean.getLoginName())) {
 			throw new QslException(MessageKey.USER_NOT_LOGINNAME_EXIST);
 		}
 
-		// realName Name 不能为空
+		// realName Name Can't be empty
 		if (StringUtil.isEmpty(bean.getRealName())) {
 			throw new QslException(MessageKey.USER_NOT_REALNAME_EXIST);
 		}
 
-		// cellPhone 手机号不能为空
+		// cellPhone The mobile phone number cannot be empty
 		if (StringUtil.isEmpty(bean.getCellPhone())) {
 			throw new QslException(MessageKey.USER_NOT_CELLPHONE_EXIST);
 		}
 
-		// 所属 Tenant 不能为空 tenantId
+		// Tenant cannot be emptytenantId
 		if (StringUtil.isEmpty(bean.getTenantId())) {
 			throw new QslException(MessageKey.USER_NOT_TENANTID_EXIST);
 		}
 
-		// 性别不能为空
+		// Gender cannot be empty
 		if (bean.getGender() == null) {
 			throw new QslException(MessageKey.USER_NOT_GENDER_EXIST);
 		}
 
-		// List<String[]> organizationCodeList =getLongest(
-		// bean.getOrganizationCodeList());
-
 		if (StringUtils.isNotEmpty(bean.getOrganizationCodesString())) {
-			// StringBuilder codeStrings = new StringBuilder();
-			// List<String[]> organizationCodeList
-			// =User.toEmbeddedList(bean.getOrganizationCodesString());
-			// for (int i = 0; i < organizationCodeList.size(); i++) {
-			// String[] codes = organizationCodeList.get(i);
-			// String last = codes[codes.length - 1];
-			// if (i == organizationCodeList.size() - 1) {
-			// codeStrings.append(last);
-			// } else {
-			// codeStrings.append(last).append(",");
-			// }
-			//
-			// }
 			bean.setDepartmentOrganizationCode(bean.getOrganizationCodesString());
 			bean.setSelfOrganizationCode(
 					OrgCodeUtil.generateSelfOrganizationCode(bean.getOrganizationCodesString(), bean.getId()));
-			// if(!Collections.isEmpty(bean.getGroupIdList())) {
-			//
-			// bean.setDepartmentOrganizationCode(bean.getDepartmentOrganizationCode());
-			// bean.setSelfOrganizationCode("ind_"+bean.getDepartmentOrganizationCode()+"_"+bean.getId());
-			// }
 		} else {
 			throw new QslException(MessageKey.USER_NOT_ORG_EXIST);
 		}
 
 		try {
 			userService.update(bean);
-			// Query 个人机构
+			// Query Personal institution
 			UserOrganization org = userOrganizationService.getUserSelfOrganization(bean.getId());
-			if (org == null) {// 没有 ,Create
+			if (org == null) {// Not exist ,Create
 				UserOrganization newOrg = new UserOrganization();
 				newOrg.setOrganizationName(bean.getRealName());
 				newOrg.setOrganizationCode(
@@ -925,7 +825,6 @@ public class UserController {
 			org.setOrganizationCode(
 					OrgCodeUtil.generateSelfOrganizationCode(bean.getOrganizationCodesString(), bean.getId()));
 			org.setParentId(userOrganizationService.selectByOrgCode(bean.getOrganizationCodesString()).getId());
-			// org.setSelfOrganizationCode();
 			org.setTenantId(bean.getTenantId());
 			org.setDeleteTime(0l);
 			org.setOrgType(4);
@@ -953,7 +852,6 @@ public class UserController {
 							tenantService.selectByTenantCode(tenantId).getId());
 				}
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-			// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
@@ -965,7 +863,7 @@ public class UserController {
 	public Object updateUserInfo(@RequestBody User bean, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		// 效验 Data
+		// Effect Data
 		Long count = userMapper.selectCount(Wrappers.lambdaQuery(User.class)
 				.eq(User::getLoginName, bean.getLoginName())
 				.eq(User::getDeleteTime, 0)
@@ -977,7 +875,6 @@ public class UserController {
 		try {
 			userService.updateById(bean);
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-			// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
@@ -989,7 +886,7 @@ public class UserController {
 	public Object getUserDetail(@PathVariable("tenantId") String tenantId, @PathVariable("userId") Long userId,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		// 效验 Data
+		// Effect Data
 
 		try {
 			User user = userService.selectById(userId);
@@ -998,7 +895,6 @@ public class UserController {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
 			resultMap.put("userDetail", user);
 			resultMap.put("organization", organization);
-			// return resultMap;
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, resultMap);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1021,7 +917,6 @@ public class UserController {
 		try {
 			userService.updateDeleteTimeById(split);
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-			// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
@@ -1034,7 +929,7 @@ public class UserController {
 		new ExcelTemplateUtil().downloadExcel(response, "user.xlsx", " User Import Import .xlsx");
 	}
 
-	// User 下拉框
+	// User Drop -down box
 	@GetMapping("/user/box")
 	public AjaxResult selectUserAllByTenantId(@PathVariable("tenantId") String tenantId) {
 		Map<String, Object> columnMap = new HashMap<>();
@@ -1044,7 +939,7 @@ public class UserController {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userList);
 	}
 
-	// 切换主题
+	// Switch theme
 	@RequestMapping(value = "/user/{userId}/theme/{theme}", method = RequestMethod.PUT)
 	public Object switchTheme(@PathVariable("tenantId") String tenantId,
 			@PathVariable("userId") Long userId,
@@ -1068,13 +963,12 @@ public class UserController {
 		Boolean success = userService.updateById(user);
 		if (success)
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-		// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		else {
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-	// Import进度
+	// Import schedule
 	@RequestMapping(value = "/user/bulk/nonce/{nonce}", method = RequestMethod.POST)
 	public Object uploadPercentage(@RequestParam(value = "uploadFile", required = false) MultipartFile file,
 			@PathVariable("nonce") String nonce) {
@@ -1092,11 +986,10 @@ public class UserController {
 			@PathVariable("tenantCode") String tenantCode) {
 
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userService.getAdminByTenantCode(tenantCode));
-		// return userService.getAdminByTenantCode(tenantCode);
 
 	}
 
-	// Tenant Configuration管理员
+	// Tenant Configuration administrator
 	@PostMapping("/admin")
 	@Transactional(rollbackFor = Exception.class)
 	public Object addAdmin(@RequestHeader("Authorization") String jwt,
@@ -1113,16 +1006,6 @@ public class UserController {
 		}
 		User admin = userService.findByUsername(user.getLoginName());
 		if (admin != null) {
-			// JSONObject jo = commonDictService.getServiceMessage(locale +
-			// "_SERVICE_CONSTANT_MESSAGE",
-			// MessageKey.LOGIN_ACCOUNT_EXIST, false,tenantId);
-			// // to be continue
-			// String suggestedNames = user.getLoginName() +
-			// user.getCellPhone().substring(7);
-			// suggestedNames += user.getLoginName() + "";
-			// jo.put("suggestedAccountNames", suggestedNames);
-			//
-			// return new ResponseEntity<String>(jo.toString(), HttpStatus.BAD_REQUEST);
 			throw new QslException(MessageKey.USER_EXISTED);
 		}
 
@@ -1130,7 +1013,7 @@ public class UserController {
 		if (tenantId.contains("_")) {
 			realTenantId = tenantId.split("_")[1];
 		}
-		// Tenant 如果没有购买订单 ,不能Create 管理员
+		// Tenant If you don't buy an order, you can't Create administrator
 		Long c = orderInfoMapper.selectCount(Wrappers.lambdaQuery(OrderInfo.class)
 				.eq(OrderInfo::getOrderTenantId, realTenantId)
 				.eq(OrderInfo::getDeleteTime, 0)
@@ -1139,7 +1022,7 @@ public class UserController {
 			throw new QslException(MessageKey.TENANT_HAVA_NOT_ORDER);
 		}
 
-		// Create New管理员
+		// Create New administrator
 		// UserTenant tenant=tenantService.selectById(tenantId);
 		UserTenant tenant = tenantService.selectBytenantCode(tenantId);
 		user.setTenantId(tenant.getTenantCode());
@@ -1156,12 +1039,12 @@ public class UserController {
 		user.setSelfOrganizationCode(
 				OrgCodeUtil.generateSelfOrganizationCode(topOrganization.getOrganizationCode(), user.getId()));
 		userService.updateById(user);
-		// 插入 Tenant User 中间表
+		// insert Tenant User Intermediate table
 		userService.deleteUserTenantRelation(user.getId(), tenant.getTenantCode(), 1);
 		userService.insertUserTenantRelation(user.getId(), tenant.getTenantCode(), topOrganization.getId(),
 				topOrganization.getOrganizationCode(), true, tenant.getId(), user.getSelfOrganizationCode());
 
-		// Create 新 Tenant 管理员角色
+		// Create new Tenant Administrator
 		UserRole newAdminRole = new UserRole();
 		newAdminRole.setRoleName(tenant.getTenantName() + " Administrator");
 		newAdminRole.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(request)));
@@ -1169,15 +1052,9 @@ public class UserController {
 		newAdminRole.setDeleteTime(0L);
 		newAdminRole.setTenantId(tenant.getTenantCode());
 		roleService.createUserRole(newAdminRole);
-		// 把 Tenant 下的权限复制一份分配给新 Tenant 管理员角色
-		// List<Permission> permissionList11=permissionService.selectList(new
-		// QueryWrapper<Permission>().eq("tenant_id","1").eq("delete_time",
-		// 0l).eq("is_active", 1));
-		// Set<Permission> permissionList =
-		// permissionService.getOrderSuitePermissionByUserId(user.getApplicationId(),tenant.getId().toString());
 
 		Set<Permission> permissionList = permissionService.selectPermissionByTenantId(tenant.getId().toString());
-		// Create 新 Tenant 管理 App
+		// Create new Tenantmanage App
 		UserApplication application = new UserApplication();
 		application.setCreateTime(System.currentTimeMillis());
 		application.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(request)));
@@ -1188,14 +1065,13 @@ public class UserController {
 		application.setTenantId(tenant.getTenantCode());
 		applicationService.saveOrUpdateTenant(application, tenant);
 
-		// Configuration新管理员默认 App 为 Tenant 管理 App
+		// ConfigurationNew administrator's default app is managed by Tenant App
 		user.setApplicationId(application.getId());
 		userService.updateById(user);
-		// Create 新管理员和新管理 App 关联
+		// Create New administrator and new management APP association
 		applicationService.insertUserApplicationRelation(user.getId(), application.getId(), tenant.getId());
-		// Create Tenant 和 App 的关联
+		// Create Tenant Affrobot with APP
 
-		// xxxxxxxxxxxxxxxxxxxxxxto be continued!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		Map<Long, Long> dupPermTreeMap = new HashMap<Long, Long>();
 		for (Permission newperm : permissionList) {
 			newperm.setApplicationId(application.getId());
@@ -1207,12 +1083,6 @@ public class UserController {
 			permissionService.createPermission(newperm);
 			Long newId = newperm.getId();
 			dupPermTreeMap.put(origId, newId);
-			// Import 权限集和管理员角色 Binding
-			// permissionService.createResourceAllocationToRole(newAdminRole.getId(),
-			// newperm.getId());
-			// Create 管理 App 和 Import 管理 App 权限集的关联
-			// applicationService.createTenantApplicationPermissionBound(application.getId(),
-			// newperm.getId());
 
 		}
 		Set<Long> permIdSet = new HashSet<Long>();
@@ -1227,28 +1097,22 @@ public class UserController {
 				permissionService.updateById(newperm);
 			}
 		}
-		// 把资源的parentIDUpdate为新的资源ID
+		// ParentidUpDate of the resource as a new resourceID
 
-		// 把新 Tenant 管理员角色分配给新 Tenant 管理员
+		// Allocate the role of the new Tenant administrator to the new Tenant
+		// administrator
 		userService.insertUserRoleRelation(user.getId(), newAdminRole.getId());
-		// 把管理员加到组织机构树下
+		// Add the administrator to the organization tree
 		UserOrganization admOrg = new UserOrganization();
 		admOrg.setTenantId(tenantId);
 		admOrg.setParentId(topOrganization.getId());
 		admOrg.setOrganizationName(user.getRealName());
 		admOrg.setOrganizationCode(user.getSelfOrganizationCode());
-		admOrg.setOrgType(4);// 个人
+		admOrg.setOrgType(4);// personal
 		userOrganizationService.insert(admOrg);
-
-		// permissionService.deleteRUserPermission(user.getId());
-		// for(Permission newperm : permissionList) {
-		// permissionService.createResourceAllocationToUser(user.getId(),
-		// newperm.getId());
-		// }
 
 		if (success)
 			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-		// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		else {
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
@@ -1270,22 +1134,21 @@ public class UserController {
 		List<User> existingUserList = new ArrayList<User>();
 		List<Map<String, Object>> failedUserList = new ArrayList<Map<String, Object>>();
 		InputStream is = new FileInputStream(file);
-		// 得到Excel工作簿 Object
+		// Get the excel workbook Object
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-		// 得到Excel工作表 Object
+		// Get Excel worksheet Object
 		XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
 		BigDecimal totalRows = new BigDecimal(xssfSheet.getLastRowNum());
-		// 得到Excel工作表的指定行 Object
+		// Get the designated line of the excel worksheet Object
 		for (int i = 1; i <= xssfSheet.getLastRowNum(); i++) {
 			XSSFRow xssfRow = xssfSheet.getRow(i);
-			// 得到Excel工作表指定行的单元格
+			// Get the cells specified by the excel work table
 			User user = null;
 			try {
 				user = excelRowToUser(xssfRow, tenantId);
 			} catch (Exception e) {
 				failureCount++;
 				processedCount++;
-				// failedUserList.add(user);
 				BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
 						BigDecimal.ROUND_HALF_UP);
 				redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
@@ -1342,8 +1205,7 @@ public class UserController {
 		resultMap.put("repeatCount", repeatCount);
 		resultMap.put("existingUserList", existingUserList);
 		resultMap.put("failedUserList", failedUserList);
-		// 得到单元格样式
-		// XSSFCellStyle xssfCellStyle = xssfCell.getCellStyle();
+		// Get the cell style
 		return resultMap;
 
 	}
@@ -1370,22 +1232,22 @@ public class UserController {
 			return "";
 		}
 		switch (cell.getCellType()) {
-			case HSSFCell.CELL_TYPE_NUMERIC: // 数字
-				// 如果为 Time 格式的 Content
+			case HSSFCell.CELL_TYPE_NUMERIC: // Numeric
+				// If it is a time format content
 				return cell.getNumericCellValue();
 
-			case HSSFCell.CELL_TYPE_STRING: // 字符串
+			case HSSFCell.CELL_TYPE_STRING: // String
 				return cell.getStringCellValue();
 			case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
 				return cell.getBooleanCellValue() + "";
-			case HSSFCell.CELL_TYPE_FORMULA: // 公式
+			case HSSFCell.CELL_TYPE_FORMULA: // Formula
 				return cell.getCellFormula() + "";
-			case HSSFCell.CELL_TYPE_BLANK: // 空值
+			case HSSFCell.CELL_TYPE_BLANK: // Blank
 				return "";
-			case HSSFCell.CELL_TYPE_ERROR: // 故障
-				return "非法字符";
+			case HSSFCell.CELL_TYPE_ERROR: // Error
+				return "Invalid character";
 			default:
-				return "未知Type ";
+				return "Unknown type";
 		}
 
 	}
@@ -1491,7 +1353,7 @@ public class UserController {
 		if (user == null) {
 			throw new QslException(MessageKey.USER_NOT_EXIST);
 		}
-		// 原 Password 不正确
+		// The original password is incorrect
 		if (!pazzword.equals(user.getPazzword())) {
 			throw new QslException(MessageKey.PASSWORD_ERROR);
 		}
@@ -1503,17 +1365,13 @@ public class UserController {
 						.getString("message"),
 				null);
 
-		// return new
-		// ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","PASSWORD_UPDATE",true,tenantId),
-		// HttpStatus.OK);
 	}
 
-	// Tenant 下拉框
+	// Tenant Drop -down box
 	@GetMapping("/admin/{tenantCode}")
 	public Object selectTenant(@PathVariable("tenantId") String tenantId,
 			@PathVariable("tenantCode") String tenantCode) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userService.getAdminByTenantCode(tenantCode));
-		// return userService.getAdminByTenantCode(tenantCode);
 	}
 
 	@RequestMapping(value = "/user/userimg", method = RequestMethod.POST)

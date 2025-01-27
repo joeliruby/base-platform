@@ -22,10 +22,12 @@ public class MyBatisConfig {
      * @Date: 2023/10/9 16:31
      * @return com.matariky.mybatis.DataScopeInterceptor
      **/
-   /*@Bean
-    public DataScopeInterceptor dataIsolationInterceptor() {
-       return new DataScopeInterceptor();
-    }*/
+    /*
+     * @Bean
+     * public DataScopeInterceptor dataIsolationInterceptor() {
+     * return new DataScopeInterceptor();
+     * }
+     */
 
     /**
      * @Description: 声明id
@@ -35,11 +37,11 @@ public class MyBatisConfig {
      **/
     @Bean
     public IdentifierGenerator identifierGenerator() {
-       return new SnowflakeIdGenerator(SnowflakeIdGenerator.getWorkerIdByIP());
+        return new SnowflakeIdGenerator(SnowflakeIdGenerator.getWorkerIdByIP());
     }
 
     /**
-     * @Description:  Configuration 分页拦截器
+     * @Description: Configuration Pagination 拦截器
      * @Author: bo.chen
      * @Date: 2023/1/3 16:57
      * @return com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor

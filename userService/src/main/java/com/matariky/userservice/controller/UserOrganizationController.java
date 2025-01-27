@@ -83,7 +83,7 @@ public class UserOrganizationController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
     }
 
-    // New下级
+    // New Subordinate
     @RequestMapping(value = "/userOrganization/create/parentId/{parentId}", method = RequestMethod.GET)
     public Object create(HttpServletRequest request,
             @PathVariable("tenantId") String tenantId,
@@ -116,37 +116,22 @@ public class UserOrganizationController {
             throw new QslException(MessageKey.USER_GROUP_ORGANIZATION_IS_EXIST);
         }
 
-        // 先判断 Name Wether 重复
+        // Determine the name weTher repeat
         List<UserOrganization> selectByMap = userOrganizationService.selectByMap(map);
 
         if (CollUtil.isNotEmpty(selectByMap)) {
             throw new QslException(MessageKey.ORGANIZATION_NAME_NULL);
         }
 
-        // 机构 Name不能为空
+        // Institutional name cannot be empty
         if (StringUtil.isEmpty(bean.getOrganizationName())) {
             throw new QslException(MessageKey.ORGANIZATION_NAME_ERR);
         }
 
-        // 机构Type 不能为空
+        // Institution Type cannot be empty
         if (bean.getOrgType() == null) {
             throw new QslException(MessageKey.ORGANIZATION_TYPE_ERR);
         }
-
-        /*
-         * // Code Automatic Generation 01父 00x子 String code="";
-         *
-         * String
-         * parentcode=userOrganizationService.getParentcodeByParentId(bean.getParentId()
-         * ,tenantId);
-         *
-         * int countByParentId =
-         * userOrganizationService.getCountByParentId(bean.getParentId(),tenantId)+1;
-         *
-         * if(countByParentId<=9) { code=parentcode+"-00"+countByParentId; }else {
-         * if(countByParentId<100) { code=parentcode+"-0"+countByParentId; }else {
-         * code=parentcode+"-"+countByParentId; } } bean.setOrganizationCode(code);
-         */
 
         bean.setTenantId(tenantId);
         userOrganizationService.saveUserOrganization(bean);
@@ -164,17 +149,16 @@ public class UserOrganizationController {
             groupService.updateById(grp);
         }
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
-        // return bean;
     }
 
     @RequestMapping(value = "/userOrganization", method = RequestMethod.PUT)
     public AjaxResult update(@RequestBody UserOrganization bean, HttpServletRequest request,
             HttpServletResponse response, @PathVariable("tenantId") String tenantId) {
-        // 机构 Name不能为空
+        // Institutional name cannot be empty
         if (StringUtil.isEmpty(bean.getOrganizationName())) {
             throw new QslException(MessageKey.ORGANIZATION_NAME_ERR);
         }
-        // 机构Type 不能为空
+        // Institution Type cannot be empty
         if (bean.getOrgType() == null) {
             throw new QslException(MessageKey.ORGANIZATION_TYPE_ERR);
         }
@@ -197,30 +181,28 @@ public class UserOrganizationController {
 
         String code = userOrganizationService.getParentcodeByParentId(Long.parseLong(id), tenantId);
 
-        // 判断 Wether 有子部门
+        // Judgment WETHER's sub -department
         Long[] organizationIds = userOrganizationService.getChildrenOrganization(code, tenantId);
 
         if (organizationIds != null && organizationIds.length > 1) {
             throw new QslException(MessageKey.ORGANIZATION_CHILDREN_ERR);
 
-            // return new Result<>().error(503, "有子部门 ,不能Delete ");
         }
 
-        // 判断部门下面 Wether 有 User
+        // Judgment department with Wether has a user
         int count = userService.getCountByOrganizationId(organizationIds, tenantId);
         if (count > 0) {
 
             throw new QslException(MessageKey.ORGANIZATION_USER_ERR);
-            // return new Result<>().error(504, "机构下有 User ");
         }
 
         userOrganizationService.delete(Long.parseLong(id), tenantId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-        // return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
     }
 
     /**
-     * Query Data 查出组织机构,并以树结构 Data 格式响应给前端
+     * Query Data Find out the organization and respond to the front end in the DATA
+     * format of the tree structure
      *
      * @return
      */
@@ -233,7 +215,8 @@ public class UserOrganizationController {
     }
 
     /**
-     * Query Data 查出组织机构,并以树结构 Data 格式响应给前端
+     * Query Data Find out the organization and respond to the front end in the DATA
+     * format of the tree structure
      *
      * @return
      */
@@ -243,7 +226,7 @@ public class UserOrganizationController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, treeList);
     }
 
-    // Query 组织机构树没有子节点去掉children
+    // Query Organization tree has no sub -nodes to remove children
     @RequestMapping(value = "/userOrganization/nochildren/treeList", method = RequestMethod.GET)
     public AjaxResult queryTreeNode(String tenantId) {
 
@@ -252,7 +235,7 @@ public class UserOrganizationController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, treeList);
     }
 
-    // 查看组织架构图
+    // View organizational architecture
     @RequestMapping(value = "/userOrganization/view/treeList", method = RequestMethod.GET)
     public Object queryTreeListView(@PathVariable("tenantId") String tenantId,
             @RequestParam String code) {

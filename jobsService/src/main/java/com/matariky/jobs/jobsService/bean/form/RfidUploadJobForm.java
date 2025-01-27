@@ -6,11 +6,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @description: Label Import
- * @author: chenyajun
- * @create: 2024/02/16 18:14
- **/
 @Data
 public class RfidUploadJobForm implements Serializable {
     /**
@@ -29,7 +24,7 @@ public class RfidUploadJobForm implements Serializable {
     private Long startTime;
 
     /**
-     * Task Type ,1=立即执行 ,2=一次性,3=周期
+     * Task Type ,1=Execute immediately, 2 = one -time, 3 = cycle
      */
     private Integer taskType;
 

@@ -38,15 +38,15 @@
         </javaModelGenerator>
 
 
-        <!-- 生成映射文件存放位置 -->
+        <!-- 生成映射 File 存放位置 -->
         <sqlMapGenerator targetPackage="mapper.lhsoft" targetProject="src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <!-- Client 代码  ,生成易于使用的针对Model Object 和XML Configuration 文件 的代码
+        <!-- Client 代码  ,生成易于使用的针对Model Object 和XML Configuration  File  的代码
                 type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper Object 
                 type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper Object 
-                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper Interface
+                type="XMLMAPPER",生成SQLMap XML File 和独立的Mapper Interface
         -->
         <javaClientGenerator targetPackage="com.matariky.commonservice.loginlog.mapper"
                              targetProject="src/main/java" type="XMLMAPPER">

@@ -53,7 +53,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     protected MybatisPlusDataScopeInterceptor mybatisPlusDataScopeInterceptor;
 
     /**
-     * Retrieve分页 Object
+     * Retrieve Pagination Object
      *
      * @param params            Pagination Query Parameter
      * @param defaultOrderField 默认排序字段
@@ -71,7 +71,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
             limit = Long.parseLong((String) params.get(Constant.LIMIT));
         }
 
-        // 分页 Object
+        // Pagination Object
         Page<T> page = new Page<>(curPage, limit);
 
         // Pagination Parameter

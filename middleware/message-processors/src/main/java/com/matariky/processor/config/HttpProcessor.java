@@ -9,6 +9,7 @@ import com.matariky.processor.utils.ProcessorUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -26,7 +27,8 @@ public class HttpProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         Message camelMessage = exchange.getIn();
         String inJson = camelMessage.getBody(String.class);
-        Map<String, String> httpRequest = objectMapper.readValue(inJson, Map.class);
+        Map<String, String> httpRequest = objectMapper.readValue(inJson, new TypeReference<Map<String, String>>() {
+        });
         String operation = httpRequest.get(ProcessorConstants.OPERATION);
 
         switch (operation) {
@@ -35,7 +37,7 @@ public class HttpProcessor implements Processor {
                 String fileDir = ProcessorUtils.getProperty(env, ProcessorConstants.FILE_DIR);
                 File dir = new File(fileDir);
                 String[] fileNames = dir.list();
-                List<Map<String, String>> fileNamesList = new ArrayList();
+                List<Map<String, String>> fileNamesList = new ArrayList<>();
                 for (String fileName : fileNames) {
                     if (fileName.endsWith(".xml")) {
                         Map<String, String> map = new HashMap<>();
@@ -46,33 +48,34 @@ public class HttpProcessor implements Processor {
                 JSONObject object = new JSONObject();
                 object.put("data", JSONArray.parseArray(JSON.toJSONString(fileNamesList)));
                 object.put("code", 200);
-                exchange.getOut().setBody(object);
+                exchange.getMessage().setBody(object);
                 break;
             case ProcessorConstants.UPDATE_FILE_CONTENT:
                 String fileNameUpdate = httpRequest.get(ProcessorConstants.FILE_NAME);
                 String envUpdate = httpRequest.get(ProcessorConstants.ENV);
-                String updateFileAddress = ProcessorUtils.getProperty(envUpdate, ProcessorConstants.FILE_DIR) + File.separator + fileNameUpdate;
+                String updateFileAddress = ProcessorUtils.getProperty(envUpdate, ProcessorConstants.FILE_DIR)
+                        + File.separator + fileNameUpdate;
                 String updateContent = httpRequest.get(ProcessorConstants.FILE_CONTENT);
                 Files.write(Paths.get(updateFileAddress), updateContent.getBytes());
                 JSONObject o = new JSONObject();
                 o.put("data", "success");
                 o.put("code", 200);
-                exchange.getOut().setBody(o);
+                exchange.getMessage().setBody(o);
                 break;
             case ProcessorConstants.GET_FILE_CONTENT:
                 String fileName = httpRequest.get(ProcessorConstants.FILE_NAME);
                 String env1 = httpRequest.get(ProcessorConstants.ENV);
-                String fileAddress = ProcessorUtils.getProperty(env1, ProcessorConstants.FILE_DIR) + File.separator + fileName;
+                String fileAddress = ProcessorUtils.getProperty(env1, ProcessorConstants.FILE_DIR) + File.separator
+                        + fileName;
                 String content = new String(Files.readAllBytes(Paths.get(fileAddress)));
                 JSONObject obj = new JSONObject();
                 obj.put("data", content);
                 obj.put("code", 200);
-                exchange.getOut().setBody(obj);
+                exchange.getMessage().setBody(obj);
                 break;
             default:
                 break;
         }
     }
-
 
 }

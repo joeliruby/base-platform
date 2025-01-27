@@ -8,11 +8,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @description: 磁带盘点 Task bean
- * @author: bo.chen
- * @create: 2023/9/08 9:48
- **/
 @TableName(value = "biz_tape_inventory_task", autoResultMap = true)
 @Data
 public class TapeInventoryTask implements Serializable {
@@ -43,7 +38,7 @@ public class TapeInventoryTask implements Serializable {
     private String tenantId;
 
     /**
-     * 序列号
+     * Serial Number
      */
     private String serialNumber;
 
@@ -53,7 +48,7 @@ public class TapeInventoryTask implements Serializable {
     private String taskName;
 
     /**
-     * Task Type ,1=立即执行 ,2=一次性,3=周期
+     * Task Type ,1=Execute immediately, 2 = one -time, 3 = cycle
      */
     private Integer taskType;
 
@@ -68,63 +63,64 @@ public class TapeInventoryTask implements Serializable {
     private String locationId;
 
     /**
-     * Library Id集合
+     * Library Id gather
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<Long> libraryIds;
 
     /**
-     * Time 间隔
+     * Time interval
      */
     private Integer timeInterval;
 
     /**
-     * 间隔单位
+     * Interval unit
      */
     private Integer intervalUnit;
 
     /**
-     * 盘点 Start Time
+     * inventory Start Time
      */
     private Long startTime;
 
     /**
-     * 盘点结束 Time
+     * Inventory end Time
      */
     private Long endTime;
 
     /**
-     * 盘点 Quantity
+     * inventory Quantity
      */
     private Integer quantity;
 
     /**
-     * 实际 Quantity
+     * Actual Quantity
      */
     private Integer actualQuantity;
 
     /**
-     * Status :1= Activate ,2= Deactivate
+     * Status: 1 = Activate, 2 = Deactivate
      */
     private Integer status;
 
     /**
-     * 流程 Status ：流程 Status ：1= To Be Started ,2=扫描中 ,3=等待Update ,4= Task 结束
+     * Process Status: 1 = To Be Started, 2 = Scanning, 3 = Waiting for Update, 4 =
+     * Task Ended
      */
     private Integer processStatus;
 
     /**
-     * Wether 有差异：0=否 ,1=是
+     * Whether there is a discrepancy: 0 = No, 1 = Yes
      */
     private Boolean isDiscrepancy;
 
     /**
-     * 最后子 Task id
+     * Last Subtask ID
      */
     private Long lastSubtaskId;
 
     /**
-     * Operationip
+     * Operation IP
      */
     private String operationIp;
 
@@ -134,7 +130,7 @@ public class TapeInventoryTask implements Serializable {
     private String remark;
 
     /**
-     * 国际化标识
+     * Localization Identifier
      */
     private String local;
 

@@ -18,8 +18,8 @@ springBoot 项目使用 IDEA 进行导入
 
 #### Install 教程
 
-1. Create mysql 数据库 项目中 sql 文件夹内有执行脚本 数据库 Name 称：automation
-2. Update appliaction.yml 中数据库连接信息 ,端口号 ,生成 Log 历史文件夹路径 file.url
+1. Create mysql 数据库 项目中 sql File 夹内有执行脚本 数据库 Name 称：automation
+2. Update appliaction.yml 中数据库连接信息 ,端口号 ,生成 Log 历史 File 夹路径 file.url
 3. 在 IEDA 中使用 mvn 命令进行打包 mvn clean package 4.打包成功界面
    ![输入 Image 说明](https://gitee.com/uploads/images/2018/0604/091444_e22a15bd_424304.png "1.png")
 

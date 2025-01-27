@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.Page;
 
 import cn.hutool.core.collection.CollUtil;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.userservice.bean.TreeModel;
 import com.matariky.userservice.bean.UserApplication;
@@ -26,8 +25,7 @@ import com.matariky.utils.DateUtil;
  * @author AUTOMATION
  */
 @Service
-public class UserApplicationService extends BaseServiceImpl<UserApplicationMapper, UserApplication>
-		implements BaseService<UserApplication> {
+public class UserApplicationService extends BaseServiceImpl<UserApplicationMapper, UserApplication> {
 
 	@Autowired
 	private UserApplicationMapper userApplicationMapper;
@@ -92,30 +90,30 @@ public class UserApplicationService extends BaseServiceImpl<UserApplicationMappe
 
 		UserTenant userTenant = userTenantMapper.selectByTenantCode(bean.getTenantId());
 
-		if (userTenant == null) {// 没有这个 Tenant
+		if (userTenant == null) {// Without this Tenant
 			return;
 		}
 
-		// 插入 Tenant 和 App 的中间表
+		// Insert the middle table of Tenant and APP
 		saveOrUpdateTenant(bean, userTenant);
 
-		// Update App 表 不改 Name 字 入口 Address 图标 Description 过期 Time
+		// Update app table without changing the name of Name Time
 		userApplicationMapper.updateUserApplication(bean);
 
-		// 插入 App 和资源的中间表
+		// Insert the middle table of APP and resources
 		saveOrUpdatePermission(applicationId, bean.getPermissionIdList());
 	}
 
 	public void saveOrUpdatePermission(Long applicationId, List<Long> permissionIdList) {
-		// 先Delete 此 App 和资源的中间关系
+		// First DELETE's intermediate relationship between this app and resources
 		deletePermissionByApplicationIds(new Long[] { applicationId });
 
-		// App 没有 one 资源的情况
+		// App There is no one resources
 		if (CollUtil.isEmpty(permissionIdList)) {
 			return;
 		}
 
-		// Save App 和资源之间关系
+		// Save App A relationship with resources
 		for (Long permissionId : permissionIdList) {
 			userApplicationMapper.saveRApplicationPermission(applicationId, permissionId);
 		}
@@ -129,7 +127,7 @@ public class UserApplicationService extends BaseServiceImpl<UserApplicationMappe
 	public void saveOrUpdateTenant(UserApplication bean, UserTenant userTenant) {
 
 		userApplicationMapper.insert(bean);
-		// 先Delete 此 App 和 Tenant 的关系
+		// First DELETE's relationship between this app and tenant
 		if (bean.getId() != null)// New
 			deleteTenantByApplicationIds(new Long[] { bean.getId() });
 
@@ -144,7 +142,7 @@ public class UserApplicationService extends BaseServiceImpl<UserApplicationMappe
 		// App Name
 		map.put("application_name", bean.getApplicationName());
 
-		// Save App 和 Tenant 关系
+		// Save App and Tenant relation
 		userApplicationMapper.saveRApplicationTenant(map);
 
 	}

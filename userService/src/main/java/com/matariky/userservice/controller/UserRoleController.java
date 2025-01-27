@@ -63,15 +63,15 @@ public class UserRoleController {
     @Autowired
     UserApplicationService userApplicationService;
 
-
-     
     @RequestMapping(value = "/userRole/list", method = RequestMethod.GET)
     public Object list(
             HttpServletRequest request,
             @RequestParam Map<String, Object> map,
             @PathVariable("tenantId") String tenantId
-            /*@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt*/) {
-        //PageHelper.startPage(pageIndex, perPage);
+    /*
+     * @ApiParam(value = "JWT Token", required =
+     * true) @RequestHeader("Authorization") String jwt
+     */) {
 
         map.put("tenantId", TokenUtils.extractTenantIdFromHttpReqeust(request));
         int pageIndex = 1;
@@ -96,7 +96,7 @@ public class UserRoleController {
             endst = map.get("end").toString();
         }
 
-        //把 Time 转成longType 
+        // Turn time into longType
         long begin = 0l, end = 0l;
         if (StringUtil.isNotEmpty(beginst)) {
             begin = DateUtil.string2Dateyyyymmdd(beginst).getTime();
@@ -114,9 +114,8 @@ public class UserRoleController {
         List<UserRole> userList = userRoleService.getUserRoleAll(map);
 
         PageInfo<UserRole> page = new PageInfo<UserRole>(userList);
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,page);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 
-//        return page;
     }
 
     @RequestMapping(value = "/userRole/edit", method = RequestMethod.GET)
@@ -124,10 +123,9 @@ public class UserRoleController {
 
         UserRole bean = userRoleService.getUserRoleById(Long.parseLong(id));
 
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,bean);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
     }
 
-     
     @RequestMapping(value = "/userRole", method = RequestMethod.POST)
     public Object save(
             @RequestBody @Valid UserRole bean,
@@ -147,15 +145,14 @@ public class UserRoleController {
             if (CollUtil.isNotEmpty(userRoles)) {
                 throw new QslException(MessageKey.ROLE_NAME_ERR);
             }
-            //角色 Name保持  Unique 
+            // Character Name maintained Unique
             bean.setCreateTime(DateUtil.getCurrentDateAndTime().getTime());
             bean.setDeleteTime(Long.parseLong("0"));
             bean.setTenantId(tenantId);
 
             int success = userRoleService.createUserRole(bean);
             if (success > 0) {
-            	return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-//                return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+                return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
             } else {
                 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
             }
@@ -165,9 +162,9 @@ public class UserRoleController {
         }
     }
 
-     
     @RequestMapping(value = "/userRole", method = RequestMethod.PUT)
-    public Object update(@RequestBody @Valid UserRole bean, HttpServletRequest request, HttpServletResponse response, @PathVariable("tenantId") String tenantId) {
+    public Object update(@RequestBody @Valid UserRole bean, HttpServletRequest request, HttpServletResponse response,
+            @PathVariable("tenantId") String tenantId) {
         try {
             if (StringUtil.isEmpty(bean.getRoleName())) {
                 throw new QslException(MessageKey.ROLE_NAME_NULL);
@@ -177,7 +174,7 @@ public class UserRoleController {
             columnMap.put("tenant_id", bean.getTenantId());
             int success = userRoleService.updateUserRole(bean);
             if (success > 0) {
-                return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
+                return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
             } else {
                 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
             }
@@ -187,39 +184,35 @@ public class UserRoleController {
         }
     }
 
-     
     @RequestMapping(value = "/userRole", method = RequestMethod.DELETE)
     public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
         String[] split = id.split(",");
         int success = userRoleService.updateDeleteTimeById(split);
         if (success > 0) {
-            return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
+            return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
         } else {
             throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
         }
     }
 
-    //角色的下拉框
+    // The role of the character
     @GetMapping("/userRole/box")
     public Object selectRole(@PathVariable("tenantId") String tenantId) {
         List<UserRole> roleList = userRoleService.selectRole(tenantId);
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,roleList);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, roleList);
     }
 
-
-    //角色查看权限  Detail 
+    // Character view permissions Detail
     @RequestMapping(value = "/userRole/permission", method = RequestMethod.GET)
     public Object getPermissionByUser(HttpServletRequest request,
-                                                         @RequestParam String roleId,
-                                                         @PathVariable("tenantId") String tenantId) {
+            @RequestParam String roleId,
+            @PathVariable("tenantId") String tenantId) {
 
         List<Map<String, Object>> newListMaps = new ArrayList<>();
         QueryWrapper<UserApplication> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("tenant_id", tenantId);
 
         List<UserApplication> userApplicationList = userApplicationService.selectList(queryWrapper);
-        
-       
 
         if (CollUtil.isNotEmpty(userApplicationList)) {
             for (UserApplication userApplication : userApplicationList) {
@@ -227,12 +220,13 @@ public class UserRoleController {
                 Long applicationId = userApplication.getId();
                 map.put("application_name", userApplication.getApplicationName());
                 map.put("id", applicationId);
-                List<TreeModel> treeList = userRoleService.getPermissionByRole(Long.parseLong(roleId), tenantId, applicationId);
+                List<TreeModel> treeList = userRoleService.getPermissionByRole(Long.parseLong(roleId), tenantId,
+                        applicationId);
                 if (CollUtil.isNotEmpty(treeList)) {
                     map.put("tree", treeList);
                     newListMaps.add(map);
                 }
-                
+
                 List<Long> list = userRoleService.getPermissionIdByRoleId(Long.parseLong(roleId));
 
                 if (CollUtil.isNotEmpty(list)) {
@@ -243,10 +237,8 @@ public class UserRoleController {
                 }
             }
         }
-        
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,newListMaps);
-//        return newListMaps;
-    }
 
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, newListMaps);
+    }
 
 }

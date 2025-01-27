@@ -4,11 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @description: 盘点 Task
- * @author: bo.chen
- * @create: 2023/10/16 18:14
- **/
 @Data
 public class InventoryJobForm implements Serializable {
 
@@ -28,22 +23,22 @@ public class InventoryJobForm implements Serializable {
     private Long startTime;
 
     /**
-     * 结束 Time
+     * Finish Time
      */
     private Long endTime;
 
     /**
-     * Task Type ,1=立即执行 ,2=一次性,3=周期
+     * Task Type ,1=Execute immediately ,2=One -time,3=cycle
      */
     private Integer taskType;
 
     /**
-     * Time 间隔
+     * Time interval
      */
     private Integer timeInterval;
 
     /**
-     * 间隔单位
+     * Interval unit
      */
     private Integer intervalUnit;
 }

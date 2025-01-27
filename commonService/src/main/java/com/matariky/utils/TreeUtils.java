@@ -13,6 +13,7 @@ import com.matariky.commonservice.upload.utils.RenException;
 import com.matariky.constant.RedisKey;
 import com.matariky.redis.RedisUtils;
 
+
 /**
  * Tree structure utility class, such as: menu, department, etc.
  *
@@ -23,8 +24,8 @@ public class TreeUtils {
     /**
      * Build tree nodes based on pid
      */
-    public static <T extends TreeNode<T>> List<T> build(List<T> treeNodes, Long pid) {
-        // pid cannot be null
+    public static <T extends TreeNode<?>> List<T> build(List<T> treeNodes, Long pid) {
+        //pid cannot be null
         if (pid == null) {
             throw new RenException("pid is null!!");
         }
@@ -42,7 +43,7 @@ public class TreeUtils {
     /**
      * Find child nodes
      */
-    private static <T extends TreeNode<T>> T findChildren(List<T> treeNodes, T rootNode) {
+    private static <T extends TreeNode> T findChildren(List<T> treeNodes, T rootNode) {
         for (T treeNode : treeNodes) {
             if (rootNode.getId().equals(treeNode.getPid())) {
                 rootNode.getChildren().add(findChildren(treeNodes, treeNode));
@@ -54,13 +55,14 @@ public class TreeUtils {
     /**
      * Build tree nodes
      */
-    public static <T extends TreeNode<T>> List<T> build(List<T> treeNodes, RedisUtils redisUtils, String locale) {
+    public static <T extends TreeNode> List<T> build(List<T> treeNodes, RedisUtils redisUtils, String locale) {
         List<T> result = new ArrayList<>();
 
-        // Convert list to map
+
+        //list to map
         Map<Long, T> nodeMap = new ConcurrentHashMap<>(treeNodes.size());
 
-        // Put all nodes in a map
+        //put all nodes in a map
         for (T treeNode : treeNodes) {
             nodeMap.put(treeNode.getId(), treeNode);
         }
@@ -71,7 +73,7 @@ public class TreeUtils {
             String menuName = (String) redisUtils.hGet(RedisKey.MENU_NAMES + locale, node.getId().toString());
             if (menuName != null) {
                 try {
-                    Class<?> readerClass = node.getClass();
+                    Class<? extends TreeNode> readerClass = node.getClass();
                     Field field = readerClass.getDeclaredField("name");
                     field.setAccessible(true);
                     field.set(node, menuName);
@@ -83,11 +85,10 @@ public class TreeUtils {
             T parent = nodeMap.get(node.getPid());
             if (parent != null) {
                 parent.getChildren().add(node);
-                Collections.sort(parent.getChildren(), new Comparator<T>() {
+                Collections.sort((List<TreeNode>) parent.getChildren(), new Comparator<TreeNode>() {
                     @Override
-                    public int compare(T o1, T o2) {
-                        // If there is no sorting configuration, the sorting configuration is the
-                        // largest and placed at the end
+                    public int compare(TreeNode o1, TreeNode o2) {
+                        // If no sort order is set, set it to maximum, sort at the end
                         if (o1.getSortOrder() == null) {
                             o1.setSortOrder(Long.MIN_VALUE);
                         }
@@ -101,21 +102,22 @@ public class TreeUtils {
                 result.add(node);
             }
         }
-        result.sort((a, b) -> (a.getSortOrder() != null ? a.getSortOrder() : Long.valueOf(Long.MIN_VALUE))
-                .compareTo((b.getSortOrder() != null ? b.getSortOrder() : Long.valueOf(Long.MIN_VALUE))));
+        result.sort((a,b) ->  (a.getSortOrder()!=null ? a.getSortOrder() :  Long.valueOf(Long.MIN_VALUE)).compareTo((b.getSortOrder()!=null ? b.getSortOrder() : Long.valueOf(Long.MIN_VALUE))));
         return result;
     }
+
 
     /**
      * Build tree nodes
      */
-    public static <T extends TreeNode<T>> List<T> build(List<T> treeNodes) {
+    public static <T extends TreeNode> List<T> build(List<T> treeNodes) {
         List<T> result = new ArrayList<>();
 
-        // Convert list to map
+
+        //list to map
         Map<Long, T> nodeMap = new ConcurrentHashMap<>(treeNodes.size());
 
-        // Put all nodes in a map
+        //put all nodes in a map
         for (T treeNode : treeNodes) {
             nodeMap.put(treeNode.getId(), treeNode);
         }
@@ -128,11 +130,10 @@ public class TreeUtils {
                 List<T> children = parent.getChildren();
                 children.add(node);
                 // Sort child nodes
-                Collections.sort(children, new Comparator<TreeNode<T>>() {
+                Collections.sort(children, new Comparator<TreeNode>() {
                     @Override
-                    public int compare(TreeNode<T> o1, TreeNode<T> o2) {
-                        // If there is no sorting configuration, the sorting configuration is the
-                        // largest and placed at the end
+                    public int compare(TreeNode o1, TreeNode o2) {
+                        // If no sort order is set, set it to maximum, sort at the end
                         if (o1.getSortOrder() == null) {
                             o1.setSortOrder(Long.MIN_VALUE);
                         }
@@ -147,8 +148,7 @@ public class TreeUtils {
             }
         }
         // Sort top-level nodes
-        result.sort((a, b) -> (a.getSortOrder() != null ? a.getSortOrder() : Long.valueOf(Long.MIN_VALUE))
-                .compareTo((b.getSortOrder() != null ? b.getSortOrder() : Long.valueOf(Long.MIN_VALUE))));
+        result.sort((a,b) ->  (a.getSortOrder()!=null ? a.getSortOrder() :  Long.valueOf(Long.MIN_VALUE)).compareTo((b.getSortOrder()!=null ? b.getSortOrder() : Long.valueOf(Long.MIN_VALUE))));
         return result;
     }
 

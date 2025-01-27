@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * @author chenyajun
- * @DATe: 2024/2/23
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +19,7 @@ public class BasicBaseRfidfactoryCNExeclReqVo implements Serializable {
     private static final long serialVersionUID = 118157189495042162L;
 
     /**
-     * 序列号
+     * Serial number
      */
     @ExcelProperty("EPC")
     @ColumnWidth(20)

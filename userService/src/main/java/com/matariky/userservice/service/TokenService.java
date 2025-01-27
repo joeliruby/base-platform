@@ -18,10 +18,6 @@ import com.matariky.constant.TokenConstant;
 import com.matariky.exception.QslException;
 import com.matariky.redis.RedisUtils;
 
-/**
- * 
- * @date 21:04
- */
 @Service("TokenService")
 public class TokenService {
 
@@ -31,12 +27,10 @@ public class TokenService {
 	@Autowired
 	CommonDictService commonDictService;
 
-	// Token过期 Time 30分钟（ User Login 过期 Time 是此 Time 的两倍 ,以token在reids缓存 Time 为准）
-	// @Value("${token.expire.time}") Long EXPIRE_TIME;
-	// public static final long EXPIRE_TIME = 30 * 60 * 1000;
+	// Token expires Time 30 minutes (User Login expires twice the time of this
+	// time, based on the token cache at the REIDS cache)
 	@Autowired
 	PermissionService permissionService;
-	// @Autowired GroupService groupService;
 	@Autowired
 	UserTenantService tenantService;
 	@Autowired
@@ -54,14 +48,14 @@ public class TokenService {
 		Long applicationId = user.getApplicationId();
 		List<Long> appPermList = applicationService.getPermissionIdList(applicationId);
 		Integer adminTenantCount = userService.isAdmin(user.getId());
-		if (applicationId != null && !applicationId.equals(0l)) {// 不是第一次 Login
+		if (applicationId != null && !applicationId.equals(0l)) {// Not for the first time Login
 			permissionSet = permissionService.getPermissionsByUserId(user.getId(), user.getTenantId(),
 					user.getApplicationId());
 
-		} else {// Retrieve该 User 在在该 Tenant 下的第 one App
+		} else {// Retrieve The User's first One APP under the Tenant
 			applicationId = applicationService
 					.getDefaultApplicationByTenantIdandUserId(user.getTenantId().split("_")[0], user.getId());
-			// Current User 作为管理员app个数
+			// Current User As an administrator app, the number
 			if (applicationId == null && adminTenantCount == 0) {
 				throw new QslException(MessageKey.EMPTY_APPLICATION_ID);
 			}
@@ -73,13 +67,12 @@ public class TokenService {
 			updateLoginInfo(user);
 		}
 		List<Permission> filteredAppPermList = new ArrayList<Permission>();
-		// User 权限和 App 权限的交集
+		// The intersection of user permissions and APP permissions
 		for (Permission permission : permissionSet) {
 			if (appPermList.contains(permission.getId())) {
 				filteredAppPermList.add(permission);
 			}
 		}
-		// filteredAppPermList=permissionSet.stream().filter(item->appPermList.contains(item.getId())).collect(Collectors.toList());
 		Set<String> groupSet = userGroupService.getGroupsByUserId(user.getId(), user.getTenantId());
 		Map<String, String> tokenMap = new HashMap<String, String>();
 		String permissionIds = strinify(permissionSet);

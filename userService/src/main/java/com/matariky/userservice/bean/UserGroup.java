@@ -9,21 +9,23 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
+
 /**
-* Automatically generated entity class
-* @author AUTOMATION
-*/
+ * Automatically generated entity class
+ * 
+ * @author AUTOMATION
+ */
 @TableName("user_group")
 @Data
 public class UserGroup {
 	@TableId
 	private Long id;
-	
-	@NotBlank(message="分组 Name不能为空！")
+
+	@NotBlank(message = "Group name cannot be empty!")
 	private String groupName;
-	
+
 	private String tenantId;
-	
+
 	private String description;
 	private Long createTime;
 	private Long updateTime;
@@ -32,42 +34,33 @@ public class UserGroup {
 	private Long createdBy;
 	private Long updatedBy;
 	private Integer sort;
-	
-	//所属角色集合
-  	@TableField(exist = false)
-  	private List<Long> roleIdList;
-  	
-  	//所属 User 集合
-  	@TableField(exist = false)
-  	private List<Long> userIdList;
-  	
-  	@TableField(exist = false)
-  	List<String> userNameList;
-	
-  	@TableField(exist = false)
-	List<String> roleNameList;
-  	
-  	
+
+	// A collection of characters
+	@TableField(exist = false)
+	private List<Long> roleIdList;
+
+	// Initial user set
+	@TableField(exist = false)
+	private List<Long> userIdList;
 
 	@TableField(exist = false)
-  	private String roleName;
-  	
-  	@TableField(exist = false)
-  	private String applicationName;
-  	
-  	@TableField(exist = false)
-  	private String loginName;
-  	
-  	
-  	@TableField(exist = false)
-  	private String tenantName;
-  	
-  	private String orgCode;
+	List<String> userNameList;
 
-  	
-  	
-	
-	
+	@TableField(exist = false)
+	List<String> roleNameList;
 
+	@TableField(exist = false)
+	private String roleName;
+
+	@TableField(exist = false)
+	private String applicationName;
+
+	@TableField(exist = false)
+	private String loginName;
+
+	@TableField(exist = false)
+	private String tenantName;
+
+	private String orgCode;
 
 }

@@ -25,7 +25,6 @@ import com.matariky.userservice.bean.User;
 import com.matariky.userservice.bean.UserApplication;
 import com.matariky.userservice.bean.UserOrganization;
 import com.matariky.userservice.bean.UserTenant;
-import com.matariky.userservice.mapper.UserTenantMapper;
 import com.matariky.userservice.service.*;
 import com.matariky.utils.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -112,14 +111,13 @@ public class LoginController {
     private OrderInfoMapper orderInfoMapper;
 
     /**
-     * 后台 Generation 图形验证码 ：有效
+     * Background generating graphics verification code: effective
      *
      * @param response
      * @param key
      */
     @GetMapping(value = "/randomImage")
     public Object randomImage(HttpServletResponse response, String uuid) {
-        Result<String> res = new Result<String>();
         try {
 
             String code = RandomUtil.randomString(BASE_CHECK_CODES, 4);
@@ -142,7 +140,8 @@ public class LoginController {
     @PassToken
     public Object renew(@RequestHeader("Authorization") String token, @PathVariable("applicationId") Long applicationId,
             @RequestParam(name = "locale", required = false) String locale) {
-        // 执行到此token已经经过验证有效 ,AuthenticationInterceptor
+        // Performing here token has been valid after verification
+        // ,AuthenticationInterceptor
         String userId = TokenUtils.extractUserIdFromToken(token);
         String tenantId = TokenUtils.extractTenantIdFromToken(token);
         String extractedLocale = TokenUtils.extractLocaleFromToken(token);
@@ -166,8 +165,8 @@ public class LoginController {
             userService.updateById(userForBase);
         }
 
-        if (!extractedApplicationId.equals(applicationId)) {// 切换 App
-            // Configuration切换至 Tenant 为 Current App
+        if (!extractedApplicationId.equals(applicationId)) {// Switch App
+            // Configuration Switch to Tenant of Current App
             Map<String, String> orgCodes = organizationService.getOrgIdByUserId(application.getTenantId(), userId);
 
             userForBase = userService.findUserById(userId);
@@ -180,7 +179,7 @@ public class LoginController {
             tokenService.updateLoginInfo(userForBase);
             createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
                     "APPLICATION_SWITCHED", true, tenantId));
-        } else {// Current App token续订
+        } else {// Current App token Renew
             userForBase = userService.findUserById(userId);
             tokenService.updateLoginInfo(userForBase);
             createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
@@ -194,14 +193,11 @@ public class LoginController {
         } catch (QslException e) {
             JSONObject jo = JSONObject.parseObject(e.getMessage());
             return AjaxResult.error(HttpStatus.INTERNAL_SERVER_ERROR.toString(), jo.getString("message"));
-            // return new ResponseEntity<JSONObject>(jo, HttpStatus.BAD_REQUEST);
         }
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, tokenMap);
-        // return tokenMap;
 
     }
 
-    // @UserLoginToken
     @RequestMapping(value = "/tenant/{tenantId}/user/", method = RequestMethod.GET)
     @RequirePermission
     @VerifyTenantId
@@ -253,7 +249,6 @@ public class LoginController {
                 true, tenantId));
         redisUtils.unCacheKeycloakToken(user.getId());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
-        // return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
     }
 
     @GetMapping("/IOTUserInfo/{userName}")
@@ -326,7 +321,6 @@ public class LoginController {
 
     // Login
     @PostMapping("/login")
-    // @PassToken
     public Object login(@RequestBody User user) {
         User userForBase = userService.findByUsername(user.getLoginName());
         String tenantId = userForBase.getTenantId();
@@ -334,7 +328,7 @@ public class LoginController {
             tenantId = tenantId.split("_")[1];
         }
         if (!"1".equals(tenantId)) {
-            // Login User 订单已经终止 ,不能 Login
+            // Login User The order has been terminated, not Login
             Long count = orderInfoMapper.selectCount(Wrappers.lambdaQuery(OrderInfo.class)
                     .eq(OrderInfo::getOrderTenantId, tenantId)
                     .eq(OrderInfo::getDeleteTime, 0)
@@ -342,9 +336,6 @@ public class LoginController {
             if (count > 0) {
                 throw new QslException(MessageKey.USER_ORDER_END_NOT_LOGIN);
             }
-        }
-        if (userForBase == null) {
-            throw new QslException(MessageKey.USER_NOT_EXIST);
         }
 
         if (!userForBase.getIsActive()) {
@@ -381,7 +372,8 @@ public class LoginController {
                     String lowerCaseCaptcha = captcha.toLowerCase();
                     String realKey = MD5Util.MD5Encode(lowerCaseCaptcha + user.getUuid(), "utf-8");
                     Object checkCode = redisUtils.get(realKey);
-                    // 当进入 Login 页时 ,有一定几率出现验证码 Error #1714
+                    // When entering the login page, there is a certain chance that the verification
+                    // code error #1714
                     if (checkCode == null || !checkCode.toString().equals(lowerCaseCaptcha)) {
                         throw new QslException(MessageKey.INVALID_VERIFICATION_CODE);
                     }
@@ -397,20 +389,6 @@ public class LoginController {
             throw new QslException(MessageKey.USER_DOES_NOT_HAVE_APPLICATION);
         }
 
-        if (!tenant.getId().toString().equals("1")) {
-            // List<OrderInfo> orderInfos =
-            // orderInfoService.getOrderTenantIdList(tenant.getId().toString());
-            // if(CollectionUtils.isEmpty(orderInfos)){
-            // throw new QslException(MessageKey.USER_LOGIN_ORDER_IS_NOT_EXIST);
-            // }
-        }
-
-        // 验证码 Wether 正确
-        /*
-         * boolean flag = captchaService.validate(user.getUuid(), user.getCaptcha());
-         * if(!flag){ jsonObject.put("message","验证码不正确"); return jsonObject; }
-         */
-
         if (!userForBase.getPazzword().equals(EncryptionUtils.getHash3(user.getPazzword(), "SHA"))) {
             createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
                     "LOGIN_FAIL", false, userForBase.getTenantId()));
@@ -418,15 +396,6 @@ public class LoginController {
 
         } else {
 
-            // Integer numberOfIOTRoles=userService.isIOTUser(userForBase.getId());
-            // if(numberOfIOTRoles>0) {
-            // String keycloakToken = KeycloakUtils.getToken(user.getLoginName(),
-            // user.getPazzword(), keycloakUrl,keycloakRealm, keycloakSecret,
-            // keycloakClientId, keycloakGrantType);
-            // if(!StringUtils.isEmpty(keycloakToken)) {
-            // redisUtil.cacheKeycloakToken(userForBase.getId(),keycloakToken);
-            // }
-            // }
             Map<String, String> tokenMap;
             try {
                 userForBase.setApplicationId(application.getId());

@@ -7,14 +7,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * @description:  Label  Generation  Task bean
- * @author: chenyajun
- * @create: 2024/2/08 9:48
- **/
 @TableName(value = "basic_base_rfidfactory", autoResultMap = true)
 @Data
-public class TapeRfidCreateTask  implements Serializable {
+public class TapeRfidCreateTask implements Serializable {
     /**
      *
      */
@@ -65,22 +60,20 @@ public class TapeRfidCreateTask  implements Serializable {
     @ApiModelProperty(value = " QR Code  Fixed Content")
     private String qrFixedContent;
 
-    @ApiModelProperty(value = "文件 Wether  Generation ")
+    @ApiModelProperty(value = " File  Wether  Generation ")
     private Integer isFileCreate;
 
     @ApiModelProperty(value = "Download Address ")
     private String downloadUrl;
 
-    @ApiModelProperty(value = "Download次数")
+    @ApiModelProperty(value = "Download  Times ")
     private Integer downloadNum;
 
-    @ApiModelProperty(value = "最新Download Time ")
+    @ApiModelProperty(value = "Latest Download Time ")
     private Long downloadTime;
 
     @ApiModelProperty(value = " Task  Status ")
     private Integer taskStatus;
-
-
 
     @ApiModelProperty(value = " Remark ")
     private String remark;

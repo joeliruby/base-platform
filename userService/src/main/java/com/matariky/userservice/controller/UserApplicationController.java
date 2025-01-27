@@ -81,7 +81,7 @@ public class UserApplicationController {
 	@Autowired
 	private PermissionMapper permissionMapper;
 
-	// 查看 App Detail
+	// Check App Detail
 	@RequestMapping(value = "/userApplication/{applicationId}", method = RequestMethod.GET)
 	public Object getOne(@PathVariable("applicationId") Long id, CommonLoginLog bean, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -143,7 +143,7 @@ public class UserApplicationController {
 		}
 		PageHelper.startPage(pageIndex, perPage);
 
-		map.put("tenantId", tenantId);// Retrieve父 Tenant ID
+		map.put("tenantId", tenantId);// Retrieve 父亲 Tenant ID
 		map.put("userId", userId);
 		List<UserApplication> userApplicationList = userApplicationService.getUserApplicationAllWithUserId(map);
 
@@ -157,17 +157,8 @@ public class UserApplicationController {
 
 		UserApplication bean = userApplicationService.getUserApplicationById(id);
 
-		// Integer applicationType = bean.getApplicationType();
-
 		List<CommonDict> dictsByDictTypeKey = commonDictTypeService.getDictsByDictTypeKey(bean.getTenantId(),
 				"APPLICATION_TYPE");
-
-		// Retrieve Cloud Storage ConfigurationInformation
-		// Map<String, String> maps =
-		// dictsByDictTypeKey.stream().collect(Collectors.toMap(CommonDict::getDictKey,
-		// CommonDict::getDictValue, (key1, key2) -> key2));
-		//
-		// bean.setApplicationTypeName(maps.get(applicationType+"").toString());
 
 		for (CommonDict cd : dictsByDictTypeKey) {
 			if (cd.getDictKey().equals(bean.getApplicationType().toString()))
@@ -176,7 +167,6 @@ public class UserApplicationController {
 
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
 
-		// return new Result<UserApplication>().ok(bean);
 	}
 
 	@RequestMapping(value = "/userApplication/{applicationId}", method = RequestMethod.POST)
@@ -204,9 +194,6 @@ public class UserApplicationController {
 				return new AjaxResult(HttpStatus.OK.value(),
 						commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
 								"RESOURCE_BOUND_TO_TENANT_APPLICATION", true, tenantId).getString("message"));
-				// return new
-				// ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","RESOURCE_BOUND_TO_TENANT_APPLICATION",true,tenantId),
-				// HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -241,14 +228,14 @@ public class UserApplicationController {
 			}
 		}
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
-		// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/userApplication", method = RequestMethod.PUT)
 	public AjaxResult update(@RequestBody UserApplicationDTO bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
-			// 非管理员不能分配 Code Rule 菜单权限 Tenant 1 ,不受限制 ,因为他是最大的管理员
+			// Non -administrators cannot allocate the Code Rule menu permission Tenant 1,
+			// not limited, because he is the largest administrator
 			String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
 			if (!tenantId.equals("1")) {
 				String userId = TokenUtils.extractUserIdFromHttpReqeust(request);
@@ -277,7 +264,6 @@ public class UserApplicationController {
 			int success = userApplicationService.updateUserApplication(bean);
 			if (success > 0) {
 				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
-				// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 			} else {
 				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 			}
@@ -300,7 +286,6 @@ public class UserApplicationController {
 			int success = userApplicationService.updateDeleteTimeById(split);
 			if (success > 0) {
 				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
-				// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 			} else {
 				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 			}
@@ -310,7 +295,7 @@ public class UserApplicationController {
 		}
 	}
 
-	// App 中的查看资源
+	// App View resource
 	@RequestMapping(value = "/userApplication/TreeModel", method = RequestMethod.GET)
 	public Object getPermissionTreeModel(Long applicationId, @PathVariable("tenantId") String tenantId) {
 		// 根据 App id Query
@@ -322,23 +307,16 @@ public class UserApplicationController {
 			build = new ArrayList<>();
 		}
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, build);
-		// return new Result<List<TreeModel>>().ok(build);
 	}
 
-	// App 的下拉框
+	// App Drop -down box
 	@GetMapping("/userApplication/box")
 	public Object selectApp(@PathVariable("tenantId") String tenantId) {
 		List<UserApplication> roleList = userApplicationService.selectApplication(tenantId);
-		// Result<Object> result=new Result<>();
-		UserTenant selectBytenantCode = tenantService.selectBytenantCode(tenantId);
-		// result.setMessage(selectBytenantCode.getTenantName());// Tenant Name
-		// result.setCode(0);
-		// result.setData(roleList);
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, roleList);
-		// return result;
 	}
 
-	// 所有 App
+	// all App
 	@GetMapping("/userApplication/appList")
 	public Object getAppList(@RequestParam("tenantId") String tenantId) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userApplicationService.getAppList(tenantId));
@@ -347,65 +325,50 @@ public class UserApplicationController {
 	@GetMapping("/userApplication/appListAll")
 	public Object getAppListAll(@PathVariable("tenantId") String tenantId) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userApplicationService.selectApplication(""));
-		// return userApplicationService.selectApplication("");
 	}
 
-	// Tenant 管理中的 Tenant App New
+	// Tenant Managed Tenant App New
 	@RequestMapping(value = "/userApplication/userTenant", method = RequestMethod.PUT)
 	public Object addApplicationByTenant(@RequestBody UserApplication bean, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		userApplicationService.addApplicationByTenant(bean);
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
-		// return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 	}
 
-	// Tenant 管理中的 Tenant App 查看 Detail
+	// Tenant Management Tenant App View Detail
 	@RequestMapping(value = "/userApplication/userTenant/edit", method = RequestMethod.GET)
 	public Object getAppById(Long applicationId) {
 		UserApplication bean = userApplicationService.getUserApplicationById(applicationId);
 
-		// 查看中间表存在的 Name
+		// View the existence of the middle watch Name
 		String name = userApplicationService.getNameById(bean.getTenantId(), applicationId);
 
 		if (StringUtils.isNotEmpty(name)) {
 			bean.setApplicationName(name);
 		}
 
-		// App 资源
-		/*
-		 * List<TreeModel>
-		 * list=userApplicationService.getTreeListByApplicationId(applicationId);
-		 * if(CollUtil.isNotEmpty(list)) {
-		 * bean.setPermissionTreeModels(TreeUtils.build(list)); }
-		 */
+		// App resource
 
-		// App 资源此 Tenant 下的
+		// App Resource this tenant
 		List<TreeModel> listR = userApplicationService.getRApplicationTenantPermission(applicationId);
 		if (CollUtil.isNotEmpty(listR)) {
 			bean.setPermissionTreeModels(TreeUtils.build(listR));
 		}
 
-		// App 资源id
+		// App resource id
 		List<Long> permissionIdList = userApplicationService.getPermissionIdList(applicationId);
 		if (CollUtil.isNotEmpty(permissionIdList)) {
 			bean.setPermissionIdList(permissionIdList);
 		}
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
-		// return new Result<UserApplication>().ok(bean);
 	}
 
-	// Tenant 管理的 Tenant App 分页
-	// SELECT a.* FROM user_application a,user_r_application_tenant t WHERE
-	// a.id=t.application_id AND a.tenant_id=1
+	// Tenant Managed Tenant App Pagination
 	@RequestMapping(value = "/userApplication/userTenant/list", method = RequestMethod.GET)
 	public Object tenantList(HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
-			@PathVariable("tenantId") String tenantId, @RequestParam("id") String bizTenantId
-	/*
-	 * @ApiParam(value = "JWT Token", required =
-	 * true) @RequestHeader("Authorization") String jwt
-	 */) {
+			@PathVariable("tenantId") String tenantId, @RequestParam("id") String bizTenantId) {
 
 		int pageIndex = 1;
 		int perPage = 20;
@@ -429,7 +392,7 @@ public class UserApplicationController {
 		// return page;
 	}
 
-	// Tenant 管理的 Tenant App 的Delete
+	// Tenant Managed Tenant App 的Delete
 
 	@RequestMapping(value = "/userApplication/userTenant/del", method = RequestMethod.DELETE)
 	public Object delUserTenant(String id, @PathVariable("tenantId") String tenantId) {
@@ -449,14 +412,14 @@ public class UserApplicationController {
 		}
 	}
 
-	// App 中 Image 的 Source
+	// App Image Source
 	@RequestMapping(value = "/userApplication/img", method = RequestMethod.GET)
 	public Object getImg(@PathVariable("tenantId") String tenantId) {
 		List<Map<String, Object>> lsitMaps = new ArrayList<>();
 		if (ClassUtils.getDefaultClassLoader().getResource("static/image") == null) {
 			return lsitMaps;
 		}
-		// Retrieve项目classes/static的 Address
+		// Retrieve project classes/static的 Address
 		String staticPath = ClassUtils.getDefaultClassLoader().getResource("static/image").getPath();
 
 		File file = new File(staticPath);
@@ -473,10 +436,9 @@ public class UserApplicationController {
 			}
 		}
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, lsitMaps);
-		// return lsitMaps;
 	}
 
-	// Retrieve文件扩展 Name
+	// Retrieve File Expand Name
 	public static String getExtensionName(String filename) {
 		if ((filename != null) && (filename.length() > 0)) {
 			int dot = filename.lastIndexOf('.');
@@ -487,7 +449,7 @@ public class UserApplicationController {
 		return filename;
 	}
 
-	// Retrieve不带扩展 Name 的 File Name
+	// Retrieve Without extension File Name
 	public static String getFileNameNoEx(String filename) {
 		if ((filename != null) && (filename.length() > 0)) {
 			int dot = filename.lastIndexOf('.');

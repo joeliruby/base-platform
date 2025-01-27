@@ -269,7 +269,7 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 	}
 
 	/**
-	 * 默认excel File Name 和单元sheet Name 一样的 Excel文件 Export
+	 * 默认excel File Name 和单元sheet Name 一样的 Excel File Export
 	 *
 	 * @param workBookName:  excel File Name
 	 * @param sheetName:工作簿

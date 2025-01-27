@@ -9,7 +9,7 @@ public class SnowflakeUtils {
 	/**
 	 * 每一部分占用的位数
 	 */
-	private final static long SEQUENCE_BIT = 12; // 序列号占用的位数
+	private final static long SEQUENCE_BIT = 12; // Serial Number占用的位数
 	private final static long MACHINE_BIT = 8; // 机器标识占用的位数 ,256个机器
 	private final static long DATACENTER_BIT = 2;// Data 中心占用的位数 ,4个 Data 中心
 
@@ -29,7 +29,7 @@ public class SnowflakeUtils {
 
 	private long datacenterId; // Data 中心
 	private long machineId; // 机器标识
-	private long sequence = 0L; // 序列号
+	private long sequence = 0L; // Serial Number
 	private long lastStmp = -1L;// Previous 次 Time 戳
 
 	public SnowflakeUtils(long datacenterId, long machineId) {
@@ -57,7 +57,7 @@ public class SnowflakeUtils {
 		}
 
 		if (currStmp == lastStmp) {
-			// 相同毫秒内 ,序列号 Incremental
+			// 相同毫秒内 ,Serial Number Incremental
 			sequence = (sequence + 1) & MAX_SEQUENCE;
 			// 同一毫秒的序列数已经达到最大
 			if (sequence == 0L) {
@@ -70,7 +70,7 @@ public class SnowflakeUtils {
 				}
 			}
 		} else {
-			// 不同毫秒内 ,序列号置为0
+			// 不同毫秒内 ,Serial Number置为0
 			sequence = 0L;
 		}
 
@@ -79,7 +79,7 @@ public class SnowflakeUtils {
 		return (currStmp - START_STMP) << TIMESTMP_LEFT // Time 戳部分
 				| datacenterId << DATACENTER_LEFT // Data 中心部分
 				| machineId << MACHINE_LEFT // 机器标识部分
-				| sequence; // 序列号部分
+				| sequence; // Serial Number部分
 	}
 
 	private long getNextMill() {

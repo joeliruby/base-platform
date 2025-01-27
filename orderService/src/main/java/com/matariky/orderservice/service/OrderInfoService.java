@@ -95,7 +95,7 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         if (CollectionUtils.isNotEmpty(orderInfos1)) {
             throw new QslException(MessageKey.ORDER_CONTRACT_IS_EXIST);
         }
-        // 同 one Time 点 同 one Tenant 只存在一条 Record
+        // At one Time for one Tenant only one Record
         Map<String, Object> params = new HashMap<>();
         params.put("orderTenantId", bean.getOrderTenantId());
         params.put("startTime", bean.getExpirationStartTime());
@@ -217,9 +217,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
 
         orderInfo.setContractCode(bean.getContractCode());
         orderInfo.setContractCode(bean.getContractCode());
-        // if (StringUtil.isNotEmpty(bean.getExpirationStartTime())) {
-        // orderInfo.setExpirationStartTime(DateUtil.string2date(bean.getExpirationStartTime()).getTime());
-        // }
         if (StringUtil.isNotEmpty(bean.getExpirationEndTime())) {
             QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<OrderInfo>();
             queryWrapper.eq("suite_code", orderInfo.getSuiteCode());
@@ -339,13 +336,13 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
                 }
                 // Delete
                 item.setDelete(false);
-                // 续费
+                // Renewal
                 item.setRenewal(false);
-                // 延期
+                // postpone
                 item.setDelay(false);
-                // 扩容
+                // Expand
                 item.setExpansion(false);
-                // 终止
+                // termination
                 item.setAborted(false);
 
                 if (item.getExpirationStartTime() != null
@@ -354,15 +351,15 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
                 }
 
                 if (StringUtil.isNotEmpty(item.getOrderStatus()) && item.getOrderStatus().equals("1")) {
-                    // 执行中
+                    // Execution
                     item.setExpansion(true);
                     item.setDelay(true);
                     item.setRenewal(true);
                     item.setAborted(true);
                 } else if (StringUtil.isNotEmpty(item.getOrderStatus()) && item.getOrderStatus().equals("2")) {
-                    // 已终止
+                    // End
                 } else if (StringUtil.isNotEmpty(item.getOrderStatus()) && item.getOrderStatus().equals("3")) {
-                    // 已过期
+                    // Extension
                     item.setDelay(true);
                 }
                 item.setExpiringSoon(false);

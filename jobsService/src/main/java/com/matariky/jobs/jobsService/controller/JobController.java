@@ -70,7 +70,6 @@ public class JobController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public JobController(JobService jobService) {
         this.jobService = jobService;
     }
@@ -103,7 +102,7 @@ public class JobController {
     }
 
     /**
-     * Save 盘点 Scheduled Task
+     * Save inventory Scheduled Task
      */
     @PostMapping("addInventoryJob")
     public Object addInventoryJob(@Valid @RequestBody InventoryJobForm form,
@@ -144,7 +143,7 @@ public class JobController {
     }
 
     /**
-     * 订单过期 Scheduled Task
+     * Order expire Scheduled Task
      * 
      * @return
      */
@@ -264,7 +263,7 @@ public class JobController {
     }
 
     /**
-     * 暂停 Scheduled Task
+     * pause Scheduled Task
      */
     @PutMapping(params = "pause")
     public ResponseEntity<JSONObject> pauseJob(JobForm form, @PathVariable("tenantId") String tenantId)
@@ -280,7 +279,7 @@ public class JobController {
     }
 
     /**
-     * 恢复 Scheduled Task
+     * recover Scheduled Task
      */
     @PutMapping(params = "resume")
     public ResponseEntity<JSONObject> resumeJob(JobForm form, @PathVariable("tenantId") String tenantId)
@@ -332,11 +331,6 @@ public class JobController {
             perPage = Integer.parseInt(map.get("perPage").toString());
         }
         PageHelper.startPage(pageIndex, perPage);
-
-        // PageInfo<JobAndTrigger> all = jobService.list(currentPage,
-        // pageSize,tenantId);
-        // return ResponseEntity.ok(ApiResponse.ok(Dict.create().set("total",
-        // all.getTotal()).set("data", all.getList())));
 
         List<JobAndTrigger> jobList = jobService.getJobAndTriggerAll(map);
 

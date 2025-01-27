@@ -21,80 +21,80 @@ import com.matariky.jobs.jobsService.bean.domain.JobAndTrigger;
  */
 public interface JobService {
     /**
-     * Add 并启动 Scheduled Task
+     * Add and start scheduled task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws Exception 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws Exception Exception
      */
     void addJob(JobForm form) throws Exception;
 
     /**
-     * @Description: Add 并启动盘点 Scheduled Task
+     * @Description: Add and start inventory scheduled task
      * @Author: bo.chen
      * @Date: 2023/10/16 18:21
      **/
     void addInventoryJob(InventoryJobForm form) throws Exception;
 
     /**
-     * @Description: Add 并启动 Label Generation Scheduled Task
+     * @Description: Add and start label generation scheduled task
      * @Author: chenyajun
      * @Date: 2024/02/16 18:21
      **/
     void addRfidCreateJob(RfidCreateJobForm form) throws Exception;
 
     /**
-     * @Description: Add 并启动 Label Print Scheduled Task
+     * @Description: Add and start label print scheduled task
      * @Author: chenyajun
      * @Date: 2024/02/16 18:21
      **/
     void addRfidPrintJob(RfidPrintJobForm form) throws Exception;
 
     /**
-     * @Description: Add 并启动 Label Import Scheduled Task
+     * @Description: Add and start label import scheduled task
      * @Author: chenyajun
      * @Date: 2024/02/16 18:21
      **/
     void addRfidUploadJob(RfidUploadJobForm form) throws Exception;
 
     /**
-     * Delete Scheduled Task
+     * Delete scheduled task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws SchedulerException 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws SchedulerException Exception
      */
     void deleteJob(JobForm form) throws SchedulerException;
 
     /**
-     * 暂停 Scheduled Task
+     * Pause scheduled task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws SchedulerException 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws SchedulerException Exception
      */
     void pauseJob(JobForm form) throws SchedulerException;
 
     /**
-     * 恢复 Scheduled Task
+     * Resume scheduled task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws SchedulerException 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws SchedulerException Exception
      */
     void resumeJob(JobForm form) throws SchedulerException;
 
     /**
-     * 重新 Configuration Scheduled Task
+     * Reconfigure scheduled task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws Exception 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws Exception Exception
      */
     void cronJob(JobForm form) throws Exception;
 
     /**
-     * Query Scheduled Task Pagination
+     * Query scheduled task pagination
      *
-     * @param currentPage Current 页
-     * @param pageSize    每页条数
+     * @param currentPage Current page
+     * @param pageSize    Number of items per page
      * @param tenantId
-     * @return Scheduled Task Pagination
+     * @return Scheduled task pagination
      */
     PageInfo<JobAndTrigger> list(Integer currentPage, Integer pageSize, String tenantId);
 
@@ -105,7 +105,7 @@ public interface JobService {
     List<JobAndTrigger> getJobAndTriggerAll(Map<String, Object> map);
 
     /**
-     * 订单过期- Scheduled Task
+     * Order expiry - scheduled task
      * 
      * @param form
      */

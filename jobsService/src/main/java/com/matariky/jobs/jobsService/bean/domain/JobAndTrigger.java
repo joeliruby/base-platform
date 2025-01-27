@@ -6,11 +6,11 @@ import java.math.BigInteger;
 
 /**
  * <p>
- * 实体类
+ * Physical class
  * </p>
  *
  * @package: com.matariky.jobs.jobsService.entity.domain
- * @description: 实体类
+ * @description: Physical class
  * @version: V1.0
  */
 @Data
@@ -20,35 +20,35 @@ public class JobAndTrigger {
      */
     private String jobName;
     /**
-     * Scheduled Task 组
+     * Scheduled Task Group
      */
     private String jobGroup;
     /**
-     * Scheduled Task 全类 Name
+     * Scheduled Task full class name
      */
     private String jobClassName;
     /**
-     * 触发器 Name
+     * Trigger name
      */
     private String triggerName;
     /**
-     * 触发器组
+     * Trigger group
      */
     private String triggerGroup;
     /**
-     * 重复间隔
+     * Repeat interval
      */
     private BigInteger repeatInterval;
     /**
-     * 触发次数
+     * Times triggered
      */
     private BigInteger timesTriggered;
     /**
-     * cron 表达式
+     * Cron expression
      */
     private String cronExpression;
     /**
-     * 时区
+     * Time zone
      */
     private String timeZoneId;
     /**

@@ -499,20 +499,6 @@
 		</where>
   </select>
 
-
-<!--   <select id="getTreeByApplicationId"  resultType="com.matariky.userservice.bean.TreeModel">-->
-<!--     	SELECT-->
-<!--			p.id,-->
-<!--			p.parent_id AS pid,-->
-<!--			p.permission_name AS NAME -->
-<!--		FROM-->
-<!--			user_permission p -->
-<!--		WHERE-->
-<!--			p.tenant_id =#{tenantId,jdbcType=VARCHAR}-->
-<!--		AND p.application_id = #{applicationId,jdbcType=BIGINT}-->
-<!--		AND p.is_active = 1 and p.delete_time=0-->
-<!--  	</select>-->
-
   	<select id="getTreeByApplicationId"  resultType="com.matariky.userservice.bean.TreeModel">
      	SELECT
 			p.id,

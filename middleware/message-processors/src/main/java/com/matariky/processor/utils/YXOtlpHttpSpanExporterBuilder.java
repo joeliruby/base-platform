@@ -27,7 +27,6 @@ public final class YXOtlpHttpSpanExporterBuilder {
     YXOtlpHttpSpanExporterBuilder() {
         delegate = new OkHttpExporterBuilder<>("otlp", "span", DEFAULT_ENDPOINT);
         delegate.exportAsJson();
-       // delegate.addHeader("signoz-access-token","cf258545-4c68-4f5b-a722-dd60b07e0a3e");
         OtlpUserAgent.addUserAgentHeader(delegate::addHeader);
     }
 
@@ -44,8 +43,10 @@ public final class YXOtlpHttpSpanExporterBuilder {
     }
 
     /**
-     * Sets the OTLP endpoint to connect to. If unset, defaults to {@value DEFAULT_ENDPOINT}. The
-     * endpoint must start with either http:// or https://, and include the full HTTP path.
+     * Sets the OTLP endpoint to connect to. If unset, defaults to
+     * {@value DEFAULT_ENDPOINT}. The
+     * endpoint must start with either http:// or https://, and include the full
+     * HTTP path.
      */
     public YXOtlpHttpSpanExporterBuilder setEndpoint(String endpoint) {
         requireNonNull(endpoint, "endpoint");
@@ -54,7 +55,8 @@ public final class YXOtlpHttpSpanExporterBuilder {
     }
 
     /**
-     * Sets the method used to compress payloads. If unset, compression is disabled. Currently
+     * Sets the method used to compress payloads. If unset, compression is disabled.
+     * Currently
      * supported compression methods include "gzip" and "none".
      */
     public YXOtlpHttpSpanExporterBuilder setCompression(String compressionMethod) {
@@ -73,8 +75,10 @@ public final class YXOtlpHttpSpanExporterBuilder {
     }
 
     /**
-     * Sets the certificate chain to use for verifying servers when TLS is enabled. The {@code byte[]}
-     * should contain an X.509 certificate collection in PEM format. If not set, TLS connections will
+     * Sets the certificate chain to use for verifying servers when TLS is enabled.
+     * The {@code byte[]}
+     * should contain an X.509 certificate collection in PEM format. If not set, TLS
+     * connections will
      * use the system default trusted certificates.
      */
     public YXOtlpHttpSpanExporterBuilder setTrustedCertificates(byte[] trustedCertificatesPem) {
@@ -83,7 +87,8 @@ public final class YXOtlpHttpSpanExporterBuilder {
     }
 
     /**
-     * Sets ths client key and the certificate chain to use for verifying client when TLS is enabled.
+     * Sets ths client key and the certificate chain to use for verifying client
+     * when TLS is enabled.
      * The key must be PKCS8, and both must be in PEM format.
      */
     public YXOtlpHttpSpanExporterBuilder setClientTls(byte[] privateKeyPem, byte[] certificatePem) {
@@ -92,7 +97,8 @@ public final class YXOtlpHttpSpanExporterBuilder {
     }
 
     /**
-     * Sets the {@link MeterProvider} to use to collect metrics related to export. If not set, uses
+     * Sets the {@link MeterProvider} to use to collect metrics related to export.
+     * If not set, uses
      * {@link GlobalOpenTelemetry#getMeterProvider()}.
      */
     public YXOtlpHttpSpanExporterBuilder setMeterProvider(MeterProvider meterProvider) {

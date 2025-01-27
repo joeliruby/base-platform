@@ -17,21 +17,21 @@ import lombok.experimental.Accessors;
 public class JobForm {
 
     /**
-     * Scheduled Task 全类 Name
+     * Scheduled Task Full class Name
      */
-    // @NotBlank(message = "类 Name 不能为空")
+    // @NotBlank(message = "Class Name cannot be empty")
     private String jobClassName;
 
     /**
-     * Task 组 Name
+     * Task Group Name
      */
-    // @NotBlank(message = " Task 组 Name 不能为空")
+    // @NotBlank(message = " Task Group name cannot be empty")
     private String jobGroupName;
 
     /**
-     * Scheduled Task cron表达式
+     * Scheduled Task cron expression
      */
-    // @NotBlank(message = "cron表达式不能为空")
+    // @NotBlank(message = "cron The expression cannot be empty")
     private String cronExpression;
 
     private String tenantId;

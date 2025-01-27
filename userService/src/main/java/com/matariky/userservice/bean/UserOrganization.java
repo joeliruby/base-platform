@@ -23,7 +23,7 @@ public class UserOrganization implements Comparable<UserOrganization> {
 
 	private String organizationCode;
 
-	@NotBlank(message = "机构 Name不能为空！")
+	@NotBlank(message = "Institutional name cannot be empty!")
 	private String organizationName;
 
 	private Long createTime;
@@ -53,10 +53,10 @@ public class UserOrganization implements Comparable<UserOrganization> {
 	private Long userGroupId;
 
 	@TableField(exist = false)
-	private String tenantName;// Tenant Name 字
+	private String tenantName;// Tenant Name
 
 	@TableField(exist = false)
-	private String parentName;// 上级机构 Name
+	private String parentName;// Superior agency Name
 
 	private Long deleteTime;
 

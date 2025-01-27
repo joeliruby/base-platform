@@ -8,13 +8,10 @@ import com.matariky.mybatis.EnhanceBaseMapper;
 import java.util.List;
 
 public interface JobRfidPrintTaskMapper extends EnhanceBaseMapper<TapeRfidPrintTask> {
-     
+
     public TapeRfidPrintTask getBasicBaseRfidPrintById(Long id);
 
-     
     public List<TapeRfidPrintParameterTask> getBasicBaseRfidPrintParameterById(Long id);
 
-
-     
     public int createBasicBaseRfidprintDetail(TapeRfidPrintDetailTask bean);
 }

@@ -1,22 +1,18 @@
 package com.matariky.user.customer;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import org.keycloak.Config;
 import org.keycloak.Config.Scope;
-import org.keycloak.credential.CredentialModel;
 import org.keycloak.credential.hash.PasswordHashProvider;
 import org.keycloak.credential.hash.PasswordHashProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.PasswordPolicy;
-import org.keycloak.models.UserCredentialModel;
 import org.keycloak.models.credential.PasswordCredentialModel;
 
 import com.matariky.user.customer.utils.EncryptionUtils;
+
 public class YXPWDHashProvider implements PasswordHashProviderFactory, PasswordHashProvider {
 	public static final String ID = "custom";
+
 	@Override
 	public PasswordHashProvider create(KeycloakSession session) {
 		return this;
@@ -24,17 +20,17 @@ public class YXPWDHashProvider implements PasswordHashProviderFactory, PasswordH
 
 	@Override
 	public void init(Scope config) {
-		
+
 	}
 
 	@Override
 	public void postInit(KeycloakSessionFactory factory) {
-		
+
 	}
 
 	@Override
 	public void close() {
-		
+
 	}
 
 	@Override
@@ -54,12 +50,12 @@ public class YXPWDHashProvider implements PasswordHashProviderFactory, PasswordH
 
 	@Override
 	public boolean verify(String rawPassword, PasswordCredentialModel credential) {
-		 String encodedPassword = encode(rawPassword, credential.getHashIterations(), credential.getSalt());
-	     return encodedPassword.equals(credential.getValue());
+		String encodedPassword = encode(rawPassword, credential.getHashIterations(), credential.getSalt());
+		return encodedPassword.equals(credential.getValue());
 	}
 
-	 private String encode(String rawPassword, int iterations, byte[] salt) {
-	     return EncryptionUtils.getHash3(rawPassword, "SHA");
-	 }
+	private String encode(String rawPassword, int iterations, byte[] salt) {
+		return EncryptionUtils.getHash3(rawPassword, "SHA");
+	}
 
 }

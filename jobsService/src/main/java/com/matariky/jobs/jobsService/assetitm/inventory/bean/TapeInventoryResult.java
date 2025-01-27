@@ -10,11 +10,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @description: 磁带盘点结果实体类
- * @author: bo.chen
- * @create: 2023/9/08 10:27
- **/
 @TableName(value = "biz_tape_inventory_result", autoResultMap = true)
 @Data
 public class TapeInventoryResult implements Serializable {
@@ -30,12 +25,12 @@ public class TapeInventoryResult implements Serializable {
     private Long id;
 
     /**
-     * 盘点 Task id
+     * inventory Task id
      */
     private Long taskId;
 
     /**
-     * 子 Task id
+     * Sub Task id
      */
     private Long subtaskId;
 
@@ -70,23 +65,23 @@ public class TapeInventoryResult implements Serializable {
     private String readerCode;
 
     /**
-     * Error 原因
+     * Error Reason
      */
     private String failReason;
 
     /**
-     * 结果:1=丢失 ,2=新发现 ,3=正常
+     * Result: 1 = loss, 2 = new discovery, 3 = normal
      */
     private Integer result;
 
     /**
-     * 文件路径
+     * File path
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<String> filePaths;
 
     /**
-     * 非正常 Label Wether 有效,0=否 ,1=是
+     * Abnormal Label Wether effective,0=No ,1=Yes
      */
     private Boolean isValid;
 

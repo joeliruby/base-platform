@@ -129,7 +129,7 @@
         select id,tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description from user_tenant where tenant_code=#{tenantCode} 
 	</select>
 	
-	<!-- 逻辑Delete  包括批量 -->
+	<!-- Logic delete includes batches -->
   	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
     	update user_tenant
     	<set >
@@ -142,7 +142,7 @@
   	</update>
 	
 	
-	<!--批量Delete 租户和  App 的中间表数据 -->
+	<!--Batch delete tenant and app intermediate table data -->
 	<delete id="deleteApplicationByTenantCodes" >
 		DELETE FROM user_r_application_tenant WHERE tenant_code  in
 		<foreach item="tenantCode" collection="array" open="(" separator="," close=")">
@@ -150,16 +150,12 @@
         </foreach>
 	</delete>
 	
-	<!-- 向 User 和租户和组织机构的中间表插入数据 -->
+	<!--Insert data to the intermediate table of User and tenants and organizations -->
 	<insert id="saveRApplicationTenant" parameterType="Map" >
             INSERT INTO user_r_application_tenant (application_id,tenant_id,tenant_code, application_name)
                  values
                     (#{application_id},#{tenant_id},#{tenant_code},#{application_name});
     </insert>
 	
-	<!-- 分组下拉框 -->
-<!-- 	<select id="selectTenant"  resultType="com.matariky.userservice.bean.UserTenant"> -->
-<!-- 			SELECT tenant_code as id,tenant_name FROM user_tenant WHERE  delete_time=0 	    -->
-<!-- 	</select> -->
 
 </mapper>

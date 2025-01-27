@@ -4,11 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @description: Reader Base Information
- * @author: bo.chen
- * @create: 2023/10/8 13:50
- **/
 @Data
 public class BasicReaderBo implements Serializable {
 

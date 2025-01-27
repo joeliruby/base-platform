@@ -15,7 +15,6 @@ import com.matariky.utils.StringUtils;
 import com.matariky.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -40,56 +39,55 @@ public class JobServiceImpl implements JobService {
     private final Scheduler scheduler;
     private final JobMapper jobMapper;
 
-    @Autowired
     public JobServiceImpl(@Qualifier("quartzScheduler") Scheduler scheduler, JobMapper jobMapper) {
         this.scheduler = scheduler;
         this.jobMapper = jobMapper;
     }
 
     /**
-     * Add 并启动 Scheduled Task
+     * Add Activate Scheduled Task
      *
-     * @param form 表单 Parameter {@link JobForm}
+     * @param form Form Parameter {@link JobForm}
      * @return {@link JobDetail}
-     * @throws Exception 异常
+     * @throws Exception abnormal
      */
     @Override
     public void addJob(JobForm form) throws Exception {
-        // 启动调度器
+        // Start the scheduler
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(JobUtil.getClass(form.getJobClassName()).getClass())
                 .withIdentity(form.getJobClassName(), form.getJobGroupName()).build();
         Trigger trigger;
         if (StringUtils.isNotEmpty(form.getCronExpression())) {
-            // Cron表达式调度构建器(即 Task 执行的 Time )
+            // Cron expression schedule builder (i.e., the time the task is executed)
             CronScheduleBuilder cron = CronScheduleBuilder.cronSchedule(form.getCronExpression());
-            // 根据Cron表达式构建 one Trigger
+            // Build a Trigger based on the Cron expression
             trigger = TriggerBuilder.newTrigger().withIdentity(form.getJobClassName(), form.getJobGroupName())
                     .withSchedule(cron).build();
         } else {
-            /** 立即启动 **/
+            /** Start immediately **/
             trigger = TriggerBuilder.newTrigger().withIdentity(form.getJobClassName(), form.getJobGroupName())
                     .startNow().build();
         }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            log.error("【 Scheduled  Task 】Create Failed！", e);
-            throw new Exception("【 Scheduled  Task 】Create Failed！");
+            log.error("【Scheduled Task】Creation Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！");
         }
     }
 
     @Override
     public void addInventoryJob(InventoryJobForm form) throws Exception {
-        // 启动调度器
+        // Start the scheduler
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(TapeInventoryTaskJob.class)
                 .withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).build();
         Trigger trigger;
         if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
-            /** 立即启动 **/
+            /** Start immediately **/
             trigger = TriggerBuilder.newTrigger()
                     .withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
         } else if (NumberUtils.INTEGER_TWO.equals(form.getTaskType())) {
@@ -120,75 +118,66 @@ public class JobServiceImpl implements JobService {
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！", e);
         }
     }
 
     @Override
     public void addRfidCreateJob(RfidCreateJobForm form) throws Exception {
-        // 启动调度器
+        // Start the scheduler
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(TapeRfidCreateTaskJob.class)
                 .withIdentity(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString()).build();
-        // Trigger trigger;
-        // if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
-        /** 立即启动 **/
+        /** Start immediately **/
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
-        // }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！", e);
         }
     }
 
     @Override
     public void addRfidPrintJob(RfidPrintJobForm form) throws Exception {
-        // 启动调度器
+        // Start the scheduler
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(TapeRfidPrintTaskJob.class)
                 .withIdentity(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString()).build();
-        // Trigger trigger;
-        // if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
-        /** 立即启动 **/
+        /** Start immediately **/
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
-        // }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！", e);
         }
     }
 
     @Override
     public void addRfidUploadJob(RfidUploadJobForm form) throws Exception {
-        // 启动调度器
+        // Start the scheduler
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(TapeRfidUploadTaskJob.class)
                 .withIdentity(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString()).build();
-        // Trigger trigger;
-        // if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
-        /** 立即启动 **/
+        /** Start immediately **/
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
-        // }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！", e);
         }
     }
 
     /**
      * Delete Scheduled Task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws SchedulerException 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws SchedulerException Exception
      */
     @Override
     public void deleteJob(JobForm form) throws SchedulerException {
@@ -198,24 +187,22 @@ public class JobServiceImpl implements JobService {
     }
 
     /**
-     * 暂停 Scheduled Task
+     * Pause Scheduled Task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws SchedulerException 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws SchedulerException Exception
      */
     @Override
     public void pauseJob(JobForm form) throws SchedulerException {
         jobMapper.pauseRequestRecoveryByMapper(form.getJobClassName(), form.getJobGroupName(), form.getTenantId());
         jobMapper.pauseTriggerState(form.getJobClassName(), form.getJobGroupName(), form.getTenantId());
-        // scheduler.pauseJob(JobKey.jobKey(form.getJobClassName(),
-        // form.getJobGroupName()));
     }
 
     /**
-     * 恢复 Scheduled Task
+     * Resume Scheduled Task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws SchedulerException 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws SchedulerException Exception
      */
     @Override
     public void resumeJob(JobForm form) throws SchedulerException {
@@ -223,40 +210,40 @@ public class JobServiceImpl implements JobService {
     }
 
     /**
-     * 重新 Configuration Scheduled Task
+     * Reconfigure Scheduled Task
      *
-     * @param form 表单 Parameter {@link JobForm}
-     * @throws Exception 异常
+     * @param form Form parameter {@link JobForm}
+     * @throws Exception Exception
      */
     @Override
     public void cronJob(JobForm form) throws Exception {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(form.getJobClassName(), form.getJobGroupName());
-            // 表达式调度构建器
+            // Expression schedule builder
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(form.getCronExpression());
 
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
-            // 根据Cron表达式构建 one Trigger
+            // Build a Trigger based on the Cron expression
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
 
-            // 按新的trigger重新 Configurationjob执行
+            // Reconfigure job execution with the new trigger
             scheduler.rescheduleJob(triggerKey, trigger);
         } catch (SchedulerException e) {
-            log.error("【 Scheduled  Task 】UpdateFailed！", e);
-            throw new Exception("【 Scheduled  Task 】Create Failed！");
+            log.error("【Scheduled Task】Update Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！");
         }
     }
 
     /**
-     * 订单过期- Scheduled Task
+     * Order Expiry - Scheduled Task
      *
      * @param form
      */
     @Override
     public void addOrderExpireJob(BaseJobForm form) throws Exception {
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(OrderExpireJob.class)
                 .withIdentity(OrderExpireJob.class.getName(), UUIDUtil.getUUID()).build();
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(form.getCronExpression());
@@ -265,7 +252,7 @@ public class JobServiceImpl implements JobService {
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！", e);
         }
     }
 
@@ -277,7 +264,7 @@ public class JobServiceImpl implements JobService {
      */
     @Override
     public void addDeviceUpgradeJob(DeviceUpgradeForm form) throws Exception {
-        /** 先Delete 之前 Scheduled Task **/
+        /** First delete the previous scheduled task **/
         JobForm deletJob = new JobForm();
         String groupName = form.getDeviceId() + "_" + form.getPackageId();
         deletJob.setJobClassName(DeviceUpgradeJob.class.getName());
@@ -290,7 +277,7 @@ public class JobServiceImpl implements JobService {
         form.setCronExpression(cronExpression);
 
         scheduler.start();
-        // 构建Job Information
+        // Build Job Information
         JobDetail jobDetail = JobBuilder.newJob(DeviceUpgradeJob.class)
                 .withIdentity(DeviceUpgradeJob.class.getName(), groupName).build();
         jobDetail.getJobDataMap().put("deviceId", form.getDeviceId());
@@ -301,15 +288,15 @@ public class JobServiceImpl implements JobService {
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【Scheduled Task】Creation Failed！", e);
         }
     }
 
     /**
      * Query Scheduled Task Pagination
      *
-     * @param currentPage Current 页
-     * @param pageSize    每页条数
+     * @param currentPage Current page
+     * @param pageSize    Number of items per page
      * @return Scheduled Task Pagination
      */
     @Override

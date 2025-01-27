@@ -7,11 +7,11 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 通用Api封装
+ * Universal API packaging
  * </p>
  *
  * @package: com.matariky.jobs.jobsService.common
- * @description: 通用Api封装
+ * @description: Universal API packaging
  * @version: V1.0
  */
 @Data
@@ -24,7 +24,7 @@ public class ApiResponse implements Serializable {
     private String message;
 
     /**
-     * 返回 Data
+     * Return data
      */
     private Object data;
 
@@ -37,10 +37,10 @@ public class ApiResponse implements Serializable {
     }
 
     /**
-     * 通用封装 RetrieveApiResponse Object
+     * General encapsulation to retrieve ApiResponse object
      *
-     * @param message 返回 Information
-     * @param data    返回 Data
+     * @param message Return message
+     * @param data    Return data
      * @return ApiResponse
      */
     public static ApiResponse of(String message, Object data) {
@@ -48,9 +48,9 @@ public class ApiResponse implements Serializable {
     }
 
     /**
-     * 通用成功封装 RetrieveApiResponse Object
+     * General success encapsulation to retrieve ApiResponse object
      *
-     * @param data 返回 Data
+     * @param data Return data
      * @return ApiResponse
      */
     public static ApiResponse ok(Object data) {
@@ -58,13 +58,12 @@ public class ApiResponse implements Serializable {
     }
 
     /**
-     * 通用封装 RetrieveApiResponse Object
+     * General encapsulation to retrieve ApiResponse object
      *
-     * @param message 返回 Information
+     * @param message Return message
      * @return ApiResponse
      */
     public static ApiResponse msg(String message) {
         return of(message, null);
     }
-
 }

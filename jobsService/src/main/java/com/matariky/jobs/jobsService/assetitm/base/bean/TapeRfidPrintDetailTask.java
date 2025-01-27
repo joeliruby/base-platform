@@ -5,14 +5,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @description:  Label  Print  Task  Detailbean
- * @author: chenyajun
- * @create: 2024/2/08 9:48
- **/
 @TableName(value = "basic_base_rfidprint_detail", autoResultMap = true)
 @Data
-public class TapeRfidPrintDetailTask   implements Serializable {
+public class TapeRfidPrintDetailTask implements Serializable {
     /**
      *
      */

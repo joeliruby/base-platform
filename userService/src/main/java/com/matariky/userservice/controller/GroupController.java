@@ -22,11 +22,11 @@ public class GroupController {
     @Autowired
     UserGroupService groupService;
 
-    //	@UserLoginToken
     @GetMapping("/group/")
     @RequirePermission
     @VerifyTenantId
-    public AjaxResult searchGroupByNamePrefix(@PathVariable("tenantId") String tenantId, @RequestParam("filter") String groupNamePrefix, String jwt) {
+    public AjaxResult searchGroupByNamePrefix(@PathVariable("tenantId") String tenantId,
+            @RequestParam("filter") String groupNamePrefix, String jwt) {
         List<UserGroup> groupList = groupService.searchByGroupNamePrefix(tenantId, groupNamePrefix);
         List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
         Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -45,6 +45,5 @@ public class GroupController {
 
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, returnMap);
     }
-
 
 }

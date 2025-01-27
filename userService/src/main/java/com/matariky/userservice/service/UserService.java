@@ -112,47 +112,48 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
 
     @Transactional(rollbackFor = Exception.class)
     public void save(User bean) {
-        // 校验Type
+        // check Type
         ValidatorUtils.validateEntity(bean);
 
-        // Password 加密
+        // Password encryption
 
         newUserDefaults(bean);
 
-        // tenant_id 默认 Tenant ID
-        // organization_id 默认组织机构ID
-        // self_organization_code User 自身组织机构 Code
-        // department_organization_code User 所在部门组织机构 Code
+        // tenant_id default Tenant ID
+        // organization_id Default organization ID
+        // self_organization_code User Self -organization Code
+        // department_organization_code User Organization of the department Code
         // Save User
         userMapper.insert(bean);
 
-        // Save 角色 User 关系
+        // Save Character user relationship
         saveOrUpdateRole(bean.getId(), bean.getRoleIdList());
 
-        // Save 分组关系
+        // Save Group relationship
         saveOrUpdateGroup(bean.getId(), bean.getGroupIdList());
 
-        // Save User 和 Tenant 的关联 和 Save 机构 User 关系 (两个中间表合在一起了)
+        // Save User The relationship with Tenant and the SAVE agency user relationship
+        // (two intermediate watches are together)
         saveOrUpdateTenantAndOrganization(bean);
 
-        // 组织机构 Code +ind+ User Primary Key
+        // Organizational Code +ind+ User Primary Key
         String selfOrganizationCode = null;
         String departmentOrganizationCode = bean.getDepartmentOrganizationCode();
-        if (departmentOrganizationCode.contains(",")) {// 多个组织
+        if (departmentOrganizationCode.contains(",")) {// Multiple organizations
 
             String[] departmentOrgCodes = departmentOrganizationCode.split(",");
 
             for (int i = 0; i < departmentOrgCodes.length; i++) {
 
-                // 还要 Add 到组织表 Code Rule 开头加 ind_
+                // Also add to the beginning of the tissue watch ind_
                 UserOrganization organization = new UserOrganization();
 
-                // Create 组织
+                // Create organize
                 createOrgUser(departmentOrgCodes[i], organization, bean);
 
                 String orgCode = null;
 
-                // 逗号隔开用于 User 表冗余
+                // The comma is separated for USER table redundancy
                 if (i == departmentOrgCodes.length - 1) {
                     selfOrganizationCode = OrgCodeUtil.generateSelfOrganizationCode(departmentOrgCodes[i],
                             bean.getId());
@@ -163,21 +164,21 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
 
                 orgCode = OrgCodeUtil.generateSelfOrganizationCode(departmentOrgCodes[i], bean.getId());
 
-                // Update组织 Code
+                // Update organize Code
                 userOrganizationMapper.updateOrganizationCodeById(organization.getId(), orgCode.toString());
             }
-        } else {// Single 组织
+        } else {// Single organize
 
             UserOrganization organization = new UserOrganization();
 
             createOrgUser(departmentOrganizationCode, organization, bean);
 
             selfOrganizationCode = OrgCodeUtil.generateSelfOrganizationCode(departmentOrganizationCode, bean.getId());
-            // Update组织 Code
+            // Update organize Code
             userOrganizationMapper.updateOrganizationCodeById(organization.getId(), selfOrganizationCode.toString());
         }
 
-        // 然后去 Update User 表的 User 自身 Code
+        // Then go to the User itself of the update user table Code
         if (!StringUtils.isEmpty(selfOrganizationCode))
             userMapper.updateSelfOrganizationCodeById(bean.getId(), selfOrganizationCode);
 
@@ -193,15 +194,15 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
         // Tenant id
         organization.setTenantId(bean.getTenantId());
 
-        // 联系人 Name
+        // Contact person Name
         organization.setLiaisonName(bean.getRealName());
 
-        // 联系人电话号码
+        // Contact phone number
         organization.setLiaisonMobile(bean.getCellPhone());
 
         organization.setOrgType(4);// 人员Type
 
-        // 上级组织id
+        // Superior organization id
         UserOrganization selectByOrgCode = userOrganizationMapper.selectByOrgCode(code);
 
         if (selectByOrgCode != null) {
@@ -229,13 +230,12 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
     public void update(User bean) {
         bean.setUpdateTime(DateUtil.getCurrentDateAndTime().getTime());
 
-        // 不改 Password
+        // Not change Password
 
-        // 组织机构 Code +ind+ User Primary Key
+        // Organizational Code +ind+ User Primary Key
         String selfOrganizationCode = null;
         String departmentOrganizationCode = bean.getDepartmentOrganizationCode();
 
-        // String selfOrgCode = bean.getSelfOrganizationCode();
         String selfOrgCode = OrgCodeUtil.generateSelfOrganizationCode(departmentOrganizationCode, bean.getId());
 
         if (!StringUtils.isEmpty(selfOrgCode) && selfOrgCode.contains(",")) {
@@ -253,7 +253,6 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
         } else {
             Map<String, Object> columnMap = new HashMap<>();
             columnMap.put("organization_code", selfOrgCode);
-            // userOrganizationMapper.deleteByMap(columnMap);
         }
 
         if (departmentOrganizationCode.contains(",")) {
@@ -262,10 +261,9 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
 
                 UserOrganization organization = new UserOrganization();
 
-                // Create 组织
+                // Create organize
                 createOrgUser(departmentOrganizationCodes[i], organization, bean);
 
-                //
                 String orgCode = null;
 
                 if (i == departmentOrganizationCodes.length - 1) {
@@ -278,18 +276,14 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
 
                 orgCode = OrgCodeUtil.generateSelfOrganizationCode(departmentOrganizationCodes[i], bean.getId());
 
-                // Update组织 Code
+                // Update organize Code
                 userOrganizationMapper.updateOrganizationCodeById(organization.getId(), orgCode.toString());
 
             }
         } else {
 
-            // UserOrganization organization=new UserOrganization();
-
-            // createOrgUser(departmentOrganizationCode,organization,bean);
-
             selfOrganizationCode = OrgCodeUtil.generateSelfOrganizationCode(departmentOrganizationCode, bean.getId());
-            // Update组织 Code
+            // Update organize Code
 
             UserOrganization parentUserOrgan = userOrganizationMapper.selectByOrgCode(departmentOrganizationCode);
 
@@ -305,19 +299,20 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
         if (!StringUtil.isEmpty(selfOrganizationCode))
             userMapper.updateSelfOrganizationCodeById(bean.getId(), selfOrganizationCode);
 
-        // Save 角色 User 关系
+        // Save Character user relationship
         saveOrUpdateRole(bean.getId(), bean.getRoleIdList());
 
-        // Save 分组关系
+        // Save Group relationship
         saveOrUpdateGroup(bean.getId(), bean.getGroupIdList());
 
-        // Save User 和 Tenant 的关联 和 Save 机构 User 关系 (两个中间表合在一起了)
+        // Save User The relationship with Tenant and the SAVE agency user relationship
+        // (two intermediate watches are together)
         saveOrUpdateTenantAndOrganization(bean);
     }
 
-    // Save User 和 Tenant 中间表 Data
+    // Save User And tenant intermediate table Data
     public void saveOrUpdateTenantAndOrganization(User bean) {
-        // 先Delete 组户和 User 的关系
+        // First DELETE's relationship with User
         deleteTenantAndOrganizationByUserIds(new Long[] { bean.getId() });
 
         List<String[]> organizationCodeList = bean.getOrganizationCodeList();
@@ -334,12 +329,12 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
                 map.put("user_id", bean.getId());// User id
                 map.put("tenant_code", bean.getTenantId());// Tenant Code
                 map.put("organization_id", selectByOrgCode == null ? null : selectByOrgCode.getId());// 组织机构ID
-                map.put("organization_code", last);// 组织机构 Code
+                map.put("organization_code", last);// Organizational Code
                 UserTenant selectBytenantCode = tenantMapper.selectByTenantCode(bean.getTenantId());
                 map.put("tenant_id", selectBytenantCode.getId());// Tenant ID
                 map.put("self_organization_code", bean.getSelfOrganizationCode());// 个人组织机构 Code
 
-                // 插入 Data
+                // insert Data
                 userMapper.saveTenantAndOrganization(map);
             }
 
@@ -347,35 +342,35 @@ public class UserService extends BaseServiceImpl<UserMapper, User> implements Ba
 
     }
 
-    // Save User 和组中间表的 Data
+    // Save User Midtop Data
     public void saveOrUpdateGroup(Long userId, List<Long> groupIdList) {
 
-        // 先Delete 组和 User 的关系
+        // First delete the relationship between group and user
         deleteGroupByUserIds(new Long[] { userId });
 
-        // User 没有 one 组的情况
+        // If the user does not have any group
         if (CollUtil.isEmpty(groupIdList)) {
             return;
         }
 
-        // Save 组和 User 关系
+        // Save the relationship between group and user
         for (Long groupId : groupIdList) {
             userMapper.saveRGroupUser(userId, groupId);
         }
     }
 
-    // Save User 和角色中间表的 Data
+    // Save the data of the intermediate table between user and role
     public void saveOrUpdateRole(Long userId, List<Long> roleIdList) {
 
-        // 先Delete 角色和 User 的关系
+        // First delete the relationship between role and user
         deleteRoleByUserIds(new Long[] { userId });
 
-        // User 没有 one 角色的情况
+        // If the user does not have any role
         if (CollUtil.isEmpty(roleIdList)) {
             return;
         }
 
-        // Save 组和 User 关系
+        // Save the relationship between role and user
         for (Long roleId : roleIdList) {
             userMapper.saveRRoleUser(userId, roleId);
         }

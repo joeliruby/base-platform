@@ -5,20 +5,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class QueryTapeOrderInfoParam extends QueryPageDataIsolation {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-
-	/**
-     *  Wether 分页
+    /**
+     * Wether Pagination
      */
     private boolean isPage = Boolean.FALSE;
-
 
     private String tenantName;
     private String orderCode;

@@ -7,9 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
-
 /**
- *  Generation 验证码 Configuration 
+ * Generation Verification code Configuration
  *
  */
 @Configuration

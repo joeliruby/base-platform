@@ -1,8 +1,6 @@
 package com.matariky.userservice.controller;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +11,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +23,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
 import com.matariky.commonservice.upload.constant.MessageKey;
-import com.matariky.commonservice.upload.utils.Result;
 import com.matariky.exception.QslException;
 import com.matariky.userservice.bean.TreeModel;
 import com.matariky.userservice.bean.UserGroup;
@@ -40,9 +36,10 @@ import com.matariky.utils.TokenUtils;
 import cn.hutool.core.collection.CollUtil;
 
 /**
-*Controller
-* @author AUTOMATION
-*/
+ * Controller
+ * 
+ * @author AUTOMATION
+ */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
 public class UserGroupController {
@@ -59,194 +56,156 @@ public class UserGroupController {
 	@Autowired
 	private UserOrganizationService orgService;
 
-	@RequestMapping(value ="/userGroup/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/userGroup/list", method = RequestMethod.GET)
 	public Object list(
 			HttpServletRequest request,
-			 @RequestParam Map<String, Object> map,
-			 @PathVariable("tenantId") String tenantId
-			/*@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt*/) {
+			@RequestParam Map<String, Object> map,
+			@PathVariable("tenantId") String tenantId
+	/*
+	 * @ApiParam(value = "JWT Token", required =
+	 * true) @RequestHeader("Authorization") String jwt
+	 */) {
 		map.put("tenantId", TokenUtils.extractTenantIdFromHttpReqeust(request));
-		int pageIndex=1;
-		int perPage=20;
-		if(map.containsKey("index")) {
-			pageIndex=Integer.parseInt(map.get("index").toString());
+		int pageIndex = 1;
+		int perPage = 20;
+		if (map.containsKey("index")) {
+			pageIndex = Integer.parseInt(map.get("index").toString());
 		}
 
-		if(map.containsKey("perPage")) {
-			perPage=Integer.parseInt(map.get("perPage").toString());
+		if (map.containsKey("perPage")) {
+			perPage = Integer.parseInt(map.get("perPage").toString());
 		}
 		PageHelper.startPage(pageIndex, perPage);
 
-
-		if(!StringUtil.isEmpty((String)map.get("begin"))&&!StringUtil.isEmpty((String)map.get("end"))&&map.get("begin").equals(map.get("end"))&&Long.parseLong((String)map.get("end"))!=0l) {//同一天
-			Long begin=Long.parseLong((String)map.get("begin"));
-			Long end=begin+24*60*60*1000;
+		if (!StringUtil.isEmpty((String) map.get("begin")) && !StringUtil.isEmpty((String) map.get("end"))
+				&& map.get("begin").equals(map.get("end")) && Long.parseLong((String) map.get("end")) != 0l) {// 同一天
+			Long begin = Long.parseLong((String) map.get("begin"));
+			Long end = begin + 24 * 60 * 60 * 1000;
 			map.put("begin", begin);
 			map.put("end", end);
 		}
 
-//		if(map.containsKey("end")) {
-//			endst = map.get("end").toString();
-//		}
-//
-//		//把 Time 转成longType 
-//		if(StringUtil.isNotEmpty(beginst)) {
-//			long begin = DateUtil.string2Dateyyyymmdd(beginst).getTime();
-//			map.put("begin", begin);
-//		}
-//		if(StringUtil.isNotEmpty(endst)) {
-//			long end = DateUtil.string2Dateyyyymmdd(endst).getTime();
-//			map.put("end", end);
-//		}
 		PageHelper.startPage(pageIndex, perPage);
 
 		List<UserGroup> userGroupList = userGroupService.getUserGroupAll(map);
 
-		PageInfo<UserGroup> page= new PageInfo<UserGroup>(userGroupList);
-		
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,page);
-//		return page;
+		PageInfo<UserGroup> page = new PageInfo<UserGroup>(userGroupList);
+
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 	}
 
-
-	@RequestMapping(value ="/userGroup/edit",method = RequestMethod.GET)
+	@RequestMapping(value = "/userGroup/edit", method = RequestMethod.GET)
 	public Object edit(
 			HttpServletRequest request,
 			@RequestParam Long id,
-			 @PathVariable("tenantId") String tenantId)
-	{
+			@PathVariable("tenantId") String tenantId) {
 		UserGroup bean = userGroupService.getUserGroupById(id);
 		bean.setTenantName(userTenantService.selectById(bean.getTenantId()).getTenantName());
 
-		//角色集合
+		// Role collection
 		List<Long> roleIdList = userGroupService.getRoleIdList(id);
 
-		// User 集合
+		// User gather
 		List<Long> userIdList = userGroupService.getUserIdList(id);
 
+		List<String> userNameList = userGroupService.getUserNameList(id);
 
-		List<String> userNameList= userGroupService.getUserNameList(id);
+		List<String> roleNameList = userGroupService.getRoleNameList(id);
 
-		List<String> roleNameList=userGroupService.getRoleNameList(id);
-
-		if(CollUtil.isNotEmpty(roleIdList)) {
+		if (CollUtil.isNotEmpty(roleIdList)) {
 			bean.setRoleIdList(roleIdList);
 		}
 
-		if(CollUtil.isNotEmpty(userIdList)) {
+		if (CollUtil.isNotEmpty(userIdList)) {
 			bean.setUserIdList(userIdList);
 
 		}
 		bean.setUserNameList(userNameList);
 		bean.setRoleNameList(roleNameList);
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,bean);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
 	}
 
-	 
-	@RequestMapping(value = "/userGroup",method = RequestMethod.POST)
+	@RequestMapping(value = "/userGroup", method = RequestMethod.POST)
 	public Object save(
 			@RequestBody @Valid UserGroup bean,
-			 @PathVariable("tenantId") String tenantId,
+			@PathVariable("tenantId") String tenantId,
 			HttpServletRequest request,
-			HttpServletResponse response)
-	{
-			if(StringUtil.isEmpty(bean.getGroupName())) {
-				throw new QslException(MessageKey.GROUP_NAME_NULL);
-			}
-//			//分组 Name保持  Unique 
-//			Map<String, Object> columnMap=new HashMap<>();
-//			columnMap.put("group_name", bean.getGroupName());
-//			columnMap.put("tenant_id", tenantId);
-//			columnMap.put("delete_time", 0);
-//			List<UserGroup> userGroups=userGroupService.selectByMap(columnMap);
-//			if(CollUtil.isNotEmpty(userGroups)) {
-//				throw new QslException(MessageKey.GROUP_NAME_ERR);
-//			}
-//			bean.setTenantId(tenantId);
-			userGroupService.createUserGroup(bean);
-			return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-//			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			HttpServletResponse response) {
+		if (StringUtil.isEmpty(bean.getGroupName())) {
+			throw new QslException(MessageKey.GROUP_NAME_NULL);
+		}
+		userGroupService.createUserGroup(bean);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
 
 	}
 
-	 
-	@RequestMapping(value = "/userGroup",method = RequestMethod.PUT)
+	@RequestMapping(value = "/userGroup", method = RequestMethod.PUT)
 	public Object update(
 			@RequestBody @Valid UserGroup bean,
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@PathVariable("tenantId") String tenantId)
-	{
-		try{
+			@PathVariable("tenantId") String tenantId) {
+		try {
 
-			if(StringUtil.isEmpty(bean.getGroupName())) {
+			if (StringUtil.isEmpty(bean.getGroupName())) {
 				throw new QslException(MessageKey.GROUP_NAME_NULL);
 			}
-			//分组 Name保持  Unique 
-//			Map<String, Object> columnMap=new HashMap<>();
-//			columnMap.put("group_name", bean.getGroupName());
-//			columnMap.put("tenant_id", bean.getTenantId());
+			// Group Name Keep Unique
 
 			userGroupService.updateUserGroup(bean);
-			UserGroup grp= userGroupService.getUserGroupById(bean.getId());
-			UserOrganization organization= orgService.selectByOrgCode(grp.getOrgCode());
-			if(organization==null)
-				return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-			
+			UserGroup grp = userGroupService.getUserGroupById(bean.getId());
+			UserOrganization organization = orgService.selectByOrgCode(grp.getOrgCode());
+			if (organization == null)
+				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+
 			organization.setOrganizationName(bean.getGroupName());
 
 			orgService.updateById(organization);
-			return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-		}catch (Exception e){
+			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-	 
-	@RequestMapping(value = "/userGroup",method = RequestMethod.DELETE)
-	public Object del(String id,HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/userGroup", method = RequestMethod.DELETE)
+	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
 		String[] split = id.split(",");
-			int success = userGroupService.updateDeleteTimeById(split);
-			if(success > 0){
-				return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-//				return new ResponseEntity<String>("SUCCESS",  HttpStatus.OK);
-			}else{
-				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
-			}
+		int success = userGroupService.updateDeleteTimeById(split);
+		if (success > 0) {
+			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+		} else {
+			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+		}
 
 	}
 
-
-	//组的下拉框
+	// The drop -down box of the group
 	@GetMapping("/userGroup/box")
 	public Object selectGroup(@PathVariable("tenantId") String tenantId) {
 		List<UserGroup> groupList = userGroupService.selectGroup(tenantId);
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,groupList);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, groupList);
 	}
 
-
-	//查看授权  Detail 
-	@RequestMapping(value = "/userGroup",method = RequestMethod.GET)
+	// View authorization Detail
+	@RequestMapping(value = "/userGroup", method = RequestMethod.GET)
 	public Object getPermissionByGroup(HttpServletRequest request,
 			Long groupId,
-			 @PathVariable("tenantId") String tenantId){
+			@PathVariable("tenantId") String tenantId) {
 
-		//根据 Tenant id Query   App 
-		List<Map<String,Object>> listMaps=userGroupService.getAppByTenantId(tenantId);
-		List<Map<String, Object>> maps=new ArrayList<>();
+		// according to Tenant id Query App
+		List<Map<String, Object>> listMaps = userGroupService.getAppByTenantId(tenantId);
+		List<Map<String, Object>> maps = new ArrayList<>();
 
 		for (Map<String, Object> map : listMaps) {
 			Long applicationId = Long.parseLong(map.get("id").toString());
-			List<TreeModel> treeList=userGroupService.getPermissionByUserAndRoleAndGroup(groupId,applicationId);
-			if(CollUtil.isNotEmpty(treeList)) {
+			List<TreeModel> treeList = userGroupService.getPermissionByUserAndRoleAndGroup(groupId, applicationId);
+			if (CollUtil.isNotEmpty(treeList)) {
 				map.put("tree", treeList);
 				maps.add(map);
 			}
 		}
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,maps);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, maps);
 	}
-
-
 
 }

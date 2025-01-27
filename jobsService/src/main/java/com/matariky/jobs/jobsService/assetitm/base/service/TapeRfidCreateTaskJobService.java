@@ -15,8 +15,6 @@ import com.matariky.jobs.jobsService.assetitm.base.bean.TapeRfidCreateTask;
 import com.matariky.jobs.jobsService.assetitm.base.mapper.JobRfidCreateTaskMapper;
 import com.matariky.jobs.jobsService.assetitm.base.vo.BasicBaseRfidfactoryCNExeclReqVo;
 import com.matariky.utils.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +24,6 @@ import java.util.List;
 
 @Service
 public class TapeRfidCreateTaskJobService {
-
-    private final static Logger logger = LoggerFactory.getLogger(TapeRfidCreateTaskJobService.class);
 
     @Autowired
     private MinioUtil minioUtil;
@@ -47,12 +43,6 @@ public class TapeRfidCreateTaskJobService {
     @Autowired
     private BasicBaseGoodsMapper basicBaseGoodsMapper;
 
-    /**
-     * @Description: Start Task
-     * @Author: chenyajun
-     * @Date: 2024/2/22 15:15
-     * @param taskId
-     **/
     @Transactional(rollbackFor = Exception.class)
     public void start(Long taskId) throws Exception {
 

@@ -4,11 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @description: Label Print
- * @author: chenyajun
- * @create: 2024/02/16 18:14
- **/
 @Data
 public class RfidPrintJobForm implements Serializable {
     /**
@@ -27,7 +22,7 @@ public class RfidPrintJobForm implements Serializable {
     private Long startTime;
 
     /**
-     * Task Type ,1=立即执行 ,2=一次性,3=周期
+     * Task Type ,1=Execute immediately, 2 = one -time, 3 = cycle
      */
     private Integer taskType;
 }

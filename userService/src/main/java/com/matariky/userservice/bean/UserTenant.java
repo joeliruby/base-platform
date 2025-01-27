@@ -22,7 +22,7 @@ public class UserTenant {
 	@TableId("id")
 	private String tenantCode;
 
-	@NotBlank(message = " Tenant  Name不能为空！")
+	@NotBlank(message = " Tenant name cannot be empty!")
 	private String tenantName;
 
 	private Long updateTime;
@@ -42,7 +42,7 @@ public class UserTenant {
 
 	private Integer orderNum;
 
-	// 上级 Tenant Code
+	// Superior Tenant Code
 	@TableField(exist = false)
 
 	private String parentCode;
@@ -52,7 +52,7 @@ public class UserTenant {
 
 	private Boolean isActive;
 	private String domainName;
-	private String theme;// 主题颜色
+	private String theme;// Theme color
 
 	@TableField(exist = false)
 	private String parentName;

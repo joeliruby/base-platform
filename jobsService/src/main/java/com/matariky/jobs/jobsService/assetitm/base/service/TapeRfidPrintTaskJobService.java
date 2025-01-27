@@ -10,8 +10,6 @@ import com.matariky.commonservice.base.mapper.BasicBaseRfidInfoMapper;
 import com.matariky.jobs.jobsService.assetitm.base.bean.*;
 import com.matariky.jobs.jobsService.assetitm.base.mapper.JobRfidPrintTaskMapper;
 import com.matariky.utils.CodeUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +18,6 @@ import java.util.List;
 
 @Service
 public class TapeRfidPrintTaskJobService {
-
-    private final static Logger logger = LoggerFactory.getLogger(TapeRfidCreateTaskJobService.class);
 
     @Autowired
     private BasicBaseCodingRulesMapper basicBaseCodingrulesMapper;

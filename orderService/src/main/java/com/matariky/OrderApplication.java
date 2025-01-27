@@ -7,8 +7,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@MapperScan(basePackages = {"com.matariky.orderservice.mapper*"})//,"com.matariky.bizservice.mapper"})
-@ComponentScan(basePackages ={"com.matariky.orderservice.*"})
+@MapperScan(basePackages = { "com.matariky.orderservice.mapper*" })
+@ComponentScan(basePackages = { "com.matariky.orderservice.*" })
 @EnableCaching
 public class OrderApplication {
 
