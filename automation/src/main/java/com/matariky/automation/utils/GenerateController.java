@@ -187,7 +187,7 @@ public class GenerateController {
 		return StringTemplateUtils.render(CONTROLLER_TEMPLATE.toString(), data);
 	}
 
-	private static String firstLetterLowerCase(String className) {
+	public static String firstLetterLowerCase(String className) {
 		return className.substring(0, 1).toLowerCase() + className.substring(1);
 	}
 }

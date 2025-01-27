@@ -59,6 +59,8 @@
 		<common.collections.version>3.2.2</common.collections.version>
 		<fastjson.version>1.2.47</fastjson.version>
 		<opentelemetry.version>1.25.0</opentelemetry.version>
+		<junit.version>5.8.1</junit.version>
+		<mockito.version>3.12.4</mockito.version>
 	</properties>
 	  <modules>
 		<module>userService</module>
