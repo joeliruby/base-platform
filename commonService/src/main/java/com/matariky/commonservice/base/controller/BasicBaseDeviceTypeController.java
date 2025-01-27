@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
 @Api(value = " Device   Base Type ", tags = " Device   Base Type ")
@@ -25,20 +24,23 @@ public class BasicBaseDeviceTypeController {
     @ApiOperation(value = "Pagination", response = BasicBaseDeviceType.class)
     @GetMapping("/basicBaseDevicetype/list")
     public AjaxResult list(BasicBaseDeviceTypeListVO vo) {
-        PageInfo<BasicBaseDeviceTypeInfoVO> page = new PageInfo(basicBaseDevicetypeService.getBasicBaseDevicetypeAll(vo));
+        PageInfo<BasicBaseDeviceTypeInfoVO> page = new PageInfo<>(
+                basicBaseDevicetypeService.getBasicBaseDevicetypeAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
     @ApiOperation(value = "New")
     @PostMapping(value = "/basicBaseDevicetype")
-    public AjaxResult save(@RequestBody @Validated BasicBaseDeviceTypeAddVO addVO, @RequestHeader("Authorization") String jwt) {
+    public AjaxResult save(@RequestBody @Validated BasicBaseDeviceTypeAddVO addVO,
+            @RequestHeader("Authorization") String jwt) {
         basicBaseDevicetypeService.createBasicBaseDevicetypeWithOrg(addVO, jwt);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
     @ApiOperation(value = "Update")
     @PutMapping(value = "/basicBaseDevicetype")
-    public AjaxResult update(@RequestBody BasicBaseDeviceTypeUpdateVO updateVO, @RequestHeader("Authorization") String jwt) {
+    public AjaxResult update(@RequestBody BasicBaseDeviceTypeUpdateVO updateVO,
+            @RequestHeader("Authorization") String jwt) {
         basicBaseDevicetypeService.updateBasicBaseDevicetype(updateVO, jwt);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
@@ -49,7 +51,6 @@ public class BasicBaseDeviceTypeController {
         basicBaseDevicetypeService.updateBasicBaseDevicetypeStatus(vo);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
-
 
     @ApiOperation(value = "Delete ")
     @DeleteMapping(value = "/basicBaseDevicetype/{id}")
@@ -64,7 +65,6 @@ public class BasicBaseDeviceTypeController {
         BasicBaseDeviceTypeInfo type = basicBaseDevicetypeService.getBasicBaseDevicetypeById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, type);
     }
-
 
     @ApiOperation(value = " Device Type   Drop Down Box")
     @GetMapping(value = "/basicBaseDevicetype/option")

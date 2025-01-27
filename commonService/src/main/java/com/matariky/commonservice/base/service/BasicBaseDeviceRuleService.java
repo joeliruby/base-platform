@@ -10,7 +10,6 @@ import com.matariky.commonservice.base.vo.BasicBaseDeviceRuleDetailAddVO;
 import com.matariky.commonservice.base.vo.BasicBaseDeviceRuleUpdateVO;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.TokenUtils;
@@ -20,12 +19,12 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceRuleMapper, BasicBaseDeviceRule> implements BaseService<BasicBaseDeviceRule> {
+public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceRuleMapper, BasicBaseDeviceRule> {
 
     @Autowired
     private BasicBaseDeviceRuleMapper basicBaseDeviceruleMapper;
@@ -35,18 +34,19 @@ public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceR
     private HttpServletRequest request;
 
     /**
-     * New Rule  Configuration 
+     * New Rule Configuration
      */
     public Long createBasicBaseDeviceruleWithOrg(BasicBaseDeviceRuleAddVO addVO, String jwt) {
-        String  tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
+        String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
 
         long currentTime = System.currentTimeMillis();
         long userId = Long.parseLong(TokenUtils.extractUserIdFromToken(jwt));
         String operatorOrgCode = TokenUtils.extractOrgCode(request);
         String operatorSelfOrgCode = TokenUtils.extractSelfOrgCode(request);
-        BasicBaseDeviceRule basicBaseDevicerule = basicBaseDeviceruleMapper.selectOne(Wrappers.lambdaQuery(BasicBaseDeviceRule.class)
-                .eq(BasicBaseDeviceRule::getDeleteTime, 0)
-                .eq(BasicBaseDeviceRule::getTypeId, addVO.getTypeId()));
+        BasicBaseDeviceRule basicBaseDevicerule = basicBaseDeviceruleMapper
+                .selectOne(Wrappers.lambdaQuery(BasicBaseDeviceRule.class)
+                        .eq(BasicBaseDeviceRule::getDeleteTime, 0)
+                        .eq(BasicBaseDeviceRule::getTypeId, addVO.getTypeId()));
         if (basicBaseDevicerule != null) {
             return basicBaseDevicerule.getId();
         }
@@ -62,7 +62,7 @@ public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceR
     }
 
     /**
-     *   Update Device  Rule  Configuration 
+     * Update Device Rule Configuration
      *
      * @param updateVO
      * @param jwt
@@ -78,7 +78,7 @@ public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceR
     }
 
     /**
-     * New Rule  Detail
+     * New Rule Detail
      *
      * @param addVO
      * @param jwt

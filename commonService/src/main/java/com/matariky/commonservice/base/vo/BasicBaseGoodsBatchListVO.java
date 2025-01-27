@@ -3,10 +3,12 @@ package com.matariky.commonservice.base.vo;
 import com.matariky.model.QueryDataIsolation;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseGoodsBatchListVO extends QueryDataIsolation {
 
     @ApiModelProperty(value = "Pagination Index", required = true)

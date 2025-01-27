@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
 @Api(value = "PC Version Information ", tags = "PC Version Information ")
@@ -21,14 +20,13 @@ public class BasicBasePcVersionController {
     @Autowired
     private BasicBasePcVersionService basicBasePcversionService;
 
-
     @ApiOperation("Pagination ")
     @RequestMapping("/basicBasePcversion/list")
     public AjaxResult list(BasicBasePcVersionQueryVO vo) {
-        PageInfo<BasicBasePcVersionListVO> page = new PageInfo(basicBasePcversionService.getBasicBasePcversionAll(vo));
+        PageInfo<BasicBasePcVersionListVO> page = new PageInfo<>(
+                basicBasePcversionService.getBasicBasePcversionAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
-
 
     @ApiOperation("New")
     @PostMapping(value = "/basicBasePcversion")
@@ -64,6 +62,5 @@ public class BasicBasePcVersionController {
         BasicBasePcVersion info = basicBasePcversionService.selectById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
-
 
 }

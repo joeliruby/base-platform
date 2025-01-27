@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.Page;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.userservice.bean.TreeModel;
 import com.matariky.userservice.bean.UserGroup;
@@ -160,7 +158,7 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
     }
 
     /**
-     * 根据pid ,构建树节点
+     * According to PID, build tree nodes
      */
     public List<JSONObject> build(Map<Long, JSONObject> treeNodes) {
         List<JSONObject> result = new ArrayList<>();

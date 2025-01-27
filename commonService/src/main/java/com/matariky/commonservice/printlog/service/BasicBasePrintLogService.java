@@ -23,7 +23,6 @@ import com.matariky.commonservice.printlog.bean.BasicBasePrintLog;
 import com.matariky.commonservice.printlog.excel.PrintLogExcelVO;
 import com.matariky.commonservice.printlog.mapper.BasicBasePrintLogMapper;
 import com.matariky.constant.PermissionConstant;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.IpUtils;
@@ -31,11 +30,12 @@ import com.matariky.utils.StringUtils;
 import com.matariky.utils.TokenUtils;
 
 /**
-* Business Inteface Implementation
-* @author AUTOMATION
-*/
+ * Business Inteface Implementation
+ * 
+ * @author AUTOMATION
+ */
 @Service
-public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogMapper,BasicBasePrintLog> implements BaseService<BasicBasePrintLog>{
+public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogMapper, BasicBasePrintLog> {
 
 	@Autowired
 	private BasicBasePrintLogMapper basicBasePrintLogMapper;
@@ -47,32 +47,34 @@ public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogM
 	private CommonDictTypeService commonDictTypeService;
 	@Autowired
 	private CommonDictService commonDictService;
- 
-	 
-	public List<BasicBasePrintLog> getBasicBasePrintLogAll(BasicBasePrintLog vo){
+
+	public List<BasicBasePrintLog> getBasicBasePrintLogAll(BasicBasePrintLog vo) {
 		if (StringUtils.isNotBlank(vo.getBusinessTimeEnd())) {
 			Long endTime = Long.valueOf(vo.getBusinessTimeEnd()) + 24 * 60 * 60 * 1000;
 			vo.setBusinessTimeEnd(endTime.toString());
 		}
-		
+
 		String hid = request.getHeader("id");
-        String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
-        if (dict == null) {
-            vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
-        } else {
-            vo.setStrategyCode(dict.getDictValue());
-        }
-        vo.setOperatorSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
-        vo.setSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
-        vo.setTenantId(tenantId);
+		String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
+		String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
+		CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+				TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+		CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+				commonDictType.getId());
+		if (dict == null) {
+			vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
+		} else {
+			vo.setStrategyCode(dict.getDictValue());
+		}
+		vo.setOperatorSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
+		vo.setSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
+		vo.setTenantId(tenantId);
 		return basicBasePrintLogMapper.getBasicBasePrintLogAll(vo);
 	}
 
 	/**
-	 *  Export 
+	 * Export
+	 * 
 	 * @param bean
 	 */
 	public void export(BasicBasePrintLog bean) {
@@ -86,7 +88,8 @@ public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogM
 		response.setContentType("application/vnd.ms-excel; charset=utf-8");
 		response.setCharacterEncoding("utf-8");
 		try {
-			response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode( System.currentTimeMillis() + ".xlsx", "utf-8"));
+			response.setHeader("Content-Disposition",
+					"attachment;filename=" + URLEncoder.encode(System.currentTimeMillis() + ".xlsx", "utf-8"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,20 +104,16 @@ public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogM
 		}
 	}
 
-	 
-	public int getBasicBasePrintLogAllCount(){
+	public int getBasicBasePrintLogAllCount() {
 		return basicBasePrintLogMapper.getBasicBasePrintLogAllCount();
 	}
 
-	 
-	public int createBasicBasePrintLog(BasicBasePrintLog bean){
+	public int createBasicBasePrintLog(BasicBasePrintLog bean) {
 		return basicBasePrintLogMapper.createBasicBasePrintLog(bean);
 	}
 
-	 
-	 
-	public int createBasicBasePrintLogWithOrg(List<BasicBasePrintLog> beanList, HttpServletRequest request){
-		for(BasicBasePrintLog bean :beanList) {
+	public int createBasicBasePrintLogWithOrg(List<BasicBasePrintLog> beanList, HttpServletRequest request) {
+		for (BasicBasePrintLog bean : beanList) {
 			bean.setOperatorOrgCode(TokenUtils.extractOrgCode(request));
 			bean.setOperatorSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
 			bean.setCreateTime(System.currentTimeMillis());
@@ -127,50 +126,50 @@ public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogM
 		}
 		return 1;
 	}
-	public int updateBasicBasePrintLog(BasicBasePrintLog bean){
+
+	public int updateBasicBasePrintLog(BasicBasePrintLog bean) {
 		return basicBasePrintLogMapper.updateById(bean);
 	}
 
-	 
-	public int delBasicBasePrintLogById(int id){
+	public int delBasicBasePrintLogById(int id) {
 		return basicBasePrintLogMapper.delBasicBasePrintLogById(id);
 	}
 
-	 
-	public BasicBasePrintLog getBasicBasePrintLogById(int id){
+	public BasicBasePrintLog getBasicBasePrintLogById(int id) {
 		return basicBasePrintLogMapper.getBasicBasePrintLogById(id);
 	}
 
 	public List<BasicBasePrintLog> getBasicBasePrintLogDAC(Map<String, Object> params, HttpServletRequest request) {
 		strategyCodeToParams(params, request);
-		return basicBasePrintLogMapper.getBasicBasePrintLogDAC( params);
+		return basicBasePrintLogMapper.getBasicBasePrintLogDAC(params);
 	}
 
-	public Long getBasicBasePrintLogDACCount(Map<String, Object> params,HttpServletRequest request) {
+	public Long getBasicBasePrintLogDACCount(Map<String, Object> params, HttpServletRequest request) {
 
-		String strategyCode =(String)params.get("strategyCode");
-		if(StringUtil.isEmpty(strategyCode))
-		strategyCode=PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;//  By default only visible by owner
+		String strategyCode = (String) params.get("strategyCode");
+		if (StringUtil.isEmpty(strategyCode))
+			strategyCode = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;// By default only visible by owner
 		switch (strategyCode) {
-		case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE://Visible to owner with special sharing rules
-			Map<String, List<String>> sharingOrgCodes0=extractedSharingOrgCodes(request);
-			params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
-			params.putAll(sharingOrgCodes0);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ALL://All visible to all without special sharing rules
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ORG://Visible to organizations of same or upper level
-			Map<String, List<String>> sharingOrgCodes3=extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes3);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_LEVEL://Visible to organizations of same level with special sharing rules
-			Map<String, List<String>> sharingOrgCodes2=extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes2);
-			break;
-		default:
-			break;
+			case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
+				Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
+				params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
+				params.putAll(sharingOrgCodes0);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
+				Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes3);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special
+																// sharing rules
+				Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes2);
+				break;
+			default:
+				break;
 		}
 
 		return basicBasePrintLogMapper.getBasicBasePrintLogDACCount(params);

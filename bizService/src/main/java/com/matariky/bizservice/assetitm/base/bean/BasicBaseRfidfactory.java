@@ -1,9 +1,11 @@
 package com.matariky.bizservice.assetitm.base.bean;
 
 import java.math.BigDecimal;
+
 import com.matariky.model.QueryDataIsolation;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Automatically generated entity class
@@ -11,6 +13,7 @@ import lombok.Data;
  * @author AUTOMATION
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseRfidfactory extends QueryDataIsolation {
 
 	/**

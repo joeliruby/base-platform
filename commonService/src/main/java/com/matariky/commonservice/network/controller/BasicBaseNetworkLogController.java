@@ -44,11 +44,14 @@ public class BasicBaseNetworkLogController {
     @Autowired
     private CommonDictTypeService commonDictTypeService;
 
-     
     @RequestMapping("/basicBaseNetworkLog/list")
-    public AjaxResult list(HttpServletRequest request, BasicBaseNetworkLog bean, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex, @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult list(HttpServletRequest request, BasicBaseNetworkLog bean,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
+            @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
-        PageInfo<BasicBaseNetworkLog> page = new PageInfo(basicBaseNetworkLogService.getBasicBaseNetworkLogAll(bean));
+        PageInfo<BasicBaseNetworkLog> page = new PageInfo<>(basicBaseNetworkLogService.getBasicBaseNetworkLogAll(bean));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
@@ -59,11 +62,15 @@ public class BasicBaseNetworkLogController {
     }
 
     @RequestMapping("/basicBaseNetworkLog/daclist")
-    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             params.put("strategyCode", PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -74,42 +81,44 @@ public class BasicBaseNetworkLogController {
         params.put("tenantId", tenantId);
         params.put("pageStart", (pageIndex - 1) * perPage);
         params.put("pageSize", perPage);
-        List<BasicBaseNetworkLog> commonDictList = basicBaseNetworkLogService.getBasicBaseNetworkLogDAC(params, request);
+        List<BasicBaseNetworkLog> commonDictList = basicBaseNetworkLogService.getBasicBaseNetworkLogDAC(params,
+                request);
         Long count = basicBaseNetworkLogService.getBasicBaseNetworkLogDACCount(params, request);
         PageInfo<BasicBaseNetworkLog> page = new PageInfo<BasicBaseNetworkLog>(commonDictList);
         page.setTotal(count);
         page.setPageSize(perPage);
         page.setPageNum(pageIndex);
-        page.setPages(Integer.parseInt(new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1).toString()));
+        page.setPages(Integer.parseInt(
+                Long.valueOf(count % Long.valueOf(perPage) == 0 ? count % Long.valueOf(perPage)
+                        : count % Long.valueOf(perPage) + 1)
+                        .toString()));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
-     
     @RequestMapping(value = "/basicBaseNetworkLog", method = RequestMethod.POST)
-    public AjaxResult save(@RequestBody List<BasicBaseNetworkLog> beanList, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult save(@RequestBody List<BasicBaseNetworkLog> beanList, HttpServletRequest request,
+            HttpServletResponse response) {
         basicBaseNetworkLogService.createBasicBaseNetworkLogWithOrg(beanList, request);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseNetworkLog", method = RequestMethod.PUT)
-    public AjaxResult update(@RequestBody BasicBaseNetworkLog bean, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult update(@RequestBody BasicBaseNetworkLog bean, HttpServletRequest request,
+            HttpServletResponse response) {
         basicBaseNetworkLogService.updateBasicBaseNetworkLog(bean);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseNetworkLog", method = RequestMethod.DELETE)
     public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         basicBaseNetworkLogService.deleteById(Long.parseLong(id));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseNetworkLog/{basicBaseNetworkLogId}", method = RequestMethod.GET)
-    public AjaxResult getOne(@PathVariable("/basicBaseNetworkLogId") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult getOne(@PathVariable("/basicBaseNetworkLogId") Long id, HttpServletRequest request,
+            HttpServletResponse response) {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseNetworkLogService.selectById(id));
     }
-
 
 }

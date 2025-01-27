@@ -11,8 +11,7 @@ import org.keycloak.models.cache.infinispan.RealmCacheManager;
 import org.keycloak.models.cache.infinispan.entities.Revisioned;
 import org.keycloak.models.cache.infinispan.events.InvalidationEvent;
 
-public class CustomerRoleProviderFactory extends InfinispanCacheRealmProviderFactory
-		implements org.keycloak.models.cache.CacheRealmProviderFactory {
+public class CustomerRoleProviderFactory extends InfinispanCacheRealmProviderFactory {
 
 	@Override
 	public CacheRealmProvider create(KeycloakSession session) {

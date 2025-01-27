@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -22,13 +23,13 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.matariky.userservice.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -76,6 +77,7 @@ import com.matariky.userservice.bean.UserApplication;
 import com.matariky.userservice.bean.UserOrganization;
 import com.matariky.userservice.bean.UserRole;
 import com.matariky.userservice.bean.UserTenant;
+import com.matariky.userservice.mapper.UserMapper;
 import com.matariky.userservice.service.CaptchaService;
 import com.matariky.userservice.service.PermissionService;
 import com.matariky.userservice.service.TokenService;
@@ -358,7 +360,7 @@ public class UserController {
 			HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
 
 			// Centered style
-			hssfCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			hssfCellStyle.setAlignment(HorizontalAlignment.CENTER);
 
 			HSSFCell hssfCell = null;
 			for (int i = 0; i < titles.length; i++) {
@@ -1150,7 +1152,7 @@ public class UserController {
 				failureCount++;
 				processedCount++;
 				BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-						BigDecimal.ROUND_HALF_UP);
+						RoundingMode.HALF_UP);
 				redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
 				failedUserList.add(rowToMap(xssfRow, e.getMessage()));
 				e.printStackTrace();
@@ -1163,7 +1165,7 @@ public class UserController {
 				repeatCount++;
 				processedCount++;
 				BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-						BigDecimal.ROUND_HALF_UP);
+						RoundingMode.HALF_UP);
 				redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
 
 				continue;
@@ -1174,7 +1176,7 @@ public class UserController {
 				successCount++;
 				processedCount++;
 				BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-						BigDecimal.ROUND_HALF_UP);
+						RoundingMode.HALF_UP);
 				redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
 				User insertedUser = null;
 				if (!CollectionUtils.isEmpty(user.getRoleIdList())) {
@@ -1192,7 +1194,7 @@ public class UserController {
 				failedUserList.add(rowToMap(xssfRow, commonDictService.getServiceErrorText(
 						locale + "_SERVICE_CONSTANT_MESSAGE", "ERROR_INSERTING_DATABASE", false, tenantId)));
 				BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-						BigDecimal.ROUND_HALF_UP);
+						RoundingMode.HALF_UP);
 				redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
 			}
 
@@ -1231,20 +1233,20 @@ public class UserController {
 		if (cell == null) {
 			return "";
 		}
-		switch (cell.getCellType()) {
-			case HSSFCell.CELL_TYPE_NUMERIC: // Numeric
+		switch (cell.getCellTypeEnum()) {
+			case NUMERIC: // Numeric
 				// If it is a time format content
 				return cell.getNumericCellValue();
 
-			case HSSFCell.CELL_TYPE_STRING: // String
+			case STRING: // String
 				return cell.getStringCellValue();
-			case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
+			case BOOLEAN: // Boolean
 				return cell.getBooleanCellValue() + "";
-			case HSSFCell.CELL_TYPE_FORMULA: // Formula
+			case FORMULA: // Formula
 				return cell.getCellFormula() + "";
-			case HSSFCell.CELL_TYPE_BLANK: // Blank
+			case BLANK: // Blank
 				return "";
-			case HSSFCell.CELL_TYPE_ERROR: // Error
+			case ERROR: // Error
 				return "Invalid character";
 			default:
 				return "Unknown type";
@@ -1276,7 +1278,7 @@ public class UserController {
 		}
 		try {
 			user.setGender(Integer
-					.parseInt((new Double(xssfRow.getCell(3).getNumericCellValue()).toString().substring(0, 1))));
+					.parseInt((Double.valueOf(xssfRow.getCell(3).getNumericCellValue()).toString().substring(0, 1))));
 		} catch (Exception e) {
 			throw new Exception(commonDictService.getServiceErrorText(locale + "_SERVICE_CONSTANT_MESSAGE",
 					"INVALID_GENDER", false, tenantId));

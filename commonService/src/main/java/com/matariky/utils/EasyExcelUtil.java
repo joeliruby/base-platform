@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class EasyExcelUtil {
 
-    public static void exportExcelPath(String targetPath, String excelName, String sheetName, Class type,
+    public static void exportExcelPath(String targetPath, String excelName, String sheetName, Class<?> type,
             List<?> data) {
         targetPath = targetPath + "\\";
         // Connect the specified string to the end of the string( Configuration The
@@ -36,7 +36,7 @@ public class EasyExcelUtil {
         EasyExcel.write(fileName, type).sheet(sheetName).doWrite(data);
     }
 
-    public static void exportExcelWeb(HttpServletResponse response, String excelName, String sheetName, Class type,
+    public static void exportExcelWeb(HttpServletResponse response, String excelName, String sheetName, Class<?> type,
             List<Object> data) {
 
         // ConfigurationcontentTypeType
@@ -58,7 +58,7 @@ public class EasyExcelUtil {
         }
     }
 
-    public static void exportExcelUploadPath(String excelName, String sheetName, Class type, List<?> data,
+    public static void exportExcelUploadPath(String excelName, String sheetName, Class<?> type, List<?> data,
             MinioUtil minioUtil) {
         String bucket = "rfidfactory";
         try {
@@ -78,7 +78,7 @@ public class EasyExcelUtil {
     /**
      * Export Excel return FileInputStream
      */
-    public static FileInputStream exportExcelStream(String fileName, String sheetName, Class type, List<?> data) {
+    public static FileInputStream exportExcelStream(String fileName, String sheetName, Class<?> type, List<?> data) {
         try {
             // Temporary directory temporary File Name
             String tmp = System.getProperty("java.io.tmpdir");

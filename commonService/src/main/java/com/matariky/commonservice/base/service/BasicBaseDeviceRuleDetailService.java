@@ -16,7 +16,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.StringUtils;
@@ -29,12 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseDeviceRuleDetailMapper, BasicBaseDeviceRuleDetail> implements BaseService<BasicBaseDeviceRuleDetail> {
+public class BasicBaseDeviceRuleDetailService
+        extends BaseServiceImpl<BasicBaseDeviceRuleDetailMapper, BasicBaseDeviceRuleDetail> {
 
     @Autowired
     private BasicBaseDeviceRuleDetailMapper basicBaseDeviceruleDetailMapper;
@@ -48,15 +48,18 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
     private BasicBaseDeviceRuleMapper basicBaseDeviceruleMapper;
 
     /**
-     *  Query   All 
+     * Query All
      */
-    public BasicBaseDeviceRuleDetailInfo getBasicBaseDeviceruleDetailAll(BasicBaseDeviceRuleDetailListVO vo, String jwt) {
+    public BasicBaseDeviceRuleDetailInfo getBasicBaseDeviceruleDetailAll(BasicBaseDeviceRuleDetailListVO vo,
+            String jwt) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
         BasicBaseDeviceRuleDetailInfo result = new BasicBaseDeviceRuleDetailInfo();
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -65,9 +68,10 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
         vo.setSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
         vo.setOrgCode(TokenUtils.extractOrgCode(request));
         Long typeId = vo.getTypeId();
-        BasicBaseDeviceRule basicBaseDevicerule = basicBaseDeviceruleMapper.selectOne(Wrappers.lambdaQuery(BasicBaseDeviceRule.class)
-                .eq(BasicBaseDeviceRule::getTypeId, typeId)
-                .eq(BasicBaseDeviceRule::getDeleteTime, 0));
+        BasicBaseDeviceRule basicBaseDevicerule = basicBaseDeviceruleMapper
+                .selectOne(Wrappers.lambdaQuery(BasicBaseDeviceRule.class)
+                        .eq(BasicBaseDeviceRule::getTypeId, typeId)
+                        .eq(BasicBaseDeviceRule::getDeleteTime, 0));
         if (basicBaseDevicerule == null) {
             BasicBaseDeviceRule add = new BasicBaseDeviceRule();
             add.setTypeId(typeId);
@@ -91,13 +95,14 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
             }
         });
         result.setList(list);
-        result.setIsRecordLog((basicBaseDevicerule.getIsRecordLog() != null && basicBaseDevicerule.getIsRecordLog() == 1) ? true : false);
+        result.setIsRecordLog(
+                (basicBaseDevicerule.getIsRecordLog() != null && basicBaseDevicerule.getIsRecordLog() == 1) ? true
+                        : false);
         return result;
     }
 
-
     /**
-     *   Update Detail
+     * Update Detail
      *
      * @param updateVO
      * @param jwt
@@ -125,7 +130,7 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
     }
 
     /**
-     * Delete   Method  
+     * Delete Method
      *
      * @param id
      * @return
@@ -133,6 +138,5 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
     public int delBasicBaseDeviceruleDetailById(Long id) {
         return basicBaseDeviceruleDetailMapper.delBasicBaseDeviceruleDetailById(id);
     }
-
 
 }

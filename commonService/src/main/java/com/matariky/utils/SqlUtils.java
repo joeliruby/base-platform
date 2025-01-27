@@ -54,7 +54,9 @@ public class SqlUtils {
             if (parameterAnnotations[i].length == 0) { // Indicates that the parameter has no annotations, it may be an
                                                        // entity class, a Map, or just a single parameter
                 if (object != null && object.getClass().getClassLoader() == null && object instanceof Map) {
-                    map.putAll((Map<? extends String, ?>) object);
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> paramMap = (Map<String, Object>) object;
+                    map.putAll(paramMap);
                     System.out.println("The object is a Map");
                 } else { // The parameter is a custom entity class
                     if (object != null)

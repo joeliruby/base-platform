@@ -9,26 +9,15 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import java.io.Serializable;
 
-/**
- * @description: 锁
- * @author: bo.chen
- * @create: 2023/4/17 15:53
- **/
 @AllArgsConstructor
 public class Lock implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(Lock.class);
 
     /**
-     * redisson 锁 Object
+     * redisson Lock Object
      */
     private RLock rLock;
-
-    /**
-     * @Description: 释放锁
-     * @Author: bo.chen
-     * @Date: 2023/4/17 15:55
-     **/
     public void unlock() {
         try {
             if (TransactionSynchronizationManager.isSynchronizationActive()) {
@@ -40,7 +29,7 @@ public class Lock implements Serializable {
                                 rLock.unlock();
                             }
                         } catch (Exception e) {
-                            logger.error("释放锁异常！lockName={}", rLock.getName(), e);
+                            logger.error("Exception releasing lock！lockName={}", rLock.getName(), e);
                         }
                     }
                 });
@@ -50,7 +39,7 @@ public class Lock implements Serializable {
                 }
             }
         } catch (Exception e) {
-            logger.error("释放锁异常！lockName={}", rLock.getName(), e);
+            logger.error("Exception releasing lock！lockName={}", rLock.getName(), e);
         }
     }
 }

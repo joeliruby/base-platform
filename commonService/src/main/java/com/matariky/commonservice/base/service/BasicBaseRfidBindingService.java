@@ -14,7 +14,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.StringUtils;
@@ -27,12 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBindingMapper, BasicBaseRfidBinding> implements BaseService<BasicBaseRfidBinding> {
+public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBindingMapper, BasicBaseRfidBinding> {
 
     @Autowired
     private BasicBaseRfidBindingMapper basicBaseRfidBindingMapper;
@@ -46,7 +45,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
     private BasicBaseRfidInfoMapper basicBaseRfidInfoMapper;
 
     /**
-     *  Query   All 
+     * Query All
      *
      * @param vo
      * @return
@@ -55,8 +54,10 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -68,7 +69,6 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
         PageHelper.startPage(vo.getIndex(), vo.getPerPage());
         return basicBaseRfidBindingMapper.getBasicBaseRfidBindingAll(vo);
     }
-
 
     /**
      * New
@@ -120,7 +120,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
     }
 
     /**
-     * New- Multiple Item  Binding 
+     * New- Multiple Item Binding
      *
      * @param batchAddVO
      * @return
@@ -137,9 +137,8 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
         });
     }
 
-
     /**
-     *   Update  Method  
+     * Update Method
      *
      * @param updateVO
      * @return
@@ -181,9 +180,8 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
         return basicBaseRfidBindingMapper.updateById(update);
     }
 
-
     /**
-     * Delete 
+     * Delete
      *
      * @param id
      */
@@ -195,14 +193,15 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
     }
 
     /**
-     *   Retrieve Label  Incremental  Code 
+     * Retrieve Label Incremental Code
      */
     public Long getRfidCode() {
         Long rfidCode = 1L;
-        BasicBaseRfidBinding bind = basicBaseRfidBindingMapper.selectOne(Wrappers.lambdaQuery(BasicBaseRfidBinding.class)
-                .eq(BasicBaseRfidBinding::getDeleteTime, 0)
-                .orderByDesc(BasicBaseRfidBinding::getTagCode)
-                .last("limit 1"));
+        BasicBaseRfidBinding bind = basicBaseRfidBindingMapper
+                .selectOne(Wrappers.lambdaQuery(BasicBaseRfidBinding.class)
+                        .eq(BasicBaseRfidBinding::getDeleteTime, 0)
+                        .orderByDesc(BasicBaseRfidBinding::getTagCode)
+                        .last("limit 1"));
         if (bind != null && bind.getTagCode() != null) {
             rfidCode = bind.getTagCode() + 1;
         }

@@ -7,11 +7,6 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 
-/**
- * @description: Data Isolation Objects class
- * @author: bo.chen
- * @create: 2023/9/5 17:47
- **/
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class BaseDataIsolation implements Serializable {

@@ -4,15 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 
 public class AjaxResult extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
-    /** Status 码 */
+    /** Status code */
     public static final String CODE_TAG = "code";
 
-    /** 返回 Content */
+    /** Return Content */
     public static final String MSG_TAG = "message";
 
     /** Data Object */
@@ -54,7 +53,7 @@ public class AjaxResult extends HashMap<String, Object> {
         }
     }
 
-    public AjaxResult(int code, String msg, Page data) {
+    public AjaxResult(int code, String msg, Page<?> data) {
         super.put(CODE_TAG, code);
         super.put(MSG_TAG, msg);
         if (StringUtils.isNotNull(data)) {

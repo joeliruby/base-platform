@@ -1,16 +1,16 @@
 package com.matariky.commonservice.base.bean;
 
 import com.matariky.model.QueryDataIsolation;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.lang.String;
-import java.lang.Long;
+import lombok.EqualsAndHashCode;
 /**
 * Automatically generated entity class
 * @author AUTOMATION
 */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseAntifakeDetail extends QueryDataIsolation {
 
 	/**

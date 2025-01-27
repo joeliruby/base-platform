@@ -4,26 +4,16 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.util.Collection;
 
-
-/**
- * @description: Query Data Isolation Objects class
- * @author: bo.chen
- * @create: 2023/9/5 17:01
- **/
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class QueryDataIsolation extends BaseDataIsolation implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class QueryDataIsolation extends BaseDataIsolation {
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 
     /**
-	 *
-	 */
-    @TableField(exist = false)
-	private static final long serialVersionUID = 1L;
-
-	/**
      * Shared Resource Self Org Codes
      */
     @TableField(exist = false)
@@ -36,13 +26,13 @@ public class QueryDataIsolation extends BaseDataIsolation implements Serializabl
     private Collection<String> sharingOrgCodes;
 
     /**
-     *  Resource Permission Strategy Code
+     * Resource Permission Strategy Code
      */
     @TableField(exist = false)
     private String strategyCode;
 
     /**
-     *  User's organization code
+     * User's organization code
      */
     @TableField(exist = false)
     private String orgCode;
@@ -55,7 +45,5 @@ public class QueryDataIsolation extends BaseDataIsolation implements Serializabl
 
     @TableField(exist = false)
     private String operatorSelfOrgCode;
-
-
 
 }

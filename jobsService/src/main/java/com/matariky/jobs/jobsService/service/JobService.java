@@ -28,32 +28,12 @@ public interface JobService {
      */
     void addJob(JobForm form) throws Exception;
 
-    /**
-     * @Description: Add and start inventory scheduled task
-     * @Author: bo.chen
-     * @Date: 2023/10/16 18:21
-     **/
     void addInventoryJob(InventoryJobForm form) throws Exception;
 
-    /**
-     * @Description: Add and start label generation scheduled task
-     * @Author: chenyajun
-     * @Date: 2024/02/16 18:21
-     **/
     void addRfidCreateJob(RfidCreateJobForm form) throws Exception;
 
-    /**
-     * @Description: Add and start label print scheduled task
-     * @Author: chenyajun
-     * @Date: 2024/02/16 18:21
-     **/
     void addRfidPrintJob(RfidPrintJobForm form) throws Exception;
 
-    /**
-     * @Description: Add and start label import scheduled task
-     * @Author: chenyajun
-     * @Date: 2024/02/16 18:21
-     **/
     void addRfidUploadJob(RfidUploadJobForm form) throws Exception;
 
     /**

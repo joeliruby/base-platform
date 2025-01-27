@@ -4,11 +4,6 @@
  */
 package com.matariky.id;
 
-/**
- * @description: id Generation 器异常类
- * @author: bo.chen
- * @create: 2023/10/9 16:19
- **/
 public class UidGenerateException extends RuntimeException {
 
     private static final long serialVersionUID = -3490134604963231996L;

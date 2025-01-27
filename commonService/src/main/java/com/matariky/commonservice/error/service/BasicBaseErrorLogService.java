@@ -20,7 +20,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.APIConstants;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.commonservice.error.bean.BasicBaseErrorLog;
@@ -45,8 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseErrorLogService extends BaseServiceImpl<BasicBaseErrorLogMapper, BasicBaseErrorLog>
-        implements BaseService<BasicBaseErrorLog> {
+public class BasicBaseErrorLogService extends BaseServiceImpl<BasicBaseErrorLogMapper, BasicBaseErrorLog> {
 
     @Autowired
     private BasicBaseErrorLogMapper basicBaseErrorLogMapper;

@@ -16,7 +16,7 @@ public class SolidSRE401XHeartbeatNormalizer implements Processor {
                 Message camelMessage = exchange.getIn();
 
                 String payloadOuter = camelMessage.getBody(String.class);
-                if (StringUtils.isEmpty(payloadOuter))
+                if (!StringUtils.hasLength(payloadOuter))
                         return;
                 JSONObject jo = JSONObject.parseObject(payloadOuter);
                 if (!"60002".equals(jo.getString("cmd"))) {

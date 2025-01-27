@@ -11,7 +11,6 @@ import com.matariky.exception.QslException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class BasicBaseRfidprintDetailService
-		extends BaseServiceImpl<BasicBaseRfidprintDetailMapper, BasicBaseRfidprintDetail>
-		implements BaseService<BasicBaseRfidprintDetail> {
+		extends BaseServiceImpl<BasicBaseRfidprintDetailMapper, BasicBaseRfidprintDetail> {
 
 	@Autowired
 	private BasicBaseRfidprintDetailMapper basicBaseRfidprintDetailMapper;
@@ -108,26 +106,27 @@ public class BasicBaseRfidprintDetailService
 		if (StringUtil.isEmpty(strategyCode))
 			strategyCode = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;// By default only visible by owner
 		switch (strategyCode) {
-		case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
-			Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
-			params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
-			params.putAll(sharingOrgCodes0);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
-			Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes3);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special sharing
-															// rules
-			Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes2);
-			break;
-		default:
-			break;
+			case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
+				Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
+				params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
+				params.putAll(sharingOrgCodes0);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
+				Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes3);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special
+																// sharing
+																// rules
+				Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes2);
+				break;
+			default:
+				break;
 		}
 
 		return basicBaseRfidprintDetailMapper.getBasicBaseRfidprintDetailDACCount(params);

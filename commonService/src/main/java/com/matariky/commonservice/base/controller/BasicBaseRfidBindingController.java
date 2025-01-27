@@ -23,16 +23,16 @@ public class BasicBaseRfidBindingController {
     @Autowired
     private BasicBaseRfidBindingService basicBaseRfidBindingService;
 
-
     /**
-     * Pagination 
+     * Pagination
      *
      * @param listVO
      * @return
      */
     @RequestMapping("/basicBaseRfidBinding/list")
     public AjaxResult list(BasicBaseRfidBindingListVO listVO) {
-        PageInfo<BasicBaseRfidBindingInfoVO> page = new PageInfo(basicBaseRfidBindingService.getBasicBaseRfidBindingAll(listVO));
+        PageInfo<BasicBaseRfidBindingInfoVO> page = new PageInfo<>(
+                basicBaseRfidBindingService.getBasicBaseRfidBindingAll(listVO));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
@@ -64,12 +64,11 @@ public class BasicBaseRfidBindingController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-
     @ApiOperation("  Retrieve Label  Incremental  Code ")
     @GetMapping(value = "/code")
     public AjaxResult getRfidCode() {
         Long rfidCode = basicBaseRfidBindingService.getRfidCode();
-        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,rfidCode);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, rfidCode);
     }
 
 }

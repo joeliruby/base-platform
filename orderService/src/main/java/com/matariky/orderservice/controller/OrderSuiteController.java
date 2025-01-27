@@ -35,10 +35,9 @@ public class OrderSuiteController {
     @Autowired
     private OrderSuiteService orderSuiteService;
 
-
-     
     @RequestMapping("/orderSuite/list")
-    public AjaxResult list(HttpServletRequest request, OrderSuite bean, @PathVariable("tenantId") String tenantId, @RequestParam("index") int pageIndex, int perPage, @RequestHeader("Authorization") String jwt) {
+    public AjaxResult list(HttpServletRequest request, OrderSuite bean, @PathVariable("tenantId") String tenantId,
+            @RequestParam("index") int pageIndex, int perPage, @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
         PageInfo<OrderSuite> page = new PageInfo<OrderSuite>(orderSuiteService.getOrderSuiteAll());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
@@ -50,17 +49,17 @@ public class OrderSuiteController {
         params.setPage(Boolean.TRUE);
         List<OrderSuite> commonDictList = orderSuiteService.getOrderSuiteDAC(params);
         Long count = orderSuiteService.getOrderSuiteDACCount(params);
-        PageInfo pageInfo = PageUtils.getPageInfo(commonDictList, count, params.getIndex(), params.getPageSize());
+        PageInfo<OrderSuite> pageInfo = PageUtils.getPageInfo(commonDictList, count, params.getIndex(),
+                params.getPageSize());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, pageInfo);
     }
 
-     
     @RequestMapping(value = "/orderSuite", method = RequestMethod.POST)
     public AjaxResult save(@RequestBody OrderSuiteAddVo bean,
-                           @PathVariable("tenantId") String tenantId,
-                           @RequestHeader("Authorization") String jwt,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         bean.setTenantId(tenantId);
         bean.setCreatedBy(Long.parseLong(TokenUtils.extractUserIdFromToken(jwt)));
         bean.setUpdateBy(Long.parseLong(TokenUtils.extractUserIdFromToken(jwt)));
@@ -68,39 +67,36 @@ public class OrderSuiteController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/orderSuite", method = RequestMethod.PUT)
     public AjaxResult update(@RequestBody OrderSuiteEditVo bean,
-                             @PathVariable("tenantId") String tenantId,
-                             @RequestHeader("Authorization") String jwt,
-                             HttpServletRequest request,
-                             HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         bean.setTenantId(tenantId);
         bean.setUpdateBy(Long.parseLong(TokenUtils.extractUserIdFromToken(jwt)));
         orderSuiteService.updateOrderSuite(bean, request);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/orderSuite", method = RequestMethod.DELETE)
     public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         orderSuiteService.deleteById(Long.parseLong(id));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/orderSuite/{orderSuiteId}", method = RequestMethod.GET)
-    public AjaxResult getOne(@PathVariable("orderSuiteId") Long orderSuiteId, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult getOne(@PathVariable("orderSuiteId") Long orderSuiteId, HttpServletRequest request,
+            HttpServletResponse response) {
         OrderSuite info = orderSuiteService.selectById(orderSuiteId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
 
-     
     @RequestMapping("/orderSuite/getList")
     public AjaxResult getList(HttpServletRequest request,
-                              @RequestParam Map<String, Object> params,
-                              @PathVariable("tenantId") String tenantId,
-                              @RequestHeader("Authorization") String jwt) {
+            @RequestParam Map<String, Object> params,
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt) {
         String suiteStatus = null;
         if (params.get("suiteStatus") != null) {
             suiteStatus = params.get("suiteStatus").toString();
@@ -109,14 +105,12 @@ public class OrderSuiteController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, list);
     }
 
-
-     
     @RequestMapping(value = "/orderSuiteStatus", method = RequestMethod.PUT)
     public AjaxResult updateOrderSuiteStatus(@RequestBody OrderSuiteEditVo bean,
-                                             @PathVariable("tenantId") String tenantId,
-                                             @RequestHeader("Authorization") String jwt,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         bean.setTenantId(tenantId);
         bean.setUpdateBy(Long.parseLong(TokenUtils.extractUserIdFromToken(jwt)));
         orderSuiteService.updateOrderSuiteStatus(bean.getId(), bean.getSuiteStatus());

@@ -1,28 +1,13 @@
 package com.matariky.utils;
 
 import java.security.SecureRandom;
-import java.util.Date;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * 单据 Code Generation Rule
- *
- * @author chenyajun
- */
 public class CodeUtils {
 
-    // public static void main(String[] args){
-    // CodeUtils codeUtils = new CodeUtils();
-    //
-    // String code = CodeUtils.CreateCode(OrderType.DIC);
-    //
-    // System.out.println(code);
-    // }
-
     /**
-     * @param digit 位数
-     * @return 随机 Generation digit位数的数字
+     * @param digit Number of digits
+     * @return Randomly generate a number with the specified number of digits
      */
     public static String getNum(int digit) {
         StringBuilder str = new StringBuilder();
@@ -50,16 +35,15 @@ public class CodeUtils {
     }
 
     public enum CsType {
-        EP("EP", "员工"),
-        CM("CM", "收银机"),
-        S("S", "店铺"),
-        VIP("S", "会员"),
-        OD("OD", "订单"),
-        GD("GD", "商品"),
-        P("P", "支付"),
-        PR("PR", "退款"),
-        PT("PT", " Print "),
-        ;
+        EP("EP", "Employee"),
+        CM("CM", "Cash Register"),
+        S("S", "Store"),
+        VIP("S", "VIP Member"),
+        OD("OD", "Order"),
+        GD("GD", "Product"),
+        P("P", "Payment"),
+        PR("PR", "Refund"),
+        PT("PT", "Print");
 
         /**
          * Type
@@ -104,8 +88,8 @@ public class CodeUtils {
         SecureRandom secureRandom = new SecureRandom();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 8; i++) {
-            int num = secureRandom.nextInt(16); // Generation 0-15的随机数
-            sb.append(Integer.toHexString(num)); // 将随机数转换为16进制字符
+            int num = secureRandom.nextInt(16); // Generate a random number between 0-15
+            sb.append(Integer.toHexString(num)); // Convert the random number to a hexadecimal character
         }
         String hexString = sb.toString();
         return hexString;

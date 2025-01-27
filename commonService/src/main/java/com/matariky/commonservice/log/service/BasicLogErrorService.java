@@ -5,7 +5,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.commonservice.log.bean.BasicLogError;
 import com.matariky.commonservice.log.mapper.BasicLogErrorMapper;
@@ -24,8 +23,7 @@ import com.matariky.utils.TokenUtils;
  * @author AUTOMATION
  */
 @Service
-public class BasicLogErrorService extends BaseServiceImpl<BasicLogErrorMapper, BasicLogError>
-		implements BaseService<BasicLogError> {
+public class BasicLogErrorService extends BaseServiceImpl<BasicLogErrorMapper, BasicLogError> {
 
 	@Autowired
 	private BasicLogErrorMapper basicLogErrorMapper;

@@ -9,14 +9,11 @@ import com.matariky.utils.BeanUtils;
 import com.matariky.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,7 +31,7 @@ public class BasicBaseDeviceController {
     @ApiOperation("Pagination ")
     @RequestMapping("/basicBaseDevice/list")
     public AjaxResult list(BasicBaseDeviceListVO vo) {
-        PageInfo<BasicBaseDeviceInfoVO> page = new PageInfo(basicBaseDeviceService.getBasicBaseDeviceAll(vo));
+        PageInfo<BasicBaseDeviceInfoVO> page = new PageInfo<>(basicBaseDeviceService.getBasicBaseDeviceAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 

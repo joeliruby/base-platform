@@ -9,8 +9,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -198,7 +198,7 @@ public class CommonLoginLogController {
 			XSSFRow row = hssfSheet.createRow(0);
 			XSSFCellStyle hssfCellStyle = workbook.createCellStyle();
 
-			hssfCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			hssfCellStyle.setAlignment(HorizontalAlignment.CENTER);
 
 			XSSFCell hssfCell = null;
 			for (int i = 0; i < titles.length; i++) {

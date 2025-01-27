@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.matariky.bizservice.assetitm.base.bean.BasicBaseRfidPrint;
-import com.matariky.bizservice.assetitm.base.bean.BasicBaseRfidfactory;
 import com.matariky.bizservice.assetitm.base.bean.BasicBaseRfidprintDetail;
 import com.matariky.bizservice.assetitm.base.service.BasicBaseRfidprintDetailService;
 import com.matariky.bizservice.assetitm.base.service.BasicBaseRfidprintService;
@@ -88,8 +87,9 @@ public class BasicBaseRfidprintController {
 		if (StringUtils.isNotEmpty(bean.getOperateDateEnd())) {
 			bean.setOperateDateEnd(bean.getOperateDateEnd() + " 23:59:59");
 		}
-		PageInfo<BasicBaseRfidfactory> page = new PageInfo(basicBaseRfidprintService.getBasicBaseRfidprintAppAll(bean,
-				deviceCode, tenantId, request, pageIndex, perPage));
+		PageInfo<BasicBaseRfidPrint> page = new PageInfo<BasicBaseRfidPrint>(
+				basicBaseRfidprintService.getBasicBaseRfidprintAppAll(bean,
+						deviceCode, tenantId, request, pageIndex, perPage));
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 
 	}

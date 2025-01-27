@@ -2,7 +2,6 @@ package com.matariky.commonservice.base.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,15 +10,10 @@ import com.matariky.commonservice.base.service.BasicBaseFormExtendService;
 import com.matariky.utils.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageHelper;
 
@@ -35,13 +29,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.matariky.commonservice.commondict.service.CommonDictService;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.matariky.commonservice.commondict.bean.CommonDict;
 
 import com.matariky.commonservice.commondict.bean.CommonDictType;
-
-import com.matariky.commonservice.commondict.service.CommonDictService;
 
 import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 
@@ -51,20 +41,21 @@ import com.matariky.utils.TokenUtils;
 
 import springfox.documentation.annotations.ApiIgnore;
 
-
 import com.matariky.exception.QslException;
 
 import com.matariky.commonservice.upload.constant.MessageKey;
 
 /**
-*Controller
-* @author AUTOMATION
-*/
+ * Controller
+ * 
+ * @author AUTOMATION
+ */
 @RestController
-	@RequestMapping("/api/v1/tenant/{tenantId}")
+@RequestMapping("/api/v1/tenant/{tenantId}")
 public class BasicBaseFormExtendController {
 
-	@Value("${message.locale}")	String locale;
+	@Value("${message.locale}")
+	String locale;
 	@Autowired
 	private BasicBaseFormExtendService basicBaseFormExtendService;
 
@@ -74,93 +65,102 @@ public class BasicBaseFormExtendController {
 	@Autowired
 	private CommonDictTypeService commonDictTypeService;
 
-	 
 	@RequestMapping("/basicBaseFormExtend/list")
-	public Object list(HttpServletRequest request, BasicBaseFormExtend bean, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex, @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+	public Object list(HttpServletRequest request, BasicBaseFormExtend bean,
+			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
+			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
+			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		PageHelper.startPage(pageIndex, perPage);
-		PageInfo<BasicBaseFormExtend> page = new PageInfo( basicBaseFormExtendService.getBasicBaseFormExtendAll(bean));
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,page);
+		PageInfo<BasicBaseFormExtend> page = new PageInfo<>(basicBaseFormExtendService.getBasicBaseFormExtendAll(bean));
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 	}
 
 	@RequestMapping("/basicBaseFormExtend/daclist")
-	public Object daclist(HttpServletRequest request,@ApiIgnore @RequestParam Map<String, Object> params,	@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,	@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
-			 String hid=request.getHeader("id");
-			String resourceIdDictKey="dp"+hid.substring(0, hid.length()-1);
-		CommonDictType commonDictType=commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request),PermissionConstant.DATA_ACCESS_PERMISSION);
-		CommonDict dict =commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey,tenantId,commonDictType.getId());
-	 if (dict == null) {
-		params.put("strategyCode", PermissionConstant.COMMON_DATA_ACCESS_ALL);
-	}
-	 else {
-	    params.put("strategyCode", dict.getDictValue());
-	} 
-			int pageIndex=Integer.parseInt(params.get("index").toString());
-			int perPage=Integer.parseInt(params.get("perPage").toString());
+	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+		String hid = request.getHeader("id");
+		String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
+		CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+				TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+		CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+				commonDictType.getId());
+		if (dict == null) {
+			params.put("strategyCode", PermissionConstant.COMMON_DATA_ACCESS_ALL);
+		} else {
+			params.put("strategyCode", dict.getDictValue());
+		}
+		int pageIndex = Integer.parseInt(params.get("index").toString());
+		int perPage = Integer.parseInt(params.get("perPage").toString());
 		params.put("tenantId", tenantId);
-		params.put("pageStart", (pageIndex-1)*perPage);
+		params.put("pageStart", (pageIndex - 1) * perPage);
 		params.put("pageSize", perPage);
-		List<BasicBaseFormExtend> commonDictList =basicBaseFormExtendService.getBasicBaseFormExtendDAC(params, request);
-		Long count=basicBaseFormExtendService.getBasicBaseFormExtendDACCount(params, request);
-		PageInfo<BasicBaseFormExtend> page= new PageInfo<BasicBaseFormExtend>(commonDictList);
+		List<BasicBaseFormExtend> commonDictList = basicBaseFormExtendService.getBasicBaseFormExtendDAC(params,
+				request);
+		Long count = basicBaseFormExtendService.getBasicBaseFormExtendDACCount(params, request);
+		PageInfo<BasicBaseFormExtend> page = new PageInfo<BasicBaseFormExtend>(commonDictList);
 		page.setTotal(count);
 		page.setPageSize(perPage);
 		page.setPageNum(pageIndex);
-		page.setPages(Integer.parseInt(new Long(count%new Long(perPage) ==0 ? count%new Long(perPage) :count%new Long(perPage) +1).toString()));		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,page);
+		page.setPages(Integer.parseInt(
+				Long.valueOf(count % Long.valueOf(perPage) == 0 ? count % Long.valueOf(perPage)
+						: count % Long.valueOf(perPage) + 1)
+						.toString()));
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 	}
 
-	 
-	@RequestMapping(value = "/basicBaseFormExtend",method = RequestMethod.POST)
-	public Object save(@RequestBody BasicBaseFormExtend bean,HttpServletRequest request, HttpServletResponse response) {
-		try{
+	@RequestMapping(value = "/basicBaseFormExtend", method = RequestMethod.POST)
+	public Object save(@RequestBody BasicBaseFormExtend bean, HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
 			int success = basicBaseFormExtendService.createBasicBaseFormExtendWithOrg(bean, request);
-				if(success > 0){
-					return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-				}else{
-					 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
-				}
-		}catch (Exception e){
+			if (success > 0) {
+				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+			} else {
+				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-	 
-	@RequestMapping(value = "/basicBaseFormExtend",method = RequestMethod.PUT)
-	public Object update(@RequestBody BasicBaseFormExtend bean,HttpServletRequest request, HttpServletResponse response) {
-		try{
+	@RequestMapping(value = "/basicBaseFormExtend", method = RequestMethod.PUT)
+	public Object update(@RequestBody BasicBaseFormExtend bean, HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
 			int success = basicBaseFormExtendService.updateBasicBaseFormExtend(bean);
-				if(success > 0){
-					return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS, null);
-				}else{
-					 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
-				}
-		}catch (Exception e){
+			if (success > 0) {
+				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+			} else {
+				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-	 
-	@RequestMapping(value = "/basicBaseFormExtend",method = RequestMethod.DELETE)
-	public Object del(String id,HttpServletRequest request, HttpServletResponse response) {
-		try{
+	@RequestMapping(value = "/basicBaseFormExtend", method = RequestMethod.DELETE)
+	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+		try {
 			Boolean success = basicBaseFormExtendService.deleteById(Long.parseLong(id));
-				if(success ){
-					return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-				}else{
-					 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
-				}
-		}catch (Exception e){
+			if (success) {
+				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+			} else {
+				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			 throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-	 
-	@RequestMapping(value = "/basicBaseFormExtend/{basicBaseFormExtendId}",method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicBaseFormExtendId") Long id, HttpServletRequest request, HttpServletResponse response) {
-			 return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,basicBaseFormExtendService.selectById(id));
-}
-
+	@RequestMapping(value = "/basicBaseFormExtend/{basicBaseFormExtendId}", method = RequestMethod.GET)
+	public Object getOne(@PathVariable("/basicBaseFormExtendId") Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseFormExtendService.selectById(id));
+	}
 
 }

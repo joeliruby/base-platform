@@ -29,7 +29,7 @@ public class BasicBaseGoodsController {
     @ApiOperation(value = "Pagination", response = BasicBaseGoods.class)
     @GetMapping("/basicBaseGoods/list")
     public AjaxResult list(BasicBaseGoodsListVO vo) {
-        PageInfo<Map> pageInfo = basicBaseGoodsService.getBasicBaseGoodsAll(vo);
+        PageInfo<Map<String, Object>> pageInfo = basicBaseGoodsService.getBasicBaseGoodsAll(vo);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, pageInfo);
     }
 

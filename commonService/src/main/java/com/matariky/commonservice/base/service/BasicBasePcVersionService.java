@@ -13,7 +13,6 @@ import com.matariky.commonservice.commondict.bean.CommonDictType;
 import com.matariky.commonservice.commondict.service.CommonDictService;
 import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.constant.PermissionConstant;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.TokenUtils;
@@ -24,12 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersionMapper, BasicBasePcVersion> implements BaseService<BasicBasePcVersion> {
+public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersionMapper, BasicBasePcVersion> {
 
     @Autowired
     private BasicBasePcVersionMapper basicBasePcversionMapper;
@@ -41,14 +40,16 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
     private CommonDictTypeService commonDictTypeService;
 
     /**
-     *  Query   All 
+     * Query All
      */
     public List<BasicBasePcVersionListVO> getBasicBasePcversionAll(BasicBasePcVersionQueryVO vo) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -61,9 +62,8 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
         return basicBasePcversionMapper.getBasicBasePcversionAll(vo);
     }
 
-
     /**
-     * New  Method  
+     * New Method
      */
     public int createBasicBasePcversionWithOrg(BasicBasePcVersionAddVO addVO) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -82,7 +82,7 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
     }
 
     /**
-     * Update  Method  
+     * Update Method
      *
      * @param updateVO
      * @return
@@ -95,19 +95,19 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
                 .set(BasicBasePcVersion::getMessageShutdownTime, updateVO.getMessageShutdownTime())
                 .set(BasicBasePcVersion::getUpdateTime, System.currentTimeMillis())
                 .set(BasicBasePcVersion::getUpdateBy, Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(request)))
-                .set(BasicBasePcVersion::getRequirementDate,updateVO.getRequirementDate())
+                .set(BasicBasePcVersion::getRequirementDate, updateVO.getRequirementDate())
                 .eq(BasicBasePcVersion::getId, updateVO.getId()));
     }
 
     /**
-     * Delete   Method  
+     * Delete Method
      */
     public int delBasicBasePcversionById(Long id) {
         return basicBasePcversionMapper.delBasicBasePcversionById(id);
     }
 
     /**
-     * 批量Delete 
+     * 批量Delete
      *
      * @param ids
      * @return
@@ -118,6 +118,5 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
                 .in(BasicBasePcVersion::getId, ids));
         return update;
     }
-
 
 }

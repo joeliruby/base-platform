@@ -44,14 +44,7 @@ public class TapeRfidUploadTaskJobService {
     @Autowired
     private BasicBaseGoodsMapper basicBaseGoodsMapper;
 
-    /**
-     * @Description: Start Task
-     * @Author: chenyajun
-     * @Date: 2024/2/22 15:15
-     * @param taskId
-     **/
     @Transactional(rollbackFor = Exception.class)
-    // @Lock(keyMethod = "this.getRackLockKeys")
     public void start(Long taskId) throws Exception {
 
         TapeRfidCreateTask tapeRfidCreateTask = jobRfidCreateTaskMapper.getBasicBaseRfidfactoryById(taskId);

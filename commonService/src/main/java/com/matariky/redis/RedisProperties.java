@@ -3,11 +3,6 @@ package com.matariky.redis;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * @description:
- * @author: bo.chen
- * @create: 2023/9/6 19:26
- **/
 @ConfigurationProperties(prefix = "redis")
 @Data
 public class RedisProperties {

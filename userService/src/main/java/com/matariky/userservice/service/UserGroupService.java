@@ -3,13 +3,10 @@ package com.matariky.userservice.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import cn.hutool.http.server.HttpServerRequest;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.exception.QslException;
-import com.matariky.userservice.bean.User;
 import com.matariky.userservice.bean.UserOrganization;
 import com.matariky.userservice.mapper.UserOrganizationMapper;
 import com.matariky.utils.TokenUtils;
@@ -21,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 
 import cn.hutool.core.collection.CollUtil;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.userservice.bean.TreeModel;
 import com.matariky.userservice.bean.UserGroup;
@@ -37,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author AUTOMATION
  */
 @Service
-public class UserGroupService extends BaseServiceImpl<UserGroupMapper, UserGroup> implements BaseService<UserGroup> {
+public class UserGroupService extends BaseServiceImpl<UserGroupMapper, UserGroup> {
 
 	@Autowired
 	private UserGroupMapper userGroupMapper;

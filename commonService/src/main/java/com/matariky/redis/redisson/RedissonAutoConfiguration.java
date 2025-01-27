@@ -11,24 +11,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @description:
- * @author: bo.chen
- * @create: 2023/2/13 17:07
- **/
 @Configuration
 @EnableConfigurationProperties({ RedissonProperties.class, RedisProperties.class })
 @ConditionalOnProperty(value = { "redis.redisson.enable" }, havingValue = "true")
 public class RedissonAutoConfiguration {
 
-    /**
-     * @Description: 声明RedissonClient
-     * @Author: bo.chen
-     * @Date: 2023/2/13 18:21
-     * @param redissonProperties
-     * @param redisProperties
-     * @return org.redisson.api.RedissonClient
-     **/
     @Bean(destroyMethod = "shutdown")
     public RedissonClient getRedissonClient(RedissonProperties redissonProperties, RedisProperties redisProperties) {
         Config config = new Config();

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.userservice.bean.TreeModel;
 import com.matariky.userservice.bean.User;
@@ -42,7 +40,7 @@ import jodd.util.StringUtil;
  * @date 20:52
  */
 @Service("UserService")
-public class UserService extends BaseServiceImpl<UserMapper, User> implements BaseService<User> {
+public class UserService extends BaseServiceImpl<UserMapper, User> {
 
     @Autowired
     UserMapper userMapper;

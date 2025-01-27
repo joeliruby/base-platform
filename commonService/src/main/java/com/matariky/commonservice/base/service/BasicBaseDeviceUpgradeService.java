@@ -19,7 +19,6 @@ import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.constant.TracerConstants;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.OpenTelemetryUtil;
 import com.matariky.utils.TokenUtils;
@@ -48,8 +47,8 @@ import java.util.stream.Collectors;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDeviceUpgradeMapper, BasicBaseDeviceUpgrade>
-        implements BaseService<BasicBaseDeviceUpgrade> {
+public class BasicBaseDeviceUpgradeService
+        extends BaseServiceImpl<BasicBaseDeviceUpgradeMapper, BasicBaseDeviceUpgrade> {
 
     @Autowired
     private BasicBaseDeviceUpgradeMapper basicBaseDeviceupgradeMapper;

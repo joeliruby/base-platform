@@ -7,7 +7,6 @@ import com.matariky.commonservice.base.vo.*;
 import com.matariky.utils.AjaxResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -29,11 +28,12 @@ public class BasicBaseAppVersionController {
 
     /**
      * s
-     * Pagination 
+     * Pagination
      */
     @RequestMapping("/basicBaseAppversion/list")
     public AjaxResult list(BasicBaseAppVersionQueryVO vo) {
-        PageInfo<BasicBaseAppVersionListVO> page = new PageInfo(basicBaseAppversionService.getBasicBaseAppversionAll(vo));
+        PageInfo<BasicBaseAppVersionListVO> page = new PageInfo<>(
+                basicBaseAppversionService.getBasicBaseAppversionAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
@@ -46,7 +46,8 @@ public class BasicBaseAppVersionController {
 
     @ApiOperation("  Update")
     @PutMapping(value = "/basicBaseAppversion")
-    public AjaxResult update(@Validated BasicBaseAppVersionUpdateVO updateVO, @RequestParam(value = "file", required = false) MultipartFile file) {
+    public AjaxResult update(@Validated BasicBaseAppVersionUpdateVO updateVO,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
         basicBaseAppversionService.updateBasicBaseAppversion(updateVO, file);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
@@ -62,7 +63,7 @@ public class BasicBaseAppVersionController {
     @GetMapping(value = "/basicBaseAppversion/{id}")
     public AjaxResult getOne(@PathVariable Long id) {
         BasicBaseAppVersion info = basicBaseAppversionService.selectById(id);
-        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,info);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
 
     @ApiOperation(value = " Query  Printer APP Version Information ")
@@ -70,6 +71,5 @@ public class BasicBaseAppVersionController {
     public AjaxResult getPrintApp() {
         return AjaxResult.success(basicBaseAppversionService.getBasicBasePrintApp());
     }
-
 
 }

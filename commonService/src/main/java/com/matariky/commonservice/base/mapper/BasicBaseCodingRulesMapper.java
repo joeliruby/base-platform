@@ -12,47 +12,45 @@ import com.matariky.commonservice.base.vo.BasicBaseCodingRulesInfoVO;
 import com.matariky.commonservice.base.vo.BasicBaseCodingRulesListVO;
 import com.matariky.commonservice.base.vo.CodingRulesOptionInfo;
 import com.matariky.model.QueryDataIsolation;
-import org.apache.ibatis.annotations.Param;
 
 /**
- *  Persistence Interface
+ * Persistence Interface
  *
  * @author AUTOMATION
  */
 public interface BasicBaseCodingRulesMapper extends BaseMapper<BasicBaseCodingRules> {
     /**
-     *  Query   All 
+     * Query All
      */
     @DataScope(alias = "r")
     public List<BasicBaseCodingRulesInfoVO> getBasicBaseCodingrulesAll(@Param("params") BasicBaseCodingRulesListVO vo);
 
     /**
-     * Delete   Method  
+     * Delete Method
      */
     public int delBasicBaseCodingrulesById(Long id);
 
-
     /**
-     * New  Method  
+     * New Method
      */
     public int createBasicBaseCodingrules(BasicBaseCodingRules bean);
 
     /**
-     *   Drop Down Box
+     * Drop Down Box
+     * 
      * @param queryDataIsolation
      * @return
      */
     @DataScope(alias = StringUtils.EMPTY)
-    public  List<CodingRulesOptionInfo> getOptionList(@Param("params") QueryDataIsolation queryDataIsolation);
-
+    public List<CodingRulesOptionInfo> getOptionList(@Param("params") QueryDataIsolation queryDataIsolation);
 
     /**
-     *  Query   rule id  Wether User by Label 
+     * Query rule id Wether User by Label
+     * 
      * @param id
      * @return
      */
     public Integer selectRuleCountFromrfidfactory(@Param("id") Long id);
-
 
     public Integer selectRuleCountFromrrfidprint(@Param("id") Long id);
 }

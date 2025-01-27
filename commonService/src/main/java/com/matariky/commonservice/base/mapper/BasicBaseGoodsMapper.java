@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.matariky.annotation.DataScope;
 import com.matariky.commonservice.base.bean.BasicBaseGoods;
-import com.matariky.commonservice.base.vo.BasicBaseGoodsInfoVo;
 import com.matariky.commonservice.base.vo.BasicBaseGoodsListVO;
 import com.matariky.commonservice.base.vo.GoodsOptionInfo;
 import com.matariky.model.QueryDataIsolation;
@@ -12,30 +11,30 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- *  Persistence Interface
+ * Persistence Interface
  *
  * @author AUTOMATION
  */
 public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
 
     /**
-     *  Query  Augment Field 
+     * Query Augment Field
+     * 
      * @param tenantId
      * @return
      */
-    public  List<String> selectFieldExtend(@Param("tenantId") Long  tenantId);
+    public List<String> selectFieldExtend(@Param("tenantId") Long tenantId);
 
     /**
-     *  Query   All 
+     * Query All
      */
     @DataScope(alias = "g")
     public List<HashMap> getBasicBaseGoodsAll(@Param("params") BasicBaseGoodsListVO vo);
 
     /**
-     * New  Method  
+     * New Method
      *
      * @param bean
      * @return
@@ -43,16 +42,15 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
     public int createBasicBaseGoods(BasicBaseGoods bean);
 
     /**
-     * Delete   Method  
+     * Delete Method
      *
      * @param id
      * @return
      */
     public int delBasicBaseGoodsById(Long id);
 
-
     /**
-     *  Item -  Drop Down Box
+     * Item - Drop Down Box
      *
      * @param queryDataIsolation
      * @return
@@ -61,7 +59,7 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
     public List<GoodsOptionInfo> getOptionList(QueryDataIsolation queryDataIsolation);
 
     /**
-     *  Label  Data  Generation 表  Wether 存在 该 Item 
+     * Label Data Generation 表 Wether 存在 该 Item
      *
      * @param goodsId
      * @return
@@ -69,7 +67,7 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
     public Integer getGoodsCountFromRfidfactory(@Param("goodsId") Long goodsId);
 
     /**
-     *  Label  Print 表  Wether 存在 该 Item 
+     * Label Print 表 Wether 存在 该 Item
      *
      * @param goodsId
      * @return
@@ -77,7 +75,8 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
     public Integer getGoodsCountFromRfidPrint(@Param("goodsId") Long goodsId);
 
     /**
-     *  Query   Detail 
+     * Query Detail
+     * 
      * @return
      */
     public BasicBaseGoods getBasicBaseGoodsById(@Param("id") Long id);

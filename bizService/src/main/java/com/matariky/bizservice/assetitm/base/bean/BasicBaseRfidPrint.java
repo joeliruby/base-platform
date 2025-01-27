@@ -3,8 +3,11 @@ package com.matariky.bizservice.assetitm.base.bean;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.lang.String;
+
 import com.matariky.model.QueryDataIsolation;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.lang.Long;
 import java.lang.Integer;
 
@@ -14,6 +17,7 @@ import java.lang.Integer;
  * @author AUTOMATION
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseRfidPrint extends QueryDataIsolation {
 
 	private static final long serialVersionUID = 1L;

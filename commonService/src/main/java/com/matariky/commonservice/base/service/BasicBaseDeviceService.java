@@ -19,7 +19,6 @@ import com.matariky.constant.CacheConstants;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.excel.BasicBaseDeviceExeclListener;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.model.QueryDataIsolation;
 import com.matariky.redis.RedisUtils;
@@ -47,8 +46,7 @@ import java.util.stream.Collectors;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMapper, BasicBaseDevice>
-        implements BaseService<BasicBaseDevice> {
+public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMapper, BasicBaseDevice> {
 
     @Autowired
     private BasicBaseDeviceMapper basicBaseDeviceMapper;

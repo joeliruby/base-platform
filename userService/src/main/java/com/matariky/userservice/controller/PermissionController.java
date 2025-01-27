@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.*;
+import java.math.RoundingMode;
+import java.math.MathContext;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +50,6 @@ import com.matariky.commonservice.commondict.bean.CommonDictType;
 import com.matariky.commonservice.commondict.service.CommonDictService;
 import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
-import com.matariky.commonservice.upload.utils.Result;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.constant.RedisKey;
 import com.matariky.exception.QslException;
@@ -78,7 +78,6 @@ import com.matariky.utils.TreeUtils;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ConcurrentHashSet;
 import cn.hutool.core.util.ArrayUtil;
 import io.jsonwebtoken.lang.Collections;
 
@@ -1300,8 +1299,8 @@ public class PermissionController {
                 } catch (Exception e) {
                     failureCount++;
                     processedCount++;
-                    BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-                            BigDecimal.ROUND_HALF_UP);
+                    BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows,
+                            new MathContext(2, RoundingMode.HALF_UP));
                     redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
                     failedUserList.add(rowToMap(xssfRow, e.getMessage()));
                     e.printStackTrace();
@@ -1314,8 +1313,8 @@ public class PermissionController {
                     existingPermissionList.add(permission);
                     repeatCount++;
                     processedCount++;
-                    BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-                            BigDecimal.ROUND_HALF_UP);
+                    BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows,
+                            new MathContext(2, RoundingMode.HALF_UP));
                     redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
 
                     continue;
@@ -1326,7 +1325,7 @@ public class PermissionController {
                     successCount++;
                     processedCount++;
                     BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-                            BigDecimal.ROUND_HALF_UP);
+                            RoundingMode.HALF_UP);
                     redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
                 } else {
                     failureCount++;
@@ -1334,8 +1333,8 @@ public class PermissionController {
                     failedUserList.add(rowToMap(xssfRow,
                             commonDictService.getServiceErrorText(locale + "_SERVICE_CONSTANT_MESSAGE",
                                     MessageKey.ERROR_INSERTING_DATABASE, false, tenantId)));
-                    BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows, 2,
-                            BigDecimal.ROUND_HALF_UP);
+                    BigDecimal successPercentage = new BigDecimal(processedCount).divide(totalRows,
+                            new MathContext(2, RoundingMode.HALF_UP));
                     redisUtils.set(nonce, successPercentage.multiply(new BigDecimal(100)).intValue());
                 }
 
@@ -1387,7 +1386,7 @@ public class PermissionController {
     private Permission excelRowToPermission(HSSFRow xssfRow, String tenantId) throws Exception {
         Permission permission = new Permission();
         try {
-            permission.setParentId(Long.parseLong(new Double(xssfRow.getCell(0).getNumericCellValue()).toString()));
+            permission.setParentId(Long.parseLong(Double.valueOf(xssfRow.getCell(0).getNumericCellValue()).toString()));
         } catch (Exception e) {
             throw new Exception(commonDictService.getServiceErrorText(locale + "_SERVICE_CONSTANT_MESSAGE",
                     "PARENTID_INVALID", false, tenantId));
@@ -1406,7 +1405,7 @@ public class PermissionController {
         }
         try {
             permission.setResourceType(Integer
-                    .parseInt((new Double(xssfRow.getCell(3).getNumericCellValue()).toString().substring(0, 1))));
+                    .parseInt((Double.valueOf(xssfRow.getCell(3).getNumericCellValue()).toString().substring(0, 1))));
         } catch (Exception e) {
             throw new Exception(commonDictService.getServiceErrorText(locale + "_SERVICE_CONSTANT_MESSAGE",
                     "INVALID_RESOURCE_TYPE", false, tenantId));
@@ -1443,14 +1442,15 @@ public class PermissionController {
         }
 
         try {
-            permission.setAccessType(Integer.parseInt(new Double(xssfRow.getCell(9).getNumericCellValue()).toString()));
+            permission.setAccessType(
+                    Integer.parseInt(Double.valueOf(xssfRow.getCell(9).getNumericCellValue()).toString()));
         } catch (Exception e) {
             throw new Exception(commonDictService.getServiceErrorText(locale + "_SERVICE_CONSTANT_MESSAGE",
                     "INVALID_RESOURCE_URL", false, tenantId));
         }
         try {
             permission.setResourceAttribute(
-                    Integer.parseInt(new Double(xssfRow.getCell(10).getNumericCellValue()).toString()));
+                    Integer.parseInt(Double.valueOf(xssfRow.getCell(10).getNumericCellValue()).toString()));
         } catch (Exception e) {
             throw new Exception(commonDictService.getServiceErrorText(locale + "_SERVICE_CONSTANT_MESSAGE",
                     "INVALID_RESOURCE_URL", false, tenantId));

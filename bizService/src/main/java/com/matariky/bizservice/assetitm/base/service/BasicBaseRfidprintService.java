@@ -23,7 +23,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 import java.util.stream.Collectors;
@@ -43,8 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseRfidprintService extends BaseServiceImpl<BasicBaseRfidPrintMapper, BasicBaseRfidPrint>
-		implements BaseService<BasicBaseRfidPrint> {
+public class BasicBaseRfidprintService extends BaseServiceImpl<BasicBaseRfidPrintMapper, BasicBaseRfidPrint> {
 
 	@Autowired
 	private BasicBaseRfidPrintMapper basicBaseRfidprintMapper;

@@ -18,7 +18,8 @@ public class PageUtils {
             pageInfo.setPages(pageInfo.getPageSize() + NumberUtils.INTEGER_ONE);
         }
         pageInfo.setPages(Integer.parseInt(
-                new Long(count % new Long(pageSize) == 0 ? count % new Long(pageSize) : count % new Long(pageSize) + 1)
+                Long.valueOf(count % Long.valueOf(pageSize) == 0 ? count % Long.valueOf(pageSize)
+                        : count % Long.valueOf(pageSize) + 1)
                         .toString()));
         return pageInfo;
     }

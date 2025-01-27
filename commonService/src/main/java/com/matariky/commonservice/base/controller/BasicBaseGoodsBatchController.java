@@ -25,22 +25,21 @@ public class BasicBaseGoodsBatchController {
     @Autowired
     private BasicBaseGoodsBatchService basicBaseGoodsBatchService;
 
-
     /**
-     * Pagination 
+     * Pagination
      *
      * @param vo
      * @return
      */
     @GetMapping(value = "/basicBaseGoodsBatch/list")
     public AjaxResult list(@Validated BasicBaseGoodsBatchListVO vo) {
-        PageInfo<BasicBaseGoodsBatchResVO> page = new PageInfo(basicBaseGoodsBatchService.getBasicBaseGoodsBatchAll(vo));
+        PageInfo<BasicBaseGoodsBatchResVO> page = new PageInfo<>(
+                basicBaseGoodsBatchService.getBasicBaseGoodsBatchAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
-
     /**
-     *  Save  Operation
+     * Save Operation
      *
      * @param vo
      * @return
@@ -64,7 +63,7 @@ public class BasicBaseGoodsBatchController {
     }
 
     /**
-     * Delete  Operation
+     * Delete Operation
      *
      * @param id
      * @return
@@ -76,14 +75,15 @@ public class BasicBaseGoodsBatchController {
     }
 
     /**
-     *  Query One  Detail  Operation
+     * Query One Detail Operation
      *
      * @param id
      * @return
      */
     @GetMapping(value = "/basicBaseGoodsBatch/{basicBaseGoodsBatchId}")
     public AjaxResult getOne(@PathVariable("basicBaseGoodsBatchId") Long id) {
-        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseGoodsBatchService.getBasicBaseGoodsBatchById(id));
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,
+                basicBaseGoodsBatchService.getBasicBaseGoodsBatchById(id));
     }
 
     @ApiOperation(" Batch Binding")
@@ -93,16 +93,15 @@ public class BasicBaseGoodsBatchController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-
     /**
-     *  Item  Batch   Detail 
+     * Item Batch Detail
      *
      * @param vo
      * @return
      */
     @GetMapping(value = "/basicBaseGoodsBatch/info")
     public AjaxResult goodsBatchInfo(@Validated BatchInfoVO vo) {
-        PageInfo<GoodsBatchInfoVO> page = new PageInfo(basicBaseGoodsBatchService.goodsBatchInfo(vo));
+        PageInfo<GoodsBatchInfoVO> page = new PageInfo<>(basicBaseGoodsBatchService.goodsBatchInfo(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 

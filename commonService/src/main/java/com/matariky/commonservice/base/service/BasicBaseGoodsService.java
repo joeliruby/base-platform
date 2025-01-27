@@ -16,7 +16,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.model.QueryDataIsolation;
 import com.matariky.utils.TokenUtils;
@@ -29,12 +28,12 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper, BasicBaseGoods> implements BaseService<BasicBaseGoods> {
+public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper, BasicBaseGoods> {
 
     @Autowired
     private BasicBaseGoodsMapper basicBaseGoodsMapper;
@@ -56,16 +55,18 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
     private BasicBaseFormExtendMapper basicBaseFormExtendMapper;
 
     /**
-     *  Pagination Query 
+     * Pagination Query
      *
      * @return
      */
-    public PageInfo<Map> getBasicBaseGoodsAll(BasicBaseGoodsListVO vo) {
+    public PageInfo<Map<String, Object>> getBasicBaseGoodsAll(BasicBaseGoodsListVO vo) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -75,7 +76,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         vo.setOrgCode(TokenUtils.extractOrgCode(request));
         vo.setTenantId(tenantId);
         /**
-         *  Query  Augment Field 
+         * Query Augment Field
          */
         List<String> extendFieldList = basicBaseGoodsMapper.selectFieldExtend(TokenUtils.longify(tenantId));
         vo.setExtendFieldList(extendFieldList);
@@ -92,11 +93,11 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
                 item.put("isUsedByOther", false);
             }
         });
-        List<Map> newList = new ArrayList<>();
+        List<Map<String, Object>> newList = new ArrayList<>();
         list.stream().forEach(item -> {
             Iterator<Map.Entry> iterator = item.entrySet().iterator();
             while (iterator.hasNext()) {
-                Map.Entry entry = iterator.next();
+                Map.Entry<String, Object> entry = iterator.next();
                 String key = entry.getKey().toString();
                 if (key.equals("a") || key.equals("b") || key.equals("c") || key.equals("d") || key.equals("e")) {
                     iterator.remove();
@@ -106,13 +107,11 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
             newList.add(newMap);
         });
 
-
-        PageInfo<Map> pageInfo = new PageInfo(newList);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(newList);
         pageInfo.setList(newList);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
-
 
     /**
      * New
@@ -166,7 +165,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         extend.setBusinessId(add.getId());
 
         Boolean flag = false;
-        Iterator<Map.Entry> iterator = addVO.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> iterator = addVO.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = iterator.next();
             String key = entry.getKey().toString();
@@ -174,7 +173,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
             if (key.startsWith("field")) {
                 flag = true;
                 try {
-                    Class readerClass = extend.getClass();
+                    Class<? extends BasicBaseFormExtend> readerClass = extend.getClass();
                     Field field = readerClass.getDeclaredField(key);
                     field.setAccessible(true);
                     field.set(extend, value);
@@ -217,7 +216,8 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         BasicBaseGoods update = new BasicBaseGoods();
         update.setGoodsName(updateVO.get("goodsName") != null ? updateVO.get("goodsName").toString() : null);
         update.setGoodsImage(updateVO.get("goodsImage") != null ? updateVO.get("goodsImage").toString() : null);
-        update.setGoodsDescribe(updateVO.get("goodsDescribe") != null ? updateVO.get("goodsDescribe").toString() : null);
+        update.setGoodsDescribe(
+                updateVO.get("goodsDescribe") != null ? updateVO.get("goodsDescribe").toString() : null);
         update.setId(Long.valueOf(updateVO.get("id").toString()));
         update.setUpdateTime(System.currentTimeMillis());
         update.setUpdateBy(userId);
@@ -227,7 +227,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         boolean isHaveExtendField = updateVO.keySet().stream().anyMatch(key -> key.toString().contains("field"));
         if (isHaveExtendField && extendId == null) {
             /**
-             * New Augment Field 
+             * New Augment Field
              */
             BasicBaseFormExtend extend = new BasicBaseFormExtend();
             extend.setCreateBy(userId);
@@ -246,7 +246,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
                 if (key.startsWith("field")) {
                     flag = true;
                     try {
-                        Class readerClass = extend.getClass();
+                        Class<? extends BasicBaseFormExtend> readerClass = extend.getClass();
                         Field field = readerClass.getDeclaredField(key);
                         field.setAccessible(true);
                         field.set(extend, entry.getValue());
@@ -260,7 +260,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
             }
         } else if (isHaveExtendField && extendId != null) {
             /**
-             *   Update Augment Field 
+             * Update Augment Field
              */
             BasicBaseFormExtend extend = new BasicBaseFormExtend();
             Iterator<Map.Entry> iterator = updateVO.entrySet().iterator();
@@ -270,7 +270,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
                 String value = entry.getValue() != null ? entry.getValue().toString() : "";
                 if (key.startsWith("field")) {
                     try {
-                        Class readerClass = extend.getClass();
+                        Class<? extends BasicBaseFormExtend> readerClass = extend.getClass();
                         Field field = readerClass.getDeclaredField(key);
                         field.setAccessible(true);
                         field.set(extend, value);
@@ -288,7 +288,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
     }
 
     /**
-     * Delete 
+     * Delete
      *
      * @param id
      * @return
@@ -299,15 +299,17 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         if (count > 0) {
             throw new QslException(MessageKey.GOODS_USED);
         }
-        Long factoryCount = basicBaseCreaterfidFactoryMapper.selectCount(Wrappers.lambdaQuery(BasicBaseCreaterfidFactory.class)
-                .eq(BasicBaseCreaterfidFactory::getGoodsId, id)
-                .eq(BasicBaseCreaterfidFactory::getDeleteTime, 0));
+        Long factoryCount = basicBaseCreaterfidFactoryMapper
+                .selectCount(Wrappers.lambdaQuery(BasicBaseCreaterfidFactory.class)
+                        .eq(BasicBaseCreaterfidFactory::getGoodsId, id)
+                        .eq(BasicBaseCreaterfidFactory::getDeleteTime, 0));
         if (factoryCount > 0) {
             throw new QslException(MessageKey.GOODS_USED);
         }
-        Long printCount = basicBaseCreaterfidPrintMapper.selectCount(Wrappers.lambdaQuery(BasicBaseCreaterfidPrint.class)
-                .eq(BasicBaseCreaterfidPrint::getGoodsId, id)
-                .eq(BasicBaseCreaterfidPrint::getDeleteTime, 0));
+        Long printCount = basicBaseCreaterfidPrintMapper
+                .selectCount(Wrappers.lambdaQuery(BasicBaseCreaterfidPrint.class)
+                        .eq(BasicBaseCreaterfidPrint::getGoodsId, id)
+                        .eq(BasicBaseCreaterfidPrint::getDeleteTime, 0));
         if (printCount > 0) {
             throw new QslException(MessageKey.GOODS_USED);
         }
@@ -326,9 +328,8 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         basicBaseFormExtendMapper.delBasicBaseFormExtendById(extendId);
     }
 
-
     /**
-     *  Item  -   Drop Down Box Pagination 
+     * Item - Drop Down Box Pagination
      *
      * @param
      */
@@ -337,8 +338,10 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         QueryDataIsolation vo = new QueryDataIsolation();
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -355,7 +358,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
     }
 
     /**
-     *  Query   Detail 
+     * Query Detail
      *
      * @param id
      */

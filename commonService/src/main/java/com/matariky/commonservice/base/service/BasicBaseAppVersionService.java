@@ -1,6 +1,5 @@
 package com.matariky.commonservice.base.service;
 
-import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.matariky.commonservice.base.bean.BasicBaseAppVersion;
@@ -19,7 +18,6 @@ import com.matariky.commonservice.minio.utils.MinioUtil;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.TokenUtils;
@@ -38,8 +36,7 @@ import java.util.List;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVersionMapper, BasicBaseAppVersion>
-        implements BaseService<BasicBaseAppVersion> {
+public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVersionMapper, BasicBaseAppVersion> {
 
     @Autowired
     private BasicBaseAppVersionMapper basicBaseAppversionMapper;

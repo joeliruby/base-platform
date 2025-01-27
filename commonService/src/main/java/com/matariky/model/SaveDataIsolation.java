@@ -3,25 +3,17 @@ package com.matariky.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
-
-/**
- * @description: Save Data Isolation Objects class
- * @author: bo.chen
- * @create: 2023/9/5 17:01
- **/
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class SaveDataIsolation extends BaseDataIsolation implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class SaveDataIsolation extends BaseDataIsolation {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-     *  User's organization code
+    /**
+     * User's organization code
      */
     public String operatorOrgCode;
 
@@ -31,7 +23,7 @@ public class SaveDataIsolation extends BaseDataIsolation implements Serializable
     public String operatorSelfOrgCode;
 
     /**
-     *  Operationip
+     * Operationip
      */
     private String operationIp;
 }

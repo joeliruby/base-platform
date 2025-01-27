@@ -1,6 +1,5 @@
 package com.matariky.orderservice.controller;
 
-
 import cn.hutool.core.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,13 +42,13 @@ public class OrderInfoController {
     @Autowired
     private OrderInfoService orderInfoService;
 
-
     @Autowired
     private MinioUtil minioUtil;
 
-     
     @RequestMapping("/orderInfo/list")
-    public AjaxResult list(HttpServletRequest request, OrderInfo bean, @PathVariable("tenantId") String tenantId, @RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage, @RequestHeader("Authorization") String jwt) {
+    public AjaxResult list(HttpServletRequest request, OrderInfo bean, @PathVariable("tenantId") String tenantId,
+            @RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage,
+            @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
         PageInfo<OrderInfo> page = new PageInfo<OrderInfo>(orderInfoService.getOrderInfoAll());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
@@ -57,24 +56,24 @@ public class OrderInfoController {
 
     @RequestMapping("/orderInfo/daclist")
     public AjaxResult daclist(QueryTapeOrderInfoParam params,
-                              @PathVariable("tenantId") String tenantId) {
+            @PathVariable("tenantId") String tenantId) {
         params.setPage(Boolean.TRUE);
         if (StringUtil.isNotEmpty(tenantId) && !tenantId.equals("1")) {
             params.setOrderTenantId(tenantId);
         }
         List<OrderInfoPageVo> commonDictList = orderInfoService.getOrderInfoDAC(params);
         Long count = orderInfoService.getOrderInfoDACCount(params);
-        PageInfo pageInfo = PageUtils.getPageInfo(commonDictList, count, params.getIndex(), params.getPageSize());
+        PageInfo<OrderInfoPageVo> pageInfo = PageUtils.getPageInfo(commonDictList, count, params.getIndex(),
+                params.getPageSize());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, pageInfo);
     }
 
-     
     @RequestMapping(value = "/orderInfo", method = RequestMethod.POST)
     public AjaxResult save(@RequestBody OrderInfoAddVo bean,
-                           @PathVariable("tenantId") String tenantId,
-                           @RequestHeader("Authorization") String jwt,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         try {
             orderInfoService.createOrderInfoWithOrg(bean, request, tenantId, jwt);
             return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
@@ -83,13 +82,12 @@ public class OrderInfoController {
         }
     }
 
-     
     @RequestMapping(value = "/orderInfo", method = RequestMethod.PUT)
     public AjaxResult update(@RequestBody OrderInfoEditVo bean,
-                             @PathVariable("tenantId") String tenantId,
-                             @RequestHeader("Authorization") String jwt,
-                             HttpServletRequest request,
-                             HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         try {
             orderInfoService.updateOrderInfo(bean, request, tenantId, jwt);
             return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
@@ -98,7 +96,6 @@ public class OrderInfoController {
         }
     }
 
-     
     @RequestMapping(value = "/orderInfo", method = RequestMethod.DELETE)
     public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -109,13 +106,12 @@ public class OrderInfoController {
         }
     }
 
-     
     @RequestMapping(value = "/orderInfo/{orderInfoId}", method = RequestMethod.GET)
-    public AjaxResult getOne(@PathVariable("orderInfoId") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult getOne(@PathVariable("orderInfoId") Long id, HttpServletRequest request,
+            HttpServletResponse response) {
         OrderInfo info = orderInfoService.selectById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
-
 
     @RequestMapping(value = "/orderInfo/uploadfile", method = RequestMethod.POST)
     public AjaxResult fileupload2(List<MultipartFile> files) {
@@ -135,14 +131,12 @@ public class OrderInfoController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, filePaths);
     }
 
-
-     
     @RequestMapping(value = "/operateData", method = RequestMethod.PUT)
     public AjaxResult operateData(@RequestBody OrderInfoOperateVo bean,
-                                  @PathVariable("tenantId") String tenantId,
-                                  @RequestHeader("Authorization") String jwt,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         try {
             bean.setRecord(true);
             orderInfoService.operateData(bean, request, tenantId, jwt);
@@ -152,13 +146,12 @@ public class OrderInfoController {
         }
     }
 
-
     @RequestMapping(value = "/operateData/aborted", method = RequestMethod.PUT)
     public AjaxResult operateAbortedData(@RequestBody OrderInfoOperateVo bean,
-                                         @PathVariable("tenantId") String tenantId,
-                                         @RequestHeader("Authorization") String jwt,
-                                         HttpServletRequest request,
-                                         HttpServletResponse response) {
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         try {
             bean.setRecord(false);
             orderInfoService.operateData(bean, request, tenantId, jwt);
@@ -168,13 +161,11 @@ public class OrderInfoController {
         }
     }
 
-
-     
     @RequestMapping("/orderInfo/getList/{orderTenantId}")
     public AjaxResult getList(HttpServletRequest request,
-                              @PathVariable("orderTenantId") String orderTenantId,
-                              @PathVariable("tenantId") String tenantId,
-                              @RequestHeader("Authorization") String jwt) {
+            @PathVariable("orderTenantId") String orderTenantId,
+            @PathVariable("tenantId") String tenantId,
+            @RequestHeader("Authorization") String jwt) {
         String[] str = orderTenantId.split("_");
         List<OrderInfo> orderTenantIdList = null;
         if (str != null && str.length > 1) {
@@ -185,8 +176,6 @@ public class OrderInfoController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, orderTenantIdList);
     }
 
-
-     
     @RequestMapping(value = "/orderInfo/getExpiringSoon", method = RequestMethod.GET)
     public AjaxResult getOrderInfoExpiringSoon(
             @PathVariable("tenantId") String tenantId) {

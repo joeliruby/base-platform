@@ -13,7 +13,7 @@ public class BackupConstant {
 	 * Judgment Operation SystemType 、Linux|Windows
 	 */
 	public static boolean isSystem(String osName) {
-		Boolean flag = null;
+		Boolean flag = false;
 		if (osName.startsWith("windows")) {
 			flag = true;
 		} else if (osName.startsWith("linux")) {

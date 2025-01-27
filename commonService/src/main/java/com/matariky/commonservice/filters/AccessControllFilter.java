@@ -58,7 +58,7 @@ public class AccessControllFilter implements Filter {
 			((HttpServletResponse) response).setStatus(HttpStatus.HTTP_FORBIDDEN);
 			return;
 		}
-		if (!StringUtils.isEmpty(permId))
+		if (!StringUtils.isEmpty(permId) && permId != null)
 			permId = permId.substring(0, permId.length() - 1);// The current logic is that if there is resources, the
 																// owner can add deletion, deletion, change and
 																// investigation, and no longer segmented

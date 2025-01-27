@@ -2,20 +2,14 @@ package com.matariky.bizservice.assetitm.base.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageHelper;
 import com.matariky.bizservice.assetitm.base.bean.BasicBaseRfidtemplateParameter;
@@ -33,13 +27,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.matariky.commonservice.commondict.service.CommonDictService;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.matariky.commonservice.commondict.bean.CommonDict;
 
 import com.matariky.commonservice.commondict.bean.CommonDictType;
-
-import com.matariky.commonservice.commondict.service.CommonDictService;
 
 import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 
@@ -51,16 +41,9 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import com.matariky.utils.AjaxResult;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import com.alibaba.fastjson.JSONObject;
-
 import com.matariky.exception.QslException;
 
 import com.matariky.commonservice.upload.constant.MessageKey;
-
-import com.matariky.constant.PermissionConstant;
-import com.matariky.exception.QslException;
 
 /**
  * Controller
@@ -89,7 +72,7 @@ public class BasicBaseRfidtemplateParameterController {
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		PageHelper.startPage(pageIndex, perPage);
-		PageInfo<BasicBaseRfidtemplateParameter> page = new PageInfo(
+		PageInfo<BasicBaseRfidtemplateParameter> page = new PageInfo<>(
 				basicBaseRfidtemplateParameterService.getBasicBaseRfidtemplateParameterAll(bean));
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 	}
@@ -122,7 +105,8 @@ public class BasicBaseRfidtemplateParameterController {
 		page.setPageSize(perPage);
 		page.setPageNum(pageIndex);
 		page.setPages(Integer.parseInt(
-				new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1)
+				Long.valueOf(count % Long.valueOf(perPage) == 0 ? count % Long.valueOf(perPage)
+						: count % Long.valueOf(perPage) + 1)
 						.toString()));
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
 	}

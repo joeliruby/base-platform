@@ -1,7 +1,5 @@
 package com.matariky.orderservice.service;
 
-
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.orderservice.bean.OrderInfoRecord;
 import com.matariky.orderservice.mapper.OrderInfoRecordMapper;
@@ -14,33 +12,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class OrderInfoRecordService extends BaseServiceImpl<OrderInfoRecordMapper, OrderInfoRecord> implements BaseService<OrderInfoRecord> {
+public class OrderInfoRecordService extends BaseServiceImpl<OrderInfoRecordMapper, OrderInfoRecord> {
 
     @Autowired
     private OrderInfoRecordMapper orderInfoRecordMapper;
 
-     
     public List<OrderInfoRecord> getOrderInfoRecordAll() {
         return orderInfoRecordMapper.getOrderInfoRecordAll();
     }
 
-     
     public int getOrderInfoRecordAllCount() {
         return orderInfoRecordMapper.getOrderInfoRecordAllCount();
     }
 
-     
     public int createOrderInfoRecord(OrderInfoRecord bean) {
         return orderInfoRecordMapper.createOrderInfoRecord(bean);
     }
 
-     
-     
     public int createOrderInfoRecordWithOrg(OrderInfoRecord bean, HttpServletRequest request) {
         bean.setOperatorOrgCode(TokenUtils.extractOrgCode(request));
         bean.setOperatorSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
@@ -51,12 +44,10 @@ public class OrderInfoRecordService extends BaseServiceImpl<OrderInfoRecordMappe
         return orderInfoRecordMapper.updateById(bean);
     }
 
-     
     public int delOrderInfoRecordById(int id) {
         return orderInfoRecordMapper.delOrderInfoRecordById(id);
     }
 
-     
     public OrderInfoRecord getOrderInfoRecordById(int id) {
         return orderInfoRecordMapper.getOrderInfoRecordById(id);
     }

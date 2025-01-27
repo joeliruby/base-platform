@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.github.pagehelper.util.StringUtil;
 import com.matariky.annotation.SourcePermission;
 import com.matariky.commonservice.commondict.bean.CommonDict;
@@ -33,7 +32,6 @@ import com.matariky.constant.PermissionConstant;
 import com.matariky.model.BaseDataIsolation;
 import com.matariky.model.QueryDataIsolation;
 import com.matariky.model.SaveDataIsolation;
-import com.matariky.mybatis.MybatisPlusDataScopeInterceptor;
 import com.matariky.utils.IpUtils;
 import com.matariky.utils.TokenUtils;
 
@@ -51,7 +49,7 @@ public class DataIsolationAspect implements GetCurrentRequest {
 
     @Autowired
     private CommonDictMapper commonDictMapper;
-    
+
     @Pointcut("execution(* com.matariky..*Controller.*(..))")
     public void controllerPointcut() {
 
@@ -59,32 +57,38 @@ public class DataIsolationAspect implements GetCurrentRequest {
 
     private HttpServletRequest getCurrentRequest() {
         final ThreadLocal<HttpServletRequest> currentRequest = new ThreadLocal<>();
-    	HttpServletRequest httpServletRequest=currentRequest.get();
-    	return httpServletRequest;
+        HttpServletRequest httpServletRequest = currentRequest.get();
+        return httpServletRequest;
     }
 
     @Around("controllerPointcut()")
     public Object dataFilter(ProceedingJoinPoint joinPoint) throws Throwable {
-    	HttpServletRequest httpServletRequest=getCurrentRequest();
+        HttpServletRequest httpServletRequest = getCurrentRequest();
         String tenantId = TokenUtils.extractTenantIdFromHttpRequest(httpServletRequest);
 
-        if (StringUtils.isNotEmpty(tenantId) && Objects.nonNull(joinPoint.getArgs()) && joinPoint.getArgs().length > NumberUtils.INTEGER_ZERO) {
+        if (StringUtils.isNotEmpty(tenantId) && Objects.nonNull(joinPoint.getArgs())
+                && joinPoint.getArgs().length > NumberUtils.INTEGER_ZERO) {
             String strategyCode;
-            if (Arrays.stream(joinPoint.getArgs()).anyMatch(arg -> Objects.nonNull(arg) && arg instanceof QueryDataIsolation)) {
+            if (Arrays.stream(joinPoint.getArgs())
+                    .anyMatch(arg -> Objects.nonNull(arg) && arg instanceof QueryDataIsolation)) {
                 strategyCode = getStrategyCode(joinPoint.getSignature(), tenantId);
             } else {
                 strategyCode = null;
             }
-            for (Object param: joinPoint.getArgs()) {
+            for (Object param : joinPoint.getArgs()) {
                 if (Objects.nonNull(param) && param instanceof BaseDataIsolation) {
                     ((BaseDataIsolation) param).setLocal(TokenUtils.extractLocaleForRequest(httpServletRequest));
                     ((BaseDataIsolation) param).setTenantId(tenantId);
-                    ((BaseDataIsolation) param).setUserId(NumberUtils.toLong(TokenUtils.extractUserIdFromHttpReqeust(httpServletRequest), NumberUtils.INTEGER_MINUS_ONE));
-                    ((BaseDataIsolation) param).setApplication(TokenUtils.extractApplicationFromToken(httpServletRequest));
+                    ((BaseDataIsolation) param)
+                            .setUserId(NumberUtils.toLong(TokenUtils.extractUserIdFromHttpReqeust(httpServletRequest),
+                                    NumberUtils.INTEGER_MINUS_ONE));
+                    ((BaseDataIsolation) param)
+                            .setApplication(TokenUtils.extractApplicationFromToken(httpServletRequest));
                     if (param instanceof QueryDataIsolation) {
                         QueryDataIsolation dataIsolation = (QueryDataIsolation) param;
                         dataIsolation.setStrategyCode(strategyCode);
-                        setQueryDataIsolation(dataIsolation, TokenUtils.extractOrgCode(httpServletRequest), TokenUtils.extractSelfOrgCode(httpServletRequest));
+                        setQueryDataIsolation(dataIsolation, TokenUtils.extractOrgCode(httpServletRequest),
+                                TokenUtils.extractSelfOrgCode(httpServletRequest));
                     } else if (param instanceof SaveDataIsolation) {
                         SaveDataIsolation dataIsolation = (SaveDataIsolation) param;
                         dataIsolation.setOperatorOrgCode(TokenUtils.extractOrgCode(httpServletRequest));
@@ -100,7 +104,8 @@ public class DataIsolationAspect implements GetCurrentRequest {
     private String getStrategyCode(Signature signature, String tenantId) {
         /** request resource id **/
         String id = getCurrentRequest().getHeader("id");
-        SourcePermission sourcePermission = AnnotationUtils.getAnnotation(((MethodSignature) signature).getMethod(), SourcePermission.class);
+        SourcePermission sourcePermission = AnnotationUtils.getAnnotation(((MethodSignature) signature).getMethod(),
+                SourcePermission.class);
         if (Objects.isNull(sourcePermission)) {
             sourcePermission = AnnotationUtils.getAnnotation(signature.getDeclaringType(), SourcePermission.class);
         }
@@ -109,7 +114,7 @@ public class DataIsolationAspect implements GetCurrentRequest {
             sourceId = sourcePermission.oId();
         } else if (StringUtils.isNotEmpty(id) && id.length() > NumberUtils.INTEGER_ONE) {
             sourceId = id.substring(NumberUtils.INTEGER_ZERO, id.length() - NumberUtils.INTEGER_ONE);
-        }  else {
+        } else {
             return PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;
         }
         Long pId = commonDictMapper.getPermissionId(tenantId, sourceId);
@@ -117,17 +122,19 @@ public class DataIsolationAspect implements GetCurrentRequest {
             return PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;
         }
         /** Obtain Resource Dictionary Type **/
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(getCurrentRequest()), PermissionConstant.DATA_ACCESS_PERMISSION);
-        if (Objects.nonNull(commonDictType) )  {
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(getCurrentRequest()),
+                PermissionConstant.DATA_ACCESS_PERMISSION);
+        if (Objects.nonNull(commonDictType)) {
             /** Obtain cache resource data **/
-            CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType("dp" + sourceId, tenantId, commonDictType.getId());
+            CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType("dp" + sourceId, tenantId,
+                    commonDictType.getId());
             if (Objects.nonNull(dict) && StringUtils.isNotEmpty(dict.getDictValue())) {
                 return dict.getDictValue();
             }
         }
         return PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;
     }
-
 
     private void setQueryDataIsolation(QueryDataIsolation dataIsolation, String orgCode, String selfOrgCode) {
         if (StringUtil.isEmpty(dataIsolation.getStrategyCode())) {
@@ -150,7 +157,7 @@ public class DataIsolationAspect implements GetCurrentRequest {
         }
     }
 
-    public void setSharingOrgCodes(QueryDataIsolation  queryDataIsolation, String orgCode, String selfOrgCode) {
+    public void setSharingOrgCodes(QueryDataIsolation queryDataIsolation, String orgCode, String selfOrgCode) {
         /** Query the organization code of shared resources **/
         List<String> orgCodes = sharingPoolService.getOriginalOwnerOrgCodeList(orgCode, selfOrgCode);
         if (CollectionUtils.isNotEmpty(orgCodes)) {

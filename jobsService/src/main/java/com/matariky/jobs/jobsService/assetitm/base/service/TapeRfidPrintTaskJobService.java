@@ -31,14 +31,7 @@ public class TapeRfidPrintTaskJobService {
     @Autowired
     private BasicBaseCreaterfidPrintMapper basicBaseCreaterfidPrintMapper;
 
-    /**
-     * @Description: Start Task
-     * @Author: chenyajun
-     * @Date: 2024/2/22 15:15
-     * @param taskId
-     **/
     @Transactional(rollbackFor = Exception.class)
-    // @Lock(keyMethod = "this.getRackLockKeys")
     public void start(Long taskId) throws Exception {
 
         TapeRfidPrintTask tapeRfidPrintTask = jobRfidPrintTaskMapper.getBasicBaseRfidPrintById(taskId);

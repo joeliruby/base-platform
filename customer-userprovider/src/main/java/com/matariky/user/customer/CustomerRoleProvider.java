@@ -9,17 +9,11 @@ import java.util.stream.Stream;
 
 import org.keycloak.component.ComponentModel;
 import org.keycloak.models.ClientModel;
-import org.keycloak.models.ClientProvider;
-import org.keycloak.models.ClientScopeProvider;
-import org.keycloak.models.GroupProvider;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.RealmProvider;
 import org.keycloak.models.RoleModel;
-import org.keycloak.models.RoleProvider;
 import org.keycloak.models.cache.CachedRealmModel;
-import org.keycloak.models.cache.infinispan.ClientScopeAdapter;
-import org.keycloak.models.cache.infinispan.GroupAdapter;
 import org.keycloak.models.cache.infinispan.RealmAdapter;
 import org.keycloak.models.cache.infinispan.RealmCacheManager;
 import org.keycloak.models.cache.infinispan.RealmCacheSession;
@@ -33,8 +27,7 @@ import org.keycloak.models.cache.infinispan.events.RealmUpdatedEvent;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.client.ClientStorageProviderModel;
 
-public class CustomerRoleProvider extends RealmCacheSession
-		implements RealmProvider, ClientProvider, ClientScopeProvider, GroupProvider, RoleProvider {
+public class CustomerRoleProvider extends RealmCacheSession {
 	protected Map<String, CustomerRoleAdapter> managedRoles = new HashMap<>();
 
 	public CustomerRoleProvider(RealmCacheManager cache, KeycloakSession session) {

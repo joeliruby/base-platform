@@ -12,7 +12,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
     public static boolean divisible(BigDecimal dividend, BigDecimal divisor) {
         try {
             BigDecimal result = dividend.divide(divisor);
-            BigDecimal number = result.setScale(0, BigDecimal.ROUND_DOWN);
+            BigDecimal number = result.setScale(0, RoundingMode.DOWN);
             return result.compareTo(number) == INTEGER_ZERO;
         } catch (ArithmeticException exception) {
             return Boolean.FALSE;
@@ -52,9 +52,9 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
         dividend = ifNullToZero(dividend);
         divisor = ifNullToZero(divisor);
         if (dividend.compareTo(BigDecimal.ZERO) == NumberUtils.INTEGER_ONE) {
-            BigDecimal quotient = dividend.divide(divisor, 5, BigDecimal.ROUND_HALF_UP);
+            BigDecimal quotient = dividend.divide(divisor, 5, RoundingMode.HALF_UP);
             if (quotient.compareTo(BigDecimal.ONE) < NumberUtils.INTEGER_ZERO) {
-                return quotient.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                return quotient.multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP);
             } else {
                 return BigDecimal.valueOf(100);
             }
@@ -65,7 +65,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
     public static BigDecimal rate(BigDecimal percentage) {
         percentage = ifNullToZero(percentage);
         BigDecimal hundred = BigDecimal.valueOf(100);
-        return percentage.divide(hundred, 4, BigDecimal.ROUND_HALF_UP);
+        return percentage.divide(hundred, 4, RoundingMode.HALF_UP);
     }
 
     private NumberUtils() {

@@ -6,11 +6,6 @@ import org.springframework.data.redis.serializer.SerializationException;
 import java.util.Objects;
 
 
-/**
- * @description: Long 字符序列化
- * @author: bo.chen
- * @create: 2023/5/11 16:14
- **/
 public class LongRedisSerializer implements RedisSerializer<Long> {
 
     @Override

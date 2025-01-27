@@ -1,7 +1,6 @@
 package com.matariky.commonservice.base.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.util.StringUtil;
 import com.matariky.commonservice.base.bean.BasicBaseAntifakeDetail;
 import com.matariky.commonservice.base.mapper.BasicBaseAntifakeDetailMapper;
 import com.matariky.commonservice.commondict.bean.CommonDict;
@@ -9,7 +8,6 @@ import com.matariky.commonservice.commondict.bean.CommonDictType;
 import com.matariky.commonservice.commondict.service.CommonDictService;
 import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.constant.PermissionConstant;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +15,15 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAntifakeDetailMapper, BasicBaseAntifakeDetail> implements BaseService<BasicBaseAntifakeDetail> {
+public class BasicBaseAntifakeDetailService
+        extends BaseServiceImpl<BasicBaseAntifakeDetailMapper, BasicBaseAntifakeDetail> {
 
     @Autowired
     private BasicBaseAntifakeDetailMapper basicBaseAntifakeDetailMapper;
@@ -37,19 +35,22 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
     private HttpServletRequest request;
 
     /**
-     *  Query   All 
+     * Query All
      *
      * @param bean
      * @param pageIndex
      * @param perPage
      * @return
      */
-    public List<BasicBaseAntifakeDetail> getBasicBaseAntifakeDetailAll(BasicBaseAntifakeDetail bean, Integer pageIndex, Integer perPage) {
+    public List<BasicBaseAntifakeDetail> getBasicBaseAntifakeDetailAll(BasicBaseAntifakeDetail bean, Integer pageIndex,
+            Integer perPage) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             bean.setOperatorOrgCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -62,9 +63,8 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
         return basicBaseAntifakeDetailMapper.getBasicBaseAntifakeDetailAll(bean);
     }
 
-
     /**
-     * New  Method  
+     * New Method
      *
      * @param bean
      * @return
@@ -86,7 +86,7 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
     }
 
     /**
-     * Delete 
+     * Delete
      *
      * @param id
      * @return
@@ -95,15 +95,14 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
         return basicBaseAntifakeDetailMapper.delBasicBaseAntifakeDetailById(id);
     }
 
-
     /**
-     *   Detail 
+     * Detail
+     * 
      * @param id
      * @return
      */
     public BasicBaseAntifakeDetail getBasicBaseAntifakeDetailById(Long id) {
         return basicBaseAntifakeDetailMapper.getBasicBaseAntifakeDetailById(id);
     }
-
 
 }

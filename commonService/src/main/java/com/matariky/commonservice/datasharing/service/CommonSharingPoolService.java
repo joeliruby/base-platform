@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.matariky.commonservice.datasharing.bean.CommonSharingPool;
 import com.matariky.commonservice.datasharing.mapper.CommonSharingPoolMapper;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 /**
@@ -16,8 +15,7 @@ import com.matariky.iservice.impl.BaseServiceImpl;
  * @author AUTOMATION
  */
 @Service
-public class CommonSharingPoolService extends BaseServiceImpl<CommonSharingPoolMapper, CommonSharingPool>
-		implements BaseService<CommonSharingPool> {
+public class CommonSharingPoolService extends BaseServiceImpl<CommonSharingPoolMapper, CommonSharingPool> {
 
 	@Autowired
 	private CommonSharingPoolMapper commonSharingPoolMapper;

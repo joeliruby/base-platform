@@ -13,7 +13,6 @@ import com.github.pagehelper.Page;
 import com.matariky.commonservice.commondict.bean.CommonDict;
 import com.matariky.commonservice.commondict.bean.CommonDictType;
 import com.matariky.commonservice.commondict.mapper.CommonDictTypeMapper;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 /**
@@ -22,8 +21,7 @@ import com.matariky.iservice.impl.BaseServiceImpl;
  * @author AUTOMATION
  */
 @Service
-public class CommonDictTypeService extends BaseServiceImpl<CommonDictTypeMapper, CommonDictType>
-		implements BaseService<CommonDictType> {
+public class CommonDictTypeService extends BaseServiceImpl<CommonDictTypeMapper, CommonDictType> {
 
 	@Autowired
 	private CommonDictTypeMapper commonDictTypeMapper;

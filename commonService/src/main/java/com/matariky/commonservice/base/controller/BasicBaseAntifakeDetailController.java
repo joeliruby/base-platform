@@ -30,22 +30,21 @@ public class BasicBaseAntifakeDetailController {
     @Autowired
     private BasicBaseAntifakeDetailService basicBaseAntifakeDetailService;
 
-
     @ApiOperation("Pagination")
     @GetMapping("/basicBaseAntifakeDetail/list")
     public AjaxResult list(BasicBaseAntifakeDetail bean,
-                           @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
-                           @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage) {
+            @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
+            @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage) {
         if (StringUtils.isNotEmpty(bean.getValidationTimeStart())) {
             bean.setValidationTimeEnd(bean.getValidationTimeStart() + " 00:00:00");
         }
         if (StringUtils.isNotEmpty(bean.getValidationTimeEnd())) {
             bean.setValidationTimeEnd(bean.getValidationTimeEnd() + " 23:59:59");
         }
-        PageInfo<BasicBaseAntifakeDetail> page = new PageInfo(basicBaseAntifakeDetailService.getBasicBaseAntifakeDetailAll(bean, pageIndex, perPage));
+        PageInfo<BasicBaseAntifakeDetail> page = new PageInfo<>(
+                basicBaseAntifakeDetailService.getBasicBaseAntifakeDetailAll(bean, pageIndex, perPage));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
-
 
     @ApiOperation(" Save ")
     @PostMapping(value = "/basicBaseAntifakeDetail")
@@ -86,6 +85,5 @@ public class BasicBaseAntifakeDetailController {
         BasicBaseAntifakeDetail info = basicBaseAntifakeDetailService.getBasicBaseAntifakeDetailById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
-
 
 }

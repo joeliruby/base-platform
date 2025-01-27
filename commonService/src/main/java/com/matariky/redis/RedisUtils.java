@@ -42,15 +42,6 @@ public class RedisUtils {
     /** 不 Configuration过期时长 */
     public final static long NOT_EXPIRE = -1L;
 
-    /**
-     * @Description: Add 缓存 Data
-     * @Author: bo.chen
-     * @Date: 2023/9/7 15:41
-     * @param key
-     * @param value
-     * @param expire
-     * @param timeUnit
-     **/
     public <T> void set(String key, T value, long expire, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, expire, timeUnit);
     }
@@ -79,13 +70,6 @@ public class RedisUtils {
         return get(key, NOT_EXPIRE);
     }
 
-    /**
-     * @Description: 判断key Wether 存在
-     * @Author: bo.chen
-     * @Date: 2023/11/13 15:58
-     * @param key
-     * @return boolean
-     **/
     public boolean hasKey(String key) {
         return BooleanUtil.isTrue(redisTemplate.hasKey(key));
     }
@@ -167,108 +151,40 @@ public class RedisUtils {
         return Objects.isNull(size) ? NumberUtils.LONG_ZERO : size;
     }
 
-    /**
-     * @Description: Retrieveset差值
-     * @Author: bo.chen
-     * @Date: 2023/9/19 14:24
-     * @param key1
-     * @param key2
-     * @return java.util.Set<T>
-     **/
     public <T> Set<T> getSetDifference(String key1, String key2) {
         return redisTemplate.opsForSet().difference(key1, key2);
     }
 
-    /**
-     * @Description: Wether 存在set集合中
-     * @Author: bo.chen
-     * @Date: 2023/9/22 15:56
-     * @param key
-     * @param value
-     * @return boolean
-     **/
     public <T> boolean isSetMember(String key, T value) {
         Boolean result = redisTemplate.opsForSet().isMember(key, value);
         return Objects.isNull(result) ? Boolean.FALSE : Boolean.TRUE;
     }
 
-    /**
-     * @Description: Retrieveset集合 Data
-     * @Author: bo.chen
-     * @Date: 2023/9/7 17:14
-     * @param key
-     * @return java.util.Set<java.lang.Object>
-     **/
     public Set<Object> getSetMembers(String key) {
         return redisTemplate.opsForSet().members(key);
     }
 
-    /**
-     * @Description: Retrieveset增加元素
-     * @Date: 2023/9/7 17:14
-     * @return java.util.Set<java.lang.Object>
-     **/
     public void addToSet(String setName, Object value) {
         redisTemplate.opsForSet().add(setName, value);
     }
 
-    /**
-     * @Description: Cache Value Incremental Method
-     * @Author: bo.chen
-     * @Date: 2023/9/5 16:28
-     * @param key
-     * @return java.lang.Long
-     **/
     public Long increment(String key) {
         return redisTemplate.opsForValue().increment(key);
     }
 
-    /**
-     * @Description: Set expiration time
-     * @Author: bo.chen
-     * @Date: 2023/9/5 16:31
-     * @param key     cache key
-     * @param timeout Expiration time
-     * @param unit    Time Unit
-     * @return boolean
-     **/
     public boolean expire(final String key, final long timeout, final TimeUnit unit) {
         return redisTemplate.expire(key, timeout, unit);
     }
 
-    /**
-     * @Description: 执行lua 表达式
-     * @Author: bo.chen
-     * @Date: 2023/5/11 16:18
-     * @param lua
-     * @param keys
-     * @param args
-     * @return java.lang.Long
-     **/
     public <T> Long executeLua(String lua, List<String> keys, T... args) {
         return (Long) redisTemplate.execute(new DefaultRedisScript<>(lua, Long.class),
                 redisTemplate.getHashValueSerializer(), longRedisSerializer, keys, args);
     }
 
-    /**
-     * @Description: Retrieve过期 Time
-     * @Author: bo.chen
-     * @Date: 2023/9/20 16:06
-     * @param key
-     * @param timeUnit
-     * @return long
-     **/
     public Long getExpire(String key, TimeUnit timeUnit) {
         return NumberUtils.ifNullToZero(redisTemplate.getExpire(key, timeUnit));
     }
 
-    /**
-     * @Description: Retrievemap集合大小
-     * @Author: bo.chen
-     * @Date: 2023/10/10 10:39
-     * @param key
-     * @return long
-     **/
     public long getHashSize(String key) {
         return NumberUtils.ifNullToZero(redisTemplate.opsForHash().size(key));
     }

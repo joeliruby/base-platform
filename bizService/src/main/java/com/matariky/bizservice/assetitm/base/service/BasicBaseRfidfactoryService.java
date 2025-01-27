@@ -21,7 +21,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.jobs.jobsService.bean.form.RfidCreateJobForm;
 import com.matariky.utils.CodeUtils;
@@ -51,8 +50,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Component
-public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfactoryMapper, BasicBaseRfidfactory>
-		implements BaseService<BasicBaseRfidfactory> {
+public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfactoryMapper, BasicBaseRfidfactory> {
 
 	@Autowired
 	private BasicBaseRfidfactoryMapper basicBaseRfidfactoryMapper;

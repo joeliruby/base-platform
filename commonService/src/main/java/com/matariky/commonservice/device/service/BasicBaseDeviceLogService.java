@@ -16,7 +16,6 @@ import com.matariky.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.commonservice.device.bean.BasicBaseDeviceLog;
 import com.matariky.commonservice.device.mapper.BasicBaseDeviceLogMapper;
@@ -40,8 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceLogService extends BaseServiceImpl<BasicBaseDeviceLogMapper, BasicBaseDeviceLog>
-		implements BaseService<BasicBaseDeviceLog> {
+public class BasicBaseDeviceLogService extends BaseServiceImpl<BasicBaseDeviceLogMapper, BasicBaseDeviceLog> {
 
 	@Autowired
 	private BasicBaseDeviceLogMapper basicBaseDeviceLogMapper;

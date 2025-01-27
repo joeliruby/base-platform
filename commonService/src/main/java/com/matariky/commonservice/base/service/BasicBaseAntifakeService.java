@@ -14,7 +14,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.constant.IOTAuthConstants;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.id.SnowflakeIdWorker;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.CodeUtils;
 import com.matariky.utils.IPUtil;
@@ -27,12 +26,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeMapper, BasicBaseAntifake> implements BaseService<BasicBaseAntifake> {
+public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeMapper, BasicBaseAntifake> {
 
     @Autowired
     private BasicBaseAntifakeMapper basicBaseAntifakeMapper;
@@ -46,7 +45,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
     private HttpServletRequest request;
 
     /**
-     *  Query   All 
+     * Query All
      *
      * @param bean
      * @param pageIndex
@@ -57,8 +56,10 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             bean.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -72,9 +73,8 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
         return basicBaseAntifakeMapper.getBasicBaseAntifakeAll(bean);
     }
 
-
     /**
-     * New  Method  
+     * New Method
      *
      * @param bean
      * @return
@@ -86,7 +86,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
     }
 
     /**
-     * Update  Method  
+     * Update Method
      *
      * @param bean
      * @return
@@ -95,9 +95,8 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
         return basicBaseAntifakeMapper.updateById(bean);
     }
 
-
     /**
-     * Delete 
+     * Delete
      *
      * @param id
      * @return
@@ -107,7 +106,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
     }
 
     /**
-     *   Detail 
+     * Detail
      *
      * @param id
      * @return
@@ -179,6 +178,5 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
         bba.setId(bbaId);
         basicBaseAntifakeMapper.createBasicBaseAntifake(bba);
     }
-
 
 }

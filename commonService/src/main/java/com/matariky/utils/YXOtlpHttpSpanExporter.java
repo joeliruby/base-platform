@@ -1,7 +1,5 @@
 package com.matariky.utils;
 
-
-
 import io.opentelemetry.exporter.internal.okhttp.OkHttpExporter;
 import io.opentelemetry.exporter.internal.otlp.traces.TraceRequestMarshaler;
 import io.opentelemetry.sdk.common.CompletableResultCode;
@@ -9,7 +7,6 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.util.Collection;
 import javax.annotation.concurrent.ThreadSafe;
-
 
 /**
  * Exports spans using OTLP via HTTP, using OpenTelemetry's protobuf model.
@@ -26,12 +23,19 @@ public final class YXOtlpHttpSpanExporter implements SpanExporter {
     }
 
     /**
-     * Returns a new {@link io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter} using the default values.
+     * Returns a new
+     * {@link io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter} using
+     * the default values.
      *
-     * <p>To load configuration values from environment variables and system properties, use <a
-     * href="https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure">opentelemetry-sdk-extension-autoconfigure</a>.
+     * <p>
+     * To load configuration values from environment variables and system
+     * properties, use <a
+     * href=
+     * "https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure">opentelemetry-sdk-extension-autoconfigure</a>.
      *
-     * @return a new {@link io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter} instance.
+     * @return a new
+     *         {@link io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter}
+     *         instance.
      */
     public static YXOtlpHttpSpanExporter getDefault() {
         return builder().build();
@@ -53,13 +57,14 @@ public final class YXOtlpHttpSpanExporter implements SpanExporter {
      * @return the result of the operation
      */
     @Override
-    public CompletableResultCode export(Collection<SpanData> spans) {
+    public CompletableResultCode export(@javax.annotation.Nonnull Collection<SpanData> spans) {
         TraceRequestMarshaler exportRequest = TraceRequestMarshaler.create(spans);
         return delegate.export(exportRequest, spans.size());
     }
 
     /**
-     * The OTLP exporter does not batch spans, so this method will immediately return with success.
+     * The OTLP exporter does not batch spans, so this method will immediately
+     * return with success.
      *
      * @return always Success
      */

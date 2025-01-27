@@ -6,52 +6,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.commonservice.loginlog.bean.CommonLoginLog;
 import com.matariky.commonservice.loginlog.mapper.CommonLoginLogMapper;
 
 /**
-* Business Inteface Implementation
-* @author AUTOMATION
-*/
+ * Business Inteface Implementation
+ * 
+ * @author AUTOMATION
+ */
 @Service
-public class CommonLoginLogService extends BaseServiceImpl<CommonLoginLogMapper,CommonLoginLog> implements ICommonLoginLogService, BaseService<CommonLoginLog>{
+public class CommonLoginLogService extends BaseServiceImpl<CommonLoginLogMapper, CommonLoginLog>
+		implements ICommonLoginLogService {
 
 	@Autowired
 	private CommonLoginLogMapper commonLoginLogMapper;
 
-	 
-	public Page<CommonLoginLog> getCommonLoginLogAll(){
+	public Page<CommonLoginLog> getCommonLoginLogAll() {
 		return commonLoginLogMapper.getCommonLoginLogAll();
 	}
 
-	 
-	public int getCommonLoginLogAllCount(){
+	public int getCommonLoginLogAllCount() {
 		return commonLoginLogMapper.getCommonLoginLogAllCount();
 	}
 
-	 
-	public int createCommonLoginLog(CommonLoginLog bean){
+	public int createCommonLoginLog(CommonLoginLog bean) {
 		return commonLoginLogMapper.createCommonLoginLog(bean);
 	}
 
-	 
-	public int updateCommonLoginLog(CommonLoginLog bean){
+	public int updateCommonLoginLog(CommonLoginLog bean) {
 		return commonLoginLogMapper.updateCommonLoginLog(bean);
 	}
 
-	 
-	public int delCommonLoginLogById(int id){
+	public int delCommonLoginLogById(int id) {
 		return commonLoginLogMapper.delCommonLoginLogById(id);
 	}
 
-	 
-	public CommonLoginLog getCommonLoginLogById(int id){
+	public CommonLoginLog getCommonLoginLogById(int id) {
 		return commonLoginLogMapper.getCommonLoginLogById(id);
 	}
-	
-	public List<CommonLoginLog> getCommonLoginLogDynamicCondition(Map<String, Object> params){
+
+	public List<CommonLoginLog> getCommonLoginLogDynamicCondition(Map<String, Object> params) {
 		return commonLoginLogMapper.getCommonLoginLogDynamicCondition(params);
 	}
 

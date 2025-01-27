@@ -44,7 +44,6 @@ public class BasicBaseDevicecommandController {
     @Autowired
     private CommonDictTypeService commonDictTypeService;
 
-     
     @RequestMapping("/basicBaseDevicecommand/list")
     public Object list(BasicBaseDevicecommand bean) {
         List<BasicBaseDevicecommand> list = basicBaseDevicecommandService.getBasicBaseDevicecommandAll(bean);
@@ -52,11 +51,15 @@ public class BasicBaseDevicecommandController {
     }
 
     @RequestMapping("/basicBaseDevicecommand/daclist")
-    public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             params.put("strategyCode", PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -67,19 +70,22 @@ public class BasicBaseDevicecommandController {
         params.put("tenantId", tenantId);
         params.put("pageStart", (pageIndex - 1) * perPage);
         params.put("pageSize", perPage);
-        List<BasicBaseDevicecommand> commonDictList = basicBaseDevicecommandService.getBasicBaseDevicecommandDAC(params, request);
+        List<BasicBaseDevicecommand> commonDictList = basicBaseDevicecommandService.getBasicBaseDevicecommandDAC(params,
+                request);
         Long count = basicBaseDevicecommandService.getBasicBaseDevicecommandDACCount(params, request);
         PageInfo<BasicBaseDevicecommand> page = new PageInfo<BasicBaseDevicecommand>(commonDictList);
         page.setTotal(count);
         page.setPageSize(perPage);
         page.setPageNum(pageIndex);
-        page.setPages(Integer.parseInt(new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1).toString()));
+        page.setPages(Integer.parseInt(Long.valueOf(
+                count % Long.valueOf(perPage) == 0 ? count % Long.valueOf(perPage) : count % Long.valueOf(perPage) + 1)
+                .toString()));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
-     
     @RequestMapping(value = "/basicBaseDevicecommand", method = RequestMethod.POST)
-    public Object save(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request, HttpServletResponse response) {
+    public Object save(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request,
+            HttpServletResponse response) {
         try {
             int success = basicBaseDevicecommandService.createBasicBaseDevicecommandWithOrg(bean, request);
             if (success > 0) {
@@ -93,9 +99,9 @@ public class BasicBaseDevicecommandController {
         }
     }
 
-     
     @RequestMapping(value = "/basicBaseDevicecommand", method = RequestMethod.PUT)
-    public Object update(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request, HttpServletResponse response) {
+    public Object update(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request,
+            HttpServletResponse response) {
         try {
             int success = basicBaseDevicecommandService.updateBasicBaseDevicecommand(bean);
             if (success > 0) {
@@ -109,7 +115,6 @@ public class BasicBaseDevicecommandController {
         }
     }
 
-     
     @RequestMapping(value = "/basicBaseDevicecommand", method = RequestMethod.DELETE)
     public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -125,11 +130,10 @@ public class BasicBaseDevicecommandController {
         }
     }
 
-     
     @RequestMapping(value = "/basicBaseDevicecommand/{basicBaseDevicecommandId}", method = RequestMethod.GET)
-    public Object getOne(@PathVariable("/basicBaseDevicecommandId") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public Object getOne(@PathVariable("/basicBaseDevicecommandId") Long id, HttpServletRequest request,
+            HttpServletResponse response) {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseDevicecommandService.selectById(id));
     }
-
 
 }

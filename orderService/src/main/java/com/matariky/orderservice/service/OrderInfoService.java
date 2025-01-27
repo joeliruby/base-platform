@@ -10,7 +10,6 @@ import com.matariky.commonservice.commondict.mapper.CommonDictTypeMapper;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.commonservice.upload.utils.DateUtils;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.orderservice.bean.OrderInfo;
 import com.matariky.orderservice.bean.OrderInfoRecord;
@@ -43,7 +42,7 @@ import java.util.stream.Collectors;
  * @author AUTOMATION
  */
 @Service
-public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo> implements BaseService<OrderInfo> {
+public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo> {
 
     @Autowired
     private OrderInfoMapper orderInfoMapper;

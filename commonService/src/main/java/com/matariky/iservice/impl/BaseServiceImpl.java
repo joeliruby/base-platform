@@ -15,7 +15,6 @@ import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -224,7 +223,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
      * @return
      */
     protected String sqlStatement(SqlMethod sqlMethod) {
-        return SqlHelper.table(currentModelClass()).getSqlStatement(sqlMethod.getMethod());
+        return SqlHelper.getSqlStatement(currentModelClass(), sqlMethod);
     }
 
     @Override

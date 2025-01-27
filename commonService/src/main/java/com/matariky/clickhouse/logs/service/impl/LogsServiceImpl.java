@@ -1,6 +1,7 @@
 package com.matariky.clickhouse.logs.service.impl;
 
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.excel.EasyExcel;
@@ -34,36 +34,43 @@ import com.matariky.utils.TokenUtils;
 
 @Service
 public class LogsServiceImpl extends ServiceImpl<LogsMapper, Logs> implements ILogsService {
-	
+
     @Autowired
     private LogsMapper logsMapper;
     @Autowired
     private HttpServletResponse response;
-    
+
     @Autowired
     CommonDictTypeMapper commonDictTypeMapper;
-    
+
     @Autowired
     CommonDictMapper commonDictMapper;
-    
+
     @Autowired
     HttpServletRequest httpServletRequest;
 
     public Page<Logs> getTracesAll(Logs logs, Integer index, Integer perPage) {
         if (logs.getTimeStartLong() != null) {
-        	Date startD=new Date(logs.getTimeStartLong());
-        	startD.setHours(0);
-        	startD.setMinutes(0);
-        	startD.setSeconds(0);
+            Date startD = new Date(logs.getTimeStartLong());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(startD);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            startD = calendar.getTime();
             logs.setTimeStart(DateUtils.format(startD, DateUtils.DATE_FORMAT_19));
         }
         if (logs.getTimeEndLong() != null) {
-        	Date endD=new Date(logs.getTimeStartLong());
-        	endD.setHours(23);
-        	endD.setMinutes(59);
-        	endD.setSeconds(59);
+            Date endD = new Date(logs.getTimeStartLong());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(endD);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            endD = calendar.getTime();
             logs.setTimeEnd(DateUtils.format(endD, DateUtils.DATE_FORMAT_19));
         }
+
         Integer offSet = (index - 1) * perPage;
         logs.setOffSet(offSet);
         logs.setPerPage(perPage);
@@ -78,8 +85,9 @@ public class LogsServiceImpl extends ServiceImpl<LogsMapper, Logs> implements IL
 
     @Override
     public void export(Logs logs, Integer index, Integer perPage) {
-    	CommonDictType dictType = commonDictTypeMapper.selectOne(Wrappers.lambdaQuery(CommonDictType.class)
-                .eq(CommonDictType::getDictTypeKey, TokenUtils.extractLocaleForRequest(httpServletRequest) + "_EXPORT_DATA_MAX_ROW")
+        CommonDictType dictType = commonDictTypeMapper.selectOne(Wrappers.lambdaQuery(CommonDictType.class)
+                .eq(CommonDictType::getDictTypeKey,
+                        TokenUtils.extractLocaleForRequest(httpServletRequest) + "_EXPORT_DATA_MAX_ROW")
                 .eq(CommonDictType::getIsActive, 1)
                 .eq(CommonDictType::getTenantId, TokenUtils.extractTenantIdFromHttpRequest(httpServletRequest)));
         CommonDict maxRow = commonDictMapper.selectOne(Wrappers.lambdaQuery(CommonDict.class)
@@ -108,7 +116,8 @@ public class LogsServiceImpl extends ServiceImpl<LogsMapper, Logs> implements IL
         response.setContentType("application/vnd.ms-excel; charset=utf-8");
         response.setCharacterEncoding("utf-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(System.currentTimeMillis() + ".xlsx", "utf-8"));
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + URLEncoder.encode(System.currentTimeMillis() + ".xlsx", "utf-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }

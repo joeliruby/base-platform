@@ -2,8 +2,6 @@ package com.matariky.commonservice.commondict.service;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +17,6 @@ import com.matariky.commonservice.commondict.constant.DictKey;
 import com.matariky.commonservice.commondict.constant.DictTypeKey;
 import com.matariky.commonservice.commondict.mapper.CommonDictMapper;
 import com.matariky.commonservice.commondict.mapper.CommonDictTypeMapper;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 /**
@@ -28,8 +25,7 @@ import com.matariky.iservice.impl.BaseServiceImpl;
  * @author AUTOMATION
  */
 @Service
-public class CommonDictService extends BaseServiceImpl<CommonDictMapper, CommonDict>
-		implements BaseService<CommonDict> {
+public class CommonDictService extends BaseServiceImpl<CommonDictMapper, CommonDict> {
 
 	@Autowired
 	private CommonDictMapper commonDictMapper;

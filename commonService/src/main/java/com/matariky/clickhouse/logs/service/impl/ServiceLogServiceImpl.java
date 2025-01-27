@@ -19,7 +19,6 @@ import com.matariky.utils.BeanUtils;
 import com.matariky.utils.StringUtils;
 import com.matariky.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
@@ -52,7 +51,8 @@ public class ServiceLogServiceImpl extends ServiceImpl<ServiceLogMapper, Service
         Page<ServiceLog> page = logsMapper.getAppTracesAll(logs);
         page.getResult().stream().forEach(item -> {
             if (item.getDurationNano() != null) {
-                BigDecimal dur = item.getDurationNano().divide(new BigDecimal("1000000000"), 4, BigDecimal.ROUND_HALF_UP);
+                BigDecimal dur = item.getDurationNano().divide(new BigDecimal("1000000000"), 4,
+                        BigDecimal.ROUND_HALF_UP);
                 item.setDurationNano(dur);
             }
         });
@@ -69,7 +69,8 @@ public class ServiceLogServiceImpl extends ServiceImpl<ServiceLogMapper, Service
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
         Long count = logsMapper.getAppTracesCount(logs);
         CommonDictType dictType = commonDictTypeMapper.selectOne(Wrappers.lambdaQuery(CommonDictType.class)
-                .eq(CommonDictType::getDictTypeKey, TokenUtils.extractLocaleForRequest(request) + "_EXPORT_DATA_MAX_ROW")
+                .eq(CommonDictType::getDictTypeKey,
+                        TokenUtils.extractLocaleForRequest(request) + "_EXPORT_DATA_MAX_ROW")
                 .eq(CommonDictType::getIsActive, 1)
                 .eq(CommonDictType::getTenantId, tenantId));
         CommonDict maxRow = commonDictMapper.selectOne(Wrappers.lambdaQuery(CommonDict.class)
@@ -103,7 +104,8 @@ public class ServiceLogServiceImpl extends ServiceImpl<ServiceLogMapper, Service
         response.setContentType("application/vnd.ms-excel; charset=utf-8");
         response.setCharacterEncoding("utf-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(System.currentTimeMillis() + ".xlsx", "utf-8"));
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + URLEncoder.encode(System.currentTimeMillis() + ".xlsx", "utf-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }

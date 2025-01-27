@@ -15,11 +15,6 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * @description: 雪花算法 Generation 器
- * @author: bo.chen
- * @create: 2023/10/9 16:20
- **/
 public class SnowflakeIdGenerator implements IdentifierGenerator {
 
     public static final int TOTAL_BITS = 1 << 6;

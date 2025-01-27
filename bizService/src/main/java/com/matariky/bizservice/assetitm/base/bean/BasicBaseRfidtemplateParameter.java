@@ -1,16 +1,21 @@
 package com.matariky.bizservice.assetitm.base.bean;
 
 import java.lang.String;
+
 import com.matariky.model.QueryDataIsolation;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.lang.Long;
-import lombok.Data;
+
 /**
-* Automatically generated entity class
-* @author AUTOMATION
-*/
+ * Automatically generated entity class
+ * 
+ * @author AUTOMATION
+ */
 @Data
-public class BasicBaseRfidtemplateParameter extends  QueryDataIsolation {
+@EqualsAndHashCode(callSuper = true)
+public class BasicBaseRfidtemplateParameter extends QueryDataIsolation {
 
 	/**
 	 * 

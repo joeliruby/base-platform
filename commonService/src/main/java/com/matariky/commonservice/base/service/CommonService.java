@@ -495,7 +495,7 @@ public class CommonService {
             update.setId(item.getId());
             deleteConfig.stream().forEach(config -> {
                 try {
-                    Class readerClass = update.getClass();
+                    Class<? extends BasicBaseFormExtend> readerClass = update.getClass();
                     Field field = readerClass.getDeclaredField(config.getFieldMap().replaceAll("_", ""));
                     field.setAccessible(true);
                     field.set(update, "");
@@ -545,7 +545,7 @@ public class CommonService {
             BasicBaseFormExtendQueryVO extend = new BasicBaseFormExtendQueryVO();
             extend.setBusinessIds(businessIds);
             try {
-                Class readerClass = extend.getClass();
+                Class<? extends BasicBaseFormExtendQueryVO> readerClass = extend.getClass();
                 Field field = readerClass.getDeclaredField(item.getFieldMap().replaceAll("_", ""));
                 field.setAccessible(true);
                 field.set(extend, "1");

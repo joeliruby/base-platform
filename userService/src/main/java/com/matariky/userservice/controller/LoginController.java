@@ -13,7 +13,6 @@ import com.matariky.commonservice.commondict.service.CommonDictService;
 import com.matariky.commonservice.loginlog.bean.CommonLoginLog;
 import com.matariky.commonservice.loginlog.service.ICommonLoginLogService;
 import com.matariky.commonservice.upload.constant.MessageKey;
-import com.matariky.commonservice.upload.utils.Result;
 import com.matariky.constant.RedisKey;
 import com.matariky.constant.TokenConstant;
 import com.matariky.exception.QslException;

@@ -1,6 +1,5 @@
 package com.matariky.commonservice.base.service;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.matariky.commonservice.base.bean.BasicBaseDevicePackage;
 import com.matariky.commonservice.base.bean.BasicBaseDeviceType;
@@ -18,15 +17,12 @@ import com.matariky.commonservice.minio.utils.MinioUtil;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,8 +35,8 @@ import java.util.List;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDevicePackageService extends BaseServiceImpl<BasicBaseDevicePackageMapper, BasicBaseDevicePackage>
-        implements BaseService<BasicBaseDevicePackage> {
+public class BasicBaseDevicePackageService
+        extends BaseServiceImpl<BasicBaseDevicePackageMapper, BasicBaseDevicePackage> {
 
     @Autowired
     private BasicBaseDevicePackageMapper basicBaseDevicepackageMapper;

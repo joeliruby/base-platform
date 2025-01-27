@@ -5,26 +5,16 @@ import lombok.EqualsAndHashCode;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-
-import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * @description: Pagination  Query Data Isolation Objects class
- * @author: bo.chen
- * @create: 2023/9/6 10:16
- **/
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class QueryPageDataIsolation extends  QueryDataIsolation implements Serializable {
-	
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = false)
+public class QueryPageDataIsolation extends QueryDataIsolation {
 
-	/**
-     * Current page number  for pagination
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Current page number for pagination
      */
     private Integer index;
 

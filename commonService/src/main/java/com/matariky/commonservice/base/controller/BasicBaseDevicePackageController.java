@@ -27,18 +27,16 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(value = " Device  Firmware ", tags = " Device  Firmware ")
 public class BasicBaseDevicePackageController {
 
-
     @Autowired
     private BasicBaseDevicePackageService basicBaseDevicepackageService;
-
 
     @ApiOperation(value = "Pagination ")
     @GetMapping("/basicBaseDevicepackage/list")
     public AjaxResult list(BasicBaseDeviceUpgradeListVO vo) {
-        PageInfo<BasicBaseDevicePackageInfoVO> page = new PageInfo(basicBaseDevicepackageService.getBasicBaseDevicepackageAll(vo));
+        PageInfo<BasicBaseDevicePackageInfoVO> page = new PageInfo<>(
+                basicBaseDevicepackageService.getBasicBaseDevicepackageAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
-
 
     @ApiOperation(value = "New")
     @PostMapping(value = "/basicBaseDevicepackage")
@@ -49,8 +47,9 @@ public class BasicBaseDevicePackageController {
 
     @ApiOperation(value = "  Update")
     @PutMapping(value = "/basicBaseDevicepackage")
-    public AjaxResult update(@RequestParam(value = "file", required = false) MultipartFile file, @Validated BasicBaseDevicePackageUpdateVO updateVO,
-                             @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult update(@RequestParam(value = "file", required = false) MultipartFile file,
+            @Validated BasicBaseDevicePackageUpdateVO updateVO,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         basicBaseDevicepackageService.updateBasicBaseDevicepackage(updateVO, file, jwt);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
 @Api(value = " Code  Rule   Configuration", tags = " Code  Rule   Configuration")
@@ -26,7 +25,8 @@ public class BasicBaseCodingRulesController {
     @ApiOperation(value = "Pagination", response = BasicBaseCodingRulesInfoVO.class)
     @RequestMapping("/basicBaseCodingrules/list")
     public AjaxResult list(BasicBaseCodingRulesListVO vo) {
-        PageInfo<BasicBaseCodingRulesInfoVO> page = new PageInfo(basicBaseCodingrulesService.getBasicBaseCodingrulesAll(vo));
+        PageInfo<BasicBaseCodingRulesInfoVO> page = new PageInfo<>(
+                basicBaseCodingrulesService.getBasicBaseCodingrulesAll(vo));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
@@ -36,7 +36,6 @@ public class BasicBaseCodingRulesController {
         basicBaseCodingrulesService.createBasicBaseCodingrulesWithOrg(addVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
-
 
     @ApiOperation(value = "  Retrieve Rule   Unique  Code ")
     @GetMapping(value = "/basicBaseCodingrules/code")

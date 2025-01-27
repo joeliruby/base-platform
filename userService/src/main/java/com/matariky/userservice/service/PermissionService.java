@@ -10,7 +10,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.userservice.bean.Permission;
 import com.matariky.userservice.bean.TreeModel;
@@ -20,8 +19,7 @@ import com.matariky.utils.TokenUtils;
 import com.matariky.utils.TreeUtils;
 
 @Component
-public class PermissionService extends BaseServiceImpl<PermissionMapper, Permission>
-		implements BaseService<Permission> {
+public class PermissionService extends BaseServiceImpl<PermissionMapper, Permission> {
 	@Autowired
 	PermissionMapper permissionMapper;
 

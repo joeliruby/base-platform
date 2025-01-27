@@ -102,7 +102,8 @@ public class BasicLogDeviceController {
 		page.setPageSize(perPage);
 		page.setPageNum(pageIndex);
 		page.setPages(Integer.parseInt(
-				new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1)
+				Long.valueOf(count % Long.valueOf(perPage) == 0 ? count % Long.valueOf(perPage)
+						: count % Long.valueOf(perPage) + 1)
 						.toString()));
 		return page;
 	}

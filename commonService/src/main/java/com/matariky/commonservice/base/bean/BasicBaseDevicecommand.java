@@ -2,6 +2,7 @@ package com.matariky.commonservice.base.bean;
 
 import com.matariky.model.QueryDataIsolation;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Automatically generated entity class
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author AUTOMATION
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseDevicecommand extends QueryDataIsolation {
 
 	private static final long serialVersionUID = 1L;

@@ -4,12 +4,15 @@ import com.matariky.model.QueryDataIsolation;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
-* Automatically generated entity class
-* @author AUTOMATION
-*/
+ * Automatically generated entity class
+ * 
+ * @author AUTOMATION
+ */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseAntifake extends QueryDataIsolation {
 
 	private static final long serialVersionUID = 1L;
@@ -59,6 +62,5 @@ public class BasicBaseAntifake extends QueryDataIsolation {
 
 	@ApiModelProperty(value = "Real Name")
 	private String realName;
-
 
 }

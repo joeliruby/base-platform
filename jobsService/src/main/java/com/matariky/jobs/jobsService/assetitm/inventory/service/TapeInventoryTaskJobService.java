@@ -55,11 +55,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * @description: 磁带盘点 Task Service 类
- * @author: bo.chen
- * @create: 2023/9/24 15:00
- **/
 @Service
 public class TapeInventoryTaskJobService {
 
@@ -104,54 +99,48 @@ public class TapeInventoryTaskJobService {
     @Autowired
     private MessageMapper messageMapper;
 
-    /**
-     * @Description: Start Task
-     * @Author: bo.chen
-     * @Date: 2023/9/22 15:15
-     * @param taskId
-     **/
     @Transactional(rollbackFor = Exception.class)
     @Lock(keyMethod = "this.getRackLockKeys")
     public void start(Long taskId) throws Exception {
         TapeInventoryTask inventoryTask = null;
         int quantity = NumberUtils.INTEGER_ZERO;
         try {
-            /** Query 盘点 Task Information **/
+            /** Query inventory task information **/
             inventoryTask = tapeInventoryTaskMapper
                     .selectOne(tapeInventoryTaskMapper.qw().eq(TapeInventoryTask::getId, taskId)
                             .eq(TapeInventoryTask::getDeleteTime, NumberUtils.INTEGER_ZERO));
             if (Objects.isNull(inventoryTask)) {
-                logger.error("盘点 Task 不存在！taskId={}", taskId);
+                logger.error("Inventory task does not exist! taskId={}", taskId);
                 return;
             }
             switch (inventoryTask.getProcessStatus()) {
                 case 4:
-                    logger.error("盘点 Task 已结束！taskId={}", taskId);
+                    logger.error("Inventory task has ended! taskId={}", taskId);
                     return;
                 case 2:
-                    logger.error("盘点 Task 正在扫描中！taskId={}", taskId);
+                    logger.error("Inventory task is scanning! taskId={}", taskId);
                     return;
                 default:
                     break;
             }
             if (NumberUtils.INTEGER_TWO.equals(inventoryTask.getStatus())) {
-                logger.error("盘点 Task 已 Deactivate！taskId={}", taskId);
+                logger.error("Inventory task is deactivated! taskId={}", taskId);
                 return;
             }
             if (DateUtil.toLocalDateTime(inventoryTask.getStartTime()).plusMinutes(NumberUtils.INTEGER_MINUS_ONE)
                     .isAfter(LocalDateTime.now())) {
-                logger.error("盘点 Task 未到 Start  Time ！taskId={}, startTime={}", taskId, inventoryTask.getStartTime());
+                logger.error("Inventory task has not started yet! taskId={}, startTime={}", taskId, inventoryTask.getStartTime());
                 return;
             }
 
-            /** Query 盘点 Library 库存 Quantity **/
+            /** Query inventory library stock quantity **/
             TapeInventoryTask finalInventoryTask = inventoryTask;
             quantity = NumberUtils.ifNullToZero(tapeStockMapper.selectSumColumnValue(wrapper -> wrapper
                     .likeRight(TapeStock::getLocationId, finalInventoryTask.getLocationId())
                     .in(CollectionUtils.isNotEmpty(finalInventoryTask.getLibraryIds()), TapeStock::getLibraryId,
                             finalInventoryTask.getLibraryIds())
                     .eq(TapeStock::getDeleteTime, NumberUtils.LONG_ZERO), TapeStock::getQuantity));
-            /** Query 正在盘点中的 Task Name **/
+            /** Query ongoing inventory task name **/
             String inInventoryTaskName = tapeInventoryTaskMapper.selectInInventoryTaskName(
                     inventoryTask.getLocationId().split(",")[NumberUtils.INTEGER_ZERO],
                     inventoryTask.getLocationId(),
@@ -160,12 +149,12 @@ public class TapeInventoryTaskJobService {
                             : null,
                     taskId);
             if (StringUtils.isNotEmpty(inInventoryTaskName)) {
-                logger.error("盘点 Task    Library 正在做盘点！inInventoryTaskName={}", inInventoryTaskName);
+                logger.error("Inventory task is ongoing in the library! inInventoryTaskName={}", inInventoryTaskName);
                 handleInventoryStartFail(inventoryTask, quantity, MessageKey.TAPE_INVENTORY_TASK_RACK_ING,
                         inInventoryTaskName);
                 return;
             }
-            /** 取消差异 Task **/
+            /** Cancel discrepancy task **/
             cancelDiscrepancySubtask(inventoryTask.getLocationId(), inventoryTask.getLibraryIds(),
                     inventoryTask.getTaskName());
             /** Reader **/
@@ -175,11 +164,11 @@ public class TapeInventoryTaskJobService {
                             inventoryTask.getLibraryIds())
                     .eq(TapeReader::getDeleteTime, NumberUtils.LONG_ZERO));
             if (CollectionUtils.isEmpty(readerList)) {
-                logger.error("盘点   Library 未 Query 到  Reader ！taskId={}", taskId);
+                logger.error("No reader found in the library! taskId={}", taskId);
                 handleInventoryStartFail(inventoryTask, quantity, MessageKey.TAPE_LIBRARY_NOT_BIND_READER);
                 return;
             }
-            /** Query Library 正在做In/Out库的 Task **/
+            /** Query ongoing in/out library tasks **/
             List<TapeInout> inoutList = tapeInoutMapper
                     .selectList(tapeInoutMapper.qw().likeRight(TapeInout::getLocationId, inventoryTask.getLocationId())
                             .in(CollectionUtils.isNotEmpty(inventoryTask.getLibraryIds()), TapeInout::getLibraryId,
@@ -188,7 +177,7 @@ public class TapeInventoryTaskJobService {
                             .eq(TapeInout::getDeleteTime, NumberUtils.INTEGER_ZERO)
                             .select(TapeInout::getType, TapeInout::getSerialNo));
             if (CollectionUtils.isNotEmpty(inoutList)) {
-                logger.error("盘点 Task    Library 正在做In/Out库！inoutSerialNos={}", JacksonUtils.toJsonString(inoutList));
+                logger.error("In/out library task is ongoing! inoutSerialNos={}", JacksonUtils.toJsonString(inoutList));
                 TapeInout firstInout = inoutList.get(NumberUtils.INTEGER_ZERO);
                 if (NumberUtils.INTEGER_ONE.equals(firstInout.getType())) {
                     handleInventoryStartFail(inventoryTask, quantity, MessageKey.TAPE_INVENTORY_RACK_INBOUND_ING,
@@ -220,9 +209,9 @@ public class TapeInventoryTaskJobService {
             tapeInventorySubtask.setCreateTime(System.currentTimeMillis());
             tapeInventorySubtask.setCreatedBy(inventoryTask.getCreatedBy());
             tapeInventorySubtask.setStatus(NumberUtils.INTEGER_ZERO);
-            /** Save 盘点子 Task **/
+            /** Save inventory subtask **/
             tapeInventorySubtaskMapper.insert(tapeInventorySubtask);
-            /** Update主 Task Quantity和 Status **/
+            /** Update main task quantity and status **/
             tapeInventoryTaskMapper.update(tapeInventoryTaskMapper.uw().eq(TapeInventoryTask::getId, taskId)
                     .set(TapeInventoryTask::getProcessStatus, NumberUtils.INTEGER_TWO)
                     .set(TapeInventoryTask::getQuantity, NumberUtils.ifNullToZero(quantity))
@@ -230,18 +219,18 @@ public class TapeInventoryTaskJobService {
                     .set(TapeInventoryTask::getUpdateTime, System.currentTimeMillis())
                     .set(TapeInventoryTask::getLastSubtaskId, tapeInventorySubtask.getId())
                     .set(TapeInventoryTask::getUpdatedBy, NumberUtils.LONG_MINUS_ONE));
-            /** 最大 Read Time **/
+            /** Maximum read time **/
             int maxTimes = commonDictService.getReaderMaxTimes(inventoryTask.getTenantId());
-            /** Delete Read Label 结果集 **/
+            /** Delete read label result set **/
             redisUtils.delete(RedisKey.READER_TASK_EPC + inventoryTask.getTenantId());
             List<String> keys = new ArrayList<>();
             keys.add(RedisKey.TASK_STOCK_EPC + taskId);
             List<Object> values = new ArrayList<>();
-            /** Configuration缓存过期 Time **/
+            /** Configure cache expiration time **/
             values.add(maxTimes);
-            /** 0表示空库存 **/
+            /** 0 indicates empty stock **/
             values.add(NumberUtils.INTEGER_ZERO);
-            /** 缓存 Reader 正在执行的 Task id **/
+            /** Cache reader executing task id **/
             readerList.stream().forEach(reader -> {
                 keys.add(RedisKey.READER_EXECUTION_TASK + reader.getCode());
                 values.add(new ReaderTaskBo(taskId, 3, maxTimes, reader.getBrandModel(),
@@ -249,50 +238,44 @@ public class TapeInventoryTaskJobService {
             });
             keys.add(RedisKey.TASK_READER_CODE + taskId);
             values.add(readerList.get(NumberUtils.INTEGER_ZERO).getCode());
-            /** 缓存 Reader Task **/
+            /** Cache reader task **/
             redisUtils.executeLua(LuaScript.SAVE_READER_TASK, keys, values.stream().toArray());
             JobForm jobForm = new JobForm();
             jobForm.setCronExpression(DateUtil.getCron(LocalDateTime.now().plusSeconds(maxTimes)));
             jobForm.setJobClassName(TapeInventoryResultJob.class.getName());
             jobForm.setJobGroupName(tapeInventorySubtask.getId().toString());
-            /** Add 执行结果处理 Task **/
+            /** Add execution result processing task **/
             jobService.addJob(jobForm);
         } catch (Exception e) {
             handleInventoryStartFail(inventoryTask, quantity, DictKey.SYSTEM_ERROR);
-            logger.error("盘点 Task  Start 异常！taskId={}", taskId, e);
+            logger.error("Inventory task start exception! taskId={}", taskId, e);
         }
     }
 
-    /**
-     * @Description: 盘点结束
-     * @Author: bo.chen
-     * @Date: 2023/9/22 10:26
-     * @param subtaskId
-     **/
     @Transactional(rollbackFor = Exception.class)
     @Lock(keyMethod = "this.getRackLockKeys")
     public void end(Long subtaskId) {
         TapeInventorySubtask inventorySubtask = null;
         TapeInventoryTask inventoryTask = null;
         try {
-            /** Retrieve盘点子 Task **/
+            /** Retrieve inventory subtask **/
             inventorySubtask = tapeInventorySubtaskMapper
                     .selectOne(tapeInventorySubtaskMapper.qw().eq(TapeInventorySubtask::getId, subtaskId)
                             .eq(TapeInventorySubtask::getDeleteTime, NumberUtils.INTEGER_ZERO));
             if (Objects.isNull(inventorySubtask)) {
-                logger.error("盘点子 Task 不存在！taskId={}", subtaskId);
+                logger.error("Inventory subtask does not exist! taskId={}", subtaskId);
                 return;
             }
-            /** Query 盘点 Task Information **/
+            /** Query inventory task information **/
             inventoryTask = tapeInventoryTaskMapper
                     .selectOne(tapeInventoryTaskMapper.qw().eq(TapeInventoryTask::getId, inventorySubtask.getTaskId())
                             .eq(TapeInventoryTask::getDeleteTime, NumberUtils.INTEGER_ZERO));
             if (Objects.isNull(inventoryTask)) {
-                logger.error("盘点 Task 不存在！subtaskId={}, taskId={}", subtaskId, inventorySubtask.getTaskId());
+                logger.error("Inventory task does not exist! subtaskId={}, taskId={}", subtaskId, inventorySubtask.getTaskId());
                 return;
             }
             if (!NumberUtils.INTEGER_ZERO.equals(inventorySubtask.getStatus())) {
-                logger.error("盘点子 Task  Status 非法！subTask={}", JacksonUtils.toJsonString(inventorySubtask));
+                logger.error("Inventory subtask status is illegal! subTask={}", JacksonUtils.toJsonString(inventorySubtask));
                 handleInventoryEndFail(inventorySubtask, inventoryTask, MessageKey.COMMON_STATUS_ILLEGAL);
                 return;
             }
@@ -303,28 +286,28 @@ public class TapeInventoryTaskJobService {
                             inventoryTask.getLibraryIds())
                     .eq(TapeReader::getDeleteTime, NumberUtils.LONG_ZERO));
             if (CollectionUtils.isEmpty(readerList)) {
-                logger.error("盘点   Library 未 Query 到  Reader ！subtaskId={}, taskId={}", subtaskId,
+                logger.error("No reader found in the library! subtaskId={}, taskId={}", subtaskId,
                         inventorySubtask.getTaskId());
                 handleInventoryEndFail(inventorySubtask, inventoryTask, MessageKey.TAPE_LIBRARY_NOT_BIND_READER);
                 return;
             }
             Map<String, TapeReader> readerMap = readerList.stream()
                     .collect(Collectors.toMap(TapeReader::getCode, Function.identity()));
-            /** Retrieve库存 Label **/
+            /** Retrieve stock label **/
             Map<String, TapeStockLabelVo> stockLabelMap = getStockLabel(inventoryTask.getLocationId(),
                     inventoryTask.getLibraryIds());
-            /** Retrieve扫描 Label Information **/
+            /** Retrieve scanned label information **/
             Map<String, String> scanLabels = redisUtils
                     .hGetAll(RedisKey.READER_TASK_LABEL + inventorySubtask.getTaskId());
-            /** Wether 存在差异 **/
+            /** Whether there is a discrepancy **/
             AtomicReference<Boolean> isDiscrepancy = new AtomicReference<>(Boolean.FALSE);
             if (CollectionUtils.isNotEmpty(stockLabelMap) || CollectionUtils.isNotEmpty(scanLabels)) {
                 Map<String, Long> labelIdMap;
                 if (CollectionUtils.isNotEmpty(scanLabels)) {
-                    /** Retrieve不存在库存的EPC **/
+                    /** Retrieve EPCs not in stock **/
                     Set<String> diffEpc = Sets.difference(scanLabels.keySet(), stockLabelMap.keySet());
                     if (CollectionUtils.isNotEmpty(diffEpc)) {
-                        /** Retrieve Label 库 Label id **/
+                        /** Retrieve label library label id **/
                         labelIdMap = tapeLabelMapper.selectToMap(tapeLabelMapper.qw().in(TapeLabel::getEpc, diffEpc),
                                 TapeLabel::getEpc, TapeLabel::getId);
                     } else {
@@ -341,7 +324,7 @@ public class TapeInventoryTaskJobService {
                             result.setTaskId(finalInventoryTask.getId());
                             result.setSubtaskId(subtaskId);
                             TapeStockLabelVo tapeStockLabelVo = stockLabelMap.get(epc);
-                            /** 扫描 Label Information **/
+                            /** Scanned label information **/
                             String labelInfo = scanLabels.get(epc);
                             if (StringUtils.isNotEmpty(labelInfo)) {
                                 String[] labelInfos = labelInfo.split(",");
@@ -361,7 +344,7 @@ public class TapeInventoryTaskJobService {
                                 result.setLocationId(tapeStockLabelVo.getLocationId());
                                 result.setLibraryId(tapeStockLabelVo.getLibraryId());
                                 if (StringUtils.isNotEmpty(labelInfo)) {
-                                    /** 正常 **/
+                                    /** Normal **/
                                     result.setResult(3);
                                     result.setIsValid(Boolean.TRUE);
                                 } else {
@@ -373,7 +356,7 @@ public class TapeInventoryTaskJobService {
                                 }
                             } else {
                                 result.setLabelId(labelIdMap.get(epc));
-                                /** 新发现 **/
+                                /** New discovery **/
                                 result.setResult(NumberUtils.INTEGER_TWO);
                                 result.setIsValid(Boolean.TRUE);
                                 if (!isDiscrepancy.get()) {
@@ -386,36 +369,30 @@ public class TapeInventoryTaskJobService {
                             result.setCreatedBy(NumberUtils.LONG_MINUS_ONE);
                             return result;
                         }).collect(Collectors.toList());
-                /** 批量插入盘点结果 **/
+                /** Batch insert inventory results **/
                 tapeInventoryResultMapper.insertBatchSomeColumn(inventoryResultList);
             }
-            /** 盘点 Quantity **/
+            /** Inventory quantity **/
             int actualQuantity = CollectionUtils.isNotEmpty(scanLabels) ? scanLabels.size() : NumberUtils.INTEGER_ZERO;
             handleInventoryTask(inventorySubtask, inventoryTask, actualQuantity, isDiscrepancy.get());
             if (isDiscrepancy.get()) {
                 try {
                     saveDiscrepancyMessage(inventoryTask);
                 } catch (Exception e) {
-                    logger.error(" Save 差异  Message 通知异常！inventoryTask={}", inventoryTask, e);
+                    logger.error("Save discrepancy message notification exception! inventoryTask={}", inventoryTask, e);
                 }
             }
         } catch (Exception e) {
-            logger.error("盘点结果处理异常！subtaskId={}", subtaskId, e);
+            logger.error("Inventory result processing exception! subtaskId={}", subtaskId, e);
             handleInventoryEndFail(inventorySubtask, inventoryTask, DictKey.SYSTEM_ERROR);
         } finally {
             if (Objects.nonNull(inventorySubtask)) {
-                /** Delete 缓存扫描 Label Data **/
+                /** Delete cached scanned label data **/
                 redisUtils.delete(RedisKey.READER_TASK_LABEL + inventorySubtask.getTaskId());
             }
         }
     }
 
-    /**
-     * @Description: Save 盘点差异 Message
-     * @Author: bo.chen
-     * @Date: 2023/10/19 11:13
-     * @param task
-     **/
     private void saveDiscrepancyMessage(TapeInventoryTask task) {
         Message message = new Message();
         message.setId(SnowflakeIdWorker.getId());
@@ -431,13 +408,6 @@ public class TapeInventoryTaskJobService {
         messageMapper.insert(message);
     }
 
-    /**
-     * @Description: 盘点 Start Error 处理
-     * @Author: bo.chen
-     * @Date: 2023/10/12 13:42
-     * @param task
-     * @param quantity
-     **/
     private void handleInventoryStartFail(TapeInventoryTask task, int quantity, String messageKey, Object... args) {
         if (Objects.nonNull(task)) {
             TapeInventorySubtask tapeInventorySubtask = new TapeInventorySubtask();
@@ -448,12 +418,12 @@ public class TapeInventoryTaskJobService {
             tapeInventorySubtask.setCreatedBy(task.getCreatedBy());
             tapeInventorySubtask.setStatus(4);
             tapeInventorySubtask.setRemark(getMessage(task.getLocal(), task.getTenantId(), messageKey, args));
-            /** Save 盘点子 Task **/
+            /** Save inventory subtask **/
             tapeInventorySubtaskMapper.insert(tapeInventorySubtask);
             LambdaUpdateWrapper<TapeInventoryTask> updateTaskWrapper = tapeInventoryTaskMapper.uw()
                     .eq(TapeInventoryTask::getId, task.getId());
             if (isTaskEnd(tapeInventorySubtask.getCreateTime(), task)) {
-                /** Task 已结束 **/
+                /** Task has ended **/
                 updateTaskWrapper.set(TapeInventoryTask::getProcessStatus, 4)
                         .set(TapeInventoryTask::getQuantity, quantity)
                         .set(TapeInventoryTask::getActualQuantity, null);
@@ -463,28 +433,19 @@ public class TapeInventoryTaskJobService {
             updateTaskWrapper.set(TapeInventoryTask::getUpdateTime, System.currentTimeMillis())
                     .set(TapeInventoryTask::getLastSubtaskId, tapeInventorySubtask.getId())
                     .set(TapeInventoryTask::getUpdatedBy, NumberUtils.LONG_MINUS_ONE);
-            /** Update主 Task Quantity和 Status **/
+            /** Update main task quantity and status **/
             tapeInventoryTaskMapper.update(updateTaskWrapper);
         }
     }
 
-    /**
-     * @Description: 盘点结束Failed处理
-     * @Author: bo.chen
-     * @Date: 2023/10/17 13:28
-     * @param subtask
-     * @param task
-     * @param messageKey
-     * @param args
-     **/
     private void handleInventoryEndFail(TapeInventorySubtask subtask, TapeInventoryTask task, String messageKey,
             Object... args) {
         if (Objects.isNull(subtask) || Objects.isNull(task)) {
             return;
         }
-        /** Retrieve Time 盘点 Quantity **/
+        /** Retrieve inventory quantity **/
         long actualQuantity = redisUtils.getHashSize(RedisKey.READER_TASK_LABEL + task.getId());
-        /** Update子 Task Information **/
+        /** Update subtask information **/
         tapeInventorySubtaskMapper.update(tapeInventorySubtaskMapper.uw()
                 .eq(TapeInventorySubtask::getId, subtask.getId())
                 .set(TapeInventorySubtask::getActualQuantity, actualQuantity)
@@ -494,13 +455,13 @@ public class TapeInventoryTaskJobService {
                 .set(TapeInventorySubtask::getUpdatedBy, NumberUtils.INTEGER_MINUS_ONE));
         Integer processStatus;
         if (isTaskEnd(subtask.getCreateTime(), task)) {
-            /** Task 结束 **/
+            /** Task has ended **/
             processStatus = 4;
         } else {
-            /** Task To Be Started **/
+            /** Task to be started **/
             processStatus = 1;
         }
-        /** Update主 Task Quantity和 Status **/
+        /** Update main task quantity and status **/
         tapeInventoryTaskMapper.update(tapeInventoryTaskMapper.uw()
                 .eq(TapeInventoryTask::getId, subtask.getTaskId())
                 .set(TapeInventoryTask::getProcessStatus, processStatus)
@@ -509,21 +470,12 @@ public class TapeInventoryTaskJobService {
                 .set(TapeInventoryTask::getUpdatedBy, NumberUtils.LONG_MINUS_ONE));
     }
 
-    /**
-     * @Description: 处理盘点 Task
-     * @Author: bo.chen
-     * @Date: 2023/9/25 16:26
-     * @param subtask
-     * @param task
-     * @param actualQuantity
-     * @param isDiscrepancy
-     **/
     private void handleInventoryTask(TapeInventorySubtask subtask, TapeInventoryTask task, int actualQuantity,
             boolean isDiscrepancy) {
         if (Objects.isNull(subtask) || Objects.isNull(task)) {
             return;
         }
-        /** Update子 Task Information **/
+        /** Update subtask information **/
         tapeInventorySubtaskMapper.update(tapeInventorySubtaskMapper.uw()
                 .eq(TapeInventorySubtask::getId, subtask.getId())
                 .set(TapeInventorySubtask::getIsDiscrepancy, isDiscrepancy)
@@ -533,16 +485,16 @@ public class TapeInventoryTaskJobService {
                 .set(TapeInventorySubtask::getUpdatedBy, NumberUtils.INTEGER_MINUS_ONE));
         Integer processStatus;
         if (isDiscrepancy) {
-            /** 等待处理差异 **/
+            /** Waiting to handle discrepancy **/
             processStatus = 3;
         } else if (isTaskEnd(subtask.getCreateTime(), task)) {
-            /** Task 结束 **/
+            /** Task has ended **/
             processStatus = 4;
         } else {
-            /** Task To Be Started **/
+            /** Task to be started **/
             processStatus = 1;
         }
-        /** Update主 Task Quantity和 Status **/
+        /** Update main task quantity and status **/
         tapeInventoryTaskMapper.update(tapeInventoryTaskMapper.uw()
                 .eq(TapeInventoryTask::getId, subtask.getTaskId())
                 .set(TapeInventoryTask::getIsDiscrepancy, isDiscrepancy)
@@ -552,26 +504,18 @@ public class TapeInventoryTaskJobService {
                 .set(TapeInventoryTask::getUpdatedBy, NumberUtils.LONG_MINUS_ONE));
     }
 
-    /**
-     * @Description: Task Wether 结束
-     * @Author: bo.chen
-     * @Date: 2023/9/25 16:01
-     * @param subtaskTime
-     * @param inventoryTask
-     * @return boolean
-     **/
     private boolean isTaskEnd(Long subtaskTime, TapeInventoryTask inventoryTask) {
         if (inventoryTask.getTaskType() <= NumberUtils.INTEGER_TWO) {
             return Boolean.TRUE;
         }
         if (Objects.nonNull(inventoryTask.getEndTime())) {
-            /** 主 Task Start Time **/
+            /** Main task start time **/
             LocalDateTime taskStartTime = DateUtil.toLocalDateTime(inventoryTask.getStartTime());
-            /** 下次 Task Start Time **/
+            /** Next task start time **/
             LocalDateTime nextStartTime = DateUtil.toLocalDateTime(subtaskTime);
-            /** 分钟跟主 Task Start Time 同步 **/
+            /** Synchronize minutes with main task start time **/
             nextStartTime.withMinute(taskStartTime.getMinute());
-            /** 秒数跟主 Task Start Time 同步 **/
+            /** Synchronize seconds with main task start time **/
             nextStartTime.withSecond(taskStartTime.getSecond());
             if (inventoryTask.getIntervalUnit() == 1) {
                 nextStartTime.plusHours(inventoryTask.getTimeInterval());
@@ -587,17 +531,8 @@ public class TapeInventoryTaskJobService {
         return Boolean.FALSE;
     }
 
-    /**
-     * @Description: Retrieve库存 Label Data
-     * @Author: bo.chen
-     * @Date: 2023/9/22 15:34
-     * @param locationId
-     * @param libraryIds
-     * @return java.util.Map<java.lang.String,
-     *         com.matariky.jobs.jobsService.assetitm.stock.vo.TapeStockLabelVo>
-     **/
     private Map<String, TapeStockLabelVo> getStockLabel(String locationId, List<Long> libraryIds) {
-        /** Retrieve库存已存在的 Label **/
+        /** Retrieve existing stock labels **/
         List<TapeStockLabelVo> stockLabelList = tapeStockMapper.selectStockLabelList(locationId, libraryIds);
         if (CollectionUtils.isNotEmpty(stockLabelList)) {
             return stockLabelList.stream()
@@ -607,13 +542,6 @@ public class TapeInventoryTaskJobService {
         }
     }
 
-    /**
-     * @Description: Retrieve Task 的 Library 的锁KEY
-     * @Author: bo.chen
-     * @Date: 2023/9/25 17:37
-     * @param lockPoint
-     * @return java.util.Set<java.lang.Long>
-     **/
     public Set<String> getRackLockKeys(LockPoint lockPoint) {
         Long taskId;
         if ("start".equals(lockPoint.getMethod().getName())) {
@@ -640,13 +568,6 @@ public class TapeInventoryTaskJobService {
         return Collections.emptySet();
     }
 
-    /**
-     * @Description: 取消差异 Task
-     * @Author: bo.chen
-     * @Date: 2023/10/16 10:11
-     * @param locationId
-     * @param rackIds
-     **/
     private void cancelDiscrepancySubtask(String locationId, List<Long> rackIds, String taskName) {
         List<TapeInventorySubtask> subtaskList = tapeInventorySubtaskMapper.selectDiscrepancySubtask(
                 locationId.split(",")[NumberUtils.INTEGER_ZERO],
@@ -654,7 +575,7 @@ public class TapeInventoryTaskJobService {
         if (CollectionUtils.isNotEmpty(subtaskList)) {
             subtaskList.stream().forEach(subtask -> {
                 TapeInventoryTask task = tapeInventoryTaskMapper.selectById(subtask.getTaskId());
-                /** 取消子 Task **/
+                /** Cancel subtask **/
                 tapeInventorySubtaskMapper
                         .update(tapeInventorySubtaskMapper.uw().eq(TapeInventorySubtask::getId, subtask.getId())
                                 .eq(TapeInventorySubtask::getStatus, NumberUtils.LONG_ONE)
@@ -667,7 +588,7 @@ public class TapeInventoryTaskJobService {
                                 .set(TapeInventorySubtask::getUpdateTime, System.currentTimeMillis()));
                 LambdaUpdateWrapper<TapeInventoryTask> updateTaskWrapper = tapeInventoryTaskMapper.uw()
                         .eq(TapeInventoryTask::getId, task.getId());
-                /** 盘点 Task Wether 已结束 **/
+                /** Whether inventory task has ended **/
                 if (isTaskEnd(subtask.getCreateTime(), task)) {
                     updateTaskWrapper.set(TapeInventoryTask::getActualQuantity, null);
                     updateTaskWrapper.set(TapeInventoryTask::getProcessStatus, 4);
@@ -685,16 +606,6 @@ public class TapeInventoryTaskJobService {
         }
     }
 
-    /**
-     * @Description: Retrieve Message
-     * @Author: bo.chen
-     * @Date: 2023/10/16 16:28
-     * @param local
-     * @param tenantId
-     * @param messageKey
-     * @param args
-     * @return java.lang.String
-     **/
     private String getMessage(String local, String tenantId, String messageKey, Object... args) {
         CommonDict commonDict = commonDictMapper.getDictionaryItemByTypeAndKey(
                 DictTypeKey.getFullKey(local, DictTypeKey.SERVICE_MESSAGE), messageKey, tenantId);

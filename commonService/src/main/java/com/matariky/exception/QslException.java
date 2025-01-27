@@ -2,16 +2,8 @@ package com.matariky.exception;
 
 import org.springframework.http.HttpStatus;
 
-/**
- * @description: Global Common Exception Class
- * @author: bo.chen
- * @create: 2023/9/6 17:30
- **/
 public class QslException extends RuntimeException {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

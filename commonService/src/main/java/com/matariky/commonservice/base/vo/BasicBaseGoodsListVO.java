@@ -3,10 +3,12 @@ package com.matariky.commonservice.base.vo;
 import com.matariky.model.QueryDataIsolation;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasicBaseGoodsListVO extends QueryDataIsolation {
 
     /**

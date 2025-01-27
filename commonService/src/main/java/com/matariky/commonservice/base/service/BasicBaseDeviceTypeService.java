@@ -12,7 +12,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.model.QueryDataIsolation;
 import com.matariky.utils.BeanUtils;
@@ -28,13 +27,13 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
 @Slf4j
-public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceTypeMapper, BasicBaseDeviceType> implements BaseService<BasicBaseDeviceType> {
+public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceTypeMapper, BasicBaseDeviceType> {
 
     @Autowired
     private BasicBaseDeviceTypeMapper basicBaseDevicetypeMapper;
@@ -57,16 +56,17 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
     @Autowired
     private BasicBaseDevicecommandPackageMapper baseDevicecommandPackageMapper;
 
-
     /**
-     *  Query   All 
+     * Query All
      */
     public List<BasicBaseDeviceTypeInfoVO> getBasicBaseDevicetypeAll(BasicBaseDeviceTypeListVO vo) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -79,9 +79,8 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         return basicBaseDevicetypeMapper.getBasicBaseDevicetypeAll(vo);
     }
 
-
     /**
-     * New  Method  
+     * New Method
      */
     @Transactional(rollbackFor = Exception.class)
     public void createBasicBaseDevicetypeWithOrg(BasicBaseDeviceTypeAddVO addVO, String jwt) {
@@ -92,11 +91,12 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         ReentrantLock lock = new ReentrantLock();
         lock.lock();
         try {
-            BasicBaseDeviceType lastType = basicBaseDevicetypeMapper.selectOne(Wrappers.lambdaQuery(BasicBaseDeviceType.class)
-                    .eq(BasicBaseDeviceType::getDeleteTime, 0)
-                    .eq(BasicBaseDeviceType::getTenantId, tenantId)
-                    .orderByDesc(BasicBaseDeviceType::getCreateTime)
-                    .last("limit 1"));
+            BasicBaseDeviceType lastType = basicBaseDevicetypeMapper
+                    .selectOne(Wrappers.lambdaQuery(BasicBaseDeviceType.class)
+                            .eq(BasicBaseDeviceType::getDeleteTime, 0)
+                            .eq(BasicBaseDeviceType::getTenantId, tenantId)
+                            .orderByDesc(BasicBaseDeviceType::getCreateTime)
+                            .last("limit 1"));
             String typeCode = "0001";
             if (lastType != null) {
                 typeCode = lastType.getTypeCode();
@@ -130,9 +130,8 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         }
     }
 
-
     /**
-     *   Update  Method  
+     * Update Method
      *
      * @param updateVO
      * @param jwt
@@ -160,7 +159,6 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         update.setTypeName(deviceTypeCode.getDictName());
         basicBaseDevicetypeMapper.updateById(update);
 
-
         baseDevicecommandPackageMapper.update(null, Wrappers.lambdaUpdate(BasicBaseDevicecommandPackage.class)
                 .set(BasicBaseDevicecommandPackage::getDeleteTime, System.currentTimeMillis())
                 .eq(BasicBaseDevicecommandPackage::getTypeId, updateVO.getId()));
@@ -182,11 +180,10 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
             });
         });
 
-
     }
 
     /**
-     * Update Device  Status 
+     * Update Device Status
      *
      * @param vo
      */
@@ -200,7 +197,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
     }
 
     /**
-     * Delete   Method  
+     * Delete Method
      *
      * @param id
      * @return
@@ -228,7 +225,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
     }
 
     /**
-     *  Device Type 已经被使用异常
+     * Device Type 已经被使用异常
      */
     public void throwBaseDeviceTypeUsedException(Long count) {
         if (count > 0) {
@@ -237,7 +234,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
     }
 
     /**
-     *  Device Type   Drop Down Box
+     * Device Type Drop Down Box
      *
      * @return
      */
@@ -247,8 +244,10 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         QueryDataIsolation vo = new QueryDataIsolation();
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -259,7 +258,8 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         vo.setTenantId(tenantId);
         List<DeviceTypeOption> optionList = basicBaseDevicetypeMapper.getOptionList(vo);
         optionList.stream().forEach(item -> {
-            item.setLabel(item.getTypeCode() + "(" + item.getDeviceFactory() + "/" + item.getTypeName() + "/" + item.getDeviceModel() + ")");
+            item.setLabel(item.getTypeCode() + "(" + item.getDeviceFactory() + "/" + item.getTypeName() + "/"
+                    + item.getDeviceModel() + ")");
         });
         return optionList;
     }
@@ -274,33 +274,39 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         BasicBaseDeviceTypeInfo result = new BasicBaseDeviceTypeInfo();
         BasicBaseDeviceType typeInfo = basicBaseDevicetypeMapper.getBasicBaseDevicetypeById(id);
         BeanUtils.copyProperties(typeInfo, result);
-        /**  Command  Pagination  **/
-        List<BasicBaseDevicecommand> list = basicBaseDevicecommandMapper.selectList(Wrappers.lambdaQuery(BasicBaseDevicecommand.class)
-                .eq(BasicBaseDevicecommand::getDeleteTime, 0)
-                .eq(BasicBaseDevicecommand::getProtocolType, typeInfo.getProtocolType()));
+        /** Command Pagination **/
+        List<BasicBaseDevicecommand> list = basicBaseDevicecommandMapper
+                .selectList(Wrappers.lambdaQuery(BasicBaseDevicecommand.class)
+                        .eq(BasicBaseDevicecommand::getDeleteTime, 0)
+                        .eq(BasicBaseDevicecommand::getProtocolType, typeInfo.getProtocolType()));
         List<BasicBaseDevicecommandVO> commandList = list.stream().map(item -> {
             BasicBaseDevicecommandVO vo = new BasicBaseDevicecommandVO();
             BeanUtils.copyProperties(item, vo);
             vo.setCommandId(item.getId());
-            /**  Firmware  Command  is Bound to**/
-            List<BasicBaseDevicecommandPackage> commandPackageList = baseDevicecommandPackageMapper.selectList(Wrappers.lambdaQuery(BasicBaseDevicecommandPackage.class)
-                    .eq(BasicBaseDevicecommandPackage::getDeleteTime, 0)
-                    .eq(BasicBaseDevicecommandPackage::getCommandId, item.getId()));
+            /** Firmware Command is Bound to **/
+            List<BasicBaseDevicecommandPackage> commandPackageList = baseDevicecommandPackageMapper
+                    .selectList(Wrappers.lambdaQuery(BasicBaseDevicecommandPackage.class)
+                            .eq(BasicBaseDevicecommandPackage::getDeleteTime, 0)
+                            .eq(BasicBaseDevicecommandPackage::getCommandId, item.getId()));
             if (commandPackageList.isEmpty()) {
                 return null;
             }
-            List<Long> packageIds = commandPackageList.stream().map(BasicBaseDevicecommandPackage::getPackageId).collect(Collectors.toList());
-            List<BasicBaseDevicePackage> packageList = basicBaseDevicePackageMapper.selectList(Wrappers.lambdaQuery(BasicBaseDevicePackage.class)
-                    .in(BasicBaseDevicePackage::getId, packageIds)
-                    .eq(BasicBaseDevicePackage::getDeleteTime, 0));
-            /** Firmware of Device Type  **/
+            List<Long> packageIds = commandPackageList.stream().map(BasicBaseDevicecommandPackage::getPackageId)
+                    .collect(Collectors.toList());
+            List<BasicBaseDevicePackage> packageList = basicBaseDevicePackageMapper
+                    .selectList(Wrappers.lambdaQuery(BasicBaseDevicePackage.class)
+                            .in(BasicBaseDevicePackage::getId, packageIds)
+                            .eq(BasicBaseDevicePackage::getDeleteTime, 0));
+            /** Firmware of Device Type **/
             BasicBaseDeviceUpgradeListVO params = new BasicBaseDeviceUpgradeListVO();
             params.setTypeId(commandPackageList.get(0).getTypeId());
             String hid = request.getHeader("id");
             String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
             String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-            CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-            CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+            CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                    TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+            CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                    commonDictType.getId());
             if (dict == null) {
                 params.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
             } else {
@@ -309,7 +315,8 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
             params.setSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
             params.setOrgCode(TokenUtils.extractOrgCode(request));
             params.setTenantId(tenantId);
-            List<BasicBaseDevicePackageInfoVO> allPackageList = basicBaseDevicePackageMapper.getBasicBaseDevicepackageAll(params);
+            List<BasicBaseDevicePackageInfoVO> allPackageList = basicBaseDevicePackageMapper
+                    .getBasicBaseDevicepackageAll(params);
             boolean selectAll = allPackageList.size() == packageIds.size();
             if (selectAll) {
                 vo.setIsAll(true);

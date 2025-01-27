@@ -13,7 +13,6 @@ import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
 import com.matariky.exception.QslException;
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.utils.BeanUtils;
 import com.matariky.utils.TokenUtils;
@@ -24,12 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBatchMapper, BasicBaseGoodsBatch> implements BaseService<BasicBaseGoodsBatch> {
+public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBatchMapper, BasicBaseGoodsBatch> {
 
     @Autowired
     private BasicBaseGoodsBatchMapper basicBaseGoodsBatchMapper;
@@ -45,7 +44,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     private BasicBaseRfidBindingMapper basicBaseRfidBindingMapper;
 
     /**
-     *  Query   All 
+     * Query All
      *
      * @param vo
      * @return
@@ -54,8 +53,10 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -68,9 +69,8 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
         return basicBaseGoodsBatchMapper.getBasicBaseGoodsBatchAll(vo);
     }
 
-
     /**
-     * New  Method  
+     * New Method
      *
      * @param vo
      * @return
@@ -97,7 +97,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     *   Update  Method  
+     * Update Method
      *
      * @param updateVO
      * @return
@@ -119,7 +119,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     * Delete   Method  
+     * Delete Method
      *
      * @param id
      * @return
@@ -129,7 +129,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     * Query Object By ID  
+     * Query Object By ID
      *
      * @param id
      * @return
@@ -139,7 +139,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     *  Item  Batch Binding Label 
+     * Item Batch Binding Label
      *
      * @param vo
      */
@@ -155,7 +155,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     *  Item  Batch  Binding   Detail 
+     * Item Batch Binding Detail
      *
      * @param vo
      * @return

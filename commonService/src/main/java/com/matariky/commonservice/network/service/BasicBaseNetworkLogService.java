@@ -17,7 +17,6 @@ import com.matariky.utils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 import com.matariky.commonservice.network.bean.BasicBaseNetworkLog;
 import com.matariky.commonservice.network.mapper.BasicBaseNetworkLogMapper;
@@ -41,8 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseNetworkLogService extends BaseServiceImpl<BasicBaseNetworkLogMapper, BasicBaseNetworkLog>
-		implements BaseService<BasicBaseNetworkLog> {
+public class BasicBaseNetworkLogService extends BaseServiceImpl<BasicBaseNetworkLogMapper, BasicBaseNetworkLog> {
 
 	@Autowired
 	private BasicBaseNetworkLogMapper basicBaseNetworkLogMapper;
