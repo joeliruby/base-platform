@@ -1,7 +1,7 @@
 import os
 
-source_dir = 'src/main/java/com/matariky/automation'
-test_dir = 'src/test/java/com/matariky/automation'
+source_dir = 'src/main/java/com/matariky/user/customer'
+test_dir = 'src/test/java/com/matariky/user/customer'
 
 def create_test_file(package, class_name):
     test_class_name = class_name + 'Test'
@@ -48,6 +48,6 @@ def process_directory(directory, package):
             create_test_file(package, class_name)
 
 if __name__ == '__main__':
-    base_package = 'com.matariky.automation'
+    base_package = 'com.matariky.user.customer'
     process_directory(source_dir, base_package)
     print('Test classes generated successfully.')

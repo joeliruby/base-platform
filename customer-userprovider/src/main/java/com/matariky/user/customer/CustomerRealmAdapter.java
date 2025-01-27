@@ -36,4 +36,8 @@ public class CustomerRealmAdapter extends org.keycloak.models.cache.infinispan.R
 
 	}
 
+	public boolean isInvalidated() {
+		return super.invalidated;
+	}
+
 }
