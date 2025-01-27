@@ -16,15 +16,15 @@ import java.math.BigInteger;
 @Data
 public class JobAndTrigger {
     /**
-     * 定时 Task  Name
+     * Scheduled Task Name
      */
     private String jobName;
     /**
-     * 定时 Task 组
+     * Scheduled Task 组
      */
     private String jobGroup;
     /**
-     * 定时 Task 全类名
+     * Scheduled Task 全类 Name
      */
     private String jobClassName;
     /**
@@ -52,7 +52,7 @@ public class JobAndTrigger {
      */
     private String timeZoneId;
     /**
-     * 定时 Task  Status 
+     * Scheduled Task Status
      */
     private String triggerState;
 }

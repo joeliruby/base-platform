@@ -16,20 +16,20 @@ import java.util.List;
  */
 public interface BasicBasePcVersionMapper extends BaseMapper<BasicBasePcVersion> {
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "p")
     public List<BasicBasePcVersionListVO> getBasicBasePcversionAll(@Param("params") BasicBasePcVersionQueryVO vo);
 
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBasePcversion(BasicBasePcVersion bean);
 
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBasePcversionById(Long id);
 

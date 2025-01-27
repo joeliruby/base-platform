@@ -13,13 +13,13 @@ public class BasicBaseDeviceTypeListVO extends QueryDataIsolation {
     @ApiModelProperty(value = "Page Size", required = true)
     private Integer perPage;
 
-    @ApiModelProperty(value = " Device Type key(来自 Data 字典)")
+    @ApiModelProperty(value = " Device Type key( From  Data   Dictionary )")
     private String typeKey;
 
-    @ApiModelProperty(value = " Device 厂家")
+    @ApiModelProperty(value = " Device  Factory  ")
     private String deviceFactory;
 
-    @ApiModelProperty(value = " Device 型号")
+    @ApiModelProperty(value = " Device  Type ")
     private String deviceModel;
 
     private String isAutoUpgrade;

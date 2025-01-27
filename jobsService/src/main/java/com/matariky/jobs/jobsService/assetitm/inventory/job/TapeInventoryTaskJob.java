@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @description: 磁带盘点定时 Task 处理
+ * @description: 磁带盘点 Scheduled Task 处理
  * @author: bo.chen
  * @create: 2023/9/22 15:02
  **/
@@ -27,7 +27,7 @@ public class TapeInventoryTaskJob implements BaseJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long taskId = Long.parseLong(context.getTrigger().getJobKey().getGroup());
         long startTime = System.currentTimeMillis();
-        logger.info("===============开始执行盘点 Task taskId={}==============", taskId);
+        logger.info("=============== Start 执行盘点 Task taskId={}==============", taskId);
         Lock lock = LockUtil.lock(LockKey.TAPE_INVENTORY_TASK_IMMEDIATE_LOCK_KEY + taskId);
         try {
             tapeInventoryTaskJobService.start(taskId);
@@ -36,6 +36,7 @@ public class TapeInventoryTaskJob implements BaseJob {
         } finally {
             lock.unlock();
         }
-        logger.info("===============盘点 Task taskId={}执行完毕共用时{}秒==============", taskId,  (System.currentTimeMillis() - startTime) / 1000);
+        logger.info("===============盘点 Task taskId={}执行完毕共用时{}秒==============", taskId,
+                (System.currentTimeMillis() - startTime) / 1000);
     }
 }

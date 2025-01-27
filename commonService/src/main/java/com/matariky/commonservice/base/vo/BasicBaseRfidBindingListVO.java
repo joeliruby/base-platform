@@ -7,19 +7,19 @@ import lombok.Data;
 @Data
 public class BasicBaseRfidBindingListVO extends QueryDataIsolation {
 
-    @ApiModelProperty(value = "分页下标")
+    @ApiModelProperty(value = "Pagination Index")
     private Integer index;
 
-    @ApiModelProperty(value = "每页大小")
+    @ApiModelProperty(value = "Page Size")
     private Integer perPage;
 
     @ApiModelProperty(value = " Item  Name")
     private String goodsName;
 
-    @ApiModelProperty(value = " Item 编码")
+    @ApiModelProperty(value = " Item  Code ")
     private String goodsCode;
 
     @ApiModelProperty(value = " Item ID")
-    private Long  goodsId;
+    private Long goodsId;
 
 }

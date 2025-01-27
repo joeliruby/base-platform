@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RedisProperties {
 
     /**
-     * 地址
+     *  Address 
      */
     private String host;
 

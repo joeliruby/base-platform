@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * hibernate-validator校验工具类
+ * hibernate-validator Verification tool class
  *
  * @since 1.0.0
  */
@@ -28,9 +28,10 @@ public class ValidatorUtils {
     }
 
     /**
-     * 校验对象
-     * @param object        待校验对象
-     * @param groups        待校验的组
+     * check Object
+     * 
+     * @param object Torture Object
+     * @param groups The group to be verified
      */
     public static void validateEntity(Object object, Class<?>... groups)
             throws RenException {
@@ -41,7 +42,7 @@ public class ValidatorUtils {
 
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {
-        	ConstraintViolation<Object> constraint = constraintViolations.iterator().next();
+            ConstraintViolation<Object> constraint = constraintViolations.iterator().next();
             throw new RenException(constraint.getMessage());
         }
     }

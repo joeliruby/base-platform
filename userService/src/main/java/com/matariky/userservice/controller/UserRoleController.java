@@ -147,7 +147,7 @@ public class UserRoleController {
             if (CollUtil.isNotEmpty(userRoles)) {
                 throw new QslException(MessageKey.ROLE_NAME_ERR);
             }
-            //角色 Name保持唯一
+            //角色 Name保持  Unique 
             bean.setCreateTime(DateUtil.getCurrentDateAndTime().getTime());
             bean.setDeleteTime(Long.parseLong("0"));
             bean.setTenantId(tenantId);
@@ -207,7 +207,7 @@ public class UserRoleController {
     }
 
 
-    //角色查看权限详情
+    //角色查看权限  Detail 
     @RequestMapping(value = "/userRole/permission", method = RequestMethod.GET)
     public Object getPermissionByUser(HttpServletRequest request,
                                                          @RequestParam String roleId,

@@ -15,12 +15,12 @@ import java.io.Serializable;
 public class TapeInventorySubtask implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-     * 主键
+    /**
+     * Primary Key
      */
     private Long id;
 
@@ -40,42 +40,42 @@ public class TapeInventorySubtask implements Serializable {
     private Integer actualQuantity;
 
     /**
-     *  Wether 有差异：0=否，1=是
+     * Wether 有差异：0=否 ,1=是
      */
     private Boolean isDiscrepancy;
 
     /**
-     *  Status ：1等待Update,2=无须Update,3=已Update,4=取消
+     * Status ：1等待Update,2=无须Update,3=已Update,4=取消
      */
     private Integer status;
 
     /**
-     *  Remark 
+     * Remark
      */
     private String remark;
 
     /**
-     * 创建人
+     * Creater
      */
     private Long createdBy;
 
     /**
-     * 修改人
+     * Updater
      */
     private Long updatedBy;
 
     /**
-     * 创建 Time 
+     * Create Time
      */
     private Long createTime;
 
     /**
-     * 修改 Time 
+     * Update Time
      */
     private Long updateTime;
 
     /**
-     * 删除 Time 
+     * Delete Time
      */
     private Long deleteTime;
 }

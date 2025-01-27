@@ -9,36 +9,36 @@ public class BasicBaseGoodsInfoVo {
 
     @ApiModelProperty(value = "id")
     private Long id;
-    @ApiModelProperty(value = "货物编码")
+    @ApiModelProperty(value = " Goods  Code ")
     private String goodsCode;
-    @ApiModelProperty(value = "货物 Name")
+    @ApiModelProperty(value = " Goods  Name")
     private String goodsName;
-    @ApiModelProperty(value = "货物图片")
+    @ApiModelProperty(value = " Goods  Image ")
     private String goodsImage;
-    @ApiModelProperty(value = " Item 描述")
+    @ApiModelProperty(value = " Item   Description ")
     private String goodsDescribe;
     @ApiModelProperty(value = " Remark ")
     private String remark;
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Visitor Organization Code Code ")
     private String operatorOrgCode;
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Visitor Self Organization Code Code ")
     private String operatorSelfOrgCode;
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
-    @ApiModelProperty(value = "创建人")
+    @ApiModelProperty(value = "Creater")
     private String realName;
 
-    private Boolean isUsedByOther=false;
+    private Boolean isUsedByOther = false;
 
     @JsonIgnore
     private Long a;

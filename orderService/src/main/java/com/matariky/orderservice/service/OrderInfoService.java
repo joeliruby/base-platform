@@ -1,6 +1,5 @@
 package com.matariky.orderservice.service;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.util.StringUtil;
@@ -39,7 +38,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
@@ -61,28 +60,24 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
     @Autowired
     private CommonDictMapper commonDictMapper;
 
-     
     public List<OrderInfo> getOrderInfoAll() {
         return orderInfoMapper.getOrderInfoAll();
     }
 
-     
     public int getOrderInfoAllCount() {
         return orderInfoMapper.getOrderInfoAllCount();
     }
 
-     
     public int createOrderInfo(OrderInfo bean) {
         return orderInfoMapper.createOrderInfo(bean);
     }
 
-     
-     
-    public boolean createOrderInfoWithOrg(OrderInfoAddVo bean, HttpServletRequest request, String tenantId, String jwt) {
+    public boolean createOrderInfoWithOrg(OrderInfoAddVo bean, HttpServletRequest request, String tenantId,
+            String jwt) {
         Long count = orderInfoMapper.selectCount(Wrappers.lambdaQuery(OrderInfo.class)
                 .in(OrderInfo::getOrderStatus, 1, 3)
                 .eq(OrderInfo::getOrderTenantId, bean.getOrderTenantId())
-                .eq(OrderInfo::getSuiteCode,bean.getSuiteCode())
+                .eq(OrderInfo::getSuiteCode, bean.getSuiteCode())
                 .eq(OrderInfo::getDeleteTime, 0));
         if (count > 0) {
             throw new QslException(MessageKey.SAME_PRODUCT_IS_EXIST);
@@ -100,7 +95,7 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         if (CollectionUtils.isNotEmpty(orderInfos1)) {
             throw new QslException(MessageKey.ORDER_CONTRACT_IS_EXIST);
         }
-        //同一个 Time 点 同一个 Tenant 只存在一条记录
+        // 同 one Time 点 同 one Tenant 只存在一条 Record
         Map<String, Object> params = new HashMap<>();
         params.put("orderTenantId", bean.getOrderTenantId());
         params.put("startTime", bean.getExpirationStartTime());
@@ -109,19 +104,21 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         if (CollectionUtils.isNotEmpty(orderInfos)) {
             orderInfos.stream().forEach(item -> {
                 if (!item.getOrderStatus().equals("3")) {
-                    if (item.getExpirationStartTime() >= DateUtil.string2date(bean.getExpirationStartTime()).getTime() &&
-                            item.getExpirationStartTime() <= DateUtil.string2date(bean.getExpirationEndTime()).getTime()) {
+                    if (item.getExpirationStartTime() >= DateUtil.string2date(bean.getExpirationStartTime()).getTime()
+                            &&
+                            item.getExpirationStartTime() <= DateUtil.string2date(bean.getExpirationEndTime())
+                                    .getTime()) {
                         throw new QslException(MessageKey.ORDER_EXPIRATION_DATA_OVERLAPS);
                     }
 
                     if (item.getExpirationEndTime() <= DateUtil.string2date(bean.getExpirationEndTime()).getTime() &&
-                            item.getExpirationEndTime() >= DateUtil.string2date(bean.getExpirationStartTime()).getTime()) {
+                            item.getExpirationEndTime() >= DateUtil.string2date(bean.getExpirationStartTime())
+                                    .getTime()) {
                         throw new QslException(MessageKey.ORDER_EXPIRATION_DATA_OVERLAPS);
                     }
                 }
             });
         }
-
 
         if (bean.getAccountNumber() != null && bean.getAccountNumber() != 0) {
 
@@ -136,11 +133,12 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
             List<OrderSuiteConfig> orderSuiteConfigs = orderSuiteConfigMapper.selectList(queryWrapper1);
             if (CollectionUtils.isNotEmpty(orderSuiteConfigs)) {
                 orderSuiteConfigs.stream().forEach(item -> {
-                    if (bean.getAccountNumber() >= item.getNumberStart() && bean.getAccountNumber() <= item.getNumberEnd()) {
-                        if (item.getNumberEnd() < bean.getAccountNumber() || item.getNumberStart() > bean.getAccountNumber()) {
+                    if (bean.getAccountNumber() >= item.getNumberStart()
+                            && bean.getAccountNumber() <= item.getNumberEnd()) {
+                        if (item.getNumberEnd() < bean.getAccountNumber()
+                                || item.getNumberStart() > bean.getAccountNumber()) {
                             throw new QslException(MessageKey.ORDER_ACCOUNTS_NUMBER_RANGE_OUT);
                         }
-
 
                         if (CollectionUtils.isNotEmpty(orderInfos2)) {
                             Integer sumData = orderInfos2.stream().mapToInt(OrderInfo::getAccountNumber).sum();
@@ -182,7 +180,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
             orderInfo.setPaymentVoucherPath(bean.getPaymentVoucherPath());
         }
 
-
         orderInfoMapper.createOrderInfo(orderInfo);
 
         OrderInfoRecord orderInfoRecord = new OrderInfoRecord();
@@ -194,7 +191,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         orderInfoRecord.setCreateTime(Calendar.getInstance().getTimeInMillis());
         orderInfoRecord.setUpdateTime(Calendar.getInstance().getTimeInMillis());
         orderInfoRecordMapper.createOrderInfoRecord(orderInfoRecord);
-
 
         return true;
     }
@@ -211,7 +207,9 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         queryWrapper1.eq("delete_time", 0);
         List<OrderInfo> orderInfos1 = orderInfoMapper.selectList(queryWrapper1);
         if (CollectionUtils.isNotEmpty(orderInfos1)) {
-            List<OrderInfo> orderInfos2 = orderInfos1.stream().filter(i -> !i.getId().toString().equals(orderInfo.getId().toString())).collect(Collectors.toList());
+            List<OrderInfo> orderInfos2 = orderInfos1.stream()
+                    .filter(i -> !i.getId().toString().equals(orderInfo.getId().toString()))
+                    .collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(orderInfos2)) {
                 throw new QslException(MessageKey.ORDER_CONTRACT_IS_EXIST);
             }
@@ -219,9 +217,9 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
 
         orderInfo.setContractCode(bean.getContractCode());
         orderInfo.setContractCode(bean.getContractCode());
-//        if (StringUtil.isNotEmpty(bean.getExpirationStartTime())) {
-//            orderInfo.setExpirationStartTime(DateUtil.string2date(bean.getExpirationStartTime()).getTime());
-//        }
+        // if (StringUtil.isNotEmpty(bean.getExpirationStartTime())) {
+        // orderInfo.setExpirationStartTime(DateUtil.string2date(bean.getExpirationStartTime()).getTime());
+        // }
         if (StringUtil.isNotEmpty(bean.getExpirationEndTime())) {
             QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<OrderInfo>();
             queryWrapper.eq("suite_code", orderInfo.getSuiteCode());
@@ -239,15 +237,16 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
 
         }
 
-
         if (bean.getAccountNumber() != null && bean.getAccountNumber() != 0) {
             QueryWrapper<OrderSuiteConfig> queryWrapper2 = new QueryWrapper<OrderSuiteConfig>();
             queryWrapper2.eq("suite_code", bean.getSuiteCode());
             List<OrderSuiteConfig> orderSuiteConfigs = orderSuiteConfigMapper.selectList(queryWrapper2);
             if (CollectionUtils.isNotEmpty(orderSuiteConfigs)) {
                 orderSuiteConfigs.stream().forEach(item -> {
-                    if (bean.getAccountNumber() >= item.getNumberStart() && bean.getAccountNumber() <= item.getNumberEnd()) {
-                        if (item.getNumberEnd() < bean.getAccountNumber() || item.getNumberStart() > bean.getAccountNumber()) {
+                    if (bean.getAccountNumber() >= item.getNumberStart()
+                            && bean.getAccountNumber() <= item.getNumberEnd()) {
+                        if (item.getNumberEnd() < bean.getAccountNumber()
+                                || item.getNumberStart() > bean.getAccountNumber()) {
                             throw new QslException(MessageKey.ORDER_ACCOUNTS_NUMBER_RANGE_OUT);
                         }
                     }
@@ -285,7 +284,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         return true;
     }
 
-     
     public boolean delOrderInfoById(Long orderId) {
         OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
         if (orderId == null) {
@@ -301,7 +299,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         return true;
     }
 
-     
     public OrderInfo getOrderInfoById(int id) {
         return orderInfoMapper.getOrderInfoById(id);
     }
@@ -324,44 +321,48 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
                 }
                 List<OrderInfoRecord> orderInfoRecords = orderInfoRecordMapper.selectList(queryWrapper);
                 if (CollectionUtils.isNotEmpty(orderInfoRecords)) {
-                    List<OrderInfoRecord> o1 = orderInfoRecords.stream().filter(o -> o.getRecordType() == 1L).collect(Collectors.toList());
+                    List<OrderInfoRecord> o1 = orderInfoRecords.stream().filter(o -> o.getRecordType() == 1L)
+                            .collect(Collectors.toList());
                     if (CollectionUtils.isNotEmpty(o1)) {
                         item.setRenewalCount(Long.parseLong(String.valueOf(o1.size())));
                     }
-                    List<OrderInfoRecord> o2 = orderInfoRecords.stream().filter(o -> o.getRecordType() == 2L).collect(Collectors.toList());
+                    List<OrderInfoRecord> o2 = orderInfoRecords.stream().filter(o -> o.getRecordType() == 2L)
+                            .collect(Collectors.toList());
                     if (CollectionUtils.isNotEmpty(o2)) {
                         item.setDelayCount(Long.parseLong(String.valueOf(o2.size())));
                     }
-                    List<OrderInfoRecord> o3 = orderInfoRecords.stream().filter(o -> o.getRecordType() == 3L).collect(Collectors.toList());
+                    List<OrderInfoRecord> o3 = orderInfoRecords.stream().filter(o -> o.getRecordType() == 3L)
+                            .collect(Collectors.toList());
                     if (CollectionUtils.isNotEmpty(o3)) {
                         item.setExpansionCount(Long.parseLong(String.valueOf(o3.size())));
                     }
                 }
-                //删除
+                // Delete
                 item.setDelete(false);
-                //续费
+                // 续费
                 item.setRenewal(false);
-                //延期
+                // 延期
                 item.setDelay(false);
-                //扩容
+                // 扩容
                 item.setExpansion(false);
-                //终止
+                // 终止
                 item.setAborted(false);
 
-                if (item.getExpirationStartTime() != null && item.getExpirationStartTime() > DateUtil.getCurrentDate().getTime()) {
+                if (item.getExpirationStartTime() != null
+                        && item.getExpirationStartTime() > DateUtil.getCurrentDate().getTime()) {
                     item.setDelete(true);
                 }
 
                 if (StringUtil.isNotEmpty(item.getOrderStatus()) && item.getOrderStatus().equals("1")) {
-                    //执行中
+                    // 执行中
                     item.setExpansion(true);
                     item.setDelay(true);
                     item.setRenewal(true);
                     item.setAborted(true);
                 } else if (StringUtil.isNotEmpty(item.getOrderStatus()) && item.getOrderStatus().equals("2")) {
-                    //已终止
+                    // 已终止
                 } else if (StringUtil.isNotEmpty(item.getOrderStatus()) && item.getOrderStatus().equals("3")) {
-                    //已过期
+                    // 已过期
                     item.setDelay(true);
                 }
                 item.setExpiringSoon(false);
@@ -401,19 +402,15 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         return deviceTypeCode.getDictValue();
     }
 
-
     public Long getOrderInfoDACCount(QueryTapeOrderInfoParam params) {
         return orderInfoMapper.getOrderInfoDACCount(params);
     }
 
-
-     
     public boolean operateData(OrderInfoOperateVo bean, HttpServletRequest request, String tenantId, String jwt) {
         OrderInfo orderInfo = orderInfoMapper.selectById(bean.getOrderId());
         if (orderInfo == null) {
             throw new QslException(MessageKey.ORDER_DOES_NOT_EXIST);
         }
-
 
         if (StringUtil.isNotEmpty(bean.getExpirationEndTime())) {
             QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<OrderInfo>();
@@ -446,8 +443,10 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
             List<OrderSuiteConfig> orderSuiteConfigs = orderSuiteConfigMapper.selectList(queryWrapper);
             if (CollectionUtils.isNotEmpty(orderSuiteConfigs)) {
                 orderSuiteConfigs.stream().forEach(item -> {
-                    if (orderInfo.getAccountNumber() >= item.getNumberStart() && orderInfo.getAccountNumber() <= item.getNumberEnd()) {
-                        if (item.getNumberEnd() < bean.getAccountNumber() || item.getNumberStart() > bean.getAccountNumber()) {
+                    if (orderInfo.getAccountNumber() >= item.getNumberStart()
+                            && orderInfo.getAccountNumber() <= item.getNumberEnd()) {
+                        if (item.getNumberEnd() < bean.getAccountNumber()
+                                || item.getNumberStart() > bean.getAccountNumber()) {
                             throw new QslException(MessageKey.ORDER_ACCOUNTS_NUMBER_RANGE_OUT);
                         }
                     }
@@ -455,7 +454,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
             }
             orderInfo.setAccountNumber(orderInfo.getAccountNumber() + bean.getAccountNumber());
         }
-
 
         if (StringUtil.isNotEmpty(bean.getOrderStatus())) {
             orderInfo.setOrderStatus(bean.getOrderStatus());
@@ -500,8 +498,6 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         return true;
     }
 
-
-     
     public List<OrderInfo> getOrderTenantIdList(String tenantId) {
 
         Map<String, Object> params = new HashMap<>();
@@ -514,15 +510,12 @@ public class OrderInfoService extends BaseServiceImpl<OrderInfoMapper, OrderInfo
         return orderInfoMapper.selectByOrderTenantId(params);
     }
 
-
-     
     public OrderInfo getOrderInfoByOrderCode(String orderCode) {
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<OrderInfo>();
         queryWrapper.eq("order_code", orderCode);
         queryWrapper.eq("delete_time", 0);
         return orderInfoMapper.selectOne(queryWrapper);
     }
-
 
     public boolean getOrderInfoExpiringSoon(String tenantId) {
         Map<String, Object> params = new HashMap<>();

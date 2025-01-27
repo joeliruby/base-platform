@@ -29,6 +29,6 @@ public class BasicBaseRfidBindingAddVO {
     @Size(max = 100)
     private String tid;
 
-    @ApiModelProperty(value = " Label 编码")
+    @ApiModelProperty(value = " Label  Code ")
     private Long tagCode;
 }

@@ -48,7 +48,7 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
     private BasicBaseDeviceRuleMapper basicBaseDeviceruleMapper;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     public BasicBaseDeviceRuleDetailInfo getBasicBaseDeviceruleDetailAll(BasicBaseDeviceRuleDetailListVO vo, String jwt) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -97,7 +97,7 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
 
 
     /**
-     * 修改 Detail
+     *   Update Detail
      *
      * @param updateVO
      * @param jwt
@@ -125,7 +125,7 @@ public class BasicBaseDeviceRuleDetailService extends BaseServiceImpl<BasicBaseD
     }
 
     /**
-     * 删除方法
+     * Delete   Method  
      *
      * @param id
      * @return

@@ -11,11 +11,12 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 /**
- * 描述：      Generation  QR Code 工具
+ * Description ： Generation QR Code tool
  */
 public class QRCodeGenerator {
 
-    public static void generateQRCodeImage(String text, int width, int height, String filePath) throws WriterException, IOException {
+    public static void generateQRCodeImage(String text, int width, int height, String filePath)
+            throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
         Path path = FileSystems.getDefault().getPath(filePath);
@@ -23,4 +24,3 @@ public class QRCodeGenerator {
     }
 
 }
-

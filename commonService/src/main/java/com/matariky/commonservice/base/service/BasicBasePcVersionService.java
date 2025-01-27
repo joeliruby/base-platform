@@ -41,7 +41,7 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
     private CommonDictTypeService commonDictTypeService;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     public List<BasicBasePcVersionListVO> getBasicBasePcversionAll(BasicBasePcVersionQueryVO vo) {
         String hid = request.getHeader("id");
@@ -63,7 +63,7 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
 
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBasePcversionWithOrg(BasicBasePcVersionAddVO addVO) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -82,7 +82,7 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
     }
 
     /**
-     * Update方法
+     * Update  Method  
      *
      * @param updateVO
      * @return
@@ -100,14 +100,14 @@ public class BasicBasePcVersionService extends BaseServiceImpl<BasicBasePcVersio
     }
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBasePcversionById(Long id) {
         return basicBasePcversionMapper.delBasicBasePcversionById(id);
     }
 
     /**
-     * 批量删除
+     * 批量Delete 
      *
      * @param ids
      * @return

@@ -31,7 +31,7 @@ public class SaveDataIsolation extends BaseDataIsolation implements Serializable
     public String operatorSelfOrgCode;
 
     /**
-     * 操作ip
+     *  Operationip
      */
     private String operationIp;
 }

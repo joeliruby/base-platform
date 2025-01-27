@@ -12,22 +12,21 @@ import java.io.Serializable;
 @Data
 public class BasicBaseDeviceExeclVO implements Serializable {
 
-
     @ExcelProperty(" Device Type ")
     @ColumnWidth(30)
     @ExcelSelected(sourceClass = TypeNameOptionServiceImpl.class)
     private String typeName;
 
-    @ExcelProperty(" Device 编码")
+    @ExcelProperty(" Device  Code ")
     @ColumnWidth(20)
     private String deviceCode;
 
-    @ExcelProperty(" Device 功率")
+    @ExcelProperty(" Device  Power ")
     @ColumnWidth(20)
     @ExcelSelected(sourceClass = DeviceDbmOptionServiceImpl.class)
     private String deviceDbm;
 
-    @ExcelProperty(" Device 描述")
+    @ExcelProperty(" Device  Description ")
     @ColumnWidth(20)
     private String deviceDescribe;
 
@@ -35,21 +34,20 @@ public class BasicBaseDeviceExeclVO implements Serializable {
     @ColumnWidth(20)
     private String deviceIp;
 
-    @ExcelProperty(" Device MAC地址")
+    @ExcelProperty(" Device MAC Address ")
     @ColumnWidth(20)
     private String deviceMac;
 
-    @ExcelProperty("经度")
+    @ExcelProperty("longitude")
     @ColumnWidth(20)
     private String longitude;
 
-    @ExcelProperty("纬度")
+    @ExcelProperty("latitude")
     @ColumnWidth(20)
     private String latitude;
 
-    @ExcelProperty("安装地址")
+    @ExcelProperty(" Install  Address ")
     @ColumnWidth(20)
     private String installAddress;
-
 
 }

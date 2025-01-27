@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = " Label 绑定 Information ", tags = " Label 绑定 Information ")
+@Api(value = " Label  Binding  Information ", tags = " Label  Binding  Information ")
 public class BasicBaseRfidBindingController {
 
     @Value("${message.locale}")
@@ -36,28 +36,28 @@ public class BasicBaseRfidBindingController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
-    @ApiOperation("New-单个绑定")
+    @ApiOperation("New- Single  Binding ")
     @PostMapping(value = "/basicBaseRfidBinding")
     public AjaxResult save(@RequestBody @Validated BasicBaseRfidBindingAddVO addVO) {
         basicBaseRfidBindingService.createBasicBaseRfidBindingWithOrg(addVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("New-多个相同 Item 绑定")
+    @ApiOperation("New- Multiple Item  Binding ")
     @PostMapping(value = "/basicBaseRfidBinding/batch")
     public AjaxResult save(@RequestBody @Validated BasicBaseRfidBindingBatchAddVO addVO) {
         basicBaseRfidBindingService.createBasicBaseRfidBindingWithOrgBatch(addVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("编辑")
+    @ApiOperation("  Update")
     @PutMapping(value = "/basicBaseRfidBinding")
     public AjaxResult update(@RequestBody @Validated BasicBaseRfidBindingUpdateVO updateVO) {
         basicBaseRfidBindingService.updateBasicBaseRfidBinding(updateVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("删除")
+    @ApiOperation("Delete ")
     @DeleteMapping(value = "/basicBaseRfidBinding/{id}")
     public AjaxResult del(@PathVariable String id) {
         basicBaseRfidBindingService.deleteById(Long.parseLong(id));
@@ -65,7 +65,7 @@ public class BasicBaseRfidBindingController {
     }
 
 
-    @ApiOperation("获取 Label 自增编码")
+    @ApiOperation("  Retrieve Label  Incremental  Code ")
     @GetMapping(value = "/code")
     public AjaxResult getRfidCode() {
         Long rfidCode = basicBaseRfidBindingService.getRfidCode();

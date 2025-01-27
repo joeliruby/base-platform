@@ -37,7 +37,7 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
     private HttpServletRequest request;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      *
      * @param bean
      * @param pageIndex
@@ -64,7 +64,7 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
 
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -86,7 +86,7 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
     }
 
     /**
-     * 删除
+     * Delete 
      *
      * @param id
      * @return
@@ -97,7 +97,7 @@ public class BasicBaseAntifakeDetailService extends BaseServiceImpl<BasicBaseAnt
 
 
     /**
-     * 详情
+     *   Detail 
      * @param id
      * @return
      */

@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = "基础 Item  Information ", tags = "基础 Item  Information ")
+@Api(value = "  Base  Item  Information ", tags = "  Base  Item  Information ")
 public class BasicBaseGoodsController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class BasicBaseGoodsController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "Delete ")
     @DeleteMapping(value = "/basicBaseGoods")
     public AjaxResult del(@RequestParam("id") Long id, @RequestParam(value = "extendId", required = false) Long extendId) {
         basicBaseGoodsService.delBasicBaseGoodsById(id, extendId);
@@ -63,7 +63,7 @@ public class BasicBaseGoodsController {
     }
 
 
-    @ApiOperation(value = " Item 下拉选")
+    @ApiOperation(value = " Item   Drop Down Box")
     @GetMapping("/basicBaseGoods/option")
     public AjaxResult list() {
         List<GoodsOptionInfo> list = basicBaseGoodsService.optionList();

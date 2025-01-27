@@ -12,7 +12,7 @@ public interface BasicBaseDeviceRuleMapper extends BaseMapper<BasicBaseDeviceRul
 
 
     /**
-     * New方法
+     * New  Method  
      */
     public Long createBasicBaseDevicerule(BasicBaseDeviceRule bean);
 

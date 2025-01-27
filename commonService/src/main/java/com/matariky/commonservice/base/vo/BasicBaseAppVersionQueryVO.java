@@ -1,6 +1,5 @@
 package com.matariky.commonservice.base.vo;
 
-
 import com.matariky.model.QueryDataIsolation;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,6 +13,6 @@ public class BasicBaseAppVersionQueryVO extends QueryDataIsolation {
     @ApiModelProperty(value = "Page Size", required = true)
     private Integer perPage;
 
-    @ApiModelProperty(value = "版本号")
+    @ApiModelProperty(value = " Version Number")
     private String versionNo;
 }

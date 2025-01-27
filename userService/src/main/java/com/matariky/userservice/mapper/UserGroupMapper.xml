@@ -101,7 +101,7 @@ where 1=1 and g.delete_time=0
 	</select>
 
 
-	<!--批量删除组和角色的中间表数据 -->
+	<!--批量Delete 组和角色的中间表数据 -->
 	<delete id="deleteUserByGroupIds" >
 		DELETE FROM user_r_group_user WHERE group_id  in
 		 <foreach item="groupId" collection="array" open="(" separator="," close=")">
@@ -109,7 +109,7 @@ where 1=1 and g.delete_time=0
         </foreach>
 	</delete>
 
-	<!-- 向组和用户中间表插入数据 -->
+	<!-- 向组和 User 中间表插入数据 -->
 	<insert id="savaRGoupAndUser" parameterType="java.lang.Long" >
             INSERT INTO user_r_group_user (group_id,user_id)
                  values
@@ -117,7 +117,7 @@ where 1=1 and g.delete_time=0
     </insert>
 
 
-    <!--批量删除组和角色的中间表数据 -->
+    <!--批量Delete 组和角色的中间表数据 -->
 	<delete id="deleteRoleByGroupIds" >
 		DELETE FROM user_r_group_role WHERE group_id  in
 		 <foreach item="groupId" collection="array" open="(" separator="," close=")">
@@ -175,7 +175,7 @@ where 1=1 and g.delete_time=0
 								AND g.id =#{groupId,jdbcType=BIGINT}
 	</select>
 
-	<!-- 根据租户id查询对应的应用 -->
+	<!-- 根据租户id查询对应的  App  -->
 	<select id="getApplicationByTenantId"  resultType="java.util.LinkedHashMap">
 			SELECT
 				t1.id,
@@ -185,7 +185,7 @@ where 1=1 and g.delete_time=0
 			WHERE
 				t1.tenant_id =#{tenantId,jdbcType=VARCHAR} and t1.is_active=1 and t1.delete_time=0 order by create_time asc limit 1
   	</select>
-  	<!-- 逻辑删除 -->
+  	<!-- 逻辑Delete  -->
   	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
     	update user_group
     	<set >

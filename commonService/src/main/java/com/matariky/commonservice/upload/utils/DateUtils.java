@@ -11,32 +11,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 日期处理
+ * Date handling
  * 
  */
 public class DateUtils {
-	/**  Time 格式(yyyy-MM-dd) */
-	public final static String DATE_PATTERN = "yyyy-MM-dd";
-	/**  Time 格式(yyyy-MM-dd HH:mm:ss) */
-	public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    /** Time format (yyyy-MM-dd) */
+    public final static String DATE_PATTERN = "yyyy-MM-dd";
+    /** Time format (yyyy-MM-dd HH:mm:ss) */
+    public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * 日期格式化 日期格式为：yyyy-MM-dd
-     * @param date  日期
-     * @return  返回yyyy-MM-dd格式日期
+     * Date formatting, date format: yyyy-MM-dd
+     * 
+     * @param date Date
+     * @return Returns date in yyyy-MM-dd format
      */
-	public static String format(Date date) {
+    public static String format(Date date) {
         return format(date, DATE_PATTERN);
     }
 
     /**
-     * 日期格式化 日期格式为：yyyy-MM-dd
-     * @param date  日期
-     * @param pattern  格式，如：DateUtils.DATE_TIME_PATTERN
-     * @return  返回yyyy-MM-dd格式日期
+     * Date formatting, date format: yyyy-MM-dd
+     * 
+     * @param date    Date
+     * @param pattern Format, e.g.: DateUtils.DATE_TIME_PATTERN
+     * @return Returns date in yyyy-MM-dd format
      */
     public static String format(Date date, String pattern) {
-        if(date != null){
+        if (date != null) {
             SimpleDateFormat df = new SimpleDateFormat(pattern);
             return df.format(date);
         }
@@ -44,10 +46,11 @@ public class DateUtils {
     }
 
     /**
-     * 日期解析
-     * @param date  日期
-     * @param pattern  格式，如：DateUtils.DATE_TIME_PATTERN
-     * @return  返回Date
+     * Date parsing
+     * 
+     * @param date    Date
+     * @param pattern Format, e.g.: DateUtils.DATE_TIME_PATTERN
+     * @return Returns Date
      */
     public static Date parse(String date, String pattern) {
         try {
@@ -59,12 +62,13 @@ public class DateUtils {
     }
 
     /**
-     * 字符串转换成日期
-     * @param strDate 日期字符串
-     * @param pattern 日期的格式，如：DateUtils.DATE_TIME_PATTERN
+     * Convert string to date
+     * 
+     * @param strDate Date string
+     * @param pattern Date format, e.g.: DateUtils.DATE_TIME_PATTERN
      */
     public static Date stringToDate(String strDate, String pattern) {
-        if (StringUtils.isBlank(strDate)){
+        if (StringUtils.isBlank(strDate)) {
             return null;
         }
 
@@ -73,9 +77,11 @@ public class DateUtils {
     }
 
     /**
-     * 根据周数，获取开始日期、结束日期
-     * @param week  周期  0本周，-1上周，-2上上周，1下周，2下下周
-     * @return  返回date[0]开始日期、date[1]结束日期
+     * Retrieve start date and end date based on the week number
+     * 
+     * @param week Week number: 0 this week, -1 last week, -2 the week before last,
+     *             1 next week, 2 the week after next
+     * @return Returns date[0] start date, date[1] end date
      */
     public static Date[] getWeekStartAndEnd(int week) {
         DateTime dateTime = new DateTime();
@@ -84,15 +90,15 @@ public class DateUtils {
         date = date.dayOfWeek().withMinimumValue();
         Date beginDate = date.toDate();
         Date endDate = date.plusDays(6).toDate();
-        return new Date[]{beginDate, endDate};
+        return new Date[] { beginDate, endDate };
     }
 
     /**
-     * 对日期的【秒】进行加/减
+     * Add/subtract seconds to/from a date
      *
-     * @param date 日期
-     * @param seconds 秒数，负数为减
-     * @return 加/减几秒后的日期
+     * @param date    Date
+     * @param seconds Number of seconds, negative for subtraction
+     * @return Date after adding/subtracting seconds
      */
     public static Date addDateSeconds(Date date, int seconds) {
         DateTime dateTime = new DateTime(date);
@@ -100,11 +106,11 @@ public class DateUtils {
     }
 
     /**
-     * 对日期的【分钟】进行加/减
+     * Add/subtract minutes to/from a date
      *
-     * @param date 日期
-     * @param minutes 分钟数，负数为减
-     * @return 加/减几分钟后的日期
+     * @param date    Date
+     * @param minutes Number of minutes, negative for subtraction
+     * @return Date after adding/subtracting minutes
      */
     public static Date addDateMinutes(Date date, int minutes) {
         DateTime dateTime = new DateTime(date);
@@ -112,11 +118,11 @@ public class DateUtils {
     }
 
     /**
-     * 对日期的【小时】进行加/减
+     * Add/subtract hours to/from a date
      *
-     * @param date 日期
-     * @param hours 小时数，负数为减
-     * @return 加/减几小时后的日期
+     * @param date  Date
+     * @param hours Number of hours, negative for subtraction
+     * @return Date after adding/subtracting hours
      */
     public static Date addDateHours(Date date, int hours) {
         DateTime dateTime = new DateTime(date);
@@ -124,11 +130,11 @@ public class DateUtils {
     }
 
     /**
-     * 对日期的【天】进行加/减
+     * Add/subtract days to/from a date
      *
-     * @param date 日期
-     * @param days 天数，负数为减
-     * @return 加/减几天后的日期
+     * @param date Date
+     * @param days Number of days, negative for subtraction
+     * @return Date after adding/subtracting days
      */
     public static Date addDateDays(Date date, int days) {
         DateTime dateTime = new DateTime(date);
@@ -136,11 +142,11 @@ public class DateUtils {
     }
 
     /**
-     * 对日期的【周】进行加/减
+     * Add/subtract weeks to/from a date
      *
-     * @param date 日期
-     * @param weeks 周数，负数为减
-     * @return 加/减几周后的日期
+     * @param date  Date
+     * @param weeks Number of weeks, negative for subtraction
+     * @return Date after adding/subtracting weeks
      */
     public static Date addDateWeeks(Date date, int weeks) {
         DateTime dateTime = new DateTime(date);
@@ -148,11 +154,11 @@ public class DateUtils {
     }
 
     /**
-     * 对日期的【月】进行加/减
+     * Add/subtract months to/from a date
      *
-     * @param date 日期
-     * @param months 月数，负数为减
-     * @return 加/减几月后的日期
+     * @param date   Date
+     * @param months Number of months, negative for subtraction
+     * @return Date after adding/subtracting months
      */
     public static Date addDateMonths(Date date, int months) {
         DateTime dateTime = new DateTime(date);
@@ -160,11 +166,11 @@ public class DateUtils {
     }
 
     /**
-     * 对日期的【年】进行加/减
+     * Add/subtract years to/from a date
      *
-     * @param date 日期
-     * @param years 年数，负数为减
-     * @return 加/减几年后的日期
+     * @param date  Date
+     * @param years Number of years, negative for subtraction
+     * @return Date after adding/subtracting years
      */
     public static Date addDateYears(Date date, int years) {
         DateTime dateTime = new DateTime(date);

@@ -19,7 +19,7 @@ public class ReaderFileController {
     @Autowired
     MinioUtil minioUtil;
 
-    @ApiOperation(value = "获取reader升级包文件")
+    @ApiOperation(value = "  Retrievereader Upgrade  Package ")
     @GetMapping("/reader.tar.gz")
     public void test(HttpServletResponse response) throws IOException {
         InputStream stream = null;

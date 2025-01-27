@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = " Device 基础Type ", tags = " Device 基础Type ")
+@Api(value = " Device   Base Type ", tags = " Device   Base Type ")
 public class BasicBaseDeviceTypeController {
 
     @Autowired
@@ -52,7 +51,7 @@ public class BasicBaseDeviceTypeController {
     }
 
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "Delete ")
     @DeleteMapping(value = "/basicBaseDevicetype/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBaseDevicetypeService.delBasicBaseDevicetypeById(id);
@@ -67,7 +66,7 @@ public class BasicBaseDeviceTypeController {
     }
 
 
-    @ApiOperation(value = " Device Type 下拉选")
+    @ApiOperation(value = " Device Type   Drop Down Box")
     @GetMapping(value = "/basicBaseDevicetype/option")
     public AjaxResult optionList() {
         List<DeviceTypeOption> list = basicBaseDevicetypeService.getOptionList();

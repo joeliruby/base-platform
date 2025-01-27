@@ -15,7 +15,7 @@ import java.util.List;
 public interface BasicBaseAntifakeDetailMapper extends BaseMapper<BasicBaseAntifakeDetail> {
 
     /**
-     * 分页列表
+     * Pagination 
      *
      * @param bean
      * @return
@@ -25,7 +25,7 @@ public interface BasicBaseAntifakeDetailMapper extends BaseMapper<BasicBaseAntif
 
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -34,7 +34,7 @@ public interface BasicBaseAntifakeDetailMapper extends BaseMapper<BasicBaseAntif
 
 
     /**
-     * 删除
+     * Delete 
      *
      * @param id
      * @return
@@ -42,7 +42,7 @@ public interface BasicBaseAntifakeDetailMapper extends BaseMapper<BasicBaseAntif
     public int delBasicBaseAntifakeDetailById(@Param("id") Long id);
 
     /**
-     * 详情
+     *   Detail 
      *
      * @param id
      * @return

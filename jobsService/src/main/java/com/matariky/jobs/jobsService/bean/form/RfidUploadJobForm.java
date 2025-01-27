@@ -7,34 +7,32 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @description:  Label Import
+ * @description: Label Import
  * @author: chenyajun
  * @create: 2024/02/16 18:14
  **/
 @Data
-public class RfidUploadJobForm   implements Serializable {
+public class RfidUploadJobForm implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     *  Task id
+     * Task id
      */
     private Long taskId;
 
     /**
-     * 开始 Time 
+     * Start Time
      */
     private Long startTime;
 
-
     /**
-     *  Task Type ，1=立即执行，2=一次性,3=周期
+     * Task Type ,1=立即执行 ,2=一次性,3=周期
      */
     private Integer taskType;
 
     private List<TapeRfidCreateCNExeclReqVo> tapeRfidCreateCNExeclReqVos;
-
 
 }

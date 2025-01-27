@@ -428,7 +428,7 @@
     </w:style>
     <w:style w:type="list" w:default="on" w:styleId="a2">
       <w:name w:val="No List"/>
-      <wx:uiName wx:val="无列表"/>
+      <wx:uiName wx:val="无 Pagination "/>
     </w:style>
     <w:style w:type="character" w:styleId="a3">
       <w:name w:val="Strong"/>
@@ -4312,7 +4312,7 @@
             <w:rFonts w:hint="fareast"/>
             <wx:font wx:val="宋体"/>
           </w:rPr>
-          <w:t>自动生成数据库设计文档</w:t>
+          <w:t> Automatic生成数据库设计文档</w:t>
         </w:r>
       </w:p>
       <w:tbl>
@@ -4572,7 +4572,7 @@
                     <w:sz w:val="18"/>
                     <w:sz-cs w:val="18"/>
                   </w:rPr>
-                  <w:t>数据库名称</w:t>
+                  <w:t>数据库 Name 称</w:t>
                 </w:r>
               </w:p>
             </w:tc>
@@ -4625,7 +4625,7 @@
                     <w:sz w:val="18"/>
                     <w:sz-cs w:val="18"/>
                   </w:rPr>
-                  <w:t>数据库用户</w:t>
+                  <w:t>数据库 User </w:t>
                 </w:r>
               </w:p>
             </w:tc>
@@ -4965,7 +4965,7 @@
                       <w:sz w:val="18"/>
                       <w:sz-cs w:val="18"/>
                     </w:rPr>
-                    <w:t>是否主键</w:t>
+                    <w:t>是否 Primary Key</w:t>
                   </w:r>
                 </w:p>
               </w:tc>

@@ -10,22 +10,21 @@ import javax.validation.constraints.Size;
 @Data
 public class BasicBaseDevicePackageUpdateVO {
 
-
     @ApiModelProperty(value = " Device Type ID")
     @NotNull
     private Long typeId;
 
-    @ApiModelProperty(value = "升级包 Name")
+    @ApiModelProperty(value = "  Upgrade Package Name")
     @NotBlank
     @Size(max = 200)
     private String packageName;
 
-    @ApiModelProperty(value = "升级描述")
+    @ApiModelProperty(value = " Upgrade  Description ")
     @NotBlank
     @Size(max = 500)
     private String upgradeContent;
 
-    @ApiModelProperty(value = "升级包版本")
+    @ApiModelProperty(value = "  Upgrade Package Version")
     @NotBlank
     @Size(max = 100)
     private String packageVersion;

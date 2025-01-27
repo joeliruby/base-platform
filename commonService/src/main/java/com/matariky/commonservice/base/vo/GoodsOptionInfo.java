@@ -9,12 +9,12 @@ public class GoodsOptionInfo {
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "货物编码")
+    @ApiModelProperty(value = " Goods  Code ")
     private String goodsCode;
 
-    @ApiModelProperty(value = "货物 Name")
+    @ApiModelProperty(value = " Goods  Name")
     private String goodsName;
 
-    @ApiModelProperty(value = "显示文本")
+    @ApiModelProperty(value = "Display Text ")
     private String label;
 }

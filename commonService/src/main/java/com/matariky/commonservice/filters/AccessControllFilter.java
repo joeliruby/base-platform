@@ -19,50 +19,53 @@ import com.matariky.utils.TokenUtils;
 
 import cn.hutool.http.HttpStatus;
 
-@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = { "/*" })
 @Component
-public class AccessControllFilter implements Filter{
+public class AccessControllFilter implements Filter {
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest httpRequest= (HttpServletRequest) request;
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-		if(httpRequest.getRequestURI().endsWith("api-docs")||httpRequest.getRequestURI().contains("swagger-resources")||httpRequest.getRequestURI().contains("swagger-ui")||httpRequest.getRequestURI().endsWith("downloadFile")||httpRequest.getRequestURI().contains("userApplications/user")||httpRequest.getRequestURI().contains("randomImage")
-				||httpRequest.getRequestURI().contains("login")
-				||httpRequest.getRequestURI().contains("readerFile")
-				||httpRequest.getRequestURI().contains("api/v1/rfid/stock/inout/insert")
-				||httpRequest.getRequestURI().contains("logout")||httpRequest.getRequestURI().contains("IOTUserInfo")){
+		if (httpRequest.getRequestURI().endsWith("api-docs")
+				|| httpRequest.getRequestURI().contains("swagger-resources")
+				|| httpRequest.getRequestURI().contains("swagger-ui")
+				|| httpRequest.getRequestURI().endsWith("downloadFile")
+				|| httpRequest.getRequestURI().contains("userApplications/user")
+				|| httpRequest.getRequestURI().contains("randomImage")
+				|| httpRequest.getRequestURI().contains("login")
+				|| httpRequest.getRequestURI().contains("readerFile")
+				|| httpRequest.getRequestURI().contains("api/v1/rfid/stock/inout/insert")
+				|| httpRequest.getRequestURI().contains("logout")
+				|| httpRequest.getRequestURI().contains("IOTUserInfo")) {
 			chain.doFilter(request, response);
 			return;
 		}
 
-
-		String permId=httpRequest.getHeader("Id");
+		String permId = httpRequest.getHeader("Id");
 		if (StringUtils.isEmpty(permId)) {
-			((HttpServletResponse)response).setStatus(HttpStatus.HTTP_UNAUTHORIZED);
+			((HttpServletResponse) response).setStatus(HttpStatus.HTTP_UNAUTHORIZED);
 			return;
 		}
 
-		if ("login4".equals(permId)||(permId!=null &&(permId.startsWith("home")||(permId.startsWith("Home"))))) {
+		if ("login4".equals(permId) || (permId != null && (permId.startsWith("home") || (permId.startsWith("Home"))))) {
 			chain.doFilter(request, response);
 			return;
 		}
-		String token =httpRequest.getHeader("Authorization");
+		String token = httpRequest.getHeader("Authorization");
 		if (StringUtils.isEmpty(token)) {
-			((HttpServletResponse)response).setStatus(HttpStatus.HTTP_FORBIDDEN);
+			((HttpServletResponse) response).setStatus(HttpStatus.HTTP_FORBIDDEN);
 			return;
 		}
-//		boolean b = TokenUtils.checkTokenOutTime(token);
-//		if (b){
-//			((HttpServletResponse)response).setStatus(HttpStatus.HTTP_UNAUTHORIZED);
-//			return;
-//		}
-		if(!StringUtils.isEmpty(permId))
-		permId=permId.substring(0, permId.length()-1);//现在的逻辑是如果有资源，拥有人可以对资源进行增删改查，不再细分
+		if (!StringUtils.isEmpty(permId))
+			permId = permId.substring(0, permId.length() - 1);// The current logic is that if there is resources, the
+																// owner can add deletion, deletion, change and
+																// investigation, and no longer segmented
 
-		List<String> permList=TokenUtils.extractPermissionIdsFromToken(token);
-		if(!permList.contains(permId)) {
-			((HttpServletResponse)response).setStatus(HttpStatus.HTTP_FORBIDDEN);
+		List<String> permList = TokenUtils.extractPermissionIdsFromToken(token);
+		if (!permList.contains(permId)) {
+			((HttpServletResponse) response).setStatus(HttpStatus.HTTP_FORBIDDEN);
 			return;
 		}
 		chain.doFilter(request, response);

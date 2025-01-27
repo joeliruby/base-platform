@@ -14,7 +14,7 @@ import java.util.List;
 public interface JobTapeStockMapper extends EnhanceBaseMapper<TapeStock> {
 
     /**
-     * @Description: 获取库存 Label 
+     * @Description:   Retrieve库存 Label 
      * @Author: bo.chen
      * @Date: 2023/9/22 11:56
      * @param locationId

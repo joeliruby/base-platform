@@ -43,9 +43,10 @@ import com.matariky.utils.DateUtil;
 import cn.hutool.core.collection.CollUtil;
 
 /**
-*Controller
-* @author AUTOMATION
-*/
+ * Controller
+ * 
+ * @author AUTOMATION
+ */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
 public class UserTenantController {
@@ -65,95 +66,94 @@ public class UserTenantController {
 	@Autowired
 	private IdentifierGenerator idGenerator;
 
-
 	@Value("${message.locale}")
 	String locale;
 
-	 
-	@RequestMapping(value ="/userTenant/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/userTenant/list", method = RequestMethod.GET)
 	public Object list(
 			HttpServletRequest request,
-			 @RequestParam Map<String, Object> map,
-			 @PathVariable("tenantId") String tenantId
-			/*@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt*/) {
+			@RequestParam Map<String, Object> map,
+			@PathVariable("tenantId") String tenantId
+	/*
+	 * @ApiParam(value = "JWT Token", required =
+	 * true) @RequestHeader("Authorization") String jwt
+	 */) {
 
-		int pageIndex=1;
-		int perPage=20;
+		int pageIndex = 1;
+		int perPage = 20;
 
-		if(map.containsKey("index")) {
-			pageIndex=Integer.parseInt(map.get("index").toString());
+		if (map.containsKey("index")) {
+			pageIndex = Integer.parseInt(map.get("index").toString());
 		}
 
-		if(map.containsKey("perPage")) {
-			perPage=Integer.parseInt(map.get("perPage").toString());
+		if (map.containsKey("perPage")) {
+			perPage = Integer.parseInt(map.get("perPage").toString());
 		}
 
-//		if(!StringUtil.isEmpty(tenantId)) {
-//			map.put("tenantId", tenantId);
-//		}
+		// if(!StringUtil.isEmpty(tenantId)) {
+		// map.put("tenantId", tenantId);
+		// }
 		PageHelper.startPage(pageIndex, perPage);
 
-		String beginst =null;
-		String endst   =null;
+		String beginst = null;
+		String endst = null;
 
-		if(map.containsKey("begin")) {
-			beginst=map.get("begin").toString();
+		if (map.containsKey("begin")) {
+			beginst = map.get("begin").toString();
 		}
 
-		if(map.containsKey("end")) {
+		if (map.containsKey("end")) {
 			endst = map.get("end").toString();
 		}
 
-		//把 Time 转成longType 
-		if(StringUtil.isNotEmpty(beginst)) {
+		// 把 Time 转成longType
+		if (StringUtil.isNotEmpty(beginst)) {
 			long begin = DateUtil.string2Dateyyyymmdd(beginst).getTime();
 			map.put("begin", begin);
 		}
-		if(StringUtil.isNotEmpty(endst)) {
+		if (StringUtil.isNotEmpty(endst)) {
 			long end = DateUtil.string2Dateyyyymmdd(endst).getTime();
 			map.put("end", end);
 		}
 
-		List<UserTenant> userTenantList =userTenantService.getUserTenantAll(map);
+		List<UserTenant> userTenantList = userTenantService.getUserTenantAll(map);
 
-		PageInfo<UserTenant> page= new PageInfo<UserTenant>(userTenantList);
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,page);
-//		return page;
+		PageInfo<UserTenant> page = new PageInfo<UserTenant>(userTenantList);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
+		// return page;
 	}
 
-	@RequestMapping(value ="/userTenant/edit",method = RequestMethod.GET)
+	@RequestMapping(value = "/userTenant/edit", method = RequestMethod.GET)
 	public Object edit(
 			HttpServletRequest request,
 			@RequestParam String id,
 			@PathVariable("tenantId") String tenantId) {
-		if(id==null) {
+		if (id == null) {
 			throw new QslException(MessageKey.EMPTY_TENANT_ID);
 		}
 		UserTenant bean = userTenantService.getUserTenantById(id);
 
-		//上级 Tenant  Name
-		if(bean.getParentId()!=null) {
+		// 上级 Tenant Name
+		if (bean.getParentId() != null) {
 			UserTenant userTenant = userTenantService.getUserTenantById(bean.getParentId().toString());
-			if(userTenant!=null) {
-				if(StringUtils.isNotEmpty(userTenant.getTenantName())) {
+			if (userTenant != null) {
+				if (StringUtils.isNotEmpty(userTenant.getTenantName())) {
 					bean.setParentName(userTenant.getTenantName());
 				}
 			}
 		}
 
-		// Tenant 应用 去中间表 Query 一遍
-		List<Map<String,Object>> applicationList = userTenantService.selectApplication(bean.getTenantCode());
+		// Tenant App 去中间表 Query 一遍
+		List<Map<String, Object>> applicationList = userTenantService.selectApplication(bean.getTenantCode());
 
-
-		//多个应用
+		// 多个 App
 		bean.setApplicationIds(applicationList);
 
-
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,bean);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
 	}
 
-	@RequestMapping(value = "/userTenant/parentNameAndId",method = RequestMethod.GET)
-	public Object getParentNameAndId(@PathVariable("tenantId") String tenantId){
+	@RequestMapping(value = "/userTenant/parentNameAndId", method = RequestMethod.GET)
+	public Object getParentNameAndId(@PathVariable("tenantId") String tenantId) {
 		UserTenant bean = new UserTenant();
 
 		UserTenant selectBytenantCode = userTenantService.selectBytenantCode(tenantId);
@@ -162,146 +162,143 @@ public class UserTenantController {
 
 		String tenantCode = selectBytenantCode.getTenantCode();
 
-		String code="";
-		//编码自动 Generation 01父 00x子
-		int countByParentId = userTenantService.getCountByParentId(selectBytenantCode.getId())+1;
+		String code = "";
+		// Code Automatic Generation 01父 00x子
+		int countByParentId = userTenantService.getCountByParentId(selectBytenantCode.getId()) + 1;
 
-		code=tenantCode+"_"+countByParentId;
-
+		code = tenantCode + "_" + countByParentId;
 
 		bean.setTenantCode(code);
 
 		bean.setParentId(selectBytenantCode.getId());
 
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,bean);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
 	}
 
-
-	 
-	@RequestMapping(value = "/userTenant",method = RequestMethod.POST)
+	@RequestMapping(value = "/userTenant", method = RequestMethod.POST)
 	@Transactional(rollbackFor = Exception.class)
-	public Object save(@RequestBody @Valid UserTenant bean,HttpServletRequest request,
-							   HttpServletResponse response,
-							   @PathVariable("tenantId") String tenantId) {
-		try{
-			// Tenant  Name保持唯一
-			if(StringUtils.isEmpty(tenantId)) {
+	public Object save(@RequestBody @Valid UserTenant bean, HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("tenantId") String tenantId) {
+		try {
+			// Tenant Name保持 Unique
+			if (StringUtils.isEmpty(tenantId)) {
 				throw new QslException(MessageKey.EMPTY_PARENT_TENANT_ID);
-			}
-			else {
+			} else {
 				bean.setParentCode(tenantId);
 			}
-			if(bean.getTenantName()==null) {
+			if (bean.getTenantName() == null) {
 				throw new QslException(MessageKey.EMPTY_TENANT_NAME);
 			}
 			bean.setParentCode(tenantId);
 
-			Map<String, Object> columnMap=new HashMap<>();
+			Map<String, Object> columnMap = new HashMap<>();
 			columnMap.put("tenant_name", bean.getTenantName());
 			columnMap.put("delete_time", 0);
 			List<UserTenant> selectByMap = userTenantService.selectByMap(columnMap);
-			if(CollUtil.isNotEmpty(selectByMap)) {
+			if (CollUtil.isNotEmpty(selectByMap)) {
 				throw new QslException(MessageKey.TENANT_NAME_ERR);
 			}
 			userTenantService.save(bean);
-//			userTenantService.insert(bean);
-			Map<String, Object> typeParam=new HashMap<>();
+			// userTenantService.insert(bean);
+			Map<String, Object> typeParam = new HashMap<>();
 			typeParam.put("tenantId", tenantId);
-			List<CommonDictType>  dictTypeList =commonDictTypeService.getCommonDictTypeAll(typeParam);
-			CommonDictType dacDictType= commonDictTypeService.getCommonDictTypeById("5");
+			List<CommonDictType> dictTypeList = commonDictTypeService.getCommonDictTypeAll(typeParam);
+			CommonDictType dacDictType = commonDictTypeService.getCommonDictTypeById("5");
 			dictTypeList.add(dacDictType);
-			for(CommonDictType dictType : dictTypeList) {
-				Long tmpDictTypeId=dictType.getId();
+			for (CommonDictType dictType : dictTypeList) {
+				Long tmpDictTypeId = dictType.getId();
 				dictType.setId(null);
-				dictType.setTenantId(tenantId+"_"+bean.getId());
-				Long newDictTypeId=idGenerator.nextId(dictType).longValue();
+				dictType.setTenantId(tenantId + "_" + bean.getId());
+				Long newDictTypeId = idGenerator.nextId(dictType).longValue();
 				dictType.setId(newDictTypeId);
-					commonDictTypeService.insert(dictType);
-					Map<String, Object> params=new HashMap<>();
-					params.put("tenantId", tenantId);
-					params.put("dictTypeId", tmpDictTypeId);
+				commonDictTypeService.insert(dictType);
+				Map<String, Object> params = new HashMap<>();
+				params.put("tenantId", tenantId);
+				params.put("dictTypeId", tmpDictTypeId);
 
+				List<CommonDict> dictList = commonDictService.getCommonDictAll(params);
+				for (CommonDict dict : dictList) {
 
-					List<CommonDict>  dictList =commonDictService.getCommonDictAll(params);
-					for(CommonDict dict : dictList) {
+					dict.setTenantId(tenantId + "_" + bean.getId());
+					dict.setDictTypeId(newDictTypeId);
+					commonDictService.createCommonDict(dict);
 
-						dict.setTenantId(tenantId+"_"+bean.getId());
-						dict.setDictTypeId(newDictTypeId);
-						commonDictService.createCommonDict(dict);
-
-
-					}
+				}
 
 			}
-			return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-		}catch (Exception e){
-//			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);;
+			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+		} catch (Exception e) {
+			// throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);;
 			throw new QslException(e.getMessage());
 		}
 	}
 
-	 
-	@RequestMapping(value = "/userTenant",method = RequestMethod.PUT)
-	public Object update(@RequestBody UserTenant bean,HttpServletRequest request, HttpServletResponse response,@PathVariable("tenantId") String tenantId) {
-//		if(StringUtils.isEmpty(bean.getParentCode())) {
-//			throw new QslException(MessageKey.EMPTY_PARENT_TENANT_ID);
-//		}
-		if(StringUtils.isEmpty(bean.getTenantName())) {
+	@RequestMapping(value = "/userTenant", method = RequestMethod.PUT)
+	public Object update(@RequestBody UserTenant bean, HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("tenantId") String tenantId) {
+		// if(StringUtils.isEmpty(bean.getParentCode())) {
+		// throw new QslException(MessageKey.EMPTY_PARENT_TENANT_ID);
+		// }
+		if (StringUtils.isEmpty(bean.getTenantName())) {
 			throw new QslException(MessageKey.EMPTY_TENANT_NAME);
 		}
-		try{
+		try {
 			userTenantService.update(bean);
-			return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-		}catch (Exception e){
+			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-
-	@RequestMapping(value = "/userTenant/logo",method = RequestMethod.PUT)
+	@RequestMapping(value = "/userTenant/logo", method = RequestMethod.PUT)
 	public Object updateLogo(@RequestParam MultipartFile uploadfile, @RequestParam String bucket,
-			@RequestParam(required=false) String objectName, @PathVariable("tenantId") String tenantId) throws Exception {
+			@RequestParam(required = false) String objectName, @PathVariable("tenantId") String tenantId)
+			throws Exception {
 		minioUtil.createBucket(bucket);
-		UserTenant tenant= userTenantService.selectBytenantCode(tenantId);
+		UserTenant tenant = userTenantService.selectBytenantCode(tenantId);
 
-		minioUtil.uploadFile(uploadfile.getInputStream(), bucket, tenantId+"."+uploadfile.getOriginalFilename().split("\\.")[1]);
-		tenant.setDomainName("api/v1/tenant/1/file/downloadFile?bucket=tenantlogos&objectName="+tenantId+"."+uploadfile.getOriginalFilename().split("\\.")[1]);
+		minioUtil.uploadFile(uploadfile.getInputStream(), bucket,
+				tenantId + "." + uploadfile.getOriginalFilename().split("\\.")[1]);
+		tenant.setDomainName("api/v1/tenant/1/file/downloadFile?bucket=tenantlogos&objectName=" + tenantId + "."
+				+ uploadfile.getOriginalFilename().split("\\.")[1]);
 		userTenantService.updateById(tenant);
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
 	}
-	//切换主题
-	@RequestMapping(value = "/userTenant/{theme}",method = RequestMethod.PUT)
-	public Object switchThem( @PathVariable("tenantId") String tenantId, @PathVariable("theme") String theme, HttpServletRequest request) {
-		if(StringUtils.isEmpty(tenantId)) {
+
+	// 切换主题
+	@RequestMapping(value = "/userTenant/{theme}", method = RequestMethod.PUT)
+	public Object switchThem(@PathVariable("tenantId") String tenantId, @PathVariable("theme") String theme,
+			HttpServletRequest request) {
+		if (StringUtils.isEmpty(tenantId)) {
 			throw new QslException(MessageKey.EMPTY_TENANT_ID);
 		}
-		UserTenant tenant= userTenantService.selectById(tenantId);
-		if(tenant==null) {
+		UserTenant tenant = userTenantService.selectById(tenantId);
+		if (tenant == null) {
 			throw new QslException(MessageKey.TENANT_NOT_EXIST);
 		}
 		tenant.setTheme(theme);
 		Boolean success = userTenantService.updateById(tenant);
-		if(success)
-			return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
+		if (success)
+			return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
 		else {
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
 	}
 
-	 
-	@RequestMapping(value = "/userTenant",method = RequestMethod.DELETE)
-	public Object del(String id,HttpServletRequest request, HttpServletResponse response) {
-		try{
+	@RequestMapping(value = "/userTenant", method = RequestMethod.DELETE)
+	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+		try {
 			String[] split = id.split(",");
 
 			int success = userTenantService.updateDeleteTimeById(split);
-				if(success > 0){
-					return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,null);
-				}else{
-					throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
-				}
-		}catch (Exception e){
+			if (success > 0) {
+				return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
+			} else {
+				throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new QslException(MessageKey.ERROR_INSERTING_DATABASE);
 		}
@@ -311,11 +308,11 @@ public class UserTenantController {
 	@GetMapping("/subTenants")
 	public Object selectTenant(@PathVariable("tenantId") String tenantId, HttpServletRequest request) {
 		UserTenant tenant = userTenantService.selectBytenantCode(tenantId);
-		if(tenant == null) {
+		if (tenant == null) {
 			throw new QslException(MessageKey.TENANT_NOT_EXIST);
 		}
 		List<UserTenant> tenantList = userTenantService.selectTenant(tenantId);
-		return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,tenantList);
+		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, tenantList);
 	}
 
 }

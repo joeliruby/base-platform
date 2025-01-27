@@ -7,28 +7,28 @@ import lombok.Data;
 @Data
 public class BasicLogLoginVO extends QueryDataIsolation {
 
-    @ApiModelProperty(value = "用户 Name")
+    @ApiModelProperty(value = " User  Name")
     private String userName;
 
-    @ApiModelProperty(value = "登陆地址")
+    @ApiModelProperty(value = " Login  Address ")
     private String loginAddress;
 
     @ApiModelProperty(value = " Tenant ")
     private String tenantName;
 
-    @ApiModelProperty(value = "登录开始 Time ")
+    @ApiModelProperty(value = " Session Start   Time ")
     private String createDateStart;
 
-    @ApiModelProperty(value = "登录结束 Time ")
+    @ApiModelProperty(value = " Session End Time ")
     private String createDateEnd;
 
-    @ApiModelProperty(value = "当前页数")
+    @ApiModelProperty(value = "  Current Page Index ")
     private Integer index;
 
-    @ApiModelProperty(value = "每页大小")
+    @ApiModelProperty(value = "Page Size")
     private Integer perPage;
 
-    private Long  createStartTime;
+    private Long createStartTime;
 
-    private Long  createEndTime;
+    private Long createEndTime;
 }

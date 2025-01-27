@@ -16,22 +16,22 @@ public class BasicBaseDeviceListVO extends QueryDataIsolation {
     @ApiModelProperty(value = " Device Type ID")
     private Long typeId;
 
-    @ApiModelProperty(value = " Device 编号")
+    @ApiModelProperty(value = " Device   Code ")
     private String deviceCode;
 
-    @ApiModelProperty(value = " Device 型号")
+    @ApiModelProperty(value = " Device  Type ")
     private String deviceModel;
 
-    @ApiModelProperty(value = " Device 厂家")
+    @ApiModelProperty(value = " Device  Factory  ")
     private String deviceFactory;
 
-    @ApiModelProperty(value = " Device  Status (on : 在线  off：离线)")
+    @ApiModelProperty(value = " Device  Status (on :   Online  off: Offline)")
     private String status;
 
-    @ApiModelProperty(value = " Device Type key(来自 Data 字典)")
+    @ApiModelProperty(value = " Device Type key( From  Data   Dictionary )")
     private String typeKey;
 
-    @ApiModelProperty(value = "固件升级包ID")
+    @ApiModelProperty(value = " Firmware  Upgrade Package ID")
     private Long packageId;
 
 }

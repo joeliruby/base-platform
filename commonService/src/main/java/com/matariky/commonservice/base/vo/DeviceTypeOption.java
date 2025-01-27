@@ -9,19 +9,19 @@ public class DeviceTypeOption {
     @ApiModelProperty(value = "id")
     private Long typeId;
 
-    @ApiModelProperty(value = " Device Type 编码")
+    @ApiModelProperty(value = " Device Type  Code ")
     private String typeCode;
 
     @ApiModelProperty(value = " Device Type  Name")
     private String typeName;
 
-    @ApiModelProperty(value = " Device 厂家")
+    @ApiModelProperty(value = " Device  Factory  ")
     private String deviceFactory;
 
-    @ApiModelProperty(value = " Device 型号")
+    @ApiModelProperty(value = " Device  Type ")
     private String deviceModel;
 
-    @ApiModelProperty(value = "文本")
-    private String  label;
+    @ApiModelProperty(value = " Text ")
+    private String label;
 
 }

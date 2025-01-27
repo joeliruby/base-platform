@@ -94,7 +94,7 @@ public class BasicBasePrintLogService extends BaseServiceImpl<BasicBasePrintLogM
 			ServletOutputStream outputStream = response.getOutputStream();
 			EasyExcel.write(outputStream, PrintLogExcelVO.class)
 					.excelType(ExcelTypeEnum.XLSX)
-					.sheet(" Print 日志")
+					.sheet(" Print  Log ")
 					.doWrite(newList);
 		} catch (Exception e) {
 			e.printStackTrace();

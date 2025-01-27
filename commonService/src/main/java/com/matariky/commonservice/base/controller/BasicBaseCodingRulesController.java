@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = "编码 Rule 设置", tags = "编码 Rule 设置")
+@Api(value = " Code  Rule   Configuration", tags = " Code  Rule   Configuration")
 public class BasicBaseCodingRulesController {
 
     @Autowired
@@ -38,28 +38,28 @@ public class BasicBaseCodingRulesController {
     }
 
 
-    @ApiOperation(value = "获取 Rule 唯一编码")
+    @ApiOperation(value = "  Retrieve Rule   Unique  Code ")
     @GetMapping(value = "/basicBaseCodingrules/code")
     public AjaxResult getCodingrulesCode() {
         String codingrulesCode = basicBaseCodingrulesService.getCodingrulesCode();
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, codingrulesCode);
     }
 
-    @ApiOperation(value = "修改")
+    @ApiOperation(value = "  Update")
     @PutMapping(value = "/basicBaseCodingrules")
     public AjaxResult update(@RequestBody @Validated BasicBaseCodingRulesUpdateVO updateVO) {
         basicBaseCodingrulesService.updateBasicBaseCodingrules(updateVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = "修改 Status ")
+    @ApiOperation(value = "  Update Status ")
     @PutMapping(value = "/basicBaseCodingrules/status")
     public AjaxResult update(@RequestBody @Validated BasicBaseCodingRulesUpdateStatusVO vo) {
         basicBaseCodingrulesService.updateBasicBaseCodingrulesStatus(vo);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "Delete ")
     @DeleteMapping(value = "/basicBaseCodingrules/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBaseCodingrulesService.delBasicBaseCodingrulesById(id);
@@ -74,7 +74,7 @@ public class BasicBaseCodingRulesController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, obj);
     }
 
-    @ApiOperation(value = "编码 Rule 下拉选")
+    @ApiOperation(value = " Code  Rule   Drop Down Box")
     @GetMapping("/basicBaseCodingrules/option")
     public AjaxResult list() {
         List<CodingRulesOptionInfo> list = basicBaseCodingrulesService.optionList();

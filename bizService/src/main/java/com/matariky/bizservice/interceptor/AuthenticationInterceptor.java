@@ -23,44 +23,45 @@ import com.matariky.userservice.bean.UserApplication;
 import com.matariky.userservice.service.UserApplicationService;
 import com.matariky.utils.TokenUtils;
 
-
 public class AuthenticationInterceptor implements HandlerInterceptor {
-	@Autowired UserApplicationService applicationService;
-	@Autowired RedisUtils redisUtils;
-	
+    @Autowired
+    UserApplicationService applicationService;
+    @Autowired
+    RedisUtils redisUtils;
+
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            Object object) throws Exception {
         String token = httpServletRequest.getHeader("Authorization");
-        
-        if (token!=null) {
-        	if(token.contains("Basic")) {
-        		return true;//pulling iot user from keycloak
-        	}
-        	Long expireTime = TokenUtils.extractExpireTimeFromToken(token);
-        	
-	        Long applicationId=TokenUtils.extractApplicatoinIdFromToken(token);
-	        UserApplication application=applicationService.selectById(applicationId);
-	        Long activityTimeout= application.getActivityTimeout()*1000;
-	        String userId=TokenUtils.extractUserIdFromToken(token);
-	        Long lastActiveTime=redisUtils.get(RedisKey.USER_LAST_ACTIVE_TIME_PREFIX+"_"+userId);
-	       
-	        Long currentTime=System.currentTimeMillis();
-	        lastActiveTime= (lastActiveTime==null) ? currentTime : lastActiveTime;
-	        if(lastActiveTime!=null && expireTime< currentTime && lastActiveTime +activityTimeout<currentTime) {
-	        	Map<String, Object> timeoutMap= new  HashMap<String, Object>();
-	        	timeoutMap.put("code", 401);
-	        	timeoutMap.put("message", "登录超时，请重新登录");
-	        	httpServletResponse.sendError(200, JSON.toJSONString(timeoutMap));
-	        }
-	        token =token.substring(7);
+
+        if (token != null) {
+            if (token.contains("Basic")) {
+                return true;// pulling iot user from keycloak
+            }
+            Long expireTime = TokenUtils.extractExpireTimeFromToken(token);
+
+            Long applicationId = TokenUtils.extractApplicatoinIdFromToken(token);
+            UserApplication application = applicationService.selectById(applicationId);
+            Long activityTimeout = application.getActivityTimeout() * 1000;
+            String userId = TokenUtils.extractUserIdFromToken(token);
+            Long lastActiveTime = redisUtils.get(RedisKey.USER_LAST_ACTIVE_TIME_PREFIX + "_" + userId);
+
+            Long currentTime = System.currentTimeMillis();
+            lastActiveTime = (lastActiveTime == null) ? currentTime : lastActiveTime;
+            if (lastActiveTime != null && expireTime < currentTime && lastActiveTime + activityTimeout < currentTime) {
+                Map<String, Object> timeoutMap = new HashMap<String, Object>();
+                timeoutMap.put("code", 401);
+                timeoutMap.put("message", " Login 超时  ,请重新 Login ");
+                httpServletResponse.sendError(200, JSON.toJSONString(timeoutMap));
+            }
+            token = token.substring(7);
         }
-        
-        
-        if(!(object instanceof HandlerMethod)){
+
+        if (!(object instanceof HandlerMethod)) {
             return true;
         }
-        HandlerMethod handlerMethod=(HandlerMethod)object;
-        Method method=handlerMethod.getMethod();
+        HandlerMethod handlerMethod = (HandlerMethod) object;
+        Method method = handlerMethod.getMethod();
         if (method.isAnnotationPresent(PassToken.class)) {
             PassToken passToken = method.getAnnotation(PassToken.class);
             if (passToken.required()) {
@@ -71,27 +72,29 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 if (token == null) {
-                	httpServletResponse.sendError(401, "没有token");
+                    httpServletResponse.sendError(401, "没有token");
                 }
                 try {
                     JWT.decode(token).getAudience().get(0);
                 } catch (JWTDecodeException j) {
-                	httpServletResponse.sendError(401, "token无法解析");
+                    httpServletResponse.sendError(401, "token无法解析");
                 }
-                
-                
-                	}
-            		return false;
-                }
+
+            }
+            return false;
+        }
         return true;
     }
 
-	@Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
+            ModelAndView modelAndView) throws Exception {
 
     }
+
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            Object o, Exception e) throws Exception {
 
     }
 }

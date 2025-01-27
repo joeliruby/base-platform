@@ -8,9 +8,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 public class ExcelTemplateUtil {
-	
-	/**
-     * Download Import 文件
+
+    /**
+     * Download Import 文档
+     * 
      * @param response
      * @param inFileName
      * @param outFileNam
@@ -19,11 +20,12 @@ public class ExcelTemplateUtil {
         InputStream inputStream = null;
         try {
             response.reset();
-            //设置输出文件格式
+            // Configuration Output file format
             response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment;filename=" + new String(outFileNam.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+            response.setHeader("Content-Disposition", "attachment;filename="
+                    + new String(outFileNam.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             ServletOutputStream outputStream = response.getOutputStream();
-            inputStream = this.getClass().getResourceAsStream("/template/"+inFileName);
+            inputStream = this.getClass().getResourceAsStream("/template/" + inFileName);
             byte[] buff = new byte[1024];
             int length;
             while ((length = inputStream.read(buff)) != -1) {
@@ -37,16 +39,14 @@ public class ExcelTemplateUtil {
             e.printStackTrace();
         } finally {
             if (inputStream != null) {
- 
+
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    //log.error("关闭资源出错" + e.getMessage());
                     e.printStackTrace();
                 }
             }
         }
     }
-
 
 }

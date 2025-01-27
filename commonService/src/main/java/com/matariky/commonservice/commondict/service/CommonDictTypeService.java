@@ -17,53 +17,47 @@ import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 /**
-* Business Inteface Implementation
-* @author AUTOMATION
-*/
+ * Business Inteface Implementation
+ * 
+ * @author AUTOMATION
+ */
 @Service
-public class CommonDictTypeService extends BaseServiceImpl<CommonDictTypeMapper,CommonDictType> implements BaseService<CommonDictType>{
+public class CommonDictTypeService extends BaseServiceImpl<CommonDictTypeMapper, CommonDictType>
+		implements BaseService<CommonDictType> {
 
 	@Autowired
 	private CommonDictTypeMapper commonDictTypeMapper;
 
-
-	 
-	public Page<CommonDictType> getCommonDictTypeAll(Map<String, Object> params){
+	public Page<CommonDictType> getCommonDictTypeAll(Map<String, Object> params) {
 		return commonDictTypeMapper.getCommonDictTypeAll(params);
 	}
 
-	 
-	public int getCommonDictTypeAllCount(Map<String, Object> params){
+	public int getCommonDictTypeAllCount(Map<String, Object> params) {
 		return commonDictTypeMapper.getCommonDictTypeAllCount(params);
 	}
 
-	 
-	public int createCommonDictType(CommonDictType bean){
+	public int createCommonDictType(CommonDictType bean) {
 		return commonDictTypeMapper.createCommonDictType(bean);
 	}
 
-	 
-	public int updateCommonDictType(CommonDictType bean){
+	public int updateCommonDictType(CommonDictType bean) {
 		return commonDictTypeMapper.updateCommonDictType(bean);
 	}
 
-	 
-	@CacheEvict(value = "dictTypes", key="#id")
-	public int delCommonDictTypeById(Long id){
+	@CacheEvict(value = "dictTypes", key = "#id")
+	public int delCommonDictTypeById(Long id) {
 		return commonDictTypeMapper.delCommonDictTypeById(id);
 	}
 
-	 
-	@Cacheable(value="dictTypes" , key="#id")
-	public CommonDictType getCommonDictTypeById(String id){
+	@Cacheable(value = "dictTypes", key = "#id")
+	public CommonDictType getCommonDictTypeById(String id) {
 		return commonDictTypeMapper.getCommonDictTypeById(id);
 	}
 
-
-	//根据字典组key获取所有字典详情
+	// according to Dictionary group key Retrieve all Dictionary Detail
 	@Cacheable(key = "#tenantId+#dictTypeKey", value = "dicts")
-	public List<CommonDict> getDictsByDictTypeKey(String tenantId,String dictTypeKey){
-		return commonDictTypeMapper.getDictsByDictTypeKey(tenantId,dictTypeKey,1L,0L);
+	public List<CommonDict> getDictsByDictTypeKey(String tenantId, String dictTypeKey) {
+		return commonDictTypeMapper.getDictsByDictTypeKey(tenantId, dictTypeKey, 1L, 0L);
 	}
 
 	public int updateDeleteTimeById(String[] id) {
@@ -73,7 +67,7 @@ public class CommonDictTypeService extends BaseServiceImpl<CommonDictTypeMapper,
 
 	public CommonDictType getDictTypeByKey(String tenantId, String dictTypeKey) {
 
-		return commonDictTypeMapper.getDictTypeByKey(tenantId,dictTypeKey);
+		return commonDictTypeMapper.getDictTypeByKey(tenantId, dictTypeKey);
 	}
 
 }

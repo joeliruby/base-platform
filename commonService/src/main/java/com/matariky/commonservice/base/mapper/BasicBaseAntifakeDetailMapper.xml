@@ -28,11 +28,11 @@
             and d.tid = #{tid}
         </if>
         <if test="validationTimeStart!=null and validationTimeStart!='' ">
-            <!--  开始时间检索  -->
+            <!--  Starting time search  -->
             and DATE_FORMAT(FROM_UNIXTIME(p.validate_tiime / 1000), '%Y-%m-%d %H:%i:%s') &gt;= #{validationTimeStart}
         </if>
         <if test="validationTimeEnd!=null and validationTimeEnd!='' ">
-            <!--  结束时间检索  -->
+            <!--  End time search  -->
             and DATE_FORMAT(FROM_UNIXTIME(p.validate_tiime / 1000), '%Y-%m-%d %H:%i:%s')  &lt;= #{validationTimeEnd}
         </if>
         <if test="tenantId!=null and tenantId!='' ">

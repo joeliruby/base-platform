@@ -8,17 +8,17 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddExtendFieldInfoVO {
 
-    @ApiModelProperty(value = "字段名")
+    @ApiModelProperty(value = "Field name")
     @NotBlank
     private String fieldName;
 
-    @ApiModelProperty(value = "字段Type ")
+    @ApiModelProperty(value = "Field Type ")
     @NotBlank
     private String fieldType;
 
-    @ApiModelProperty(value = "字段Type ")
-    private Boolean  isRequired;
+    @ApiModelProperty(value = "Field Type ")
+    private Boolean isRequired;
 
-    private  Long  id;
+    private Long id;
 
 }

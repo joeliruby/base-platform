@@ -115,7 +115,7 @@
 		SELECT id,role_name FROM user_role WHERE delete_time=0 AND tenant_id = #{tenant_id}
 	</select>
 
-	<!-- 逻辑删除 包括批量 -->
+	<!-- 逻辑Delete  包括批量 -->
   	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
     	update user_role
     	<set >

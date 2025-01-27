@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.jobs.jobsService.assetitm.base.mapper.JobTapeReaderMapper">
 
-    <!-- 查询读写器基础信息 -->
+    <!-- 查询  Reader   Base 信息 -->
     <select id="selectBasicList" resultType="com.matariky.jobs.jobsService.assetitm.base.bo.BasicReaderBo">
         SELECT
             t1.`code` AS reader_code,

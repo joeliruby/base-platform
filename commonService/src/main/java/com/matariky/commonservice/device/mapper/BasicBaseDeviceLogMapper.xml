@@ -29,11 +29,11 @@
                 and a.access_account  = #{params.accessAccount}
             </if>
 	        <if test="params.businessTimeStart!=null and params.businessTimeStart!='' ">
-	            <!--  开始时间检索  -->
+	            <!--  Starting time search  -->
 	            and a.business_time  &gt;= #{params.businessTimeStart}
 	        </if>
 	        <if test="params.businessTimeEnd!=null and params.businessTimeEnd!='' ">
-	            <!--  结束时间检索  -->
+	            <!--  End time search  -->
 	            and a.business_time  &lt;= #{params.businessTimeEnd}
 	        </if>
 	        <if test="params.deviceType!=null and params.deviceType!=''  ">

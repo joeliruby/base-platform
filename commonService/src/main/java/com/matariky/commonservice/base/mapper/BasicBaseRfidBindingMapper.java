@@ -19,14 +19,14 @@ import java.util.List;
 public interface BasicBaseRfidBindingMapper extends BaseMapper<BasicBaseRfidBinding> {
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "b")
     public List<BasicBaseRfidBindingInfoVO> getBasicBaseRfidBindingAll(@Param("params") BasicBaseRfidBindingListVO vo);
 
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -35,7 +35,7 @@ public interface BasicBaseRfidBindingMapper extends BaseMapper<BasicBaseRfidBind
 
 
     /**
-     *  Item 批次绑定详情
+     *  Item  Batch  Binding   Detail 
      * @param vo
      * @return
      */

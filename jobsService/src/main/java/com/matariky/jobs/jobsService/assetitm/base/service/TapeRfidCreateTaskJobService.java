@@ -27,7 +27,6 @@ import java.util.List;
 @Service
 public class TapeRfidCreateTaskJobService {
 
-
     private final static Logger logger = LoggerFactory.getLogger(TapeRfidCreateTaskJobService.class);
 
     @Autowired
@@ -49,7 +48,7 @@ public class TapeRfidCreateTaskJobService {
     private BasicBaseGoodsMapper basicBaseGoodsMapper;
 
     /**
-     * @Description:  开始 Task 
+     * @Description: Start Task
      * @Author: chenyajun
      * @Date: 2024/2/22 15:15
      * @param taskId
@@ -58,7 +57,7 @@ public class TapeRfidCreateTaskJobService {
     public void start(Long taskId) throws Exception {
 
         TapeRfidCreateTask tapeRfidCreateTask = jobRfidCreateTaskMapper.getBasicBaseRfidfactoryById(taskId);
-        if(tapeRfidCreateTask!=null) {
+        if (tapeRfidCreateTask != null) {
             String od_content = tapeRfidCreateTask.getOdFixedContent();
             String qr_content = tapeRfidCreateTask.getQrFixedContent();
             String fileUrl = "";
@@ -69,17 +68,27 @@ public class TapeRfidCreateTaskJobService {
                 qr_content = qr_content + "?";
             }
 
-            BasicBaseGoods basicBaseGoods=basicBaseGoodsMapper.selectById(tapeRfidCreateTask.getGoodsId());
+            BasicBaseGoods basicBaseGoods = basicBaseGoodsMapper.selectById(tapeRfidCreateTask.getGoodsId());
 
-            List<TapeRfidCreateParameterTask> tapeRfidCreateParameterTaskList = jobRfidCreateTaskMapper.getBasicBaseRfidfactoryParameterById(taskId);
+            List<TapeRfidCreateParameterTask> tapeRfidCreateParameterTaskList = jobRfidCreateTaskMapper
+                    .getBasicBaseRfidfactoryParameterById(taskId);
 
             for (TapeRfidCreateParameterTask tapeRfidCreateParameterTask : tapeRfidCreateParameterTaskList) {
-                BasicBaseCodingRules baseCodingRules = basicBaseCodingrulesMapper.selectById(tapeRfidCreateParameterTask.getParameterContent());
+                BasicBaseCodingRules baseCodingRules = basicBaseCodingrulesMapper
+                        .selectById(tapeRfidCreateParameterTask.getParameterContent());
 
-                if (tapeRfidCreateParameterTask.getType() != null && "od".equals(tapeRfidCreateParameterTask.getType()) && baseCodingRules!=null) {
-                    od_content = od_content + tapeRfidCreateParameterTask.getParameterName() + "=" + baseCodingRules.getUniqueCode()+ CodeUtils.generateEpc(baseCodingRules.getCodingLength()-baseCodingRules.getUniqueCode().length())+ ",";
-                } else if (tapeRfidCreateParameterTask.getType() != null && "qr".equals(tapeRfidCreateParameterTask.getType()) && baseCodingRules!=null) {
-                    qr_content = qr_content + tapeRfidCreateParameterTask.getParameterName() + "=" + baseCodingRules.getUniqueCode()+ CodeUtils.generateEpc(baseCodingRules.getCodingLength()-baseCodingRules.getUniqueCode().length())+ ",";
+                if (tapeRfidCreateParameterTask.getType() != null && "od".equals(tapeRfidCreateParameterTask.getType())
+                        && baseCodingRules != null) {
+                    od_content = od_content + tapeRfidCreateParameterTask.getParameterName() + "="
+                            + baseCodingRules.getUniqueCode() + CodeUtils.generateEpc(
+                                    baseCodingRules.getCodingLength() - baseCodingRules.getUniqueCode().length())
+                            + ",";
+                } else if (tapeRfidCreateParameterTask.getType() != null
+                        && "qr".equals(tapeRfidCreateParameterTask.getType()) && baseCodingRules != null) {
+                    qr_content = qr_content + tapeRfidCreateParameterTask.getParameterName() + "="
+                            + baseCodingRules.getUniqueCode() + CodeUtils.generateEpc(
+                                    baseCodingRules.getCodingLength() - baseCodingRules.getUniqueCode().length())
+                            + ",";
                 }
             }
 
@@ -90,14 +99,13 @@ public class TapeRfidCreateTaskJobService {
                 qr_content = qr_content.substring(0, qr_content.length() - 1);
             }
 
-
             String passwdStr = "";
             if (tapeRfidCreateTask.getIsLockEpc() == 1) {
-                if (StringUtil.isNotEmpty(tapeRfidCreateTask.getEpcPassword()) && "0".equals(tapeRfidCreateTask.getEpcPassword())) {
+                if (StringUtil.isNotEmpty(tapeRfidCreateTask.getEpcPassword())
+                        && "0".equals(tapeRfidCreateTask.getEpcPassword())) {
                     passwdStr = CodeUtils.randomHexGenerator();
                 }
             }
-
 
             Long rulesId = 0L;
             if (StringUtil.isNotEmpty(tapeRfidCreateTask.getEpcRule())) {
@@ -110,23 +118,24 @@ public class TapeRfidCreateTaskJobService {
 
                 for (int i = 0; i < tapeRfidCreateTask.getCreateNum(); i++) {
                     if (tapeRfidCreateTask.getIsLockEpc() == 1) {
-                        if (StringUtil.isNotEmpty(tapeRfidCreateTask.getEpcPassword()) && "1".equals(tapeRfidCreateTask.getEpcPassword())) {
+                        if (StringUtil.isNotEmpty(tapeRfidCreateTask.getEpcPassword())
+                                && "1".equals(tapeRfidCreateTask.getEpcPassword())) {
                             passwdStr = CodeUtils.randomHexGenerator();
                         }
                     }
 
-                    String epcStr=basicBaseCodingrules.getUniqueCode()+ CodeUtils.generateEpc(basicBaseCodingrules.getCodingLength()-basicBaseCodingrules.getUniqueCode().length());
-                    BasicBaseRfidInfo rfidInfo=basicBaseRfidInfoMapper.getBasicBaseRfidInfoByEpc(epcStr);
-                    if(rfidInfo!=null){
+                    String epcStr = basicBaseCodingrules.getUniqueCode() + CodeUtils.generateEpc(
+                            basicBaseCodingrules.getCodingLength() - basicBaseCodingrules.getUniqueCode().length());
+                    BasicBaseRfidInfo rfidInfo = basicBaseRfidInfoMapper.getBasicBaseRfidInfoByEpc(epcStr);
+                    if (rfidInfo != null) {
                         i--;
                         continue;
                     }
 
-
                     BasicBaseRfidInfo baseRfidInfo = new BasicBaseRfidInfo();
                     baseRfidInfo.setEpc(epcStr);
 
-                    if(StringUtil.isNotEmpty(passwdStr)) {
+                    if (StringUtil.isNotEmpty(passwdStr)) {
                         baseRfidInfo.setPassword(passwdStr);
                     }
 
@@ -149,7 +158,7 @@ public class TapeRfidCreateTaskJobService {
                     baseRfidfactoryCNExeclReqVo.setPassword(passwdStr);
                     baseRfidfactoryCNExeclReqVo.setOdContent(od_content);
                     baseRfidfactoryCNExeclReqVo.setQrContent(qr_content);
-                    if(basicBaseGoods!=null){
+                    if (basicBaseGoods != null) {
                         baseRfidfactoryCNExeclReqVo.setGoodsCode(basicBaseGoods.getGoodsCode());
                         baseRfidfactoryCNExeclReqVo.setGoodsName(basicBaseGoods.getGoodsName());
                     }
@@ -170,9 +179,12 @@ public class TapeRfidCreateTaskJobService {
                     baseCreaterfidFactoryMapper.createBasicBaseCreaterfidFactory(basicBaseCreaterfidFactory);
 
                 }
-                EasyExcelUtil.exportExcelUploadPath(tapeRfidCreateTask.getTaskName()+tapeRfidCreateTask.getTaskBatchCode(),"sheet", BasicBaseRfidfactoryCNExeclReqVo.class, baseRfidfactoryCNExeclReqVos,minioUtil);
+                EasyExcelUtil.exportExcelUploadPath(
+                        tapeRfidCreateTask.getTaskName() + tapeRfidCreateTask.getTaskBatchCode(), "sheet",
+                        BasicBaseRfidfactoryCNExeclReqVo.class, baseRfidfactoryCNExeclReqVos, minioUtil);
 
-			    fileUrl="api/v1/tenant/1/file/downloadFile?bucket=rfidfactory&objectName="+tapeRfidCreateTask.getTaskName()+tapeRfidCreateTask.getTaskBatchCode()+".xlsx";
+                fileUrl = "api/v1/tenant/1/file/downloadFile?bucket=rfidfactory&objectName="
+                        + tapeRfidCreateTask.getTaskName() + tapeRfidCreateTask.getTaskBatchCode() + ".xlsx";
 
             }
             if (StringUtil.isNotEmpty(fileUrl)) {

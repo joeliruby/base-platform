@@ -59,7 +59,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
 
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     public List<BasicBaseDeviceTypeInfoVO> getBasicBaseDevicetypeAll(BasicBaseDeviceTypeListVO vo) {
         String hid = request.getHeader("id");
@@ -81,7 +81,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
 
 
     /**
-     * New方法
+     * New  Method  
      */
     @Transactional(rollbackFor = Exception.class)
     public void createBasicBaseDevicetypeWithOrg(BasicBaseDeviceTypeAddVO addVO, String jwt) {
@@ -132,7 +132,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
 
 
     /**
-     * 编辑方法
+     *   Update  Method  
      *
      * @param updateVO
      * @param jwt
@@ -200,7 +200,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
     }
 
     /**
-     * 删除方法
+     * Delete   Method  
      *
      * @param id
      * @return
@@ -237,7 +237,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
     }
 
     /**
-     *  Device Type 下拉选
+     *  Device Type   Drop Down Box
      *
      * @return
      */
@@ -274,7 +274,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
         BasicBaseDeviceTypeInfo result = new BasicBaseDeviceTypeInfo();
         BasicBaseDeviceType typeInfo = basicBaseDevicetypeMapper.getBasicBaseDevicetypeById(id);
         BeanUtils.copyProperties(typeInfo, result);
-        /** 指令列表 **/
+        /**  Command  Pagination  **/
         List<BasicBaseDevicecommand> list = basicBaseDevicecommandMapper.selectList(Wrappers.lambdaQuery(BasicBaseDevicecommand.class)
                 .eq(BasicBaseDevicecommand::getDeleteTime, 0)
                 .eq(BasicBaseDevicecommand::getProtocolType, typeInfo.getProtocolType()));
@@ -282,7 +282,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
             BasicBaseDevicecommandVO vo = new BasicBaseDevicecommandVO();
             BeanUtils.copyProperties(item, vo);
             vo.setCommandId(item.getId());
-            /** 指令绑定的固件包 **/
+            /**  Firmware  Command  is Bound to**/
             List<BasicBaseDevicecommandPackage> commandPackageList = baseDevicecommandPackageMapper.selectList(Wrappers.lambdaQuery(BasicBaseDevicecommandPackage.class)
                     .eq(BasicBaseDevicecommandPackage::getDeleteTime, 0)
                     .eq(BasicBaseDevicecommandPackage::getCommandId, item.getId()));
@@ -293,7 +293,7 @@ public class BasicBaseDeviceTypeService extends BaseServiceImpl<BasicBaseDeviceT
             List<BasicBaseDevicePackage> packageList = basicBaseDevicePackageMapper.selectList(Wrappers.lambdaQuery(BasicBaseDevicePackage.class)
                     .in(BasicBaseDevicePackage::getId, packageIds)
                     .eq(BasicBaseDevicePackage::getDeleteTime, 0));
-            /**  Device Type 下，所有的固件包 **/
+            /** Firmware of Device Type  **/
             BasicBaseDeviceUpgradeListVO params = new BasicBaseDeviceUpgradeListVO();
             params.setTypeId(commandPackageList.get(0).getTypeId());
             String hid = request.getHeader("id");

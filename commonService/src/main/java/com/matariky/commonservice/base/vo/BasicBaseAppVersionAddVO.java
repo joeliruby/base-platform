@@ -7,32 +7,30 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Data
 public class BasicBaseAppVersionAddVO {
 
-
-    @ApiModelProperty(value = "版本 Name")
+    @ApiModelProperty(value = " Version Name")
     @NotBlank
     @Size(max = 200)
     private String versionName;
 
-    @ApiModelProperty(value = "版本号")
+    @ApiModelProperty(value = " Version Number")
     @NotBlank
     @Size(max = 200)
     private String versionNo;
 
-    @ApiModelProperty(value = "客户端Type ")
+    @ApiModelProperty(value = "Client type ")
     @NotBlank
     @Size(max = 100)
     private String upgradeType;
 
-    @ApiModelProperty(value = "版本内容")
+    @ApiModelProperty(value = " Version content")
     @NotBlank
     @Size(max = 500)
     private String versionContent;
 
-    @ApiModelProperty(value = " Wether 强制Update 1是 0否")
+    @ApiModelProperty(value = " Wether Forced Update 1 YES 0 NO")
     @NotNull
     private Integer isForceUpdates;
 

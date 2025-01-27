@@ -8,11 +8,13 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.lang.Long;
 import java.lang.Integer;
+
 /**
-* Automatically generated entity class
-* @author AUTOMATION
-*/
-public class BasicBaseErrorLog extends QueryDataIsolation{
+ * Automatically generated entity class
+ * 
+ * @author AUTOMATION
+ */
+public class BasicBaseErrorLog extends QueryDataIsolation {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -36,15 +38,14 @@ public class BasicBaseErrorLog extends QueryDataIsolation{
 	private String operatorOrgCode;
 	private String operatorSelfOrgCode;
 	private String tenantId;
-	
-	@ApiModelProperty(value = "业务日期开始")
+
+	@ApiModelProperty(value = " Business  Start Date")
 	private String businessTimeStart;
 
-
-	@ApiModelProperty(value = "业务日期结束")
+	@ApiModelProperty(value = " Business End Date")
 	private String businessTimeEnd;
-	
-	public Long getId(){
+
+	public Long getId() {
 		return id;
 	}
 
@@ -64,169 +65,168 @@ public class BasicBaseErrorLog extends QueryDataIsolation{
 		this.businessTimeEnd = businessTimeEnd;
 	}
 
-	public String getSystemVersionNumber(){
+	public String getSystemVersionNumber() {
 		return systemVersionNumber;
 	}
 
-	public String getDeviceType(){
+	public String getDeviceType() {
 		return deviceType;
 	}
 
-	public String getBusinessModule(){
+	public String getBusinessModule() {
 		return businessModule;
 	}
 
-	public Long getBusinessTime(){
+	public Long getBusinessTime() {
 		return businessTime;
 	}
 
-	public Integer getErrorLevel(){
+	public Integer getErrorLevel() {
 		return errorLevel;
 	}
 
-	public String getApiName(){
+	public String getApiName() {
 		return apiName;
 	}
 
-	public String getUrl(){
+	public String getUrl() {
 		return url;
 	}
 
-	public String getErrorContent(){
+	public String getErrorContent() {
 		return errorContent;
 	}
 
-	public String getParam(){
+	public String getParam() {
 		return param;
 	}
 
-	public String getPhysicalAddress(){
+	public String getPhysicalAddress() {
 		return physicalAddress;
 	}
 
-	public String getAccessAccount(){
+	public String getAccessAccount() {
 		return accessAccount;
 	}
 
-	public String getServerIp(){
+	public String getServerIp() {
 		return serverIp;
 	}
 
-	public Long getCreateTime(){
+	public Long getCreateTime() {
 		return createTime;
 	}
 
-	public Long getUpdateTime(){
+	public Long getUpdateTime() {
 		return updateTime;
 	}
 
-	public Long getDeleteTime(){
+	public Long getDeleteTime() {
 		return deleteTime;
 	}
 
-	public Long getCreateBy(){
+	public Long getCreateBy() {
 		return createBy;
 	}
 
-	public Long getUpdateBy(){
+	public Long getUpdateBy() {
 		return updateBy;
 	}
 
-	public String getOperatorOrgCode(){
+	public String getOperatorOrgCode() {
 		return operatorOrgCode;
 	}
 
-	public String getOperatorSelfOrgCode(){
+	public String getOperatorSelfOrgCode() {
 		return operatorSelfOrgCode;
 	}
 
-	public String getTenantId(){
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setId(Long id){
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setSystemVersionNumber(String systemVersionNumber){
+	public void setSystemVersionNumber(String systemVersionNumber) {
 		this.systemVersionNumber = systemVersionNumber;
 	}
 
-	public void setDeviceType(String deviceType){
+	public void setDeviceType(String deviceType) {
 		this.deviceType = deviceType;
 	}
 
-	public void setBusinessModule(String businessModule){
+	public void setBusinessModule(String businessModule) {
 		this.businessModule = businessModule;
 	}
 
-	public void setBusinessTime(Long businessTime){
+	public void setBusinessTime(Long businessTime) {
 		this.businessTime = businessTime;
 	}
 
-	public void setErrorLevel(Integer errorLevel){
+	public void setErrorLevel(Integer errorLevel) {
 		this.errorLevel = errorLevel;
 	}
 
-	public void setApiName(String apiName){
+	public void setApiName(String apiName) {
 		this.apiName = apiName;
 	}
 
-	public void setUrl(String url){
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	public void setErrorContent(String errorContent){
+	public void setErrorContent(String errorContent) {
 		this.errorContent = errorContent;
 	}
 
-	public void setParam(String param){
+	public void setParam(String param) {
 		this.param = param;
 	}
 
-	public void setPhysicalAddress(String physicalAddress){
+	public void setPhysicalAddress(String physicalAddress) {
 		this.physicalAddress = physicalAddress;
 	}
 
-	public void setAccessAccount(String accessAccount){
+	public void setAccessAccount(String accessAccount) {
 		this.accessAccount = accessAccount;
 	}
 
-	public void setServerIp(String serverIp){
+	public void setServerIp(String serverIp) {
 		this.serverIp = serverIp;
 	}
 
-	public void setCreateTime(Long createTime){
+	public void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
 
-	public void setUpdateTime(Long updateTime){
+	public void setUpdateTime(Long updateTime) {
 		this.updateTime = updateTime;
 	}
 
-	public void setDeleteTime(Long deleteTime){
+	public void setDeleteTime(Long deleteTime) {
 		this.deleteTime = deleteTime;
 	}
 
-	public void setCreateBy(Long createBy){
+	public void setCreateBy(Long createBy) {
 		this.createBy = createBy;
 	}
 
-	public void setUpdateBy(Long updateBy){
+	public void setUpdateBy(Long updateBy) {
 		this.updateBy = updateBy;
 	}
 
-	public void setOperatorOrgCode(String operatorOrgCode){
+	public void setOperatorOrgCode(String operatorOrgCode) {
 		this.operatorOrgCode = operatorOrgCode;
 	}
 
-	public void setOperatorSelfOrgCode(String operatorSelfOrgCode){
+	public void setOperatorSelfOrgCode(String operatorSelfOrgCode) {
 		this.operatorSelfOrgCode = operatorSelfOrgCode;
 	}
 
-	public void setTenantId(String tenantId){
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
-
 
 }

@@ -11,42 +11,38 @@ import com.matariky.iservice.BaseService;
 import com.matariky.iservice.impl.BaseServiceImpl;
 
 /**
-* Business Inteface Implementation
-* @author AUTOMATION
-*/
+ * Business Inteface Implementation
+ * 
+ * @author AUTOMATION
+ */
 @Service
-public class CommonSharingPoolService extends BaseServiceImpl<CommonSharingPoolMapper,CommonSharingPool> implements BaseService<CommonSharingPool>{
+public class CommonSharingPoolService extends BaseServiceImpl<CommonSharingPoolMapper, CommonSharingPool>
+		implements BaseService<CommonSharingPool> {
 
 	@Autowired
 	private CommonSharingPoolMapper commonSharingPoolMapper;
 
-	 
-	public List<CommonSharingPool> getCommonSharingPoolAll(){
+	public List<CommonSharingPool> getCommonSharingPoolAll() {
 		return commonSharingPoolMapper.getCommonSharingPoolAll();
 	}
 
-	 
-	public int getCommonSharingPoolAllCount(){
+	public int getCommonSharingPoolAllCount() {
 		return commonSharingPoolMapper.getCommonSharingPoolAllCount();
 	}
 
-	 
-	public int createCommonSharingPool(CommonSharingPool bean){
+	public int createCommonSharingPool(CommonSharingPool bean) {
 		return commonSharingPoolMapper.createCommonSharingPool(bean);
 	}
 
-	 
-	public int updateCommonSharingPool(CommonSharingPool bean){
+	public int updateCommonSharingPool(CommonSharingPool bean) {
 		return commonSharingPoolMapper.updateCommonSharingPool(bean);
 	}
 
-	 
-	public int delCommonSharingPoolById(long l){
+	public int delCommonSharingPoolById(long l) {
 		return commonSharingPoolMapper.delCommonSharingPoolById(l);
 	}
 
-	 
-	public CommonSharingPool getCommonSharingPoolById(int id){
+	public CommonSharingPool getCommonSharingPoolById(int id) {
 		return commonSharingPoolMapper.getCommonSharingPoolById(id);
 	}
 
@@ -54,18 +50,10 @@ public class CommonSharingPoolService extends BaseServiceImpl<CommonSharingPoolM
 		return commonSharingPoolMapper.selectByOrgCode(organizationCode);
 	}
 
-	public List<CommonSharingPool>  getCommonSharingPoolByResourceId(Long resourceId, String tenantId) {
-		return commonSharingPoolMapper.getCommonSharingPoolByResourceId( resourceId, tenantId);
+	public List<CommonSharingPool> getCommonSharingPoolByResourceId(Long resourceId, String tenantId) {
+		return commonSharingPoolMapper.getCommonSharingPoolByResourceId(resourceId, tenantId);
 	}
 
-	/**
-	 * @Description: Query the organization code of shared resources
-	 * @Author: bo.chen
-	 * @Date: 2023/9/5 19:17
-	 * @param orgCode
-	 * @param selfOrgCode
-	 * @return java.util.List<java.lang.String>
-	 **/
 	public List<String> getOriginalOwnerOrgCodeList(String orgCode, String selfOrgCode) {
 		return commonSharingPoolMapper.selectOriginalOwnerOrgCodes(orgCode, selfOrgCode);
 	}

@@ -44,11 +44,14 @@ public class BasicBaseDeviceLogController {
     @Autowired
     private CommonDictTypeService commonDictTypeService;
 
-     
     @RequestMapping("/basicBaseDeviceLog/list")
-    public AjaxResult list(HttpServletRequest request, BasicBaseDeviceLog bean, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex, @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult list(HttpServletRequest request, BasicBaseDeviceLog bean,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
+            @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
-        PageInfo<BasicBaseDeviceLog> page = new PageInfo(basicBaseDeviceLogService.getBasicBaseDeviceLogAll(bean));
+        PageInfo<BasicBaseDeviceLog> page = new PageInfo<>(basicBaseDeviceLogService.getBasicBaseDeviceLogAll(bean));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
@@ -60,11 +63,15 @@ public class BasicBaseDeviceLogController {
     }
 
     @RequestMapping("/basicBaseDeviceLog/daclist")
-    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             params.put("strategyCode", PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -81,37 +88,37 @@ public class BasicBaseDeviceLogController {
         page.setTotal(count);
         page.setPageSize(perPage);
         page.setPageNum(pageIndex);
-        page.setPages(Integer.parseInt(new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1).toString()));
+        page.setPages(Integer.parseInt(
+                new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1)
+                        .toString()));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
-     
     @RequestMapping(value = "/basicBaseDeviceLog", method = RequestMethod.POST)
-    public AjaxResult save(@RequestBody BasicBaseDeviceLog bean, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult save(@RequestBody BasicBaseDeviceLog bean, HttpServletRequest request,
+            HttpServletResponse response) {
         basicBaseDeviceLogService.createBasicBaseDeviceLogWithOrg(bean, request);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseDeviceLog", method = RequestMethod.PUT)
-    public AjaxResult update(@RequestBody BasicBaseDeviceLog bean, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult update(@RequestBody BasicBaseDeviceLog bean, HttpServletRequest request,
+            HttpServletResponse response) {
         basicBaseDeviceLogService.updateBasicBaseDeviceLog(bean);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseDeviceLog", method = RequestMethod.DELETE)
     public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         basicBaseDeviceLogService.deleteById(Long.parseLong(id));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseDeviceLog/{basicBaseDeviceLogId}", method = RequestMethod.GET)
-    public AjaxResult getOne(@PathVariable("/basicBaseDeviceLogId") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult getOne(@PathVariable("/basicBaseDeviceLogId") Long id, HttpServletRequest request,
+            HttpServletResponse response) {
         BasicBaseDeviceLog info = basicBaseDeviceLogService.selectById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
-
 
 }

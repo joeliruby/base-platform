@@ -15,27 +15,26 @@ import javax.validation.constraints.Size;
 @Data
 public class BasicBasePcVersionAddVO {
 
-
-    @ApiModelProperty(value = "版本 Name")
+    @ApiModelProperty(value = " Version Name")
     @NotBlank
     @Size(max = 200)
     private String versionName;
 
-    @ApiModelProperty(value = "版本号")
+    @ApiModelProperty(value = " Version Number")
     @NotBlank
     @Size(max = 200)
     private String versionNo;
 
-    @ApiModelProperty(value = "版本内容")
+    @ApiModelProperty(value = "  Version Content ")
     @NotBlank
     @Size(max = 500)
     private String versionContent;
 
-    @ApiModelProperty(value = " Requirement 采集日期")
+    @ApiModelProperty(value = " Requirement  Collection Date ")
     @NotNull
     private Long requirementDate;
 
-    @ApiModelProperty(value = "消息提醒自动关闭 Time ")
+    @ApiModelProperty(value = "  Message  Alert  Automatic Close  Time ")
     @Size(max = 20)
     private String messageShutdownTime;
 

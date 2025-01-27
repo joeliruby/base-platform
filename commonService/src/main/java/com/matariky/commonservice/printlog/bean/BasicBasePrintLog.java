@@ -7,12 +7,13 @@ import com.matariky.model.QueryDataIsolation;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.lang.Long;
-import java.lang.String;
 import java.lang.Integer;
+
 /**
-* Automatically generated entity class
-* @author AUTOMATION
-*/
+ * Automatically generated entity class
+ * 
+ * @author AUTOMATION
+ */
 public class BasicBasePrintLog extends QueryDataIsolation {
 
 	/**
@@ -41,9 +42,9 @@ public class BasicBasePrintLog extends QueryDataIsolation {
 	private String operatorSelfOrgCode;
 	private String tenantId;
 
-	private Long  businessTime;
-	private String  returnTid;
-	private String  goodsCode;
+	private Long businessTime;
+	private String returnTid;
+	private String goodsCode;
 
 	public String getGoodsCode() {
 		return goodsCode;
@@ -53,11 +54,10 @@ public class BasicBasePrintLog extends QueryDataIsolation {
 		this.goodsCode = goodsCode;
 	}
 
-	@ApiModelProperty(value = "业务日期开始")
+	@ApiModelProperty(value = " Business  Start Date")
 	private String businessTimeStart;
 
-
-	@ApiModelProperty(value = "业务日期结束")
+	@ApiModelProperty(value = " Business End Date")
 	private String businessTimeEnd;
 
 	public String getBusinessTimeStart() {
@@ -76,10 +76,10 @@ public class BasicBasePrintLog extends QueryDataIsolation {
 		this.businessTimeEnd = businessTimeEnd;
 	}
 
-	@ApiModelProperty(value = "业务日期开始")
+	@ApiModelProperty(value = " Business  Start Date")
 	private String printTimeStart;
 
-	@ApiModelProperty(value = "业务日期结束")
+	@ApiModelProperty(value = " Business End Date")
 	private String printTimeEnd;
 
 	public Long getBusinessTime() {
@@ -98,7 +98,7 @@ public class BasicBasePrintLog extends QueryDataIsolation {
 		this.returnTid = returnTid;
 	}
 
-	public Long getId(){
+	public Long getId() {
 		return id;
 	}
 
@@ -118,169 +118,168 @@ public class BasicBasePrintLog extends QueryDataIsolation {
 		this.printTimeEnd = printTimeEnd;
 	}
 
-	public String getSystemVersionNumber(){
+	public String getSystemVersionNumber() {
 		return systemVersionNumber;
 	}
 
-	public String getPrintTaskNumber(){
+	public String getPrintTaskNumber() {
 		return printTaskNumber;
 	}
 
-	public String getPrintDetailId(){
+	public String getPrintDetailId() {
 		return printDetailId;
 	}
 
-	public Long getPrintTime(){
+	public Long getPrintTime() {
 		return printTime;
 	}
 
-	public Integer getPrintStatus(){
+	public Integer getPrintStatus() {
 		return printStatus;
 	}
 
-	public String getSku(){
+	public String getSku() {
 		return sku;
 	}
 
-	public String getPrintContent(){
+	public String getPrintContent() {
 		return printContent;
 	}
 
-	public String getRfidSetting(){
+	public String getRfidSetting() {
 		return rfidSetting;
 	}
 
-	public String getDeviceCode(){
+	public String getDeviceCode() {
 		return deviceCode;
 	}
 
-	public String getMacAddress(){
+	public String getMacAddress() {
 		return macAddress;
 	}
 
-	public String getAccessAccount(){
+	public String getAccessAccount() {
 		return accessAccount;
 	}
 
-	public String getServerIp(){
+	public String getServerIp() {
 		return serverIp;
 	}
 
-	public Long getCreateTime(){
+	public Long getCreateTime() {
 		return createTime;
 	}
 
-	public Long getUpdateTime(){
+	public Long getUpdateTime() {
 		return updateTime;
 	}
 
-	public Long getDeleteTime(){
+	public Long getDeleteTime() {
 		return deleteTime;
 	}
 
-	public Long getCreateBy(){
+	public Long getCreateBy() {
 		return createBy;
 	}
 
-	public Long getUpdateBy(){
+	public Long getUpdateBy() {
 		return updateBy;
 	}
 
-	public String getOperatorOrgCode(){
+	public String getOperatorOrgCode() {
 		return operatorOrgCode;
 	}
 
-	public String getOperatorSelfOrgCode(){
+	public String getOperatorSelfOrgCode() {
 		return operatorSelfOrgCode;
 	}
 
-	public String getTenantId(){
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setId(Long id){
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setSystemVersionNumber(String systemVersionNumber){
+	public void setSystemVersionNumber(String systemVersionNumber) {
 		this.systemVersionNumber = systemVersionNumber;
 	}
 
-	public void setPrintTaskNumber(String printTaskNumber){
+	public void setPrintTaskNumber(String printTaskNumber) {
 		this.printTaskNumber = printTaskNumber;
 	}
 
-	public void setPrintDetailId(String printDetailId){
+	public void setPrintDetailId(String printDetailId) {
 		this.printDetailId = printDetailId;
 	}
 
-	public void setPrintTime(Long printTime){
+	public void setPrintTime(Long printTime) {
 		this.printTime = printTime;
 	}
 
-	public void setPrintStatus(Integer printStatus){
+	public void setPrintStatus(Integer printStatus) {
 		this.printStatus = printStatus;
 	}
 
-	public void setSku(String sku){
+	public void setSku(String sku) {
 		this.sku = sku;
 	}
 
-	public void setPrintContent(String printContent){
+	public void setPrintContent(String printContent) {
 		this.printContent = printContent;
 	}
 
-	public void setRfidSetting(String rfidSetting){
+	public void setRfidSetting(String rfidSetting) {
 		this.rfidSetting = rfidSetting;
 	}
 
-	public void setDeviceCode(String deviceCode){
+	public void setDeviceCode(String deviceCode) {
 		this.deviceCode = deviceCode;
 	}
 
-	public void setMacAddress(String macAddress){
+	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
 	}
 
-	public void setAccessAccount(String accessAccount){
+	public void setAccessAccount(String accessAccount) {
 		this.accessAccount = accessAccount;
 	}
 
-	public void setServerIp(String serverIp){
+	public void setServerIp(String serverIp) {
 		this.serverIp = serverIp;
 	}
 
-	public void setCreateTime(Long createTime){
+	public void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
 
-	public void setUpdateTime(Long updateTime){
+	public void setUpdateTime(Long updateTime) {
 		this.updateTime = updateTime;
 	}
 
-	public void setDeleteTime(Long deleteTime){
+	public void setDeleteTime(Long deleteTime) {
 		this.deleteTime = deleteTime;
 	}
 
-	public void setCreateBy(Long createBy){
+	public void setCreateBy(Long createBy) {
 		this.createBy = createBy;
 	}
 
-	public void setUpdateBy(Long updateBy){
+	public void setUpdateBy(Long updateBy) {
 		this.updateBy = updateBy;
 	}
 
-	public void setOperatorOrgCode(String operatorOrgCode){
+	public void setOperatorOrgCode(String operatorOrgCode) {
 		this.operatorOrgCode = operatorOrgCode;
 	}
 
-	public void setOperatorSelfOrgCode(String operatorSelfOrgCode){
+	public void setOperatorSelfOrgCode(String operatorSelfOrgCode) {
 		this.operatorSelfOrgCode = operatorSelfOrgCode;
 	}
 
-	public void setTenantId(String tenantId){
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
-
 
 }

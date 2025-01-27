@@ -46,7 +46,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
     private HttpServletRequest request;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      *
      * @param bean
      * @param pageIndex
@@ -74,7 +74,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
 
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -86,7 +86,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
     }
 
     /**
-     * Update方法
+     * Update  Method  
      *
      * @param bean
      * @return
@@ -97,7 +97,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
 
 
     /**
-     * 删除
+     * Delete 
      *
      * @param id
      * @return
@@ -107,7 +107,7 @@ public class BasicBaseAntifakeService extends BaseServiceImpl<BasicBaseAntifakeM
     }
 
     /**
-     * 详情
+     *   Detail 
      *
      * @param id
      * @return

@@ -6,8 +6,6 @@ import com.matariky.commonservice.error.excel.DeviceTypeConvert;
 import com.matariky.commonservice.error.excel.LongTimeConverterTime;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 /**
  * Automatically generated entity class
  *
@@ -16,30 +14,28 @@ import java.math.BigDecimal;
 @Data
 public class NetworkLogExcelVO {
 
-    @ExcelProperty(value = "业务 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Business  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long businessTime;
 
-    @ExcelProperty(value = "访问终端", converter = DeviceTypeConvert.class)
+    @ExcelProperty(value = " Access Terminal ", converter = DeviceTypeConvert.class)
     @ColumnWidth(30)
     private String deviceType;
 
-    @ExcelProperty(value = "访问模块")
+    @ExcelProperty(value = " Business Module ")
     @ColumnWidth(30)
     private String businessModule;
 
-    @ExcelProperty(value = "网络信号")
+    @ExcelProperty(value = " Network信号")
     @ColumnWidth(30)
     private Integer signalLevel;
 
-    @ExcelProperty(value = "访问账号")
+    @ExcelProperty(value = "  Access account")
     @ColumnWidth(30)
     private String accessAccount;
 
-
-    @ExcelProperty(value = "日志存储 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Log  Storage  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long createTime;
-
 
 }

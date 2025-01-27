@@ -12,61 +12,56 @@ import java.io.Serializable;
 @Data
 public class ErrorLogExeclVO implements Serializable {
 
-
-    @ExcelProperty(value = "业务 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Business  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long businessTime;
 
-    @ExcelProperty("版本号")
+    @ExcelProperty(" Version Number")
     @ColumnWidth(30)
     private String systemVersionNumber;
 
-
-    @ExcelProperty(value = "访问终端", converter = DeviceTypeConvert.class)
+    @ExcelProperty(value = " Access Terminal ", converter = DeviceTypeConvert.class)
     @ColumnWidth(30)
     private String deviceType;
 
-
-    @ExcelProperty(value = "访问模块")
+    @ExcelProperty(value = " Business Module ")
     @ColumnWidth(30)
     private String businessModule;
 
-
-    @ExcelProperty("访问系统地址")
+    @ExcelProperty(" Access URL  Address ")
     @ColumnWidth(30)
     private String url;
 
-    @ExcelProperty("访问接口名")
+    @ExcelProperty(" API Name ")
     @ColumnWidth(30)
     private String apiName;
 
-    @ExcelProperty("请求 Parameter ")
+    @ExcelProperty(" Request  Parameter ")
     @ColumnWidth(30)
     private String param;
 
-    @ExcelProperty("错误内容")
+    @ExcelProperty(" Error   Content")
     @ColumnWidth(30)
     private String errorContent;
 
-    @ExcelProperty(value = "错误等级", converter = ErrorLevelConverter.class)
+    @ExcelProperty(value = " Error   Level ", converter = ErrorLevelConverter.class)
     @ColumnWidth(30)
     private Integer errorLevel;
 
-    @ExcelProperty("访问账号")
+    @ExcelProperty("  Access account")
     @ColumnWidth(30)
     private String accessAccount;
 
-    @ExcelProperty("外网ip(访问人)")
+    @ExcelProperty(" Access IP")
     @ColumnWidth(30)
     private String serverIp;
 
-    @ExcelProperty("登录地点")
+    @ExcelProperty(" Access Physical Address")
     @ColumnWidth(30)
     private String physicalAddress;
 
-    @ExcelProperty(value = "日志存储 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Log  Storage  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long createTime;
-
 
 }

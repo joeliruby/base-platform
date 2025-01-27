@@ -3,38 +3,40 @@ package com.matariky.utils;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 统一资源定位符相关工具类
+ * Unified resource positioning related tools
  *
  *
  */
 public class URLUtil {
 
 	/**
-	 * 标准化URL字符串，包括：
+	 * Standardized URL string, including:
 	 *
 	 * <pre>
-	 * 1. 多个/替换为一个
+	 * 1. multiple/replace it with one
 	 * </pre>
 	 *
-	 * @param url URL字符串
-	 * @return 标准化后的URL字符串
+	 * @param url url string
+	 * @Return Standardized URL string
 	 */
 	public static String normalize(String url) {
 		return normalize(url, false, false);
 	}
 
 	/**
-	 * 标准化URL字符串，包括：
+	 * Standardized URL string, including:
 	 *
 	 * <pre>
-	 * 1. 多个/替换为一个
+	 * 1. multiple/replace it with one
 	 * </pre>
 	 *
-	 * @param url URL字符串
-	 * @param isEncodeBody  Wether 对URL中body部分的中文和特殊字符做转义（不包括http:和/）
-	 * @param isEncodeParam  Wether 对URL中 Parameter 部分的中文和特殊字符做转义
-	 * @return 标准化后的URL字符串
-	 * @since 4.4.1
+	 * @param url           url string
+	 * @param Isencodebody  Wether Turning the Chinese and Speicial characters in
+	 *                      the Body part of the URL (excluding HTTP: and/)
+	 * @param IsencodeParam Wether to turn to the Chinese and Speicial characters in
+	 *                      the Parameter part in the URL
+	 * @Return Standardized URL string
+	 * @SINCE 4.4.1
 	 */
 	public static String normalize(String url, boolean isEncodeBody, boolean isEncodeParam) {
 		if (StrUtil.isBlank(url)) {
@@ -58,9 +60,9 @@ public class URLUtil {
 			body = StrUtil.subPre(body, paramsSepIndex);
 		}
 
-		// 去除开头的\或者/
+		// Remove the beginning \ or/
 		body = body.replaceAll("^[\\\\/]+", StrUtil.EMPTY);
-		// 替换多个\或/为单个/
+		// Replace multiple \ or/as/ Single /
 		body = body.replace("\\", "/").replaceAll("//+", "/");
 		if (isEncodeBody) {
 			body = URLEncoder.DEFAULT.encode(body, StandardCharsets.UTF_8);

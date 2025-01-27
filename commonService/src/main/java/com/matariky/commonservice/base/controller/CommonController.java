@@ -18,14 +18,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}/common")
-@Api(value = "基础 Item  Information ", tags = "基础 Item  Information ")
+@Api(value = "  Base  Item  Information ", tags = "  Base  Item  Information ")
 public class CommonController {
 
     @Autowired
     private CommonService commonService;
 
 
-    @ApiOperation(value = "获取读卡器 Label  Data ", response = RfidTagInfo.class)
+    @ApiOperation(value = "  Retrieve Reader  Label  Data ", response = RfidTagInfo.class)
     @GetMapping("/getRfidCodes")
     public AjaxResult getRfidCodes() {
         RfidTagInfo rfidCodes = commonService.getRfidCodes();
@@ -40,14 +40,14 @@ public class CommonController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, s);
     }
 
-    @ApiOperation(value = "添加扩展字段")
+    @ApiOperation(value = " Add  Augment Field ")
     @PostMapping(value = "/extendField")
     public AjaxResult addExtendField(@RequestBody @Validated AddExtendFieldVO vo) {
         commonService.addExtendField(vo);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = " Query 扩展字段")
+    @ApiOperation(value = " Query  Augment Field ")
     @GetMapping(value = "/extendField")
     public AjaxResult getExtendField(@RequestParam String name) {
         List<AddExtendFieldDetailVO> list = commonService.getExtendField(name);

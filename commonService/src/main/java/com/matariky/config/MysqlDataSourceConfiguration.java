@@ -26,47 +26,48 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "com.matariky.**.**.mapper*", sqlSessionTemplateRef = "mysqlSqlSessionTemplate")
 public class MysqlDataSourceConfiguration {
 
-	@Bean(name="mysqlDataSource")
+    @Bean(name = "mysqlDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.dynamic.datasource.master")
-    public DataSource clickDruidDataSource(){
+    public DataSource clickDruidDataSource() {
         return new DruidDataSource();
     }
-	
-	@Bean
-	public MybatisPlusDataScopeInterceptor mybatisPlusDataScopeInterceptor() {
-		return new MybatisPlusDataScopeInterceptor();
-	}
-	
-	@Bean
-	 public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDataSource") DataSource dataSource) {
-       return new JdbcTemplate(dataSource);
-	}
 
-	@Bean(name = "mysqlSqlSessionFactory")
+    @Bean
+    public MybatisPlusDataScopeInterceptor mybatisPlusDataScopeInterceptor() {
+        return new MybatisPlusDataScopeInterceptor();
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDataSource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean(name = "mysqlSqlSessionFactory")
     @Primary
     public SqlSessionFactory mysqlSqlSessionFactory(@Qualifier("mysqlDataSource") DataSource dataSource)
-        throws Exception {
+            throws Exception {
 
-		MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
-        //设置datasource
+        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+        // Configurationdatasource
         sqlSessionFactoryBean.setDataSource(dataSource);
-        //获取mapper资源
-        Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath*:com/matariky/**/mapper/*Mapper.xml");
-        //设置mapper的位置,注意3个mepper对应的xml得分别放在3个不同的包
+        // Retrievemapper resource
+        Resource[] resources = new PathMatchingResourcePatternResolver()
+                .getResources("classpath*:com/matariky/**/mapper/*Mapper.xml");
+        // Configurationmapper Position,3 paid attention to 3 mapper the corresponding
+        // XML is placed in 3 different packages respectively
         sqlSessionFactoryBean.setMapperLocations(resources);
 
-        //其他配置 ps:sqlSessionFactoryBean内可以配置yml的一切配置
+        // other Configurationps:sqlSessionFactoryBean Can Configuration yml Everything
+        // Configuration
         MybatisConfiguration mybatisConfiguration = new MybatisConfiguration();
-        // Wether 下划线转驼峰
+        // Wether Turn the line to the hump
         mybatisConfiguration.setMapUnderscoreToCamelCase(true);
-        //设置日志
+        // Configuration Log
         mybatisConfiguration.setLogImpl(StdOutImpl.class);
-        //配置别名包
-//        sqlSessionFactoryBean.setTypeAliasesPackage("org.gjw.bean.db1");
 
         sqlSessionFactoryBean.setConfiguration(mybatisConfiguration);
 
-        MybatisPlusInterceptor mybatisPlusInterceptor =new MybatisPlusInterceptor();
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         mybatisPlusInterceptor.addInnerInterceptor(mybatisPlusDataScopeInterceptor());
         sqlSessionFactoryBean.getConfiguration().addInterceptor(mybatisPlusInterceptor);
 
@@ -74,7 +75,7 @@ public class MysqlDataSourceConfiguration {
         globalConfig.setBanner(false);
         sqlSessionFactoryBean.setGlobalConfig(globalConfig);
 
-        return  sqlSessionFactoryBean.getObject();
+        return sqlSessionFactoryBean.getObject();
 
     }
 
@@ -86,9 +87,9 @@ public class MysqlDataSourceConfiguration {
 
     @Bean(name = "mysqlSqlSessionTemplate")
     @Primary
-    public SqlSessionTemplate mysqlSqlSessionTemplate(@Qualifier("mysqlSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate mysqlSqlSessionTemplate(
+            @Qualifier("mysqlSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
-
 
 }

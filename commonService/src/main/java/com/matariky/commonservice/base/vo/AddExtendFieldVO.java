@@ -11,13 +11,12 @@ import java.util.List;
 @Data
 public class AddExtendFieldVO {
 
-    @ApiModelProperty(value = "表单名")
+    @ApiModelProperty(value = "Form name")
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "字段列表")
+    @ApiModelProperty(value = "Field Pagination ")
     @Valid
     private List<AddExtendFieldInfoVO> list;
-
 
 }

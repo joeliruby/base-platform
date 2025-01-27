@@ -17,7 +17,7 @@ import java.util.List;
 public interface BasicBaseGoodsBatchMapper extends BaseMapper<BasicBaseGoodsBatch> {
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      *
      * @param vo
      * @return
@@ -27,7 +27,7 @@ public interface BasicBaseGoodsBatchMapper extends BaseMapper<BasicBaseGoodsBatc
 
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -36,7 +36,7 @@ public interface BasicBaseGoodsBatchMapper extends BaseMapper<BasicBaseGoodsBatc
 
 
     /**
-     * 修改方法
+     *   Update  Method  
      *
      * @param bean
      * @return
@@ -45,13 +45,13 @@ public interface BasicBaseGoodsBatchMapper extends BaseMapper<BasicBaseGoodsBatc
 
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBaseGoodsBatchById(@Param("id") Long id);
 
 
     /**
-     * 根据ID Query 对象的方法
+     * Query Object By ID  
      *
      * @param id
      * @return

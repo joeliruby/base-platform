@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = " Device 固件包", tags = " Device 固件包")
+@Api(value = " Device  Firmware ", tags = " Device  Firmware ")
 public class BasicBaseDevicePackageController {
 
 
@@ -47,7 +47,7 @@ public class BasicBaseDevicePackageController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = "修改")
+    @ApiOperation(value = "  Update")
     @PutMapping(value = "/basicBaseDevicepackage")
     public AjaxResult update(@RequestParam(value = "file", required = false) MultipartFile file, @Validated BasicBaseDevicePackageUpdateVO updateVO,
                              @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
@@ -55,7 +55,7 @@ public class BasicBaseDevicePackageController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "Delete ")
     @DeleteMapping(value = "/basicBaseDevicepackage/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBaseDevicepackageService.delBasicBaseDevicepackageById(id);

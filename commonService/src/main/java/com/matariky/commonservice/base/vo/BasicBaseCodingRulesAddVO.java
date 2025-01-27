@@ -16,7 +16,7 @@ public class BasicBaseCodingRulesAddVO {
     @Size(max = 200)
     private String rulesName;
 
-    @ApiModelProperty(value = "编码长度")
+    @ApiModelProperty(value = " Code Length")
     @NotNull
     @Min(1)
     private Integer codingLength;
@@ -29,7 +29,7 @@ public class BasicBaseCodingRulesAddVO {
     @NotNull
     private Integer rulesType;
 
-    @ApiModelProperty(value = " Rule 编码")
+    @ApiModelProperty(value = " Rule  Code ")
     @NotBlank
-    private String  rulesCode;
+    private String rulesCode;
 }

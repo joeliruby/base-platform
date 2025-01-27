@@ -659,7 +659,7 @@
   </select>
   
   
-  	<!--批量删除用户和组的中间表数据 -->
+  	<!--批量Delete  User 和组的中间表数据 -->
 	<delete id="deleteGroupByUserIds" >
 		DELETE FROM user_r_group_user WHERE user_id  in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
@@ -668,7 +668,7 @@
 	</delete>
 	
 	
-	<!--批量删除用户和租户和组织机构的中间表数据 -->
+	<!--批量Delete  User 和租户和组织机构的中间表数据 -->
 	<delete id="deleteTenantAndOrganizationByUserIds">
 		DELETE FROM user_r_user_tenant WHERE user_id  in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
@@ -677,7 +677,7 @@
 	</delete>
 	
 	
-	<!--批量删除用户和角色的中间表数据 -->
+	<!--批量Delete  User 和角色的中间表数据 -->
 	<delete id="deleteRoleByUserIds" >
 		DELETE FROM user_r_user_role WHERE user_id  in
 		 <foreach item="userId" collection="array" open="(" separator="," close=")">
@@ -685,7 +685,7 @@
         </foreach>
 	</delete>
 	
-	<!-- 向用户和租户和组织机构的中间表插入数据 -->
+	<!-- 向 User 和租户和组织机构的中间表插入数据 -->
 	<insert id="saveTenantAndOrganization" parameterType="Map" >
             INSERT INTO user_r_user_tenant (user_id,tenant_code,organization_id,organization_code,tenant_id,self_organization_code)
                  values
@@ -693,7 +693,7 @@
     </insert>
 	
 	
-	<!-- 向用户和组中间表插入数据 -->
+	<!-- 向 User 和组中间表插入数据 -->
 	<insert id="saveRGroupUser" parameterType="java.lang.Long" >
             INSERT INTO user_r_group_user (group_id,user_id)
                  values
@@ -701,7 +701,7 @@
     </insert>
     
     
-    <!-- 向用户和角色中间表插入数据 -->
+    <!-- 向 User 和角色中间表插入数据 -->
 	<insert id="saveRRoleUser" parameterType="java.lang.Long" >
             INSERT INTO user_r_user_role (role_id,user_id)
                  values

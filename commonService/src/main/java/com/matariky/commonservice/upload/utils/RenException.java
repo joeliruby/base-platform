@@ -1,8 +1,7 @@
 package com.matariky.commonservice.upload.utils;
 
-
 /**
- * 自定义异常
+ * Custom abnormal
  *
  */
 public class RenException extends RuntimeException {
@@ -10,14 +9,13 @@ public class RenException extends RuntimeException {
 
 	private String msg;
 
-
 	public RenException(String msg) {
 		super(msg);
 		this.msg = msg;
 	}
-	
-	public RenException(String msg,String res) {
-		this.msg = msg+res;
+
+	public RenException(String msg, String res) {
+		this.msg = msg + res;
 	}
 
 	public RenException(String msg, Throwable e) {

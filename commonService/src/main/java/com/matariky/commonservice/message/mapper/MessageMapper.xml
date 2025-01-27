@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.message.mapper.MessageMapper">
 
-    <!-- 查询消息 -->
+    <!-- Query  Message  -->
     <select id="selectMessagePage" resultType="com.matariky.commonservice.message.vo.MessageVo">
         SELECT
             t.content,

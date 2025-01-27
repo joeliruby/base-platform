@@ -12,16 +12,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
-* Automatically generated entity class
-* @author AUTOMATION
-*/
+ * Automatically generated entity class
+ * 
+ * @author AUTOMATION
+ */
 @TableName("user_tenant")
 @Data
 public class UserTenant {
 	@TableId("id")
 	private String tenantCode;
 
-	@NotBlank(message=" Tenant  Name不能为空！")
+	@NotBlank(message = " Tenant  Name不能为空！")
 	private String tenantName;
 
 	private Long updateTime;
@@ -41,32 +42,24 @@ public class UserTenant {
 
 	private Integer orderNum;
 
-	//上级 Tenant 编码
+	// 上级 Tenant Code
 	@TableField(exist = false)
 
 	private String parentCode;
 
-	//描述
+	// Description
 	private String description;
-
 
 	private Boolean isActive;
 	private String domainName;
-	private String theme;//主题颜色
+	private String theme;// 主题颜色
 
 	@TableField(exist = false)
 	private String parentName;
 
 	@TableField(exist = false)
-	private List<Map<String,Object>> applicationIds;
-
-
+	private List<Map<String, Object>> applicationIds;
 
 	private Long parentId;
-
-
-
-
-
 
 }

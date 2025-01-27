@@ -27,7 +27,7 @@ import com.matariky.utils.BeanUtils;
 
 /**
  * ClassName:SystemMysqlBackupsController
- * 类描述： MySQL Data 备份接口
+ * Classification： MySQL Data Backup interface
  */
 @RestController
 @RequestMapping(value = "/api/v1/system/baskups")

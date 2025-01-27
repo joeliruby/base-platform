@@ -11,6 +11,6 @@ public class CodingRulesOptionInfo {
     @ApiModelProperty(value = " Rule  Name")
     private String rulesName;
 
-    @ApiModelProperty(value = "显示文本")
+    @ApiModelProperty(value = "Display Text ")
     private String label;
 }

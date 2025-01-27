@@ -174,7 +174,7 @@ public interface UserMapper extends EnhanceBaseMapper<User> {
 
 	public List<Map<String, Object>> getUserAllWithRoleAndGroup(@Param("params") Map<String, Object> map);
 
-	//插入 用户 Tenant 中间表(也是和组织机构中间表)
+	//插入  User  Tenant 中间表(也是和组织机构中间表)
     public int createUserAndTenantAndOrganization(@Param("params") Map<String, Object> map);
 
     @Insert("insert into user_r_user_tenant values (#{userId}, #{tenantCode},#{organizationId},#{organizationCode},#{isAdmin},#{tenantId},#{selfOrganizationCode},#{theme})")

@@ -7,7 +7,7 @@
 	<packaging>jar</packaging>
 
 	<name>jobsService</name>
-	<description>定时任务服务</description>
+	<description> Scheduled 任务 Service </description>
 
 	<parent>
 		<groupId>com.matariky</groupId>

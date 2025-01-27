@@ -18,8 +18,8 @@ import java.util.*;
 
 public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
 
-	private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
-	
+    private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
+
     /** oracle Type 的24小时制时分秒 */
     public static final String ORACLE_DATE_TIME_24_PATTERN = "yyyy-mm-dd hh24:mi:ss";
     public static final String DATE_TIME_24_PATTERN_SIMPLE = "yyyyMMddHHmmss";
@@ -32,13 +32,13 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     public static final String DATE_TIME_YEAR_MONTH_DAY_HM = "yyyy年MM月dd日 HH:mm";
     /** 日期格式到天 */
     public static final String DATE_TIME_DAY = "yyyy-MM-dd";
-    /** 只得到 Time ，不要年月日 */
+    /** 只得到 Time ,不要年月日 */
     public static final String DATE_TIME_TIME = "HH:mm:ss";
     /** 日期格式不带中横杠 */
     public static final String DATE_TIME_DAY_SIMPLE = "yyyyMMdd";
     /** 日期格式不带中横杠 年月格式 */
     public static final String DATE_TIME_DAY_SIMPLE_NO_DAY = "yyyyMM";
-    /**  Time 格式 */
+    /** Time 格式 */
     public static final String DATE_TIME_TERM = "HH.mm.ss";
     public static final String DATE_TIME_CHINESE = "MM月dd日HH时mm分";
 
@@ -49,9 +49,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String DAY_ENDTIME = "235959";
 
-
     /**
-     * 获取指定年和月份的最后一天
+     * Retrieve指定年和月份的最后一天
      *
      * @param year
      * @param month
@@ -59,13 +58,13 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String getLastDayOfMonth(int year, int month) {
         Calendar cal = Calendar.getInstance();
-        // 设置年份
+        // Configuration年份
         cal.set(Calendar.YEAR, year);
-        // 设置月份
+        // Configuration月份
         cal.set(Calendar.MONTH, month - 1);
-        // 获取某月最大天数
+        // Retrieve某月最大天数
         int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        // 设置日历中月份的最大天数
+        // Configuration日历中月份的最大天数
         cal.set(Calendar.DAY_OF_MONTH, lastDay);
         // 格式化日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -99,7 +98,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前 Time yyyyMMddHHmmss
+     * Retrieve Current Time yyyyMMddHHmmss
      */
     public static String getCurrentTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -107,7 +106,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前 Time yyyyMMddHHmmss
+     * Retrieve Current Time yyyyMMddHHmmss
      */
     public static String getCurrentTime(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -115,7 +114,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前 Time  的年月日yyyy-MM-dd
+     * Retrieve Current Time 的年月日yyyy-MM-dd
      *
      * @return yyyy-MM-dd
      */
@@ -125,7 +124,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前 Time  的年月日yyyy-MM-dd
+     * Retrieve Current Time 的年月日yyyy-MM-dd
      *
      * @return yyyy-MM-dd
      */
@@ -135,7 +134,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前 Time  的 时分秒
+     * Retrieve Current Time 的 时分秒
      *
      * @return
      */
@@ -143,8 +142,6 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmmss");
         return simpleDateFormat.format(new Date());
     }
-
-   
 
     /**
      * Date型的 Time 转换成String型的格式为：yyyyMMdd
@@ -179,7 +176,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前日期
+     * Retrieve Current 日期
      */
     public static Date getCurrentDate() {
 
@@ -195,7 +192,6 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         return null;
     }
 
-
     public static Date getCurrentDate3() {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -209,8 +205,9 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         }
         return null;
     }
+
     /**
-     * 获得当前日期和 Time 
+     * 获得 Current 日期和 Time
      *
      * @return
      */
@@ -229,7 +226,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取格式后的 Data  ，返回yyyyMMdd
+     * Retrieve格式后的 Data ,返回yyyyMMdd
      */
     public static String getFormatTime(String Date) {
         if (null == Date) {
@@ -244,7 +241,6 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         strBuf.append(Date.substring(8, 10));
         return strBuf.toString();
     }
-
 
     public static String dbFormatToDateFormat(String dbFormat) {
         if (dbFormat != null && !"".equals(dbFormat) && dbFormat.trim().length() >= 8) {
@@ -383,7 +379,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 按小时加，指定日期
+     * 按小时加 ,指定日期
      *
      * @param date
      * @param value
@@ -397,7 +393,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 按分钟加，指定日期
+     * 按分钟加 ,指定日期
      *
      * @param date
      * @param value
@@ -411,7 +407,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 按秒加，指定日期
+     * 按秒加 ,指定日期
      *
      * @param date
      * @param value
@@ -443,8 +439,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 计算两个日期之间相差的 Time （毫秒）
      *
-     * @param startDate 开始 Time 
-     * @param endDate   结束 Time 
+     * @param startDate Start Time
+     * @param endDate   结束 Time
      * @return 返回两个 Time 相差的毫秒数
      */
     public static long getInterval(Date startDate, Date endDate) {
@@ -457,8 +453,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 计算两个日期之间相差的 Time （秒）
      *
-     * @param startDate 开始 Time 
-     * @param endDate   结束 Time 
+     * @param startDate Start Time
+     * @param endDate   结束 Time
      * @return 返回两个 Time 相差的毫秒数
      */
     public static int getIntervalSeconds(Date startDate, Date endDate) {
@@ -468,12 +464,11 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         return interval;
     }
 
-
     /**
      * 计算两个日期之间相差的 Time （天）
      *
-     * @param startDate 开始 Time 
-     * @param endDate   结束 Time 
+     * @param startDate Start Time
+     * @param endDate   结束 Time
      * @return 返回两个 Time 相差的毫秒数
      */
     public static int caculate2Days(Date startDate, Date endDate) {
@@ -505,14 +500,14 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 将StringType 转成dateType  功能描述: <br>
-     * 〈功能Detail描述〉
+     * 将StringType 转成dateType 功能 Description : <br>
+     * 〈功能Detail Description 〉
      *
      * @param dateStr
      * @return
      *
-     * @see [相关类/方法](可选)
-     * @since [产品/模块版本](可选)
+     * @see [相关类/ Method ](可选)
+     * @since [产品/模块 Version](可选)
      */
     public static Date parseStr2Date(String dateStr, String pattern) {
 
@@ -522,20 +517,20 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             date = sdf.parse(dateStr);
             return date;
         } catch (ParseException e) {
-            logger.error("日期转换错误：" + e.getMessage());
-            throw new RenException("日期转换错误：" + e);
+            logger.error("日期转换 Error ：" + e.getMessage());
+            throw new RenException("日期转换 Error ：" + e);
         }
     }
 
     /**
-     * 将StringType 转成dateType  功能描述: <br>
-     * 〈功能Detail描述〉
+     * 将StringType 转成dateType 功能 Description : <br>
+     * 〈功能Detail Description 〉
      *
      * @param dateStr
      * @return
      *
-     * @see [相关类/方法](可选)
-     * @since [产品/模块版本](可选)
+     * @see [相关类/ Method ](可选)
+     * @since [产品/模块 Version](可选)
      */
     public static Date parseStr2DateIgnoreError(String dateStr, String pattern) {
 
@@ -544,7 +539,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = sdf.parse(dateStr);
         } catch (Exception e) {
-            logger.error("日期转换错误：", e);
+            logger.error("日期转换 Error ：", e);
         }
         return date;
     }
@@ -552,9 +547,9 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 将日期格式转换成String格式
      *
-     * @param date           需要转换的 Time 
+     * @param date           需要转换的 Time
      * @param pattern        转换的 Time 格式
-     * @param allowException 转为时为空， Wether 抛出异常。如果为false，则返回空字符串
+     * @param allowException 转为时为空 , Wether 抛出异常。如果为false ,则返回空字符串
      * @return
      */
     public static String parseDate2String(Date date, String pattern, boolean allowException) {
@@ -572,7 +567,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 将Date转换成指定格式的string
      *
-     * @param date    需要转换的 Time 
+     * @param date    需要转换的 Time
      * @param pattern 转换成的 Time 格式
      * @return
      */
@@ -581,7 +576,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 目标 Time  Wether 在起止 Time 段内,起止 Time 都为空表示不判断 起始 Time 为空，认为不考虑起始 Time  截至 Time 为空，认为不考虑截至 Time  date.before after不包含日期相同的情况。
+     * 目标 Time Wether 在起止 Time 段内,起止 Time 都为空表示不判断 起始 Time 为空 ,认为不考虑起始 Time 截至 Time
+     * 为空 ,认为不考虑截至 Time date.before after不包含日期相同的情况。
      *
      * @param destDate
      * @param startDate
@@ -640,11 +636,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         return endCalendar.getTime();
     }
 
-
-
-
     /**
-     * 当前日期所在季度最后一天年Y 月M 日D
+     * Current 日期所在季度最后一天年Y 月M 日D
      *
      * @return
      */
@@ -676,26 +669,22 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         return map;
     }
 
-
-
-
-
     /**
-     * 计算 Time  Wether 失效(入参 Time 小于当前 Time )（毫秒）
+     * 计算 Time Wether 失效(入参 Time 小于 Current Time )（毫秒）
      *
-     * @param startDate 开始 Time 
-     * @param endDate 结束 Time 
+     * @param startDate Start Time
+     * @param endDate   结束 Time
      * @return 返回两个 Time 相差的毫秒数
      */
     /**
-     * 功能描述: 计算 Time  Wether 失效(入参 Time 小于当前 Time )<br>
-     * 〈功能Detail描述〉
+     * 功能 Description : 计算 Time Wether 失效(入参 Time 小于 Current Time )<br>
+     * 〈功能Detail Description 〉
      *
      * @param date
      * @return true:失效；false:未失效
      *
-     * @see [相关类/方法](可选)
-     * @since [产品/模块版本](可选)
+     * @see [相关类/ Method ](可选)
+     * @since [产品/模块 Version](可选)
      */
     public static boolean isInvalid(Date date) {
         if (date == null) {
@@ -712,14 +701,14 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 功能描述:获取当天的起始 Time  <br>
-     * 〈功能Detail描述〉
+     * 功能 Description : Retrieve当天的起始 Time <br>
+     * 〈功能Detail Description 〉
      *
      * @param date
      * @return
      *
-     * @see [相关类/方法](可选)
-     * @since [产品/模块版本](可选)
+     * @see [相关类/ Method ](可选)
+     * @since [产品/模块 Version](可选)
      */
     public static Date getStartTimeOfDay(Date date) {
 
@@ -733,14 +722,14 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 功能描述:获取当天的结束 Time  <br>
-     * 〈功能Detail描述〉
+     * 功能 Description : Retrieve当天的结束 Time <br>
+     * 〈功能Detail Description 〉
      *
      * @param date
      * @return
      *
-     * @see [相关类/方法](可选)
-     * @since [产品/模块版本](可选)
+     * @see [相关类/ Method ](可选)
+     * @since [产品/模块 Version](可选)
      */
     public static Date getEndTimeOfDay(Date date) {
         Calendar todayEnd = DateUtil.toCalendar(date);
@@ -752,14 +741,14 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 将StringType 转成dateType  功能描述: <br>
-     * 〈功能Detail描述〉
+     * 将StringType 转成dateType 功能 Description : <br>
+     * 〈功能Detail Description 〉
      *
      * @param dateStr
      * @return
      *
-     * @see [相关类/方法](可选)
-     * @since [产品/模块版本](可选)
+     * @see [相关类/ Method ](可选)
+     * @since [产品/模块 Version](可选)
      */
     public static boolean validateDate(String dateStr, String pattern) {
         if (StringUtil.isEmpty(dateStr)) {
@@ -771,36 +760,36 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             sdf.parse(dateStr);
         } catch (ParseException e) {
-            logger.error("日期转换错误：" + e.getMessage());
+            logger.error("日期转换 Error ：" + e.getMessage());
             isDate = false;
         }
         return isDate;
     }
 
-    // 获取指定 Time 月份第一天0点
+    // Retrieve指定 Time 月份第一天0点
     public static Date getFirstDayOfMonth(Date date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        cal.set(Calendar.DAY_OF_MONTH, 1);// Configuration为1号, Current 日期既为本月第一天
         String first = format.format(cal.getTime());
         return format.parse(first);
     }
 
     /**
-     * @Description:  Time 搓转localDateTime
+     * @Description: Time 搓转localDateTime
      * @Author: bo.chen
      * @Date: 2023/9/13 15:08
      * @param timestamp
      * @return java.time.LocalDateTime
      **/
-    public static LocalDateTime toLocalDateTime(long timestamp){
+    public static LocalDateTime toLocalDateTime(long timestamp) {
         Instant instant = Instant.ofEpochMilli(timestamp);
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
 
     /**
-     * @Description:  Time 转cron表达式
+     * @Description: Time 转cron表达式
      * @Author: bo.chen
      * @Date: 2023/9/25 10:05
      * @param localDateTime
@@ -811,7 +800,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * @Description:  Time 转cron表达式
+     * @Description: Time 转cron表达式
      * @Author: bo.chen
      * @Date: 2023/9/25 18:29
      * @param localDateTime
@@ -819,11 +808,11 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
      * @return java.lang.String
      **/
     public static String getCronForHour(LocalDateTime localDateTime, Integer hour) {
-        return localDateTime.format(createFormatter("ss mm */"+ hour + " dd MM ? yyyy"));
+        return localDateTime.format(createFormatter("ss mm */" + hour + " dd MM ? yyyy"));
     }
 
     /**
-     * @Description:  Time 转cron表达式
+     * @Description: Time 转cron表达式
      * @Author: bo.chen
      * @Date: 2023/9/25 18:29
      * @param localDateTime
@@ -831,10 +820,11 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
      * @return java.lang.String
      **/
     public static String getCronForDay(LocalDateTime localDateTime, Integer day) {
-        return localDateTime.format(createFormatter("ss mm HH */"+ day + " MM ? yyyy"));
+        return localDateTime.format(createFormatter("ss mm HH */" + day + " MM ? yyyy"));
     }
+
     /**
-     * @Description:  Time 转cron表达式
+     * @Description: Time 转cron表达式
      * @Author: bo.chen
      * @Date: 2023/9/25 18:29
      * @param localDateTime
@@ -842,10 +832,11 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
      * @return java.lang.String
      **/
     public static String getCronForWeek(LocalDateTime localDateTime, Integer week) {
-        return localDateTime.format(createFormatter("ss mm HH dd MM */"+ week + " yyyy"));
+        return localDateTime.format(createFormatter("ss mm HH dd MM */" + week + " yyyy"));
     }
+
     /**
-     * @Description:  Time 转cron表达式
+     * @Description: Time 转cron表达式
      * @Author: bo.chen
      * @Date: 2023/9/25 18:29
      * @param localDateTime
@@ -857,7 +848,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * @Description: 创建日期转换格式
+     * @Description: Create 日期转换格式
      * @Author: bo.chen
      * @Date: 2023/9/25 10:05
      * @param pattern
@@ -867,9 +858,9 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).withZone(ZoneId.systemDefault());
     }
 
-
     /**
-     * 得到当前日期
+     * 得到 Current 日期
+     * 
      * @return
      */
     private static String getCurrentDate2() {
@@ -878,19 +869,20 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
         return simple.format(date);
     }
+
     /**
-     * @param date1 需要比较的 Time  不能为空(null),需要正确的日期格式
-     * @param date2 被比较的 Time   为空(null)则为当前 Time 
-     * @param stype 返回值Type    0为多少天，1为多少个月，2为多少年
+     * @param date1 需要比较的 Time 不能为空(null),需要正确的日期格式
+     * @param date2 被比较的 Time 为空(null)则为 Current Time
+     * @param stype 返回值Type 0为多少天 ,1为多少个月 ,2为多少年
      * @return
      */
-    public static int compareDate(String date1, String date2, int stype){
+    public static int compareDate(String date1, String date2, int stype) {
         int n = 0;
 
-        String[] u = {"天","月","年"};
-        String formatStyle = stype==1?"yyyy-MM":"yyyy-MM-dd";
+        String[] u = { "天", "月", "年" };
+        String formatStyle = stype == 1 ? "yyyy-MM" : "yyyy-MM-dd";
 
-        date2 = date2==null?getCurrentDate2():date2;
+        date2 = date2 == null ? getCurrentDate2() : date2;
 
         DateFormat df = new SimpleDateFormat(formatStyle);
         Calendar c1 = Calendar.getInstance();
@@ -901,49 +893,44 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         } catch (Exception e3) {
             System.out.println("wrong occured");
         }
-        //List list = new ArrayList();
-        while (!c1.after(c2)) {                     // 循环对比，直到相等，n 就是所要的结果
-            //list.add(df.format(c1.getTime()));    // 这里可以把间隔的日期存到数组中  Print 出来
+        // List list = new ArrayList();
+        while (!c1.after(c2)) { // 循环对比 ,直到相等 ,n 就是所要的结果
+            // list.add(df.format(c1.getTime())); // 这里可以把间隔的日期存到数组中 Print 出来
             n++;
-            if(stype==1){
-                c1.add(Calendar.MONTH, 1);          // 比较月份，月份+1
-            }
-            else{
-                c1.add(Calendar.DATE, 1);           // 比较天数，日期+1
+            if (stype == 1) {
+                c1.add(Calendar.MONTH, 1); // 比较月份 ,月份+1
+            } else {
+                c1.add(Calendar.DATE, 1); // 比较天数 ,日期+1
             }
         }
 
-        n = n-1;
+        n = n - 1;
 
-        if(stype==2){
+        if (stype == 2) {
             BigDecimal b1 = new BigDecimal(n);
             BigDecimal b2 = new BigDecimal("365");
-            BigDecimal b = b1.divide(b2,0,BigDecimal.ROUND_UP);
+            BigDecimal b = b1.divide(b2, 0, BigDecimal.ROUND_UP);
             n = b.intValue();
         }
 
-        System.out.println(date1+" -- "+date2+" 相差多少"+u[stype]+":"+n);
+        System.out.println(date1 + " -- " + date2 + " 相差多少" + u[stype] + ":" + n);
         return n;
     }
-
-
 
     public static void main(String[] args) {
         String date = "2009-06-12";
 
-//        DateUtil.compareDate(date, null, 0);
-//        DateUtil.compareDate(date, null, 1);
-//        DateUtil.compareDate(date, null, 2);
-//
-//        date = "2006-06-03";
-//        DateUtil.compareDate(date, null, 0);
-//        DateUtil.compareDate(date, null, 1);
-//        DateUtil.compareDate(date, null, 2);
-//        DateUtil.compareDate(date, "2009-06-01", 0);
-//        DateUtil.compareDate(date, "2009-06-01", 1);
+        // DateUtil.compareDate(date, null, 0);
+        // DateUtil.compareDate(date, null, 1);
+        // DateUtil.compareDate(date, null, 2);
+        //
+        // date = "2006-06-03";
+        // DateUtil.compareDate(date, null, 0);
+        // DateUtil.compareDate(date, null, 1);
+        // DateUtil.compareDate(date, null, 2);
+        // DateUtil.compareDate(date, "2009-06-01", 0);
+        // DateUtil.compareDate(date, "2009-06-01", 1);
         DateUtil.compareDate(date, "2009-06-12", 2);
         DateUtil.compareDate(date, "2009-06-12", 2);
     }
 }
-
-

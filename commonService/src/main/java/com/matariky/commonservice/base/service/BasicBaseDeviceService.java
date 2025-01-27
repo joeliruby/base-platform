@@ -42,12 +42,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMapper, BasicBaseDevice> implements BaseService<BasicBaseDevice> {
+public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMapper, BasicBaseDevice>
+        implements BaseService<BasicBaseDevice> {
 
     @Autowired
     private BasicBaseDeviceMapper basicBaseDeviceMapper;
@@ -71,14 +72,16 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
     private BasicBaseDeviceRuleMapper basicBaseDeviceRuleMapper;
 
     /**
-     *  Query 所有分页
+     * Query All
      */
     public List<BasicBaseDeviceInfoVO> getBasicBaseDeviceAll(BasicBaseDeviceListVO vo) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -90,7 +93,7 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
         PageHelper.startPage(vo.getIndex(), vo.getPerPage());
         List<BasicBaseDeviceInfoVO> list = basicBaseDeviceMapper.getBasicBaseDeviceAll(vo);
         list.stream().forEach(item -> {
-            /** 在线缓存key **/
+            /** Online缓存key **/
             String onlineKey = CacheConstants.DEVICE_ONLINE + item.getDeviceCode();
             boolean b = redisUtils.hasKey(onlineKey);
             if (b) {
@@ -105,9 +108,8 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
         return list;
     }
 
-
     /**
-     * New方法
+     * New Method
      */
     public int createBasicBaseDeviceWithOrg(BasicBaseDeviceAddVO addVO) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -133,9 +135,10 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
                 throw new QslException(MessageKey.BASE_DEVICE_MAC_REPEAT);
             }
         }
-        BasicBaseDeviceType basicBaseDevicetype = basicBaseDevicetypeMapper.selectOne(Wrappers.lambdaQuery(BasicBaseDeviceType.class)
-                .eq(BasicBaseDeviceType::getId, addVO.getTypeId())
-                .eq(BasicBaseDeviceType::getDeleteTime, 0));
+        BasicBaseDeviceType basicBaseDevicetype = basicBaseDevicetypeMapper
+                .selectOne(Wrappers.lambdaQuery(BasicBaseDeviceType.class)
+                        .eq(BasicBaseDeviceType::getId, addVO.getTypeId())
+                        .eq(BasicBaseDeviceType::getDeleteTime, 0));
         if (basicBaseDevicetype == null) {
             throw new QslException(MessageKey.DEVICE_TYPE_NOT_EXIST);
         }
@@ -165,7 +168,7 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
     }
 
     /**
-     * Update方法
+     * Update Method
      *
      * @param updateVO
      * @return
@@ -177,8 +180,7 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
                 .eq(BasicBaseDevice::getDeviceCode, updateVO.getDeviceCode())
                 .eq(BasicBaseDevice::getDeleteTime, 0)
                 .eq(BasicBaseDevice::getTenantId, tenantId)
-                .ne(BasicBaseDevice::getId, updateVO.getId())
-        );
+                .ne(BasicBaseDevice::getId, updateVO.getId()));
         if (count > 0) {
             throw new QslException(MessageKey.DEVICE_CODE_NOT_REPEAT);
         }
@@ -215,7 +217,7 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
     }
 
     /**
-     * 删除方法
+     * Delete Method
      *
      * @param id
      * @return
@@ -242,24 +244,24 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
         return basicBaseDeviceMapper.delBasicBaseDeviceById(id);
     }
 
-
     /***
-     * DownloadImport模版
+     * DownloadImport Template
      */
     public void downLoadTemplate() {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        commonService.createTemplate(response, BasicBaseDeviceExeclVO.class, "device", " Device Import模版", tenantId);
+        commonService.createTemplate(response, BasicBaseDeviceExeclVO.class, "device", " Device Import Template ",
+                tenantId);
     }
 
     /**
-     * 检查xlsx文件 Wether 含有图片
+     * Check if an XLSX FIle has Images
      *
      * @param file
      * @return
      */
     public static boolean containsImage(MultipartFile file) {
         try (InputStream is = file.getInputStream();
-             Workbook workbook = WorkbookFactory.create(is)) {
+                Workbook workbook = WorkbookFactory.create(is)) {
             List<XSSFPictureData> pictures = ((XSSFWorkbook) workbook).getAllPictures();
             return !pictures.isEmpty();
         } catch (Exception e) {
@@ -268,7 +270,7 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
     }
 
     /**
-     * Import Data 
+     * Import Data
      */
     public void importData(MultipartFile file) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -279,7 +281,10 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
         }
         try {
             InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, BasicBaseDeviceExeclVO.class, new BasicBaseDeviceExeclListener(basicBaseDeviceMapper, basicBaseDevicetypeMapper, userId, request, tenantId, this))
+            EasyExcel
+                    .read(inputStream, BasicBaseDeviceExeclVO.class,
+                            new BasicBaseDeviceExeclListener(basicBaseDeviceMapper, basicBaseDevicetypeMapper, userId,
+                                    request, tenantId, this))
                     .sheet().doRead();
         } catch (Exception e) {
             throw new QslException(e.getMessage());
@@ -288,7 +293,7 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
     }
 
     /**
-     *  Device 功率下拉选
+     * Device power Drop Down Box
      */
     public List<DbmVO> getDbmOption() {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -318,14 +323,16 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
     }
 
     /**
-     *  Device 编码（ Device 厂家/ Device Type /  Device 型号）下拉选
+     * Device Code （ Device factory/ Device Type / Device model） Drop Down Box
      */
     public List<DeviceCodeInfo> getCodeOption(CodeOptionListVO vo) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -336,13 +343,14 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
         vo.setTenantId(tenantId);
         List<DeviceCodeInfo> list = basicBaseDeviceMapper.getCodeOptionList(vo);
         list.stream().forEach(item -> {
-            item.setLabel(item.getDeviceCode() + "(" + item.getDeviceFactory() + "/" + item.getTypeName() + "/" + item.getDeviceModel() + ")");
+            item.setLabel(item.getDeviceCode() + "(" + item.getDeviceFactory() + "/" + item.getTypeName() + "/"
+                    + item.getDeviceModel() + ")");
         });
         return list;
     }
 
     /**
-     *  Print 机 - 下拉选列表
+     * Printer - Drop Down Box Pagination
      *
      * @param
      */
@@ -351,8 +359,10 @@ public class BasicBaseDeviceService extends BaseServiceImpl<BasicBaseDeviceMappe
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {

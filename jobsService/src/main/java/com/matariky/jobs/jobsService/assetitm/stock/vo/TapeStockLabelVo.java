@@ -13,17 +13,17 @@ import java.io.Serializable;
 public class TapeStockLabelVo implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
+    /**
      * 地点id
      */
     private String locationId;
 
     /**
-     * 机架id
+     * Library id
      */
     private Long libraryId;
 
@@ -33,10 +33,8 @@ public class TapeStockLabelVo implements Serializable {
     private String epc;
 
     /**
-     *  Label id
+     * Label id
      */
     private Long labelId;
-
-
 
 }

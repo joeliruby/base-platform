@@ -19,7 +19,7 @@ import com.matariky.processor.constants.TracerConstants;
         }
 	}
     
-     Device  Time 同步topic 配置格式  synch-mqtt/SRE801_1_mid3_6
+     Device  Time 同步topic  Configuration 格式  synch-mqtt/SRE801_1_mid3_6
  */
 public class SolidSRE401XSynchNormalizer implements Processor{
 

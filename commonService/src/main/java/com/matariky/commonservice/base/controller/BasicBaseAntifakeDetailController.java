@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = "防伪认证 Detail表", tags = "防伪认证 Detail表")
+@Api(value = "Anti -counterfeiting certification Detail", tags = "Anti -counterfeiting certification Detail")
 public class BasicBaseAntifakeDetailController {
 
     @Value("${message.locale}")
@@ -31,7 +31,7 @@ public class BasicBaseAntifakeDetailController {
     private BasicBaseAntifakeDetailService basicBaseAntifakeDetailService;
 
 
-    @ApiOperation("列表")
+    @ApiOperation("Pagination")
     @GetMapping("/basicBaseAntifakeDetail/list")
     public AjaxResult list(BasicBaseAntifakeDetail bean,
                            @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
@@ -47,7 +47,7 @@ public class BasicBaseAntifakeDetailController {
     }
 
 
-    @ApiOperation("保存")
+    @ApiOperation(" Save ")
     @PostMapping(value = "/basicBaseAntifakeDetail")
     public AjaxResult save(@RequestBody BasicBaseAntifakeDetail bean) {
         try {
@@ -69,7 +69,7 @@ public class BasicBaseAntifakeDetailController {
         }
     }
 
-    @ApiOperation("删除")
+    @ApiOperation("Delete ")
     @DeleteMapping(value = "/basicBaseAntifakeDetail")
     public AjaxResult del(Long id) {
         try {
@@ -80,7 +80,7 @@ public class BasicBaseAntifakeDetailController {
         }
     }
 
-    @ApiOperation("详情")
+    @ApiOperation("  Detail ")
     @GetMapping(value = "/basicBaseAntifakeDetail/{basicBaseAntifakeDetailId}")
     public AjaxResult getOne(@PathVariable("/basicBaseAntifakeDetailId") Long id) {
         BasicBaseAntifakeDetail info = basicBaseAntifakeDetailService.getBasicBaseAntifakeDetailById(id);

@@ -43,12 +43,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDeviceUpgradeMapper, BasicBaseDeviceUpgrade> implements BaseService<BasicBaseDeviceUpgrade> {
+public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDeviceUpgradeMapper, BasicBaseDeviceUpgrade>
+        implements BaseService<BasicBaseDeviceUpgrade> {
 
     @Autowired
     private BasicBaseDeviceUpgradeMapper basicBaseDeviceupgradeMapper;
@@ -77,7 +78,7 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
     }
 
     /**
-     * 升级列表
+     * Upgrade Pagination
      *
      * @param vo
      * @return
@@ -86,8 +87,10 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -118,7 +121,7 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
     }
 
     /**
-     * 升级 Device 
+     * Upgrade Device
      */
     @Transactional(rollbackFor = Exception.class)
     public void createBasicBaseDeviceupgradeWithOrg(BasicBaseDeviceUpgradeAddDTO addDTO) {
@@ -134,16 +137,16 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
                 .eq(BasicBaseDeviceUpgrade::getPackageId, addDTO.getPackageId())
                 .eq(BasicBaseDeviceUpgrade::getDeleteTime, 0));
 
-
         addDTO.getDeviceUpgradeList().stream().forEach(item -> {
-            /**立刻升级**/
+            /** Immediate Upgrade **/
             if ("immediate".equals(item.getUpgradeType())) {
                 Long rowId = IdWorker.getId();
                 item.getDeviceIdList().forEach(deviceId -> {
                     BasicBaseDevice basicBaseDevice = basicBaseDeviceMapper.selectById(deviceId);
-                    /** Device 升级**/
-                    commonService.deviceUpgrade(devicePackage.getMd5(), devicePackage.getPackageVersion(), basicBaseDevice.getDeviceCode());
-                    /** 升级之后，Update Device 版本 **/
+                    /** Device Upgrade **/
+                    commonService.deviceUpgrade(devicePackage.getMd5(), devicePackage.getPackageVersion(),
+                            basicBaseDevice.getDeviceCode());
+                    /** When Upgraded ,Update Device Version **/
                     BasicBaseDevice update = new BasicBaseDevice();
                     update.setId(deviceId);
                     update.setPrevVersion(basicBaseDevice.getCurrentVersion());
@@ -151,12 +154,13 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
                     update.setUpdateTime(System.currentTimeMillis());
                     update.setUpdateBy(userId);
                     basicBaseDeviceMapper.updateById(update);
-                    Long count = basicBaseDeviceupgradeMapper.selectCount(Wrappers.lambdaQuery(BasicBaseDeviceUpgrade.class)
-                            .eq(BasicBaseDeviceUpgrade::getPackageId, addDTO.getPackageId())
-                            .eq(BasicBaseDeviceUpgrade::getDeviceId, deviceId)
-                            .eq(BasicBaseDeviceUpgrade::getDeleteTime, 0)
-                            .eq(BasicBaseDeviceUpgrade::getTenantId, tenantId));
-                    /** 已经升过级，不能再次升级 **/
+                    Long count = basicBaseDeviceupgradeMapper
+                            .selectCount(Wrappers.lambdaQuery(BasicBaseDeviceUpgrade.class)
+                                    .eq(BasicBaseDeviceUpgrade::getPackageId, addDTO.getPackageId())
+                                    .eq(BasicBaseDeviceUpgrade::getDeviceId, deviceId)
+                                    .eq(BasicBaseDeviceUpgrade::getDeleteTime, 0)
+                                    .eq(BasicBaseDeviceUpgrade::getTenantId, tenantId));
+                    /** Has been Upgraded, not again Upgrade **/
                     if (count > 0) {
                         return;
                     }
@@ -172,15 +176,13 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
                     add.setUpgradeType(item.getUpgradeType());
                     add.setUpgradeTime(item.getUpgradeTime());
 
-                    /**临时认为升级成功**/
+                    /** Temporarily believe Upgrade success **/
                     add.setUpgradeStatus(1);
                     add.setExecuteTime(System.currentTimeMillis());
                     add.setRowId(rowId);
-                    //    basicBaseDeviceupgradeMapper.createBasicBaseDeviceupgrade(add);
-//                    jedis.psubscribe(listener, "deviceUpdated/solid:*");
 
                 });
-                /**定时升级**/
+                /** Scheduled Upgrade **/
             } else if ("scheduler".equals(item.getUpgradeType())) {
                 Long rowId = IdWorker.getId();
                 item.getDeviceIdList().forEach(deviceId -> {
@@ -196,12 +198,12 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
                     add.setUpgradeType(item.getUpgradeType());
                     add.setUpgradeTime(item.getUpgradeTime());
 
-                    /**临时认为升级成功**/
+                    /** Temporarily believe Upgrade success **/
                     add.setExecuteTime(System.currentTimeMillis());
                     add.setRowId(rowId);
                     basicBaseDeviceupgradeMapper.createBasicBaseDeviceupgrade(add);
                     try {
-                        /**Add Timer Task **/
+                        /** Add Timer Task **/
                         HttpHeaders headers = new HttpHeaders();
                         headers.add("Authorization", "Bearer " + TokenUtils.getTokenFromRequest(request));
                         headers.add("Id", request.getHeader("Id"));
@@ -219,7 +221,7 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
                 });
             }
         });
-        /** Update包升级的 Device  Quantity **/
+        /** Update包 Upgrade 的 Device Quantity **/
         BasicBaseDevicePackage baseDevicepackage = new BasicBaseDevicePackage();
         baseDevicepackage.setUpdateTime(System.currentTimeMillis());
         baseDevicepackage.setUpdateBy(userId);
@@ -228,47 +230,49 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
         basicBaseDevicepackageMapper.updateById(baseDevicepackage);
     }
 
-
     public void recordLog(String deviceCode, String content) {
         try {
             OpenTelemetryUtil.init("karaf", signozTracerUrl);
-            // 获取Tracer
+            // RetrieveTracer
             Tracer tracer = OpenTelemetryUtil.getTracer();
-            // 创建Span
-            //操作 Name
+            // Create Span
+            // Operation Name
             Span span = tracer.spanBuilder(TracerConstants.APPSTART).startSpan();
             try (Scope scope = span.makeCurrent()) {
-                // 获取traceId
-                // 获取spanId
-                // 设置属性
-                span.setAttribute(TracerConstants.APPNAME, "karaf");//应用 Name
-                span.setAttribute(TracerConstants.HASERROR, "false");// Wether 有报错
-                //以下是具体错误消息
+                // RetrievetraceId
+                // RetrievespanId
+                // Configuration Properties
+                span.setAttribute(TracerConstants.APPNAME, "karaf");// App Name
+                span.setAttribute(TracerConstants.HASERROR, "false");// Wether There is Error
+                // The following is specific Error Message
                 Attributes eventAttributes = Attributes.of(
                         AttributeKey.stringKey(TracerConstants.SUCCESS), TracerConstants.SUCCESS,
                         AttributeKey.stringKey(TracerConstants.DEVICECODE), deviceCode,
                         AttributeKey.stringKey(TracerConstants.DEVICE_UPGRADE_CONTENT), content);
-                // 添加事件
+                // Add Event
                 span.addEvent(TracerConstants.APPSTART, eventAttributes);
             } catch (Throwable t) {
                 span.setStatus(StatusCode.ERROR, t.getMessage());
-                span.setAttribute(TracerConstants.HASERROR, "true");// Wether 有报错
-                Attributes eventAttributes = Attributes.of(AttributeKey.stringKey(TracerConstants.ERROR), t.getMessage());
-                // 添加事件
+                span.setAttribute(TracerConstants.HASERROR, "true");// Wether There is Error
+                Attributes eventAttributes = Attributes.of(AttributeKey.stringKey(TracerConstants.ERROR),
+                        t.getMessage());
+                // Add Event
                 span.addEvent(TracerConstants.APPSTART, eventAttributes);
             } finally {
                 OpenTelemetryUtil.getExporter().flush();
                 span.end();
             }
-            //在docker环境下容器不会调用System.exit 退出，也不会进这关闭HOOk。
+            // In the docker environment, the container will not call System.exit exit, nor
+            // will it be closed to close HOOK。
             Runtime.getRuntime().addShutdownHook((new Thread() {
                 public void run() {
                     Span span = tracer.spanBuilder(TracerConstants.APPSTOP).startSpan();
-                    span.setAttribute(TracerConstants.APPNAME, "karaf");//应用 Name
-                    span.setAttribute(TracerConstants.HASERROR, "false");// Wether 有报错
-                    //以下是具体错误消息
-                    Attributes eventAttributes = Attributes.of(AttributeKey.stringKey(TracerConstants.ERROR), TracerConstants.SUCCESS);
-                    // 添加事件
+                    span.setAttribute(TracerConstants.APPNAME, "karaf");// App Name
+                    span.setAttribute(TracerConstants.HASERROR, "false");// Wether There is Error
+                    // The following is specific Error Message
+                    Attributes eventAttributes = Attributes.of(AttributeKey.stringKey(TracerConstants.ERROR),
+                            TracerConstants.SUCCESS);
+                    // Add Event
                     span.addEvent(TracerConstants.APPSTOP, eventAttributes);
                     OpenTelemetryUtil.getExporter().flush();
                     span.end();
@@ -280,7 +284,7 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
     }
 
     /**
-     * 已经升级过包的 Device 列表
+     * Upgraded Device Pagination
      *
      * @param packageId
      * @return
@@ -289,9 +293,8 @@ public class BasicBaseDeviceUpgradeService extends BaseServiceImpl<BasicBaseDevi
         return basicBaseDeviceupgradeMapper.getUpgradeDeviceList(packageId);
     }
 
-
     /**
-     * 删除
+     * Delete
      *
      * @param vo
      */

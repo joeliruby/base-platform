@@ -17,15 +17,12 @@ import org.springframework.context.annotation.Configuration;
  * @create: 2023/2/13 17:07
  **/
 @Configuration
-@EnableConfigurationProperties({RedissonProperties.class, RedisProperties.class})
-@ConditionalOnProperty(
-        value = {"redis.redisson.enable"},
-        havingValue = "true"
-)
+@EnableConfigurationProperties({ RedissonProperties.class, RedisProperties.class })
+@ConditionalOnProperty(value = { "redis.redisson.enable" }, havingValue = "true")
 public class RedissonAutoConfiguration {
 
     /**
-     * @Description: 声明Redisson客户端
+     * @Description: 声明RedissonClient
      * @Author: bo.chen
      * @Date: 2023/2/13 18:21
      * @param redissonProperties

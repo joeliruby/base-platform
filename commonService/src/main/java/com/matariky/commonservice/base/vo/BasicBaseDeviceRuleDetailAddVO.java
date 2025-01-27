@@ -10,23 +10,22 @@ import javax.validation.constraints.Size;
 @Data
 public class BasicBaseDeviceRuleDetailAddVO {
 
-
-    @ApiModelProperty(value = "过滤条件")
+    @ApiModelProperty(value = " Filter Condition ")
     @NotBlank
     @Size(max = 100)
     private String filterConditions;
 
-    @ApiModelProperty(value = "条件设定")
+    @ApiModelProperty(value = " Condition Setting ")
     @NotBlank
     @Size(max = 100)
     private String conditionSetting;
 
-    @ApiModelProperty(value = "设定值")
+    @ApiModelProperty(value = "Set Values")
     @NotBlank
     @Size(max = 100)
     private String setValue;
 
-    @ApiModelProperty(" Device  Rule 配置ID")
+    @ApiModelProperty(" Device  Rule  Configuration ID")
     @NotNull
     private Long ruleId;
 }

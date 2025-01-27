@@ -37,7 +37,7 @@ public class UserGroup {
   	@TableField(exist = false)
   	private List<Long> roleIdList;
   	
-  	//所属用户集合
+  	//所属 User 集合
   	@TableField(exist = false)
   	private List<Long> userIdList;
   	

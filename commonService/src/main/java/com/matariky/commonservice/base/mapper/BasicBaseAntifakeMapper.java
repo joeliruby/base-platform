@@ -15,13 +15,13 @@ import java.util.List;
 public interface BasicBaseAntifakeMapper extends EnhanceBaseMapper<BasicBaseAntifake> {
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "a")
     public List<BasicBaseAntifake> getBasicBaseAntifakeAll(@Param("params") BasicBaseAntifake bean);
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -29,7 +29,7 @@ public interface BasicBaseAntifakeMapper extends EnhanceBaseMapper<BasicBaseAnti
     public int createBasicBaseAntifake(BasicBaseAntifake bean);
 
     /**
-     * 删除
+     * Delete 
      *
      * @param id
      * @return
@@ -37,7 +37,7 @@ public interface BasicBaseAntifakeMapper extends EnhanceBaseMapper<BasicBaseAnti
     public int delBasicBaseAntifakeById(@Param("id") Long id);
 
     /**
-     * 详情
+     *   Detail 
      *
      * @param id
      */

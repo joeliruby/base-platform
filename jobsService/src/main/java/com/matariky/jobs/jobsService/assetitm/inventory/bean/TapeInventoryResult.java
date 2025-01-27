@@ -19,12 +19,12 @@ import java.util.List;
 @Data
 public class TapeInventoryResult implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-     * 主键
+    /**
+     * Primary Key
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
@@ -40,7 +40,7 @@ public class TapeInventoryResult implements Serializable {
     private Long subtaskId;
 
     /**
-     *  Label epc
+     * Label epc
      */
     private String epc;
 
@@ -50,32 +50,32 @@ public class TapeInventoryResult implements Serializable {
     private String tid;
 
     /**
-     *  Label id
+     * Label id
      */
     private Long labelId;
 
     /**
-     * 机架id
+     * Library id
      */
     private String locationId;
 
     /**
-     * 机架id
+     * Library id
      */
     private Long libraryId;
 
     /**
-     * 读写器编码
+     * Reader Code
      */
     private String readerCode;
 
     /**
-     * 错误原因
+     * Error 原因
      */
     private String failReason;
 
     /**
-     * 结果:1=丢失，2=新发现，3=正常
+     * 结果:1=丢失 ,2=新发现 ,3=正常
      */
     private Integer result;
 
@@ -86,32 +86,32 @@ public class TapeInventoryResult implements Serializable {
     private List<String> filePaths;
 
     /**
-     * 非正常 Label  Wether 有效,0=否，1=是
+     * 非正常 Label Wether 有效,0=否 ,1=是
      */
     private Boolean isValid;
 
     /**
-     * 创建人
+     * Creater
      */
     private Long createdBy;
 
     /**
-     * 修改人
+     * Updater
      */
     private Long updatedBy;
 
     /**
-     * 创建 Time 
+     * Create Time
      */
     private Long createTime;
 
     /**
-     * 修改 Time 
+     * Update Time
      */
     private Long updateTime;
 
     /**
-     * 删除 Time 
+     * Delete Time
      */
     private Long deleteTime;
 }

@@ -17,42 +17,42 @@ public class BasicBaseDeviceRuleDetailVO {
     @ApiModelProperty(value = " Rule ID")
     private Long ruleId;
 
-    @ApiModelProperty(value = "过滤条件")
+    @ApiModelProperty(value = " Filter Condition ")
     private String filterConditions;
 
-    @ApiModelProperty(value = "条件设定")
+    @ApiModelProperty(value = " Condition Setting ")
     private String conditionSetting;
 
-    @ApiModelProperty(value = "设定值")
+    @ApiModelProperty(value = "Set Values")
     private String setValue;
 
-    @ApiModelProperty(value = "设定值 Name")
-    private  String  setValueName;
+    @ApiModelProperty(value = "Set Values Name")
+    private String setValueName;
 
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
 
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
 
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
 
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
 
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
 
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Vistiting Operator Department Code ")
     private String operatorOrgCode;
 
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Vistitor Organization Code Code ")
     private String operatorSelfOrgCode;
 
-    @ApiModelProperty(value = "真实姓名")
+    @ApiModelProperty(value = " Real Name ")
     private String realName;
 }

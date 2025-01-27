@@ -3,7 +3,7 @@ package com.matariky.automation.controller;
 import com.matariky.automation.bean.Db;
 import com.matariky.automation.bean.DbBean;
 import com.matariky.automation.bean.RequestData;
-import com.matariky.automation.bean.logs;
+import com.matariky.automation.bean.Logs;
 import com.matariky.automation.utils.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -117,7 +117,7 @@ public class IndexController {
 			return r;
 		}
 		DelFile.delFolder(url + "/" + key);
-		logs log = new logs();
+		Logs log = new Logs();
 		log.setIp(IpUtil.getIpAddr(request));
 		log.setDb(model.getDbtype());
 		log.setPageurl(model.getCompages());

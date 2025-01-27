@@ -15,20 +15,20 @@ import java.util.List;
 public interface BasicBaseDevicePackageMapper extends BaseMapper<BasicBaseDevicePackage>{
 
 	/**
-	 *  Query 所有分页
+	 *  Query   All 
 	 */
 	@DataScope(alias = "p")
 	public List<BasicBaseDevicePackageInfoVO> getBasicBaseDevicepackageAll(@Param("params") BasicBaseDeviceUpgradeListVO vo);
 
 	/**
-	 * New方法
+	 * New  Method  
 	 * @param bean
 	 * @return
 	 */
 	public int createBasicBaseDevicepackage(BasicBaseDevicePackage bean);
 
 	/**
-	 * 删除方法
+	 * Delete   Method  
 	 * @param id
 	 * @return
 	 */

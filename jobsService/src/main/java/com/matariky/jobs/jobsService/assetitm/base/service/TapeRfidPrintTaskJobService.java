@@ -21,7 +21,6 @@ import java.util.List;
 @Service
 public class TapeRfidPrintTaskJobService {
 
-
     private final static Logger logger = LoggerFactory.getLogger(TapeRfidCreateTaskJobService.class);
 
     @Autowired
@@ -37,17 +36,17 @@ public class TapeRfidPrintTaskJobService {
     private BasicBaseCreaterfidPrintMapper basicBaseCreaterfidPrintMapper;
 
     /**
-     * @Description:  开始 Task 
+     * @Description: Start Task
      * @Author: chenyajun
      * @Date: 2024/2/22 15:15
      * @param taskId
      **/
     @Transactional(rollbackFor = Exception.class)
-    //@Lock(keyMethod = "this.getRackLockKeys")
+    // @Lock(keyMethod = "this.getRackLockKeys")
     public void start(Long taskId) throws Exception {
 
         TapeRfidPrintTask tapeRfidPrintTask = jobRfidPrintTaskMapper.getBasicBaseRfidPrintById(taskId);
-        if(tapeRfidPrintTask!=null) {
+        if (tapeRfidPrintTask != null) {
             String od_content = tapeRfidPrintTask.getOdFixedContent();
             String qr_content = tapeRfidPrintTask.getQrFixedContent();
 
@@ -58,15 +57,25 @@ public class TapeRfidPrintTaskJobService {
                 qr_content = qr_content + "?";
             }
 
-            List<TapeRfidPrintParameterTask> tapeRfidCreateParameterTaskList = jobRfidPrintTaskMapper.getBasicBaseRfidPrintParameterById(taskId);
+            List<TapeRfidPrintParameterTask> tapeRfidCreateParameterTaskList = jobRfidPrintTaskMapper
+                    .getBasicBaseRfidPrintParameterById(taskId);
 
             for (TapeRfidPrintParameterTask tapeRfidPrintParameterTask : tapeRfidCreateParameterTaskList) {
-                BasicBaseCodingRules baseCodingRules = basicBaseCodingrulesMapper.selectById(tapeRfidPrintParameterTask.getParameterContent());
+                BasicBaseCodingRules baseCodingRules = basicBaseCodingrulesMapper
+                        .selectById(tapeRfidPrintParameterTask.getParameterContent());
 
-                if (tapeRfidPrintParameterTask.getType() != null && "od".equals(tapeRfidPrintParameterTask.getType()) && baseCodingRules!=null) {
-                    od_content = od_content + tapeRfidPrintParameterTask.getParameterName() + "=" + baseCodingRules.getUniqueCode()+ CodeUtils.generateEpc(baseCodingRules.getCodingLength()-baseCodingRules.getUniqueCode().length())+ ",";
-                } else if (tapeRfidPrintParameterTask.getType() != null && "qr".equals(tapeRfidPrintParameterTask.getType()) && baseCodingRules!=null) {
-                    qr_content = qr_content + tapeRfidPrintParameterTask.getParameterName() + "=" + baseCodingRules.getUniqueCode()+ CodeUtils.generateEpc(baseCodingRules.getCodingLength()-baseCodingRules.getUniqueCode().length()) + ",";
+                if (tapeRfidPrintParameterTask.getType() != null && "od".equals(tapeRfidPrintParameterTask.getType())
+                        && baseCodingRules != null) {
+                    od_content = od_content + tapeRfidPrintParameterTask.getParameterName() + "="
+                            + baseCodingRules.getUniqueCode() + CodeUtils.generateEpc(
+                                    baseCodingRules.getCodingLength() - baseCodingRules.getUniqueCode().length())
+                            + ",";
+                } else if (tapeRfidPrintParameterTask.getType() != null
+                        && "qr".equals(tapeRfidPrintParameterTask.getType()) && baseCodingRules != null) {
+                    qr_content = qr_content + tapeRfidPrintParameterTask.getParameterName() + "="
+                            + baseCodingRules.getUniqueCode() + CodeUtils.generateEpc(
+                                    baseCodingRules.getCodingLength() - baseCodingRules.getUniqueCode().length())
+                            + ",";
                 }
             }
 
@@ -77,43 +86,45 @@ public class TapeRfidPrintTaskJobService {
                 qr_content = qr_content.substring(0, qr_content.length() - 1);
             }
 
-
             String passwdStr = "";
             if (tapeRfidPrintTask.getIsLockEpc() == 1) {
-                if (StringUtil.isNotEmpty(tapeRfidPrintTask.getEpcPassword()) && "0".equals(tapeRfidPrintTask.getEpcPassword())) {
+                if (StringUtil.isNotEmpty(tapeRfidPrintTask.getEpcPassword())
+                        && "0".equals(tapeRfidPrintTask.getEpcPassword())) {
                     passwdStr = CodeUtils.randomHexGenerator();
                 }
             }
 
-            Long rulesId=0L;
-            if(StringUtil.isNotEmpty(tapeRfidPrintTask.getEpcRule())){
-                rulesId=Long.parseLong(tapeRfidPrintTask.getEpcRule());
+            Long rulesId = 0L;
+            if (StringUtil.isNotEmpty(tapeRfidPrintTask.getEpcRule())) {
+                rulesId = Long.parseLong(tapeRfidPrintTask.getEpcRule());
             }
-            BasicBaseCodingRules basicBaseCodingrules=new BasicBaseCodingRules();
-            if(rulesId>0){
-                basicBaseCodingrules=basicBaseCodingrulesMapper.selectById(rulesId);
+            BasicBaseCodingRules basicBaseCodingrules = new BasicBaseCodingRules();
+            if (rulesId > 0) {
+                basicBaseCodingrules = basicBaseCodingrulesMapper.selectById(rulesId);
             }
 
-            for(int i=0;i<tapeRfidPrintTask.getPrintNum();i++){
-                BasicBaseRfidInfo baseRfidInfo=new BasicBaseRfidInfo();
+            for (int i = 0; i < tapeRfidPrintTask.getPrintNum(); i++) {
+                BasicBaseRfidInfo baseRfidInfo = new BasicBaseRfidInfo();
 
-                String epcStr="";
-                if(rulesId>0) {
-                    epcStr = basicBaseCodingrules.getUniqueCode()+ CodeUtils.generateEpc(basicBaseCodingrules.getCodingLength()-basicBaseCodingrules.getUniqueCode().length());
-                    BasicBaseRfidInfo rfidInfo=basicBaseRfidInfoMapper.getBasicBaseRfidInfoByEpc(epcStr);
-                    if(rfidInfo!=null){
+                String epcStr = "";
+                if (rulesId > 0) {
+                    epcStr = basicBaseCodingrules.getUniqueCode() + CodeUtils.generateEpc(
+                            basicBaseCodingrules.getCodingLength() - basicBaseCodingrules.getUniqueCode().length());
+                    BasicBaseRfidInfo rfidInfo = basicBaseRfidInfoMapper.getBasicBaseRfidInfoByEpc(epcStr);
+                    if (rfidInfo != null) {
                         i--;
                         continue;
                     }
 
                     baseRfidInfo.setEpc(epcStr);
 
-                    if(tapeRfidPrintTask.getIsLockEpc()==1){
-                        if(StringUtil.isNotEmpty(tapeRfidPrintTask.getEpcPassword()) && "1".equals(tapeRfidPrintTask.getEpcPassword())){
-                            passwdStr=CodeUtils.randomHexGenerator();
+                    if (tapeRfidPrintTask.getIsLockEpc() == 1) {
+                        if (StringUtil.isNotEmpty(tapeRfidPrintTask.getEpcPassword())
+                                && "1".equals(tapeRfidPrintTask.getEpcPassword())) {
+                            passwdStr = CodeUtils.randomHexGenerator();
                         }
                     }
-                    if(StringUtil.isNotEmpty(passwdStr)) {
+                    if (StringUtil.isNotEmpty(passwdStr)) {
                         baseRfidInfo.setPassword(passwdStr);
                     }
 
@@ -131,9 +142,7 @@ public class TapeRfidPrintTaskJobService {
                     basicBaseRfidInfoMapper.createBasicBaseRfidInfo(baseRfidInfo);
                 }
 
-
-
-                TapeRfidPrintDetailTask tapeRfidPrintDetailTask=new TapeRfidPrintDetailTask();
+                TapeRfidPrintDetailTask tapeRfidPrintDetailTask = new TapeRfidPrintDetailTask();
                 tapeRfidPrintDetailTask.setPrintId(tapeRfidPrintTask.getId());
                 tapeRfidPrintDetailTask.setRfidId(baseRfidInfo.getId());
                 tapeRfidPrintDetailTask.setEpc(epcStr);
@@ -147,8 +156,7 @@ public class TapeRfidPrintTaskJobService {
                 tapeRfidPrintDetailTask.setOperatorSelfOrgCode(tapeRfidPrintTask.getOperatorSelfOrgCode());
                 jobRfidPrintTaskMapper.createBasicBaseRfidprintDetail(tapeRfidPrintDetailTask);
 
-
-                BasicBaseCreaterfidPrint basicBaseCreaterfidPrint=new BasicBaseCreaterfidPrint();
+                BasicBaseCreaterfidPrint basicBaseCreaterfidPrint = new BasicBaseCreaterfidPrint();
                 basicBaseCreaterfidPrint.setPrintId(tapeRfidPrintTask.getId());
                 basicBaseCreaterfidPrint.setGoodsId(tapeRfidPrintTask.getGoodsId());
                 basicBaseCreaterfidPrint.setRfidId(baseRfidInfo.getId());

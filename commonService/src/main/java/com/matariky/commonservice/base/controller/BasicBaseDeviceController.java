@@ -19,10 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = " Device 基础 Information ", tags = " Device 基础 Information ")
+@Api(value = " Device   Base  Information ", tags = " Device   Base  Information ")
 public class BasicBaseDeviceController {
 
     @Autowired
@@ -46,14 +45,14 @@ public class BasicBaseDeviceController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("编辑")
+    @ApiOperation("  Update")
     @PutMapping(value = "/basicBaseDevice")
     public AjaxResult update(@Validated @RequestBody BasicBaseDeviceUpdateVO updateVO) {
         basicBaseDeviceService.updateBasicBaseDevice(updateVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("删除")
+    @ApiOperation("Delete ")
     @DeleteMapping(value = "/basicBaseDevice/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBaseDeviceService.delBasicBaseDeviceById(id);
@@ -67,7 +66,6 @@ public class BasicBaseDeviceController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-
     @ApiOperation("Import Data ")
     @PostMapping("/basicBaseDevice/importData")
     public AjaxResult importData(@RequestParam("file") MultipartFile file) {
@@ -79,7 +77,8 @@ public class BasicBaseDeviceController {
     @GetMapping(value = "/basicBaseDevice/{id}")
     public AjaxResult getOne(@PathVariable Long id) {
         BasicBaseDevice basicBaseDevice = basicBaseDeviceService.selectById(id);
-        if (StringUtils.isNotBlank(basicBaseDevice.getLatitude()) && StringUtils.isNotBlank(basicBaseDevice.getLongitude())) {
+        if (StringUtils.isNotBlank(basicBaseDevice.getLatitude())
+                && StringUtils.isNotBlank(basicBaseDevice.getLongitude())) {
             BasicBaseDeviceInfo info = new BasicBaseDeviceInfo();
             BeanUtils.copyProperties(basicBaseDevice, info);
             info.setGisAddress(info.getLongitude() + "," + info.getLatitude());
@@ -89,22 +88,21 @@ public class BasicBaseDeviceController {
         }
     }
 
-
-    @ApiOperation(" Device 功率下拉选")
+    @ApiOperation(" Device  Power   Drop Down Box")
     @GetMapping("/basicBaseDevice/dbmOption")
     public AjaxResult getDbmOption() {
         List<DbmVO> list = basicBaseDeviceService.getDbmOption();
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, list);
     }
 
-    @ApiOperation(value = " Print 机下拉选")
+    @ApiOperation(value = " Printer  Drop Down Box")
     @GetMapping("/basicBaseDevice/printOption")
     public AjaxResult list() {
         List<PrintOptionInfo> list = basicBaseDeviceService.getPrintOptionList();
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, list);
     }
 
-    @ApiOperation(" Device 编码（ Device 厂家/ Device Type /  Device 型号）下拉选")
+    @ApiOperation(" Device  Code （ Device  Factory  / Device Type /  Device  Type ）  Drop Down Box")
     @GetMapping("/basicBaseDevice/codeOption")
     public AjaxResult getCodeOption(CodeOptionListVO vo) {
         List<DeviceCodeInfo> list = basicBaseDeviceService.getCodeOption(vo);

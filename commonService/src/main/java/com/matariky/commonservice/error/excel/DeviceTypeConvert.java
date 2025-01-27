@@ -18,9 +18,11 @@ import java.util.stream.Collectors;
 public class DeviceTypeConvert implements Converter<String> {
 
     @Override
-    public WriteCellData<?> convertToExcelData(String value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public WriteCellData<?> convertToExcelData(String value, ExcelContentProperty contentProperty,
+            GlobalConfiguration globalConfiguration) throws Exception {
         ApplicationContext applicationContext = SpringUtil.getApplicationContext();
-        CommonDictTypeMapper commonDictTypeMapper = applicationContext.getBean("commonDictTypeMapper", CommonDictTypeMapper.class);
+        CommonDictTypeMapper commonDictTypeMapper = applicationContext.getBean("commonDictTypeMapper",
+                CommonDictTypeMapper.class);
         CommonDictMapper commonDictMapper = applicationContext.getBean("commonDictMapper", CommonDictMapper.class);
         CommonDictType dictType = commonDictTypeMapper.selectOne(Wrappers.lambdaQuery(CommonDictType.class)
                 .eq(CommonDictType::getDictTypeKey, "CN_DEVICE_TYPE_CODE")
@@ -40,6 +42,6 @@ public class DeviceTypeConvert implements Converter<String> {
             return new WriteCellData<>(result);
         }
         result = list.get(0).getDictName();
-        return new WriteCellData(result);
+        return new WriteCellData<String>(result);
     }
 }

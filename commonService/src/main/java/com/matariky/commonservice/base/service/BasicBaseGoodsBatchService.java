@@ -45,7 +45,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     private BasicBaseRfidBindingMapper basicBaseRfidBindingMapper;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      *
      * @param vo
      * @return
@@ -70,7 +70,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
 
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param vo
      * @return
@@ -97,7 +97,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     * 修改方法
+     *   Update  Method  
      *
      * @param updateVO
      * @return
@@ -119,7 +119,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     * 删除方法
+     * Delete   Method  
      *
      * @param id
      * @return
@@ -129,7 +129,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     * 根据ID Query 对象的方法
+     * Query Object By ID  
      *
      * @param id
      * @return
@@ -139,7 +139,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     *  Item 批量绑定 Label 
+     *  Item  Batch Binding Label 
      *
      * @param vo
      */
@@ -155,7 +155,7 @@ public class BasicBaseGoodsBatchService extends BaseServiceImpl<BasicBaseGoodsBa
     }
 
     /**
-     *  Item 批次绑定详情
+     *  Item  Batch  Binding   Detail 
      *
      * @param vo
      * @return

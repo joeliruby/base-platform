@@ -195,32 +195,33 @@ public class BasicBaseRfidprintService extends BaseServiceImpl<BasicBaseRfidPrin
 			strategyCode = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;// By default only visible by owner
 		}
 		switch (strategyCode) {
-		case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
-			Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
-			params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
-			params.putAll(sharingOrgCodes0);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
-			Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes3);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special sharing
-															// rules
-			Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes2);
-			break;
-		default:
-			break;
+			case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
+				Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
+				params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
+				params.putAll(sharingOrgCodes0);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
+				Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes3);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special
+																// sharing
+																// rules
+				Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes2);
+				break;
+			default:
+				break;
 		}
 
 		return basicBaseRfidprintMapper.getBasicBaseRfidprintDACCount(params);
 	}
 
-	// 补打方法
+	// 补打 Method
 	@Transactional(rollbackFor = Exception.class)
 	public int createBasicBaseRfidSuppprintWithOrg(Long id, String jwt) {
 		BasicBaseRfidprintDetail basicBaseRfidprintDetail = basicBaseRfidprintDetailMapper
@@ -294,7 +295,7 @@ public class BasicBaseRfidprintService extends BaseServiceImpl<BasicBaseRfidPrin
 		return result;
 	}
 
-	// Query Print 方法
+	// Query Print Method
 
 	public BasicBaseDevice selectPrint(String mac) {
 		return basicBaseDeviceMapper.selectPrint(mac);
@@ -303,7 +304,7 @@ public class BasicBaseRfidprintService extends BaseServiceImpl<BasicBaseRfidPrin
 	public int printLock(Long printId, String deviceCode) {
 		BasicBaseDevice basicBaseDevice = basicBaseDeviceMapper.selectPrintByCode(deviceCode);
 		if (basicBaseDevice == null) {
-			throw new QslException(" Print 机错误，请确认后重试！");
+			throw new QslException(" Printer Error   ,请确认后重试！");
 		}
 		return basicBaseRfidprintMapper.printLock(printId, basicBaseDevice.getId());
 	}

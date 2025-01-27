@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = "APP端版本 Information ", tags = "APP端版本 Information ")
+@Api(value = "APP Version Information ", tags = "APP Version Information ")
 public class BasicBaseAppVersionController {
 
     @Autowired
@@ -44,14 +44,14 @@ public class BasicBaseAppVersionController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("编辑")
+    @ApiOperation("  Update")
     @PutMapping(value = "/basicBaseAppversion")
     public AjaxResult update(@Validated BasicBaseAppVersionUpdateVO updateVO, @RequestParam(value = "file", required = false) MultipartFile file) {
         basicBaseAppversionService.updateBasicBaseAppversion(updateVO, file);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("删除")
+    @ApiOperation("Delete ")
     @DeleteMapping(value = "/basicBaseAppversion/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBaseAppversionService.delBasicBaseAppversionById(id);
@@ -65,7 +65,7 @@ public class BasicBaseAppVersionController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,info);
     }
 
-    @ApiOperation(value = " Query  Print 机APP版本 Information ")
+    @ApiOperation(value = " Query  Printer APP Version Information ")
     @GetMapping(value = "/basicBaseAppversion/getPrintApp")
     public AjaxResult getPrintApp() {
         return AjaxResult.success(basicBaseAppversionService.getBasicBasePrintApp());

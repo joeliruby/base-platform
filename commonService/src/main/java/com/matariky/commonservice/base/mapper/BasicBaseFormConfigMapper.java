@@ -46,28 +46,28 @@ public interface BasicBaseFormConfigMapper extends BaseMapper<BasicBaseFormConfi
 
 	 
 	public BasicBaseFormConfig getBasicBaseFormConfigById(Long id);
-	//插入一条记录
+	//Insert a record
 	@Override
 	int insert(BasicBaseFormConfig record);
-	//根据 ID 删除
+	//Delete By ID
 	@Override
 	int deleteById(Serializable id);
-	//根据 columnMap 条件，删除记录
+	//Delete By Column Map
 	@Override
 	int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件，删除记录
+	//Delete By Entity
 	@Override
 	int delete(@Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
-	//删除（根据ID 批量删除）
+	//Delete Batch By IDs
 	@Override
 	int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-	//根据 ID 修改
+	//Update By IDs
 	@Override
 	int updateById(@Param(Constants.ENTITY) BasicBaseFormConfig entity);
-	//根据 whereEntity 条件，Update记录
+	//Update By Entity
 	@Override
 	int update(@Param(Constants.ENTITY) BasicBaseFormConfig entity, @Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> updateWrapper);
-	//根据 ID  Query 
+	//Query By ID 
 	@Override
 	BasicBaseFormConfig selectById(Serializable id);
 	 
@@ -76,26 +76,26 @@ public interface BasicBaseFormConfigMapper extends BaseMapper<BasicBaseFormConfi
 	 
 	@Override
 	List<BasicBaseFormConfig> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件， Query 一条记录
+	//Query One By Entity
 	@Override
 	BasicBaseFormConfig selectOne(@Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
-	//根据 Wrapper 条件， Query 总记录数
+	//Query Count By Wrapper
 	@Override
 	Long selectCount(@Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
-	//根据 entity 条件， Query 全部记录
+	//Query All By Entity
 	@Override
 	List<BasicBaseFormConfig> selectList(@Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+	//Query All Maps By Wrapper
 	@Override
 	List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+	//Query All Maps By Wrapper
 	@Override
 	List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
-	//根据 entity 条件， Query 全部记录（并翻页）
+	//Query All By Entity（ With Pagination ）
 	 Page<BasicBaseFormConfig> selectPage(Page<BasicBaseFormConfig> page, @Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
 	public List<BasicBaseFormConfig> getBasicBaseFormConfigDAC(@Param("params") Map<String, Object> params);
 	public Long getBasicBaseFormConfigDACCount(@Param("params") Map<String, Object> params);
-	//根据 Wrapper 条件， Query 全部记录（并翻页）
+	//Query All Maps By Wrapper（ With Pagination ）
 	Page<Map<String, Object>> selectMapsPage(Page<BasicBaseFormConfig> page, @Param(Constants.WRAPPER) Wrapper<BasicBaseFormConfig> queryWrapper);
 
 

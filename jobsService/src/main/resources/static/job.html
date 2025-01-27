@@ -22,20 +22,20 @@
     <div id="top">
         <el-button size="small" type="primary" plain @click="search" :loading="loading" icon="el-icon-search">查询
         </el-button>
-        <el-button size="small" type="primary" plain @click="handleadd" icon="el-icon-plus">添加</el-button>
+        <el-button size="small" type="primary" plain @click="handleadd" icon="el-icon-plus"> Add </el-button>
     </div>
     <br/>
     <div>
         <el-table ref="jobTable" :data="tableData" style="width:100%" border center>
-            <el-table-column prop="jobName" label="任务名称" show-overflow-tooltip align="center"></el-table-column>
+            <el-table-column prop="jobName" label="任务 Name 称" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="jobGroup" label="任务所在组" sortable align="center"></el-table-column>
-            <el-table-column prop="jobClassName" label="任务类名" align="center"></el-table-column>
-            <el-table-column prop="triggerName" label="触发器名称" align="center"></el-table-column>
+            <el-table-column prop="jobClassName" label="任务类 Name " align="center"></el-table-column>
+            <el-table-column prop="triggerName" label="触发器 Name 称" align="center"></el-table-column>
             <el-table-column prop="triggerGroup" label="触发器所在组" sortable align="center"></el-table-column>
             <el-table-column prop="cronExpression" label="表达式" align="center"></el-table-column>
             <el-table-column prop="timeZoneId" label="时区" align="center"></el-table-column>
             <el-table-column prop="triggerState" label="状态" align="center" :formatter="formatState"></el-table-column>
-            <el-table-column label="操作" width="300" align="center">
+            <el-table-column label=" Operation" width="300" align="center">
                 <template scope="scope">
                     <el-button size="small" type="warning" @click="handlePause(scope.$index, scope.row)">
                         暂停
@@ -44,10 +44,10 @@
                         恢复
                     </el-button>
                     <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">
-                        删除
+                        Delete 
                     </el-button>
                     <el-button size="small" type="success" @click="handleUpdate(scope.$index, scope.row)">
-                        修改
+                          Update
                     </el-button>
                 </template>
             </el-table-column>
@@ -66,9 +66,9 @@
         </div>
     </div>
 
-    <el-dialog title="添加任务" :visible.sync="dialogFormVisible">
+    <el-dialog title=" Add 任务" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-            <el-form-item label="任务名称" label-width="100px" style="width:90%">
+            <el-form-item label="任务 Name 称" label-width="100px" style="width:90%">
                 <el-input v-model="form.jobName" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="任务分组" label-width="100px" style="width:90%">
@@ -84,7 +84,7 @@
         </div>
     </el-dialog>
 
-    <el-dialog title="修改任务" :visible.sync="updateFormVisible">
+    <el-dialog title="  Update任务" :visible.sync="updateFormVisible">
         <el-form :model="updateform">
             <el-form-item label="表达式" label-width="100px" style="width:90%">
                 <el-input v-model="updateform.cronExpression" auto-complete="off"></el-input>
@@ -98,28 +98,28 @@
 </div>
 
 <footer align="center">
-    <p>&copy; Quartz 定时任务管理</p>
+    <p>&copy; Quartz  Scheduled 任务管理</p>
 </footer>
 
 <script>
     var vue = new Vue({
         el: "#job",
         data: {
-            //表格当前页数据
+            //表格  Current Page Index 据
             tableData: [],
-            //请求的URL
+            // Request 的URL
             url: '/api/job/v1/tenant/'+localStorage.getItem('tenantId'),
-            //默认每页数据量
+            //默认每Page Index 据量
             pagesize: 10,
-            //当前页码
+            //  Current 页码
             currentPage: 1,
             //查询的页码
             start: 1,
             //默认数据总数
             totalCount: 1000,
-            //添加对话框默认可见性
+            // Add 对话框默认可见性
             dialogFormVisible: false,
-            //修改对话框默认可见性
+            //  Update对话框默认可见性
             updateFormVisible: false,
             //提交的表单
             form: {
@@ -145,7 +145,7 @@
                     return "未知状态";
                 }
             },
-            // 从服务器读取数据
+            // 从   Server  Read 数据
             loadData: function (currentPage, pageSize) {
                 this.loading = true;
                 this.$http.get('api/job/v1/tenant/'+localStorage.getItem('tenantId')+'?' + 'currentPage=' + currentPage + '&pageSize=' + pageSize).then(function (res) {
@@ -157,7 +157,7 @@
                     console.log('failed');
                 });
             },
-            // 删除任务
+            // Delete 任务
             handleDelete: function (index, row) {
                 this.$http.delete('api/job/v1/tenant/'+localStorage.getItem('tenantId'), {
                     params: {
@@ -200,7 +200,7 @@
             handleadd: function () {
                 this.dialogFormVisible = true;
             },
-            // 添加
+            //  Add 
             add: function () {
                 this.$http.post('api/job/v1/tenant/'+localStorage.getItem('tenantId'), {
                     "jobClassName": this.form.jobName,

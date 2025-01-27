@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>automation</artifactId>
-	<packaging>jar</packaging>
+	
 
 	<name>automation</name>
 	<description>Autogen project for Base Platform</description>
@@ -87,23 +87,25 @@
 		 <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.evosuite.plugins</groupId>
-                    <artifactId>evosuite-maven-plugin</artifactId>
-                    <version>1.0.6</version>
-                    <executions>
-                        <execution>
-                            <id>evosuite-generate</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <phase>generate-test-sources</phase>
-                        </execution>
-                    </executions>
-                </plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+					<configuration>
+						<mainClass>${classPath}</mainClass>
+						<layout>ZIP</layout>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
             </plugins>
         </pluginManagement>
 	</build>
-	<!-- 仓库地址 -->
+	<!-- 仓库 Address  -->
 
 	<repositories>
 

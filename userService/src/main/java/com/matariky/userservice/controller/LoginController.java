@@ -69,10 +69,8 @@ public class LoginController {
     @Value("${keycloak.realm}")
     String keycloakRealm;
 
-
     @Autowired
     CommonDictService commonDictService;
-
 
     @Autowired
     UserApplicationService userApplicationService;
@@ -140,11 +138,11 @@ public class LoginController {
         return new AjaxResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), AjaxResult.FAILURE, null);
     }
 
-
     @PostMapping("/renewal/application/{applicationId}")
     @PassToken
-    public Object renew(@RequestHeader("Authorization") String token, @PathVariable("applicationId") Long applicationId, @RequestParam(name = "locale", required = false) String locale) {
-        //执行到此token已经经过验证有效，AuthenticationInterceptor
+    public Object renew(@RequestHeader("Authorization") String token, @PathVariable("applicationId") Long applicationId,
+            @RequestParam(name = "locale", required = false) String locale) {
+        // 执行到此token已经经过验证有效 ,AuthenticationInterceptor
         String userId = TokenUtils.extractUserIdFromToken(token);
         String tenantId = TokenUtils.extractTenantIdFromToken(token);
         String extractedLocale = TokenUtils.extractLocaleFromToken(token);
@@ -168,8 +166,8 @@ public class LoginController {
             userService.updateById(userForBase);
         }
 
-        if (!extractedApplicationId.equals(applicationId)) {//切换应用
-            //设置切换至 Tenant 为当前应用
+        if (!extractedApplicationId.equals(applicationId)) {// 切换 App
+            // Configuration切换至 Tenant 为 Current App
             Map<String, String> orgCodes = organizationService.getOrgIdByUserId(application.getTenantId(), userId);
 
             userForBase = userService.findUserById(userId);
@@ -180,11 +178,13 @@ public class LoginController {
             userForBase.setTenantId(application.getTenantId());
             userForBase.setApplicationId(applicationId);
             tokenService.updateLoginInfo(userForBase);
-            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "APPLICATION_SWITCHED", true, tenantId));
-        } else {//当前应用token续订
+            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                    "APPLICATION_SWITCHED", true, tenantId));
+        } else {// Current App token续订
             userForBase = userService.findUserById(userId);
             tokenService.updateLoginInfo(userForBase);
-            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "TOKEN_RENEWED", true, tenantId));
+            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                    "TOKEN_RENEWED", true, tenantId));
         }
         Map<String, String> tokenMap;
         try {
@@ -194,24 +194,25 @@ public class LoginController {
         } catch (QslException e) {
             JSONObject jo = JSONObject.parseObject(e.getMessage());
             return AjaxResult.error(HttpStatus.INTERNAL_SERVER_ERROR.toString(), jo.getString("message"));
-//            return new ResponseEntity<JSONObject>(jo, HttpStatus.BAD_REQUEST);
+            // return new ResponseEntity<JSONObject>(jo, HttpStatus.BAD_REQUEST);
         }
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, tokenMap);
-//        return tokenMap;
+        // return tokenMap;
 
     }
 
-
-    //	    @UserLoginToken
+    // @UserLoginToken
     @RequestMapping(value = "/tenant/{tenantId}/user/", method = RequestMethod.GET)
     @RequirePermission
     @VerifyTenantId
-    public Object searchUserByName(@PathVariable("tenantId") String tenantId, @RequestParam("filter") String userNamePrefix, @RequestHeader("Authorization") String jwt) {
+    public Object searchUserByName(@PathVariable("tenantId") String tenantId,
+            @RequestParam("filter") String userNamePrefix, @RequestHeader("Authorization") String jwt) {
         List<User> userList = userService.searchByUserNamePrefix(tenantId, userNamePrefix);
         List<Map<String, Object>> formatedUserList = new ArrayList<Map<String, Object>>();
         for (User user : userList) {
             Map<String, Object> userMap = new HashMap<String, Object>();
-            UserOrganization org = userOrganizationService.getOrganizationByCode(user.getDepartmentOrganizationCode(), tenantId);
+            UserOrganization org = userOrganizationService.getOrganizationByCode(user.getDepartmentOrganizationCode(),
+                    tenantId);
             userMap.put("orgName", org != null ? "(" + org.getOrganizationName() + ")" : "");
             userMap.put("value", user.getId().toString());
             userMap.put("id", user.getId().toString());
@@ -234,13 +235,13 @@ public class LoginController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userService.findUserById(userId));
     }
 
-    //退出
+    // 退出
     @PostMapping("/logout/user/{userId}")
     @PassToken
     @UserLoginToken
     public Object logout(@PathVariable("userId") String userId, HttpServletRequest request) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        if(tenantId==null){
+        if (tenantId == null) {
             throw new QslException(MessageKey.KEYCLOAK_TOKEN_NOT_EXIST);
         }
         User user = userService.findUserById(userId);
@@ -248,12 +249,12 @@ public class LoginController {
             throw new QslException(MessageKey.USER_NOT_EXIST);
         }
         redisUtils.set(TokenConstant.LAST_ACCESS_TIME + "_" + user.getId(), System.currentTimeMillis());
-        createLoginLog(user, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "LOGOUT_SUCCESS", true, tenantId));
+        createLoginLog(user, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "LOGOUT_SUCCESS",
+                true, tenantId));
         redisUtils.unCacheKeycloakToken(user.getId());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
-//        return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        // return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
     }
-
 
     @GetMapping("/IOTUserInfo/{userName}")
     public Object iotUserByUsername(HttpServletRequest request, @PathVariable("userName") String userName) {
@@ -323,22 +324,21 @@ public class LoginController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, customerList);
     }
 
-
-    //登录
+    // Login
     @PostMapping("/login")
-//	    @PassToken
+    // @PassToken
     public Object login(@RequestBody User user) {
         User userForBase = userService.findByUsername(user.getLoginName());
         String tenantId = userForBase.getTenantId();
-        if(tenantId.contains("_")){
-            tenantId=tenantId.split("_")[1];
+        if (tenantId.contains("_")) {
+            tenantId = tenantId.split("_")[1];
         }
-        if(!"1".equals(tenantId)) {
-            //登录用户订单已经终止，不能登录
+        if (!"1".equals(tenantId)) {
+            // Login User 订单已经终止 ,不能 Login
             Long count = orderInfoMapper.selectCount(Wrappers.lambdaQuery(OrderInfo.class)
                     .eq(OrderInfo::getOrderTenantId, tenantId)
                     .eq(OrderInfo::getDeleteTime, 0)
-                    .in(OrderInfo::getOrderStatus, 2,3));
+                    .in(OrderInfo::getOrderStatus, 2, 3));
             if (count > 0) {
                 throw new QslException(MessageKey.USER_ORDER_END_NOT_LOGIN);
             }
@@ -370,7 +370,8 @@ public class LoginController {
             throw new QslException(MessageKey.USER_APPLICATION_NOT_UNDER_SAME_TENANT);
         }
         if (user.getApplicationId() == null || flag) {
-            if (application.getApplicationType() != null && Integer.valueOf(1).equals(application.getApplicationType())) {
+            if (application.getApplicationType() != null
+                    && Integer.valueOf(1).equals(application.getApplicationType())) {
 
                 if ("true".equals(verificationCode)) {
                     String captcha = user.getCaptcha();
@@ -380,7 +381,7 @@ public class LoginController {
                     String lowerCaseCaptcha = captcha.toLowerCase();
                     String realKey = MD5Util.MD5Encode(lowerCaseCaptcha + user.getUuid(), "utf-8");
                     Object checkCode = redisUtils.get(realKey);
-                    //当进入登录页时，有一定几率出现验证码错误 #1714
+                    // 当进入 Login 页时 ,有一定几率出现验证码 Error #1714
                     if (checkCode == null || !checkCode.toString().equals(lowerCaseCaptcha)) {
                         throw new QslException(MessageKey.INVALID_VERIFICATION_CODE);
                     }
@@ -388,40 +389,44 @@ public class LoginController {
             }
         }
 
-
         UserTenant tenant = tenantService.selectBytenantCode(userForBase.getTenantId());
         List<Map<String, Object>> appList = userService.getApplicationByUser(userForBase.getId(), tenant.getId());
-        List<Map<String, Object>> list = appList.stream().filter(item -> ((Long) item.get("id")).equals((application.getId()))).collect(Collectors.toList());
+        List<Map<String, Object>> list = appList.stream()
+                .filter(item -> ((Long) item.get("id")).equals((application.getId()))).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(list)) {
             throw new QslException(MessageKey.USER_DOES_NOT_HAVE_APPLICATION);
         }
 
         if (!tenant.getId().toString().equals("1")) {
-//            List<OrderInfo> orderInfos = orderInfoService.getOrderTenantIdList(tenant.getId().toString());
-//            if(CollectionUtils.isEmpty(orderInfos)){
-//                throw new QslException(MessageKey.USER_LOGIN_ORDER_IS_NOT_EXIST);
-//            }
+            // List<OrderInfo> orderInfos =
+            // orderInfoService.getOrderTenantIdList(tenant.getId().toString());
+            // if(CollectionUtils.isEmpty(orderInfos)){
+            // throw new QslException(MessageKey.USER_LOGIN_ORDER_IS_NOT_EXIST);
+            // }
         }
 
-        //验证码 Wether 正确
+        // 验证码 Wether 正确
         /*
          * boolean flag = captchaService.validate(user.getUuid(), user.getCaptcha());
          * if(!flag){ jsonObject.put("message","验证码不正确"); return jsonObject; }
          */
 
         if (!userForBase.getPazzword().equals(EncryptionUtils.getHash3(user.getPazzword(), "SHA"))) {
-            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "LOGIN_FAIL", false, userForBase.getTenantId()));
+            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                    "LOGIN_FAIL", false, userForBase.getTenantId()));
             throw new QslException(MessageKey.WRONG_PASSWORD);
 
         } else {
 
-//            Integer numberOfIOTRoles=userService.isIOTUser(userForBase.getId());
-//			if(numberOfIOTRoles>0) {
-//				String keycloakToken = KeycloakUtils.getToken(user.getLoginName(), user.getPazzword(), keycloakUrl,keycloakRealm, keycloakSecret, keycloakClientId, keycloakGrantType);
-//				if(!StringUtils.isEmpty(keycloakToken)) {
-//					redisUtil.cacheKeycloakToken(userForBase.getId(),keycloakToken);
-//				}
-//			}
+            // Integer numberOfIOTRoles=userService.isIOTUser(userForBase.getId());
+            // if(numberOfIOTRoles>0) {
+            // String keycloakToken = KeycloakUtils.getToken(user.getLoginName(),
+            // user.getPazzword(), keycloakUrl,keycloakRealm, keycloakSecret,
+            // keycloakClientId, keycloakGrantType);
+            // if(!StringUtils.isEmpty(keycloakToken)) {
+            // redisUtil.cacheKeycloakToken(userForBase.getId(),keycloakToken);
+            // }
+            // }
             Map<String, String> tokenMap;
             try {
                 userForBase.setApplicationId(application.getId());
@@ -434,9 +439,10 @@ public class LoginController {
             userForBase.setLoginTime(System.currentTimeMillis());
             userForBase.setLastLoginTime(System.currentTimeMillis());
             userForBase.setLoginCount(userForBase.getLoginCount() + 1);
-            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE", "LOGIN_SUCCESS", true, userForBase.getTenantId()));
+            createLoginLog(userForBase, commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                    "LOGIN_SUCCESS", true, userForBase.getTenantId()));
             tokenMap.put("code", HttpStatus.OK.toString());
-            tokenMap.put("message", "登录成功");
+            tokenMap.put("message", " Login 成功");
             redisUtils.set(TokenConstant.LAST_ACCESS_TIME + "_" + userForBase.getId(), System.currentTimeMillis());
             userService.updateById(userForBase);
             return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, tokenMap);
@@ -446,7 +452,8 @@ public class LoginController {
 
     @RequestMapping(value = "/userApplications/user/{loginName}", method = RequestMethod.GET)
     @PassToken
-    public Object userApplicationList(HttpServletRequest request, @PathVariable("loginName") String loginName, @RequestParam("applicationType") Integer applicationType) {
+    public Object userApplicationList(HttpServletRequest request, @PathVariable("loginName") String loginName,
+            @RequestParam("applicationType") Integer applicationType) {
         User userForBase = userService.findByUsername(loginName);
         if (userForBase == null) {
 
@@ -466,7 +473,6 @@ public class LoginController {
 
     }
 
-
     private void createLoginLog(User userForBase, JSONObject msg) {
         CommonLoginLog cll = new CommonLoginLog();
         cll.setAccountName(userForBase.getLoginName());
@@ -476,7 +482,8 @@ public class LoginController {
         cll.setRealName(userForBase.getRealName());
         cll.setTenantId(userForBase.getTenantId());
         cll.setUserId(userForBase.getId());
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
         String ip = IPUtil.getIPAddress(request);
         cll.setIp(ip);
         cll.setLoginAddress(IPUtil.getCityInfo(ip));

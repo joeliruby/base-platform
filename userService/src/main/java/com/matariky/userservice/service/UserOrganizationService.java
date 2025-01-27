@@ -29,7 +29,7 @@ import com.matariky.utils.TreeUtils;
 import cn.hutool.core.collection.CollUtil;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
@@ -42,30 +42,33 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
     @Autowired
     private UserGroupMapper userGroupMapper;
 
-    //  Query 所有分页
+    // Query All
     public Page<UserOrganization> getUserOrganizationAll() {
         return userOrganizationMapper.getUserOrganizationAll();
     }
 
-    //  Query 所有 Quantity
+    // Query 所有 Quantity
     public int getUserOrganizationAllCount() {
         return userOrganizationMapper.getUserOrganizationAllCount();
     }
 
-    // New方法
+    // New Method
     public int createUserOrganization(UserOrganization bean) {
         return userOrganizationMapper.createUserOrganization(bean);
     }
 
-    // 修改方法
+    // Update Method
     public int updateUserOrganization(UserOrganization bean) {
         if (bean.getParentId() != null && bean.getUserGroupId() != null) {
-            List<UserOrganization> subOrgList = userOrganizationMapper.selectList(Wrappers.lambdaQuery(UserOrganization.class)
-                    .eq(UserOrganization::getParentId, bean.getParentId())
-                    .eq(UserOrganization::getDeleteTime, 0)
-                    .ne(UserOrganization::getId, bean.getId()));
+            List<UserOrganization> subOrgList = userOrganizationMapper
+                    .selectList(Wrappers.lambdaQuery(UserOrganization.class)
+                            .eq(UserOrganization::getParentId, bean.getParentId())
+                            .eq(UserOrganization::getDeleteTime, 0)
+                            .ne(UserOrganization::getId, bean.getId()));
             List<UserOrganization> sameGroupIdList = subOrgList.stream()
-                    .filter(item -> item.getUserGroupId() != null && item.getUserGroupId().equals(bean.getUserGroupId())).collect(Collectors.toList());
+                    .filter(item -> item.getUserGroupId() != null
+                            && item.getUserGroupId().equals(bean.getUserGroupId()))
+                    .collect(Collectors.toList());
             if (!sameGroupIdList.isEmpty()) {
                 throw new QslException(MessageKey.USER_GROUP_NOT_REPEAT);
             }
@@ -77,12 +80,11 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
         return userOrganizationMapper.updateUserOrganization(bean);
     }
 
-    // 删除方法
+    // Delete Method
     public int delUserOrganizationById(int id) {
         return userOrganizationMapper.delUserOrganizationById(id);
     }
 
-     
     public UserOrganization getUserOrganizationById(String id) {
         return userOrganizationMapper.getUserOrganizationById(id);
     }
@@ -108,16 +110,19 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
 
     public void saveUserOrganization(UserOrganization bean) {
         if (bean.getParentId() != null && bean.getUserGroupId() != null) {
-            List<UserOrganization> subOrgList = userOrganizationMapper.selectList(Wrappers.lambdaQuery(UserOrganization.class)
-                    .eq(UserOrganization::getParentId, bean.getParentId())
-                    .eq(UserOrganization::getDeleteTime, 0));
+            List<UserOrganization> subOrgList = userOrganizationMapper
+                    .selectList(Wrappers.lambdaQuery(UserOrganization.class)
+                            .eq(UserOrganization::getParentId, bean.getParentId())
+                            .eq(UserOrganization::getDeleteTime, 0));
             List<UserOrganization> sameGroupIdList = subOrgList.stream()
-                    .filter(item -> item.getUserGroupId() != null && item.getUserGroupId().equals(bean.getUserGroupId())).collect(Collectors.toList());
+                    .filter(item -> item.getUserGroupId() != null
+                            && item.getUserGroupId().equals(bean.getUserGroupId()))
+                    .collect(Collectors.toList());
             if (!sameGroupIdList.isEmpty()) {
                 throw new QslException(MessageKey.USER_GROUP_NOT_REPEAT);
             }
         }
-        // 创建 Time 
+        // Create Time
         bean.setCreateTime(DateUtil.getCurrentDateAndTime().getTime());
         if (bean.getUserGroupId() != null) {
             UserGroup userGroup = userGroupMapper.selectById(bean.getUserGroupId());
@@ -125,9 +130,10 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
         }
         userOrganizationMapper.insert(bean);
 
-        //设置组织编码
+        // Configuration组织 Code
         UserOrganization parentOrg = userOrganizationMapper.selectById(bean.getParentId());
-        String codeString = OrgCodeUtil.generateOrgCodeFromOrgBean(parentOrg.getOrganizationCode(), bean.getId(), bean.getOrgType());
+        String codeString = OrgCodeUtil.generateOrgCodeFromOrgBean(parentOrg.getOrganizationCode(), bean.getId(),
+                bean.getOrgType());
 
         bean.setOrganizationCode(codeString);
 
@@ -144,8 +150,7 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
 
     public void delete(Long id, String tenantId) {
 
-
-        // 删除
+        // Delete
         userOrganizationMapper.updateDeleteTimeById(id, tenantId);
 
     }
@@ -156,11 +161,10 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
     }
 
     /**
-     * 根据pid，构建树节点
+     * 根据pid ,构建树节点
      */
     public List<JSONObject> build(Map<Long, JSONObject> treeNodes) {
         List<JSONObject> result = new ArrayList<>();
-
 
         for (JSONObject node : treeNodes.values()) {
             JSONObject parent = null;
@@ -183,13 +187,12 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
         return result;
     }
 
-
     public List<TreeModel> queryTreeNode(String tenantId) {
         List<TreeModel> organizationList = userOrganizationMapper.getOrganizationList(tenantId);
-        return  TreeUtils.build(organizationList);
+        return TreeUtils.build(organizationList);
     }
 
-    // 通过编码 Query 上级组织也包含自己这一层
+    // 通过 Code Query 上级组织也包含自己这一层
     public List<UserOrganization> getParentOrgListByCode(String code, String tenantId) {
         List<UserOrganization> list = new ArrayList<>();
         // 自己本身的组织
@@ -243,7 +246,6 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
 
     public String getOrgNamesByCode(String[] codes) {
 
-
         return userOrganizationMapper.getOrgNamesByCode(codes);
     }
 
@@ -253,9 +255,8 @@ public class UserOrganizationService extends BaseServiceImpl<UserOrganizationMap
         return treeModelList;
     }
 
-	public UserOrganization getUserSelfOrganization(Long id) {
-		return userOrganizationMapper.getUserSelfOrganization( id);
-	}
-
+    public UserOrganization getUserSelfOrganization(Long id) {
+        return userOrganizationMapper.getUserSelfOrganization(id);
+    }
 
 }

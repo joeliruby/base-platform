@@ -8,13 +8,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @description:  Label  Print  Task bean
+ * @description: Label Print Task bean
  * @author: chenyajun
  * @create: 2024/2/08 9:48
  **/
 @TableName(value = "basic_base_rfidprint", autoResultMap = true)
 @Data
-public class TapeRfidPrintTask  implements Serializable {
+public class TapeRfidPrintTask implements Serializable {
     /**
      *
      */
@@ -26,7 +26,7 @@ public class TapeRfidPrintTask  implements Serializable {
     @ApiModelProperty(value = " Task Batch Number")
     private String taskName;
 
-    @ApiModelProperty(value = " Print Type  1 批次 Print  0 补打")
+    @ApiModelProperty(value = " Print Type  1  Batch  Print  0 补打")
     private String printType;
 
     @ApiModelProperty(value = " Task  Time ")
@@ -35,16 +35,16 @@ public class TapeRfidPrintTask  implements Serializable {
     @ApiModelProperty(value = " Device ID")
     private Long deviceId;
 
-    @ApiModelProperty(value = " Print 机编号")
+    @ApiModelProperty(value = " Printer  Code ")
     private String printCode;
 
-    @ApiModelProperty(value = " Print 机 Name")
+    @ApiModelProperty(value = " Printer Name")
     private String printName;
 
     @ApiModelProperty(value = " Item ID")
     private Long goodsId;
 
-    @ApiModelProperty(value = " Item 编码")
+    @ApiModelProperty(value = " Item  Code ")
     private String goodsCode;
 
     @ApiModelProperty(value = " Item  Name")
@@ -92,7 +92,7 @@ public class TapeRfidPrintTask  implements Serializable {
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "真实 Name")
+    @ApiModelProperty(value = " Real Name")
     private String realName;
 
     private Long createTime;

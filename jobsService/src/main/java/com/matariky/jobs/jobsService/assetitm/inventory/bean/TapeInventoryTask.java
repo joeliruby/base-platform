@@ -18,27 +18,27 @@ import java.util.List;
 public class TapeInventoryTask implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-     * 主键
+    /**
+     * Primary Key
      */
     private Long id;
 
     /**
-     * 操作人机构编码
+     * Operator Organization Code
      */
     private String operatorOrgCode;
 
     /**
-     * 操作人自己机构编码
+     * Operator Self Organization Code
      */
     private String operatorSelfOrgCode;
 
     /**
-     *  Tenant 编码
+     * Tenant Code
      */
     private String tenantId;
 
@@ -48,33 +48,33 @@ public class TapeInventoryTask implements Serializable {
     private String serialNumber;
 
     /**
-     *  Task  Name
+     * Task Name
      */
     private String taskName;
 
     /**
-     *  Task Type ，1=立即执行，2=一次性,3=周期
+     * Task Type ,1=立即执行 ,2=一次性,3=周期
      */
     private Integer taskType;
 
     /**
-     * 应用 1=PC,2=APP
+     * App 1=PC,2=APP
      */
     private Integer application;
 
     /**
-     * 机架id
+     * Library id
      */
     private String locationId;
 
     /**
-     * 机架Id集合
+     * Library Id集合
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<Long> libraryIds;
 
     /**
-     *  Time 间隔
+     * Time 间隔
      */
     private Integer timeInterval;
 
@@ -84,12 +84,12 @@ public class TapeInventoryTask implements Serializable {
     private Integer intervalUnit;
 
     /**
-     * 盘点开始 Time 
+     * 盘点 Start Time
      */
     private Long startTime;
 
     /**
-     * 盘点结束 Time 
+     * 盘点结束 Time
      */
     private Long endTime;
 
@@ -104,17 +104,17 @@ public class TapeInventoryTask implements Serializable {
     private Integer actualQuantity;
 
     /**
-     *  Status :1=启用，2=停用
+     * Status :1= Activate ,2= Deactivate
      */
     private Integer status;
 
     /**
-     * 流程 Status ：流程 Status ：1= To Be Started ，2=扫描中，3=等待Update，4= Task 结束
+     * 流程 Status ：流程 Status ：1= To Be Started ,2=扫描中 ,3=等待Update ,4= Task 结束
      */
     private Integer processStatus;
 
     /**
-     *  Wether 有差异：0=否，1=是
+     * Wether 有差异：0=否 ,1=是
      */
     private Boolean isDiscrepancy;
 
@@ -124,12 +124,12 @@ public class TapeInventoryTask implements Serializable {
     private Long lastSubtaskId;
 
     /**
-     * 操作ip
+     * Operationip
      */
     private String operationIp;
 
     /**
-     *  Remark 
+     * Remark
      */
     private String remark;
 
@@ -139,27 +139,27 @@ public class TapeInventoryTask implements Serializable {
     private String local;
 
     /**
-     * 创建人
+     * Creater
      */
     private Long createdBy;
 
     /**
-     * 修改人
+     * Updater
      */
     private Long updatedBy;
 
     /**
-     * 创建 Time 
+     * Create Time
      */
     private Long createTime;
 
     /**
-     * 修改 Time 
+     * Update Time
      */
     private Long updateTime;
 
     /**
-     * 删除 Time 
+     * Delete Time
      */
     private Long deleteTime;
 }

@@ -14,12 +14,11 @@ import javax.validation.constraints.NotNull;
 @Data
 public class BasicBaseDeviceUpgradeUpdateVO {
 
-
-    @ApiModelProperty(value = "升级包 Name")
+    @ApiModelProperty(value = "  Upgrade Package Name")
     @NotBlank
     private String packageName;
 
-    @ApiModelProperty(value = "升级包版本")
+    @ApiModelProperty(value = "  Upgrade Package Version")
     @NotBlank
     private String packageVersion;
 

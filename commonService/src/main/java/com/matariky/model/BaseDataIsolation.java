@@ -35,13 +35,13 @@ public class BaseDataIsolation implements Serializable {
     private String local;
 
     /**
-     * 用户id
+     *  User id
      */
     @TableField(exist = false)
     private Long userId;
 
     /**
-     * 应用
+     *   App 
      */
     @TableField(exist = false)
     private Integer application;

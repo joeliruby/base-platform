@@ -17,19 +17,19 @@ import java.util.List;
 public interface BasicBaseDeviceUpgradeMapper extends BaseMapper<BasicBaseDeviceUpgrade> {
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBaseDeviceupgrade(BasicBaseDeviceUpgrade bean);
 
     /**
-     * 已经升级过包的 Device 列表
+     * Upgraded Device  Pagination 
      * @param packageId
      * @return
      */
     public List<UpgradeDeviceVO> getUpgradeDeviceList(@Param("packageId") Long packageId);
 
     /**
-     * 分页列表
+     *  Pagination
      * @return
      */
     public  List<BasicBaseDeviceUpgradeResVO>  getBasicBaseDeviceupgradeAll(@Param("params") UpgradeListVO vo);

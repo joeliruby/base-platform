@@ -201,7 +201,7 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 		return basicBaseRfidfactoryMapper.updateById(basicBaseRfidfactory);
 	}
 
-	// 删除方法
+	// Delete Method
 	public int delBasicBaseRfidfactoryById(Long id) {
 		return basicBaseRfidfactoryMapper.delBasicBaseRfidfactoryById(id);
 	}
@@ -223,33 +223,34 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 			strategyCode = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;// By default only visible by owner
 		}
 		switch (strategyCode) {
-		case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
-			Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
-			params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
-			params.putAll(sharingOrgCodes0);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
-			Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes3);
-			break;
-		case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special sharing
-															// rules
-			Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
-			params.put("orgCode", TokenUtils.extractOrgCode(request));
-			params.putAll(sharingOrgCodes2);
-			break;
-		default:
-			break;
+			case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
+				Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
+				params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
+				params.putAll(sharingOrgCodes0);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
+				Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes3);
+				break;
+			case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special
+																// sharing
+																// rules
+				Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
+				params.put("orgCode", TokenUtils.extractOrgCode(request));
+				params.putAll(sharingOrgCodes2);
+				break;
+			default:
+				break;
 		}
 
 		return basicBaseRfidfactoryMapper.getBasicBaseRfidfactoryDACCount(params);
 	}
 
 	/***
-	 *  Export  Data
+	 * Export Data
 	 * 
 	 * @param response
 	 * @return
@@ -268,13 +269,13 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 	}
 
 	/**
-	 * 默认excel文件名和单元sheet名一样的 Excel文件 Export 
+	 * 默认excel File Name 和单元sheet Name 一样的 Excel文件 Export
 	 *
-	 * @param workBookName:  excel文件名
+	 * @param workBookName:  excel File Name
 	 * @param sheetName:工作簿
 	 * @param list：Import表格的 Data
 	 * @param pojoClass      ：工作表映射实体类
-	 * @param response       ：客户端输出 Data 流
+	 * @param response       ：Client 输出 Data 流
 	 * @return void
 	 * @author hanyulin
 	 * @date 2021/10/21 16:33
@@ -301,14 +302,16 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public boolean upload(MultipartFile file, String jwt, String tenantId, Long Id) throws IOException {
-//		InputStream inputStream = file.getInputStream();
-//		EasyExcel.read(inputStream, TapeRfidCreateCNExeclReqVo.class, new TapeRfidCreateCNExeclListener(basicBaseRfidInfoMapper, jwt, request, tenantId))
-//				.sheet().doRead();
+		// InputStream inputStream = file.getInputStream();
+		// EasyExcel.read(inputStream, TapeRfidCreateCNExeclReqVo.class, new
+		// TapeRfidCreateCNExeclListener(basicBaseRfidInfoMapper, jwt, request,
+		// tenantId))
+		// .sheet().doRead();
 
 		List<TapeRfidCreateCNExeclReqVo> tapeRfidCreateCNExeclReqVos = new ArrayList<>();
-		// 记录错误的 Information
+		// Record Error 的 Information
 		StringBuffer errorMessage = new StringBuffer();
-		// 创建监听器
+		// Create 监听器
 
 		// Long userId=Long.parseLong(TokenUtils.extractUserIdFromToken(jwt));
 		TapeRfidCreateCNExeclListener listener = new TapeRfidCreateCNExeclListener(tapeRfidCreateCNExeclReqVos,
@@ -319,7 +322,7 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 		} catch (Exception ex) {
 			throw new QslException(MessageKey.TAPE_LABEL_UPLOAD_FILE_ERROR);
 		}
-		// 判断Excel Information  Wether 有错误
+		// 判断Excel Information Wether 有 Error
 		if (StringUtils.isNotEmpty(errorMessage.toString())) {
 			throw new QslException(errorMessage.toString());
 		}
@@ -341,7 +344,7 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 		if (CollectionUtils.isNotEmpty(tapeRfidCreateCNExeclReqVos)) {
 			if ((create_num - upload_num) < tapeRfidCreateCNExeclReqVos.size()
 					|| tapeRfidCreateCNExeclReqVos.size() > 2000) {
-				throw new QslException("Import Label  Data 有误，请确认后重试！");
+				throw new QslException("Import Label  Data 有误  ,请确认后重试！");
 			}
 
 			tapeRfidCreateCNExeclReqVos.stream().forEach(item -> {
@@ -360,7 +363,7 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 					basicBaseRfidInfoMapper.updateBasicBaseRfidInfo(baseRfidInfo);
 					size[0] = size[0] + 1;
 				} else {
-					throw new QslException("Import Label  Data 有误，请确认后重试！");
+					throw new QslException("Import Label  Data 有误  ,请确认后重试！");
 				}
 			});
 			if (size[0] > 0) {
@@ -369,7 +372,7 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 			}
 
 		} else {
-			throw new QslException("Import Label  Data 有误，请确认后重试！");
+			throw new QslException("Import Label  Data 有误  ,请确认后重试！");
 		}
 
 		return true;
@@ -395,10 +398,10 @@ public class BasicBaseRfidfactoryService extends BaseServiceImpl<BasicBaseRfidfa
 	}
 
 	/***
-	 * DownloadImport模版
+	 * DownloadImport Template
 	 */
 	public void downLoadTemplate() {
 		commonService.createTemplate(response, TapeRfidCreateCNExeclReqVo.class, "rfidfactory",
-				" Label  Generation Import模版");
+				" Label  Generation Import Template ");
 	}
 }

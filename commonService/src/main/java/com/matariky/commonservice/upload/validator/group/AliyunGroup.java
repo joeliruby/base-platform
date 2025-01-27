@@ -1,7 +1,7 @@
 package com.matariky.commonservice.upload.validator.group;
 
 /**
- * 阿里云
+ * 阿里 Cloud
  *
  */
 public interface AliyunGroup {

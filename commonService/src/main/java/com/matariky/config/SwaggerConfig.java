@@ -19,78 +19,81 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 
 @EnableOpenApi
-//@Import(BeanValidatorPluginsConfiguration.class)
-@Component(value="Swagger")
+@Component(value = "Swagger")
 public class SwaggerConfig {
-	@Bean(name="bizDocket")
-    public Docket createBizApi() {
-    	Predicate<springfox.documentation.RequestHandler> selector1 = RequestHandlerSelectors.basePackage("com.matariky.bizservice");
-    	Contact contact = new Contact("li_zhe","","li_zhe@yxemi.com");
-        return new Docket(DocumentationType.SWAGGER_2).groupName("biz")
-                .pathMapping("/")
-                .select().apis(selector1)
-                .paths(PathSelectors.any())
-                .build().apiInfo(new ApiInfoBuilder()
-                        .title("盈芯通用技术平台用户服务")
-                        .description("盈芯通用技术平台用户服务接口描述")
-                        .version("9.0")
-                        .contact(contact)
-                        .license("The Apache License")
-                        .licenseUrl("http://www.baidu.com")
-                        .build());
-    }
-	
-    @Bean(name="commonDocket")
-    public Docket createCommonApi() {
-    	Predicate<springfox.documentation.RequestHandler> selector2 = RequestHandlerSelectors.basePackage("com.matariky.commonservice");
-    	Contact contact = new Contact("li_zhe","","li_zhe@yxemi.com");
-        return new Docket(DocumentationType.SWAGGER_2).groupName("common")
-                .pathMapping("/")
-                .select().apis(selector2)
-                .paths(PathSelectors.any())
-                .build().apiInfo(new ApiInfoBuilder()
-                        .title("盈芯通用技术平台用户服务")
-                        .description("盈芯通用技术平台用户服务接口描述")
-                        .version("9.0")
-                        .contact(contact)
-                        .license("The Apache License")
-                        .licenseUrl("http://www.baidu.com")
-                        .build());
-    }
-    
-    @Bean(name="userDocket")
-    public Docket createUserApi() {
-    	Predicate<springfox.documentation.RequestHandler> selector3 = RequestHandlerSelectors.basePackage("com.matariky.userservice");
-    	Contact contact = new Contact("li_zhe","","li_zhe@yxemi.com");
-        return new Docket(DocumentationType.SWAGGER_2).groupName("user")
-                .pathMapping("/")
-                .select().apis(selector3)
-                .paths(PathSelectors.any())
-                .build().apiInfo(new ApiInfoBuilder()
-                        .title("盈芯通用技术平台用户服务")
-                        .description("盈芯通用技术平台用户服务接口描述")
-                        .version("9.0")
-                        .contact(contact)
-                        .license("The Apache License")
-                        .licenseUrl("http://www.baidu.com")
-                        .build());
-    }
-    
-    @Bean(name="orderDocket")
-    public Docket createOrderApi() {
-    	Predicate<springfox.documentation.RequestHandler> selector4 = RequestHandlerSelectors.basePackage("com.matariky.orderservice");
-    	Contact contact = new Contact("li_zhe","","li_zhe@yxemi.com");
-        return new Docket(DocumentationType.SWAGGER_2).groupName("order")
-                .pathMapping("/")
-                .select().apis(selector4)
-                .paths(PathSelectors.any())
-                .build().apiInfo(new ApiInfoBuilder()
-                        .title("盈芯通用技术平台用户服务")
-                        .description("盈芯通用技术平台用户服务接口描述")
-                        .version("9.0")
-                        .contact(contact)
-                        .license("The Apache License")
-                        .licenseUrl("http://www.baidu.com")
-                        .build());
-    }
+        @Bean(name = "bizDocket")
+        public Docket createBizApi() {
+                Predicate<springfox.documentation.RequestHandler> selector1 = RequestHandlerSelectors
+                                .basePackage("com.matariky.bizservice");
+                Contact contact = new Contact("li_zhe", "", "zheli714@gmail.com");
+                return new Docket(DocumentationType.SWAGGER_2).groupName("biz")
+                                .pathMapping("/")
+                                .select().apis(selector1)
+                                .paths(PathSelectors.any())
+                                .build().apiInfo(new ApiInfoBuilder()
+                                                .title("Base Platform User  Service ")
+                                                .description("Base Platform User  Service  Interface Description ")
+                                                .version("9.0")
+                                                .contact(contact)
+                                                .license("The Apache License")
+                                                .licenseUrl("http://www.baidu.com")
+                                                .build());
+        }
+
+        @Bean(name = "commonDocket")
+        public Docket createCommonApi() {
+                Predicate<springfox.documentation.RequestHandler> selector2 = RequestHandlerSelectors
+                                .basePackage("com.matariky.commonservice");
+                Contact contact = new Contact("li_zhe", "", "zheli714@gmail.com");
+                return new Docket(DocumentationType.SWAGGER_2).groupName("common")
+                                .pathMapping("/")
+                                .select().apis(selector2)
+                                .paths(PathSelectors.any())
+                                .build().apiInfo(new ApiInfoBuilder()
+                                                .title("Base Platform User Service")
+                                                .description("Base Platform User Service Interface Description ")
+                                                .version("9.0")
+                                                .contact(contact)
+                                                .license("The Apache License")
+                                                .licenseUrl("http://www.baidu.com")
+                                                .build());
+        }
+
+        @Bean(name = "userDocket")
+        public Docket createUserApi() {
+                Predicate<springfox.documentation.RequestHandler> selector3 = RequestHandlerSelectors
+                                .basePackage("com.matariky.userservice");
+                Contact contact = new Contact("li_zhe", "", "zheli714@gmail.com");
+                return new Docket(DocumentationType.SWAGGER_2).groupName("user")
+                                .pathMapping("/")
+                                .select().apis(selector3)
+                                .paths(PathSelectors.any())
+                                .build().apiInfo(new ApiInfoBuilder()
+                                                .title("Base Platform User  Service ")
+                                                .description("Base Platform User  Service  Interface Description ")
+                                                .version("9.0")
+                                                .contact(contact)
+                                                .license("The Apache License")
+                                                .licenseUrl("http://www.baidu.com")
+                                                .build());
+        }
+
+        @Bean(name = "orderDocket")
+        public Docket createOrderApi() {
+                Predicate<springfox.documentation.RequestHandler> selector4 = RequestHandlerSelectors
+                                .basePackage("com.matariky.orderservice");
+                Contact contact = new Contact("li_zhe", "", "zheli714@gmail.com");
+                return new Docket(DocumentationType.SWAGGER_2).groupName("order")
+                                .pathMapping("/")
+                                .select().apis(selector4)
+                                .paths(PathSelectors.any())
+                                .build().apiInfo(new ApiInfoBuilder()
+                                                .title("Base Platform User  Service ")
+                                                .description("Base Platform User  Service  Interface Description ")
+                                                .version("9.0")
+                                                .contact(contact)
+                                                .license("The Apache License")
+                                                .licenseUrl("http://www.baidu.com")
+                                                .build());
+        }
 }

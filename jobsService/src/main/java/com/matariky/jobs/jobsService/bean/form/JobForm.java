@@ -3,40 +3,36 @@ package com.matariky.jobs.jobsService.bean.form;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-
 /**
  * <p>
- * 定时 Task 详情
+ * Scheduled Task Detail
  * </p>
  *
  * @package: com.matariky.jobs.jobsService.entity.form
- * @description: 定时 Task 详情
+ * @description: Scheduled Task Detail
  * @version: V1.0
  */
 @Data
 @Accessors(chain = true)
 public class JobForm {
-	
-	
+
     /**
-     * 定时 Task 全类名
+     * Scheduled Task 全类 Name
      */
-//    @NotBlank(message = "类名不能为空")
+    // @NotBlank(message = "类 Name 不能为空")
     private String jobClassName;
-	
-	
+
     /**
-     *  Task 组名
+     * Task 组 Name
      */
-//    @NotBlank(message = " Task 组名不能为空")
+    // @NotBlank(message = " Task 组 Name 不能为空")
     private String jobGroupName;
-	
-	
+
     /**
-     * 定时 Task cron表达式
+     * Scheduled Task cron表达式
      */
-//    @NotBlank(message = "cron表达式不能为空")
+    // @NotBlank(message = "cron表达式不能为空")
     private String cronExpression;
-	
-	private String tenantId;
+
+    private String tenantId;
 }

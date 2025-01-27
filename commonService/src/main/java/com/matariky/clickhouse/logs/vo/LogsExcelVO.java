@@ -16,20 +16,20 @@ public class LogsExcelVO implements Serializable {
     @ColumnWidth(30)
     private String tenantId;
 
-    @ExcelProperty("应用 Name")
+    @ExcelProperty("application Name")
     @ColumnWidth(30)
     private String appName;
 
 
-    @ExcelProperty(value = "操作 Name")
+    @ExcelProperty(value = "operate Name")
     @ColumnWidth(30)
     private String operationName;
 
-    @ExcelProperty(value = "日志内容")
+    @ExcelProperty(value = "Log content")
     @ColumnWidth(30)
     private String message;
 
-    @ExcelProperty(value = "日志Type ",converter = LogTypeConverter.class)
+    @ExcelProperty(value = " Log Type ",converter = LogTypeConverter.class)
     @ColumnWidth(30)
     private String logType;
 
@@ -39,11 +39,11 @@ public class LogsExcelVO implements Serializable {
     private String tidEpc;
 
 
-    @ExcelProperty(value = "操作人")
+    @ExcelProperty(value = "Operator")
     @ColumnWidth(30)
     private String operator;
 
-    @ExcelProperty(value = " Wether 错误")
+    @ExcelProperty(value = " Wether  Error ")
     @ColumnWidth(30)
     private String hasError;
 
@@ -52,11 +52,11 @@ public class LogsExcelVO implements Serializable {
     @ColumnWidth(30)
     private String ip;
 
-    @ExcelProperty(value = "MAC地址")
+    @ExcelProperty(value = "MAC Address ")
     @ColumnWidth(30)
     private String mac;
 
-    @ExcelProperty(value = "日志存储 Time ")
+    @ExcelProperty(value = " Log  Storage  Time ")
     @ColumnWidth(30)
     private String timestamp;
 

@@ -14,52 +14,52 @@ public class BasicBaseDeviceTypeInfoVO {
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = " Device Type 编码")
+    @ApiModelProperty(value = " Device Type  Code ")
     private String typeCode;
 
     @ApiModelProperty(value = " Device Type  Name")
     private String typeName;
 
-    @ApiModelProperty(value = " Device 厂家")
+    @ApiModelProperty(value = " Device  Factory  ")
     private String deviceFactory;
 
-    @ApiModelProperty(value = " Device 型号")
+    @ApiModelProperty(value = " Device  Type ")
     private String deviceModel;
 
-    @ApiModelProperty(value = " Device 描述")
+    @ApiModelProperty(value = " Device  Description ")
     private String deviceDescribe;
 
-    @ApiModelProperty(value = "当前固件版本号")
+    @ApiModelProperty(value = "  Current  Firmware  Version Number")
     private String currentVersion;
 
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
 
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
 
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
 
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
 
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
 
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Vistiting Operator Department Code ")
     private String operatorOrgCode;
 
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Vistitor Organization Code Code ")
     private String operatorSelfOrgCode;
 
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
 
-    @ApiModelProperty(value = "真实 Name")
+    @ApiModelProperty(value = " Real Name")
     private String realName;
 
     private String isAutoUpgrade;

@@ -15,10 +15,9 @@ public class BasicBaseCodingRulesUpdateVO {
     @Size(max = 200)
     private String rulesName;
 
-    @ApiModelProperty(value = "编码长度")
+    @ApiModelProperty(value = " Code  length ")
     @NotNull
     private Integer codingLength;
-
 
     @ApiModelProperty(value = " Remark ")
     @Size(max = 500)
@@ -32,7 +31,7 @@ public class BasicBaseCodingRulesUpdateVO {
     @NotNull
     private Integer rulesType;
 
-    @ApiModelProperty(value = " Wether 按顺序 Generation ")
+    @ApiModelProperty(value = " Wether In order Generation ")
     @NotNull
     private Boolean isGenerateBySort;
 

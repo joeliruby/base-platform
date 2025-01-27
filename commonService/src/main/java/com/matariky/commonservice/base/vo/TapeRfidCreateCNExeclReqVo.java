@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class TapeRfidCreateCNExeclReqVo  implements Serializable {
+public class TapeRfidCreateCNExeclReqVo implements Serializable {
     /**
      *
      */
@@ -20,14 +20,12 @@ public class TapeRfidCreateCNExeclReqVo  implements Serializable {
     @ColumnWidth(20)
     private String epc;
 
-
     /**
      * tid
      */
     @ExcelProperty("TID")
     @ColumnWidth(20)
     private String tid;
-
 
     /**
      * BarCode
@@ -46,18 +44,17 @@ public class TapeRfidCreateCNExeclReqVo  implements Serializable {
     /**
      * BarCode
      */
-    @ExcelProperty(" Item 编码")
+    @ExcelProperty(" Item  Code ")
     @ColumnWidth(20)
     private String goodsCode;
 
     /**
      * BarCode
      */
-    @ExcelProperty("EPC锁定 Password ")
+    @ExcelProperty("EPC Lock  Password ")
     @ColumnWidth(20)
     private String password;
 
     private Long id;
-
 
 }

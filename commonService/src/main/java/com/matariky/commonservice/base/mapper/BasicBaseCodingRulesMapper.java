@@ -21,24 +21,24 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface BasicBaseCodingRulesMapper extends BaseMapper<BasicBaseCodingRules> {
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "r")
     public List<BasicBaseCodingRulesInfoVO> getBasicBaseCodingrulesAll(@Param("params") BasicBaseCodingRulesListVO vo);
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBaseCodingrulesById(Long id);
 
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBaseCodingrules(BasicBaseCodingRules bean);
 
     /**
-     * 下拉选
+     *   Drop Down Box
      * @param queryDataIsolation
      * @return
      */
@@ -47,7 +47,7 @@ public interface BasicBaseCodingRulesMapper extends BaseMapper<BasicBaseCodingRu
 
 
     /**
-     *  Query   rule id  Wether 被  Label  使用
+     *  Query   rule id  Wether User by Label 
      * @param id
      * @return
      */

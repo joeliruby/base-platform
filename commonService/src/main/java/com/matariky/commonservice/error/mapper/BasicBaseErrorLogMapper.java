@@ -32,28 +32,28 @@ public interface BasicBaseErrorLogMapper extends BaseMapper<BasicBaseErrorLog>{
 	public int delBasicBaseErrorLogById(int id);
 	 
 	public BasicBaseErrorLog getBasicBaseErrorLogById(int id);
-	//插入一条记录
+	//Insert a record
 	@Override
 	int insert(BasicBaseErrorLog record);
-	//根据 ID 删除
+	//Delete By ID
 	@Override
 	int deleteById(Serializable id);
-	//根据 columnMap 条件，删除记录
+	//Delete By Column Map
 	@Override
 	int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件，删除记录
+	//Delete By Entity
 	@Override
 	int delete(@Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
-	//删除（根据ID 批量删除）
+	//Delete Batch By IDs
 	@Override
 	int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-	//根据 ID 修改
+	//Update By IDs
 	@Override
 	int updateById(@Param(Constants.ENTITY) BasicBaseErrorLog entity);
-	//根据 whereEntity 条件，Update记录
+	//Update By Entity
 	@Override
 	int update(@Param(Constants.ENTITY) BasicBaseErrorLog entity, @Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> updateWrapper);
-	//根据 ID  Query 
+	//Query By ID 
 	@Override
 	BasicBaseErrorLog selectById(Serializable id);
 	 
@@ -62,26 +62,26 @@ public interface BasicBaseErrorLogMapper extends BaseMapper<BasicBaseErrorLog>{
 	 
 	@Override
 	List<BasicBaseErrorLog> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件， Query 一条记录
+	//Query One By Entity
 	@Override
 	BasicBaseErrorLog selectOne(@Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
-	//根据 Wrapper 条件， Query 总记录数
+	//Query Count By Wrapper
 	@Override
 	Long selectCount(@Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
-	//根据 entity 条件， Query 全部记录
+	//Query All By Entity
 	@Override
 	List<BasicBaseErrorLog> selectList(@Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+	//Query All Maps By Wrapper
 	@Override
 	List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+	//Query All Maps By Wrapper
 	@Override
 	List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
-	//根据 entity 条件， Query 全部记录（并翻页）
+	//Query All By Entity（ With Pagination ）
 	 Page<BasicBaseErrorLog> selectPage(Page<BasicBaseErrorLog> page, @Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
 	public List<BasicBaseErrorLog> getBasicBaseErrorLogDAC(@Param("params") Map<String, Object> params);
 	public Long getBasicBaseErrorLogDACCount(@Param("params") Map<String, Object> params);
-	//根据 Wrapper 条件， Query 全部记录（并翻页）
+	//Query All Maps By Wrapper（ With Pagination ）
 	Page<Map<String, Object>> selectMapsPage(Page<BasicBaseErrorLog> page, @Param(Constants.WRAPPER) Wrapper<BasicBaseErrorLog> queryWrapper);
 
 

@@ -18,13 +18,13 @@ import java.io.Serializable;
 public class ApiResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
-	/**
-     * 返回 Information 
+    /**
+     * 返回 Information
      */
     private String message;
 
     /**
-     * 返回 Data 
+     * 返回 Data
      */
     private Object data;
 
@@ -37,10 +37,10 @@ public class ApiResponse implements Serializable {
     }
 
     /**
-     * 通用封装获取ApiResponse对象
+     * 通用封装 RetrieveApiResponse Object
      *
-     * @param message 返回 Information 
-     * @param data    返回 Data 
+     * @param message 返回 Information
+     * @param data    返回 Data
      * @return ApiResponse
      */
     public static ApiResponse of(String message, Object data) {
@@ -48,9 +48,9 @@ public class ApiResponse implements Serializable {
     }
 
     /**
-     * 通用成功封装获取ApiResponse对象
+     * 通用成功封装 RetrieveApiResponse Object
      *
-     * @param data 返回 Data 
+     * @param data 返回 Data
      * @return ApiResponse
      */
     public static ApiResponse ok(Object data) {
@@ -58,9 +58,9 @@ public class ApiResponse implements Serializable {
     }
 
     /**
-     * 通用封装获取ApiResponse对象
+     * 通用封装 RetrieveApiResponse Object
      *
-     * @param message 返回 Information 
+     * @param message 返回 Information
      * @return ApiResponse
      */
     public static ApiResponse msg(String message) {

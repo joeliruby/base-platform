@@ -32,28 +32,28 @@ public interface CommonAreaMapper extends BaseMapper<CommonArea>{
 	public int delCommonAreaById(int id);
 	 
 	public CommonArea getCommonAreaById(int id);
-	//插入一条记录
+	//Insert a record 
 	@Override
 	int insert(CommonArea record);
-	//根据 ID 删除
+	//Delete By ID
 	@Override
 	int deleteById(Serializable id);
-	//根据 columnMap 条件，删除记录
+	//Delete By Column Map
 	@Override
 	int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件，删除记录 
+	//Delete By Entity
 	@Override
 	int delete(@Param(Constants.WRAPPER) Wrapper<CommonArea> queryWrapper);
-	//删除（根据ID 批量删除）
+	//Delete Batch By IDs
 	@Override
 	int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-	//根据 ID 修改
+	//Update By IDs
 	@Override
 	int updateById(@Param(Constants.ENTITY) CommonArea entity);
-	//根据 whereEntity 条件，Update记录
+	//Update By Entity
 	@Override
 	int update(@Param(Constants.ENTITY) CommonArea entity, @Param(Constants.WRAPPER) Wrapper<CommonArea> updateWrapper);
-	//根据 ID  Query   
+	//Query By ID   
 	@Override
 	CommonArea selectById(Serializable id);
 	 

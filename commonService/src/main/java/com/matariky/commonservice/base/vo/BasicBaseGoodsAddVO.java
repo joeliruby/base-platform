@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Data
 public class BasicBaseGoodsAddVO {
 
-    @ApiModelProperty(value = " Item 编码")
+    @ApiModelProperty(value = " Item  Code ")
     @NotBlank
     @Size(max = 200)
     private String goodsCode;
@@ -20,11 +20,11 @@ public class BasicBaseGoodsAddVO {
     private String goodsName;
 
     @Size(max = 100)
-    @ApiModelProperty(value = " Item 图片")
+    @ApiModelProperty(value = " Item  Image ")
     private String goodsImage;
 
     @Size(max = 500)
-    @ApiModelProperty(value = " Item 描述")
+    @ApiModelProperty(value = " Item  Description ")
     private String goodsDescribe;
 
 }

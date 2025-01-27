@@ -33,12 +33,13 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
 @Service
-public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVersionMapper, BasicBaseAppVersion> implements BaseService<BasicBaseAppVersion> {
+public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVersionMapper, BasicBaseAppVersion>
+        implements BaseService<BasicBaseAppVersion> {
 
     @Autowired
     private BasicBaseAppVersionMapper basicBaseAppversionMapper;
@@ -60,14 +61,16 @@ public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVers
     private String locale;
 
     /**
-     *  Query 所有分页
+     * Query All
      */
     public List<BasicBaseAppVersionListVO> getBasicBaseAppversionAll(BasicBaseAppVersionQueryVO vo) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -80,17 +83,16 @@ public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVers
         return basicBaseAppversionMapper.getBasicBaseAppversionAll(vo);
     }
 
-
     /**
-     * New方法
+     * New Method
      */
-    public int createBasicBaseAppversionWithOrg(BasicBaseAppVersionAddVO addVO , MultipartFile fileUpload) {
-        String  tenantId =TokenUtils.extractTenantIdFromHttpReqeust(request);
+    public int createBasicBaseAppversionWithOrg(BasicBaseAppVersionAddVO addVO, MultipartFile fileUpload) {
+        String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
 
         CommonDict appTypeCodeDict = commonService.getAPPTypeCodeDict(addVO.getUpgradeType(), tenantId);
         BasicBaseAppVersion add = new BasicBaseAppVersion();
         BeanUtils.copyProperties(addVO, add);
-        /**获取文件名**/
+        /** Retrieve File Name **/
         String fileName = fileUpload.getOriginalFilename();
         String bucket = "app-upload-package";
         try {
@@ -106,7 +108,8 @@ public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVers
             e.printStackTrace();
         }
         long userId = Long.parseLong(TokenUtils.extractUserIdFromHttpReqeust(request));
-        String uploadUrl = "api/v1/tenant/" + tenantId + "/file/downloadFile?bucket=" + bucket + "&objectName=" + fileName;
+        String uploadUrl = "api/v1/tenant/" + tenantId + "/file/downloadFile?bucket=" + bucket + "&objectName="
+                + fileName;
         add.setUpgradeFile(fileName);
         add.setOperatorOrgCode(TokenUtils.extractOrgCode(request));
         add.setOperatorSelfOrgCode(TokenUtils.extractSelfOrgCode(request));
@@ -121,13 +124,13 @@ public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVers
         return basicBaseAppversionMapper.createBasicBaseAppversion(add);
     }
 
-    public int updateBasicBaseAppversion(BasicBaseAppVersionUpdateVO addVO , MultipartFile fileUpload) {
-        String  tenantId =TokenUtils.extractTenantIdFromHttpReqeust(request);
+    public int updateBasicBaseAppversion(BasicBaseAppVersionUpdateVO addVO, MultipartFile fileUpload) {
+        String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
 
         BasicBaseAppVersion update = new BasicBaseAppVersion();
         BeanUtils.copyProperties(addVO, update);
         if (fileUpload != null) {
-            /**获取文件名**/
+            /** Retrieve File Name **/
             String fileName = fileUpload.getOriginalFilename();
             String bucket = "app-upload-package";
             try {
@@ -143,15 +146,15 @@ public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVers
                 e.printStackTrace();
             }
             update.setUpgradeFile(fileName);
-            String uploadUrl = "api/v1/tenant/" + tenantId + "/file/downloadFile?bucket=" + bucket + "&objectName=" + fileName;
+            String uploadUrl = "api/v1/tenant/" + tenantId + "/file/downloadFile?bucket=" + bucket + "&objectName="
+                    + fileName;
             String QRCodeImageUrl = commonService.generateQRCodeImage(uploadUrl, tenantId, "app-package-qrcode");
             update.setDownloadQrcode(QRCodeImageUrl);
         }
 
         CommonDictType appUpgradeType = commonDictTypeMapper.selectOne(Wrappers.lambdaQuery(CommonDictType.class)
                 .eq(CommonDictType::getDictTypeKey, locale + "_APP_UPGRADE_TYPE")
-                .eq(CommonDictType::getTenantId, tenantId)
-        );
+                .eq(CommonDictType::getTenantId, tenantId));
         CommonDict deviceTypeCode = commonDictMapper.selectOne(Wrappers.lambdaQuery(CommonDict.class)
                 .eq(CommonDict::getDictTypeId, appUpgradeType.getId())
                 .eq(CommonDict::getDeleteTime, 0)
@@ -167,19 +170,21 @@ public class BasicBaseAppVersionService extends BaseServiceImpl<BasicBaseAppVers
     }
 
     /**
-     * 删除方法
+     * Delete Method
      */
     public int delBasicBaseAppversionById(Long id) {
         return basicBaseAppversionMapper.delBasicBaseAppversionById(id);
     }
 
     /**
-     * 获取 Print 机app
+     * Retrieve Printer App
+     * 
      * @return
      */
     public BasicBaseAppVersion getBasicBasePrintApp() {
-        BasicBaseAppVersion  bean = basicBaseAppversionMapper.getBasicBasePrintApp();
-        bean.setUpgradeFile("api/v1/tenant/1/file/downloadFile?bucket=app-upload-package&objectName=" + bean.getUpgradeFile());
+        BasicBaseAppVersion bean = basicBaseAppversionMapper.getBasicBasePrintApp();
+        bean.setUpgradeFile(
+                "api/v1/tenant/1/file/downloadFile?bucket=app-upload-package&objectName=" + bean.getUpgradeFile());
         return bean;
     }
 

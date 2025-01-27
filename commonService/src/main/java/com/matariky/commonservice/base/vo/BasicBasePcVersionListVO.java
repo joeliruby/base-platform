@@ -13,48 +13,48 @@ public class BasicBasePcVersionListVO {
 
     @ApiModelProperty(value = "id")
     private Long id;
-    @ApiModelProperty(value = "版本 Name")
+    @ApiModelProperty(value = " Version Name")
     private String versionName;
 
-    @ApiModelProperty(value = "版本号")
+    @ApiModelProperty(value = " Version Number")
     private String versionNo;
 
-    @ApiModelProperty(value = "版本内容")
+    @ApiModelProperty(value = "  Version Content ")
     private String versionContent;
 
-    @ApiModelProperty(value = " Requirement 采集日期")
+    @ApiModelProperty(value = " Requirement  Collection Date ")
     private Long requirementDate;
 
-    @ApiModelProperty(value = "消息提醒自动关闭 Time ")
+    @ApiModelProperty(value = "  Message  Alert  Automatic Close  Time ")
     private String messageShutdownTime;
 
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
 
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
 
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
 
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
 
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
 
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Vistiting Operator Department Code ")
     private String operatorOrgCode;
 
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Vistitor Organization Code Code ")
     private String operatorSelfOrgCode;
 
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
 
-    @ApiModelProperty(value = "创建人")
-    private String  realName;
+    @ApiModelProperty(value = "Creater")
+    private String realName;
 }

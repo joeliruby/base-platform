@@ -12,37 +12,37 @@ public class BasicBaseDeviceUpgradeResVO {
     @JsonIgnore
     private String deviceIdListStr;
 
-    @ApiModelProperty(value = " Device 固件包ID")
+    @ApiModelProperty(value = " Device  Firmware ID")
     private Long packageId;
 
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
 
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
 
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
 
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
 
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
 
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Vistiting Operator Department Code ")
     private String operatorOrgCode;
 
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Vistitor Organization Code Code ")
     private String operatorSelfOrgCode;
 
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
 
-    @ApiModelProperty(value = "升级 Status  0未执行 1已执行")
+    @ApiModelProperty(value = " Upgrade  Status  0未执行 1已执行")
     private Integer upgradeStatus;
 
     private String upgradeType;

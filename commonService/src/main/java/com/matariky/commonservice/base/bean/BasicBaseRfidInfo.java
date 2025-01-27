@@ -27,7 +27,4 @@ public class BasicBaseRfidInfo {
 	private String operatorOrgCode;
 	private String operatorSelfOrgCode;
 	private String tenantId;
-
-
-
 }

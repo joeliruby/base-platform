@@ -28,7 +28,7 @@ spring:
     basename: i18n/messages
   mvc:
     #favicon:
-      enabled: false
+    enabled: false
   thymeleaf:
     mode: XHTML
     prefix: classpath:/templates/
@@ -36,7 +36,7 @@ spring:
 logging:
   pattern:
     console: "%d - %msg%n"
-  file: 
+  file:
     name: d:\amation\logs
   level:
     xaru:
@@ -48,8 +48,6 @@ logging:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-#自定义配置文件
+#自定义 Configuration 文件
 file:
   url: d:\amation\dist
-
-

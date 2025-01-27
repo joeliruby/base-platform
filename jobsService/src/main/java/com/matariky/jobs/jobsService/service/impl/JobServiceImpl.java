@@ -47,9 +47,9 @@ public class JobServiceImpl implements JobService {
     }
 
     /**
-     * 添加并启动定时 Task 
+     * Add 并启动 Scheduled Task
      *
-     * @param form 表单 Parameter  {@link JobForm}
+     * @param form 表单 Parameter {@link JobForm}
      * @return {@link JobDetail}
      * @throws Exception 异常
      */
@@ -57,23 +57,26 @@ public class JobServiceImpl implements JobService {
     public void addJob(JobForm form) throws Exception {
         // 启动调度器
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(JobUtil.getClass(form.getJobClassName()).getClass()).withIdentity(form.getJobClassName(), form.getJobGroupName()).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(JobUtil.getClass(form.getJobClassName()).getClass())
+                .withIdentity(form.getJobClassName(), form.getJobGroupName()).build();
         Trigger trigger;
         if (StringUtils.isNotEmpty(form.getCronExpression())) {
             // Cron表达式调度构建器(即 Task 执行的 Time )
             CronScheduleBuilder cron = CronScheduleBuilder.cronSchedule(form.getCronExpression());
-            //根据Cron表达式构建一个Trigger
-            trigger = TriggerBuilder.newTrigger().withIdentity(form.getJobClassName(), form.getJobGroupName()).withSchedule(cron).build();
+            // 根据Cron表达式构建 one Trigger
+            trigger = TriggerBuilder.newTrigger().withIdentity(form.getJobClassName(), form.getJobGroupName())
+                    .withSchedule(cron).build();
         } else {
             /** 立即启动 **/
-            trigger = TriggerBuilder.newTrigger().withIdentity(form.getJobClassName(), form.getJobGroupName()).startNow().build();
+            trigger = TriggerBuilder.newTrigger().withIdentity(form.getJobClassName(), form.getJobGroupName())
+                    .startNow().build();
         }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            log.error("【定时 Task 】创建Failed！", e);
-            throw new Exception("【定时 Task 】创建Failed！");
+            log.error("【 Scheduled  Task 】Create Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！");
         }
     }
 
@@ -81,15 +84,20 @@ public class JobServiceImpl implements JobService {
     public void addInventoryJob(InventoryJobForm form) throws Exception {
         // 启动调度器
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(TapeInventoryTaskJob.class).withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(TapeInventoryTaskJob.class)
+                .withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).build();
         Trigger trigger;
         if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
             /** 立即启动 **/
-            trigger = TriggerBuilder.newTrigger().withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
+            trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
         } else if (NumberUtils.INTEGER_TWO.equals(form.getTaskType())) {
-            CronScheduleBuilder cron = CronScheduleBuilder.cronSchedule(DateUtil.getCron(DateUtil.toLocalDateTime(form.getStartTime())));
-            trigger = TriggerBuilder.newTrigger().withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).withSchedule(cron).build();
+            CronScheduleBuilder cron = CronScheduleBuilder
+                    .cronSchedule(DateUtil.getCron(DateUtil.toLocalDateTime(form.getStartTime())));
+            trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).withSchedule(cron)
+                    .build();
         } else {
             DateBuilder.IntervalUnit unit;
             if (form.getIntervalUnit() == 1) {
@@ -101,13 +109,18 @@ public class JobServiceImpl implements JobService {
             } else {
                 unit = DateBuilder.IntervalUnit.WEEK;
             }
-            trigger = TriggerBuilder.newTrigger().withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString()).startAt(new Date(form.getStartTime()))
-                    .endAt(Objects.nonNull(form.getEndTime()) ? new Date(form.getEndTime()) : null).withSchedule(CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withInterval(form.getTimeInterval(), unit)).build();
+            trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString())
+                    .startAt(new Date(form.getStartTime()))
+                    .endAt(Objects.nonNull(form.getEndTime()) ? new Date(form.getEndTime()) : null)
+                    .withSchedule(CalendarIntervalScheduleBuilder.calendarIntervalSchedule()
+                            .withInterval(form.getTimeInterval(), unit))
+                    .build();
         }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【定时 Task 】创建Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
         }
     }
 
@@ -115,17 +128,19 @@ public class JobServiceImpl implements JobService {
     public void addRfidCreateJob(RfidCreateJobForm form) throws Exception {
         // 启动调度器
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(TapeRfidCreateTaskJob.class).withIdentity(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString()).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(TapeRfidCreateTaskJob.class)
+                .withIdentity(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString()).build();
         // Trigger trigger;
         // if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
         /** 立即启动 **/
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
         // }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【定时 Task 】创建Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
         }
     }
 
@@ -133,17 +148,19 @@ public class JobServiceImpl implements JobService {
     public void addRfidPrintJob(RfidPrintJobForm form) throws Exception {
         // 启动调度器
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(TapeRfidPrintTaskJob.class).withIdentity(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString()).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(TapeRfidPrintTaskJob.class)
+                .withIdentity(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString()).build();
         // Trigger trigger;
         // if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
         /** 立即启动 **/
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
         // }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【定时 Task 】创建Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
         }
     }
 
@@ -151,25 +168,26 @@ public class JobServiceImpl implements JobService {
     public void addRfidUploadJob(RfidUploadJobForm form) throws Exception {
         // 启动调度器
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(TapeRfidUploadTaskJob.class).withIdentity(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString()).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(TapeRfidUploadTaskJob.class)
+                .withIdentity(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString()).build();
         // Trigger trigger;
         // if (NumberUtils.INTEGER_ONE.equals(form.getTaskType())) {
         /** 立即启动 **/
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString()).startNow().build();
         // }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【定时 Task 】创建Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
         }
     }
 
-
     /**
-     * 删除定时 Task 
+     * Delete Scheduled Task
      *
-     * @param form 表单 Parameter  {@link JobForm}
+     * @param form 表单 Parameter {@link JobForm}
      * @throws SchedulerException 异常
      */
     @Override
@@ -180,22 +198,23 @@ public class JobServiceImpl implements JobService {
     }
 
     /**
-     * 暂停定时 Task 
+     * 暂停 Scheduled Task
      *
-     * @param form 表单 Parameter  {@link JobForm}
+     * @param form 表单 Parameter {@link JobForm}
      * @throws SchedulerException 异常
      */
     @Override
     public void pauseJob(JobForm form) throws SchedulerException {
         jobMapper.pauseRequestRecoveryByMapper(form.getJobClassName(), form.getJobGroupName(), form.getTenantId());
         jobMapper.pauseTriggerState(form.getJobClassName(), form.getJobGroupName(), form.getTenantId());
-//        scheduler.pauseJob(JobKey.jobKey(form.getJobClassName(), form.getJobGroupName()));
+        // scheduler.pauseJob(JobKey.jobKey(form.getJobClassName(),
+        // form.getJobGroupName()));
     }
 
     /**
-     * 恢复定时 Task 
+     * 恢复 Scheduled Task
      *
-     * @param form 表单 Parameter  {@link JobForm}
+     * @param form 表单 Parameter {@link JobForm}
      * @throws SchedulerException 异常
      */
     @Override
@@ -204,9 +223,9 @@ public class JobServiceImpl implements JobService {
     }
 
     /**
-     * 重新配置定时 Task 
+     * 重新 Configuration Scheduled Task
      *
-     * @param form 表单 Parameter  {@link JobForm}
+     * @param form 表单 Parameter {@link JobForm}
      * @throws Exception 异常
      */
     @Override
@@ -218,46 +237,47 @@ public class JobServiceImpl implements JobService {
 
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
-            // 根据Cron表达式构建一个Trigger
+            // 根据Cron表达式构建 one Trigger
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
 
-            // 按新的trigger重新设置job执行
+            // 按新的trigger重新 Configurationjob执行
             scheduler.rescheduleJob(triggerKey, trigger);
         } catch (SchedulerException e) {
-            log.error("【定时 Task 】UpdateFailed！", e);
-            throw new Exception("【定时 Task 】创建Failed！");
+            log.error("【 Scheduled  Task 】UpdateFailed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！");
         }
     }
 
     /**
-     * 订单过期-定时 Task 
+     * 订单过期- Scheduled Task
      *
      * @param form
      */
     @Override
     public void addOrderExpireJob(BaseJobForm form) throws Exception {
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(OrderExpireJob.class).withIdentity(OrderExpireJob.class.getName(), UUIDUtil.getUUID()).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(OrderExpireJob.class)
+                .withIdentity(OrderExpireJob.class.getName(), UUIDUtil.getUUID()).build();
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(form.getCronExpression());
-        /** 定时 Task  **/
+        /** Scheduled Task **/
         Trigger trigger = TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【定时 Task 】创建Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
         }
     }
 
     /**
-     *  Device 升级定时 Task 
+     * Device Upgrade Scheduled Task
      *
      * @param form
      * @throws Exception
      */
     @Override
     public void addDeviceUpgradeJob(DeviceUpgradeForm form) throws Exception {
-        /** 先删除之前定时 Task  **/
+        /** 先Delete 之前 Scheduled Task **/
         JobForm deletJob = new JobForm();
         String groupName = form.getDeviceId() + "_" + form.getPackageId();
         deletJob.setJobClassName(DeviceUpgradeJob.class.getName());
@@ -270,26 +290,27 @@ public class JobServiceImpl implements JobService {
         form.setCronExpression(cronExpression);
 
         scheduler.start();
-        // 构建Job Information 
-        JobDetail jobDetail = JobBuilder.newJob(DeviceUpgradeJob.class).withIdentity(DeviceUpgradeJob.class.getName(), groupName).build();
+        // 构建Job Information
+        JobDetail jobDetail = JobBuilder.newJob(DeviceUpgradeJob.class)
+                .withIdentity(DeviceUpgradeJob.class.getName(), groupName).build();
         jobDetail.getJobDataMap().put("deviceId", form.getDeviceId());
         jobDetail.getJobDataMap().put("packageId", form.getPackageId());
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(form.getCronExpression());
-        /** 定时 Task  **/
+        /** Scheduled Task **/
         Trigger trigger = TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new Exception("【定时 Task 】创建Failed！", e);
+            throw new Exception("【 Scheduled  Task 】Create Failed！", e);
         }
     }
 
     /**
-     *  Query 定时 Task 列表
+     * Query Scheduled Task Pagination
      *
-     * @param currentPage 当前页
+     * @param currentPage Current 页
      * @param pageSize    每页条数
-     * @return 定时 Task 列表
+     * @return Scheduled Task Pagination
      */
     @Override
     public PageInfo<JobAndTrigger> list(Integer currentPage, Integer pageSize, String tenantId) {

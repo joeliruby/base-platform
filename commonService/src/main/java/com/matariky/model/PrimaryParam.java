@@ -13,15 +13,15 @@ import java.io.Serializable;
  * @create: 2023/9/7 16:54
  **/
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class PrimaryParam extends BaseDataIsolation implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
-     * 主键
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    /**
+     * Primary Key
      */
     @NotNull(message = MessageKey.BIZ_TASK_ENDED)
     private Long id;

@@ -19,7 +19,7 @@ public class BasicBaseRfidBindingBatchAddVO {
     @NotNull
     private Long deviceId;
 
-    @ApiModelProperty(value = "epc与tid列表")
+    @ApiModelProperty(value = "epc And tid Pagination ")
     @NotEmpty
     @Valid
     private List<EPCAndTIDVO> epcAndTidList;

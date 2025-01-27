@@ -11,11 +11,10 @@ public class DeviceUpgradeVO {
     @ApiModelProperty(value = " Device ID")
     private List<Long> deviceIdList;
 
-    @ApiModelProperty(value = "升级Type （immediate：立刻Update，scheduler：定时Update）")
+    @ApiModelProperty(value = " Upgrade Type immediate: Immediate Update,scheduler: Scheduled Update")
     private String upgradeType;
 
-    @ApiModelProperty(value = "升级 Time ")
+    @ApiModelProperty(value = " Upgrade  Time ")
     private Long upgradeTime;
-
 
 }

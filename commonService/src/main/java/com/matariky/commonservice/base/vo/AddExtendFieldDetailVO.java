@@ -11,19 +11,18 @@ public class AddExtendFieldDetailVO {
     @ApiModelProperty(value = "ID")
     private Long id;
 
-    @ApiModelProperty(value = "字段名")
+    @ApiModelProperty(value = "Field name")
     @NotBlank
     private String fieldName;
 
-    @ApiModelProperty(value = "字段Type ")
+    @ApiModelProperty(value = "Field Type ")
     @NotBlank
     private String fieldType;
 
-
-    private String  fieldMap;
+    private String fieldMap;
 
     private Boolean disable;
 
-    private Boolean isRequired=false;
+    private Boolean isRequired = false;
 
 }

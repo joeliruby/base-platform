@@ -10,17 +10,16 @@ import javax.validation.constraints.Size;
 @Data
 public class BasicBaseGoodsUpdateVO {
 
-
     @NotBlank
     @Size(max = 200)
     private String goodsName;
 
     @Size(max = 100)
-    @ApiModelProperty(value = "货物图片")
+    @ApiModelProperty(value = " Goods  Image ")
     private String goodsImage;
 
     @Size(max = 500)
-    @ApiModelProperty(value = " Item 描述")
+    @ApiModelProperty(value = " Item  Description ")
     private String goodsDescribe;
 
     @ApiModelProperty(value = "id")

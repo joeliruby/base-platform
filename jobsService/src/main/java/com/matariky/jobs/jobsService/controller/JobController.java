@@ -59,10 +59,11 @@ import cn.hutool.core.util.StrUtil;
 @RestController
 @RequestMapping("/api/job/v1/tenant/{tenantId}")
 public class JobController {
-	@Value("${message.locale}")
-	 String locale;
+    @Value("${message.locale}")
+    String locale;
 
-	 @Autowired CommonDictService commonDictService;
+    @Autowired
+    CommonDictService commonDictService;
 
     private final JobService jobService;
 
@@ -75,239 +76,280 @@ public class JobController {
     }
 
     /**
-     * 保存定时 Task 
+     * Save Scheduled Task
      */
     @PostMapping
-    public Object addJob(@Valid  JobForm form, @PathVariable("tenantId") String tenantId) {
-    	Boolean jobExists=jobService.getJob(form.getJobClassName(),form.getJobGroupName());
-    	if(jobExists) {
-    		return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","JOB_EXIST",false,tenantId), HttpStatus.BAD_REQUEST);
-    	}
+    public Object addJob(@Valid JobForm form, @PathVariable("tenantId") String tenantId) {
+        Boolean jobExists = jobService.getJob(form.getJobClassName(), form.getJobGroupName());
+        if (jobExists) {
+            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(
+                    locale + "_SERVICE_CONSTANT_MESSAGE", "JOB_EXIST", false, tenantId), HttpStatus.BAD_REQUEST);
+        }
 
         try {
             jobService.addJob(form);
-            jobService.updateTenantId(form.getJobGroupName(),form.getJobClassName(),form.getTenantId());
-        }
-        catch (ClassNotFoundException cnfe) {
-        	throw new QslException(MessageKey.JOB_CLASS_NOT_EXIST);
-        }
-        catch (Exception e) {
-        	JSONObject jo =new JSONObject();
-        	jo.put("code",500);
-   		 	jo.put("message",e.getMessage());
-   		 	jo.put("success",false);
+            jobService.updateTenantId(form.getJobGroupName(), form.getJobClassName(), form.getTenantId());
+        } catch (ClassNotFoundException cnfe) {
+            throw new QslException(MessageKey.JOB_CLASS_NOT_EXIST);
+        } catch (Exception e) {
+            JSONObject jo = new JSONObject();
+            jo.put("code", 500);
+            jo.put("message", e.getMessage());
+            jo.put("success", false);
             return new ResponseEntity<JSONObject>(jo, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","OPERATION_SUCESSFUL",true,tenantId), HttpStatus.CREATED);
+        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                "OPERATION_SUCESSFUL", true, tenantId), HttpStatus.CREATED);
     }
 
     /**
-     * 保存盘点定时 Task 
+     * Save 盘点 Scheduled Task
      */
     @PostMapping("addInventoryJob")
-    public Object addInventoryJob(@Valid  @RequestBody InventoryJobForm form, @PathVariable("tenantId") String tenantId) {
+    public Object addInventoryJob(@Valid @RequestBody InventoryJobForm form,
+            @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"JOB_EXIST",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(
+                    commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                            "JOB_EXIST", false, tenantId),
+                    HttpStatus.BAD_REQUEST);
         }
         try {
             jobService.addInventoryJob(form);
-            jobService.updateTenantId(TapeInventoryTaskJob.class.getName(),  form.getTaskId().toString(), tenantId);
+            jobService.updateTenantId(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString(), tenantId);
         } catch (Exception e) {
-            JSONObject jo =new JSONObject();
-            jo.put("code",500);
-            jo.put("message",e.getMessage());
-            jo.put("success",false);
+            JSONObject jo = new JSONObject();
+            jo.put("code", 500);
+            jo.put("message", e.getMessage());
+            jo.put("success", false);
             return new ResponseEntity<JSONObject>(jo, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"OPERATION_SUCESSFUL",true,tenantId), HttpStatus.CREATED);
+        return new ResponseEntity<JSONObject>(
+                commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                        "OPERATION_SUCESSFUL", true, tenantId),
+                HttpStatus.CREATED);
     }
 
     /**
-     * 保存 Device 升级定时 Task 
+     * Save Device Upgrade Scheduled Task
      */
     @PostMapping("addDeviceUpgradeJob")
-    public void addDeviceUpgradeJob(@RequestBody DeviceUpgradeForm form){
+    public void addDeviceUpgradeJob(@RequestBody DeviceUpgradeForm form) {
         try {
             jobService.addDeviceUpgradeJob(form);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 订单过期定时 Task 
+     * 订单过期 Scheduled Task
+     * 
      * @return
      */
     @PostConstruct
-    public void addOrderExpireJob (){
+    public void addOrderExpireJob() {
         try {
-            BaseJobForm form =new BaseJobForm();
+            BaseJobForm form = new BaseJobForm();
             form.setCronExpression("0 */1 * * * ?");
-           // form.setCronExpression("0 0 2 * * ?");
+            // form.setCronExpression("0 0 2 * * ?");
             jobService.addOrderExpireJob(form);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 保存 Label  Generation 定时 Task 
+     * Save Label Generation Scheduled Task
      */
     @PostMapping("addRfidCreateJob")
-    public Object addRfidCreateJob(@Valid  @RequestBody RfidCreateJobForm form, @PathVariable("tenantId") String tenantId) {
+    public Object addRfidCreateJob(@Valid @RequestBody RfidCreateJobForm form,
+            @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"JOB_EXIST",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(
+                    commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                            "JOB_EXIST", false, tenantId),
+                    HttpStatus.BAD_REQUEST);
         }
         try {
             jobService.addRfidCreateJob(form);
-            jobService.updateTenantId(TapeRfidCreateTaskJob.class.getName(),  form.getTaskId().toString(), tenantId);
+            jobService.updateTenantId(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString(), tenantId);
         } catch (Exception e) {
-            JSONObject jo =new JSONObject();
-            jo.put("code",500);
-            jo.put("message",e.getMessage());
-            jo.put("success",false);
+            JSONObject jo = new JSONObject();
+            jo.put("code", 500);
+            jo.put("message", e.getMessage());
+            jo.put("success", false);
             return new ResponseEntity<JSONObject>(jo, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"OPERATION_SUCESSFUL",true,tenantId), HttpStatus.CREATED);
+        return new ResponseEntity<JSONObject>(
+                commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                        "OPERATION_SUCESSFUL", true, tenantId),
+                HttpStatus.CREATED);
     }
 
     /**
-     * 保存 Label  Print 定时 Task 
+     * Save Label Print Scheduled Task
      */
     @PostMapping("addRfidPrintJob")
-    public Object addRfidPrintJob(@Valid  @RequestBody RfidPrintJobForm form, @PathVariable("tenantId") String tenantId) {
+    public Object addRfidPrintJob(@Valid @RequestBody RfidPrintJobForm form,
+            @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"JOB_EXIST",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(
+                    commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                            "JOB_EXIST", false, tenantId),
+                    HttpStatus.BAD_REQUEST);
         }
         try {
             jobService.addRfidPrintJob(form);
-            jobService.updateTenantId(TapeRfidPrintTaskJob.class.getName(),  form.getTaskId().toString(), tenantId);
+            jobService.updateTenantId(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString(), tenantId);
         } catch (Exception e) {
-            JSONObject jo =new JSONObject();
-            jo.put("code",500);
-            jo.put("message",e.getMessage());
-            jo.put("success",false);
+            JSONObject jo = new JSONObject();
+            jo.put("code", 500);
+            jo.put("message", e.getMessage());
+            jo.put("success", false);
             return new ResponseEntity<JSONObject>(jo, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"OPERATION_SUCESSFUL",true,tenantId), HttpStatus.CREATED);
+        return new ResponseEntity<JSONObject>(
+                commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                        "OPERATION_SUCESSFUL", true, tenantId),
+                HttpStatus.CREATED);
     }
 
     /**
-     * 保存 Label Import定时 Task 
+     * Save Label Import Scheduled Task
      */
     @PostMapping("addRfidUploadJob")
-    public Object addRfidUploadJob(@Valid  @RequestBody RfidUploadJobForm form, @PathVariable("tenantId") String tenantId) {
+    public Object addRfidUploadJob(@Valid @RequestBody RfidUploadJobForm form,
+            @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"JOB_EXIST",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(
+                    commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                            "JOB_EXIST", false, tenantId),
+                    HttpStatus.BAD_REQUEST);
         }
         try {
             jobService.addRfidUploadJob(form);
-            jobService.updateTenantId(TapeRfidUploadTaskJob.class.getName(),  form.getTaskId().toString(), tenantId);
+            jobService.updateTenantId(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString(), tenantId);
         } catch (Exception e) {
-            JSONObject jo =new JSONObject();
-            jo.put("code",500);
-            jo.put("message",e.getMessage());
-            jo.put("success",false);
+            JSONObject jo = new JSONObject();
+            jo.put("code", 500);
+            jo.put("message", e.getMessage());
+            jo.put("success", false);
             return new ResponseEntity<JSONObject>(jo, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),"OPERATION_SUCESSFUL",true,tenantId), HttpStatus.CREATED);
+        return new ResponseEntity<JSONObject>(
+                commonDictService.getServiceMessage(DictTypeKey.getFullKey(locale, DictTypeKey.SERVICE_MESSAGE),
+                        "OPERATION_SUCESSFUL", true, tenantId),
+                HttpStatus.CREATED);
     }
 
     /**
-     * 删除定时 Task 
+     * Delete Scheduled Task
      */
     @DeleteMapping
-    public ResponseEntity<JSONObject> deleteJob(JobForm form, @PathVariable("tenantId") String tenantId) throws SchedulerException {
+    public ResponseEntity<JSONObject> deleteJob(JobForm form, @PathVariable("tenantId") String tenantId)
+            throws SchedulerException {
         if (StrUtil.hasBlank(form.getJobGroupName(), form.getJobClassName())) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","EMPTY_PARAMETER",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(
+                    locale + "_SERVICE_CONSTANT_MESSAGE", "EMPTY_PARAMETER", false, tenantId), HttpStatus.BAD_REQUEST);
         }
 
         jobService.deleteJob(form);
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","DELETE_SUCCESSFUL",true,tenantId), HttpStatus.OK);
+        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                "DELETE_SUCCESSFUL", true, tenantId), HttpStatus.OK);
     }
 
     /**
-     * 暂停定时 Task 
+     * 暂停 Scheduled Task
      */
     @PutMapping(params = "pause")
-    public ResponseEntity<JSONObject> pauseJob( JobForm form , @PathVariable("tenantId") String tenantId) throws SchedulerException {
+    public ResponseEntity<JSONObject> pauseJob(JobForm form, @PathVariable("tenantId") String tenantId)
+            throws SchedulerException {
         if (StrUtil.hasBlank(form.getJobGroupName(), form.getJobClassName())) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","EMPTY_PARAMETER",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(
+                    locale + "_SERVICE_CONSTANT_MESSAGE", "EMPTY_PARAMETER", false, tenantId), HttpStatus.BAD_REQUEST);
         }
 
         jobService.pauseJob(form);
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","PAUSE_SUCCESSFUL",true, tenantId), HttpStatus.OK);
+        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                "PAUSE_SUCCESSFUL", true, tenantId), HttpStatus.OK);
     }
 
     /**
-     * 恢复定时 Task 
+     * 恢复 Scheduled Task
      */
     @PutMapping(params = "resume")
-    public ResponseEntity<JSONObject> resumeJob(JobForm form,@PathVariable("tenantId")String tenantId) throws SchedulerException {
+    public ResponseEntity<JSONObject> resumeJob(JobForm form, @PathVariable("tenantId") String tenantId)
+            throws SchedulerException {
         if (StrUtil.hasBlank(form.getJobGroupName(), form.getJobClassName())) {
-            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","EMPTY_PARAMETER",false,tenantId), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(
+                    locale + "_SERVICE_CONSTANT_MESSAGE", "EMPTY_PARAMETER", false, tenantId), HttpStatus.BAD_REQUEST);
         }
 
         jobService.resumeJob(form);
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","RECOVERY_SUCCESSFUL",true,tenantId), HttpStatus.OK);
+        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                "RECOVERY_SUCCESSFUL", true, tenantId), HttpStatus.OK);
     }
 
     /**
-     * 修改定时 Task ，定时 Time 
+     * Update Scheduled Task , Scheduled Time
      */
     @PutMapping(params = "cron")
-    public ResponseEntity<JSONObject> cronJob(@Valid JobForm form,@PathVariable("tenantId") String tenantId) {
+    public ResponseEntity<JSONObject> cronJob(@Valid JobForm form, @PathVariable("tenantId") String tenantId) {
         try {
             jobService.cronJob(form);
         } catch (Exception e) {
-        	JSONObject jo =new JSONObject();
-        	jo.put("code",500);
-   		 	jo.put("message",e.getMessage());
-   		 	jo.put("success",false);
+            JSONObject jo = new JSONObject();
+            jo.put("code", 500);
+            jo.put("message", e.getMessage());
+            jo.put("success", false);
             return new ResponseEntity<JSONObject>(jo, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale+"_SERVICE_CONSTANT_MESSAGE","UPDATE_SUCCESSFUL",true,tenantId), HttpStatus.OK);
+        return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(locale + "_SERVICE_CONSTANT_MESSAGE",
+                "UPDATE_SUCCESSFUL", true, tenantId), HttpStatus.OK);
     }
 
     @GetMapping
     public PageInfo<JobAndTrigger> jobList(
-    		 @RequestParam Map<String, Object> map,
-    		@PathVariable("tenantId") String tenantId) {
+            @RequestParam Map<String, Object> map,
+            @PathVariable("tenantId") String tenantId) {
 
-    	int pageIndex=1;
-		int perPage=20;
+        int pageIndex = 1;
+        int perPage = 20;
 
-		map.put("tenantId", tenantId);
+        map.put("tenantId", tenantId);
 
-		if(map.containsKey("index")) {
-			pageIndex=Integer.parseInt(map.get("index").toString());
-		}
+        if (map.containsKey("index")) {
+            pageIndex = Integer.parseInt(map.get("index").toString());
+        }
 
-		if(map.containsKey("perPage")) {
-			perPage=Integer.parseInt(map.get("perPage").toString());
-		}
-		PageHelper.startPage(pageIndex, perPage);
+        if (map.containsKey("perPage")) {
+            perPage = Integer.parseInt(map.get("perPage").toString());
+        }
+        PageHelper.startPage(pageIndex, perPage);
 
-        //PageInfo<JobAndTrigger> all = jobService.list(currentPage, pageSize,tenantId);
-        //return ResponseEntity.ok(ApiResponse.ok(Dict.create().set("total", all.getTotal()).set("data", all.getList())));
+        // PageInfo<JobAndTrigger> all = jobService.list(currentPage,
+        // pageSize,tenantId);
+        // return ResponseEntity.ok(ApiResponse.ok(Dict.create().set("total",
+        // all.getTotal()).set("data", all.getList())));
 
-		List<JobAndTrigger> jobList =jobService.getJobAndTriggerAll(map);
+        List<JobAndTrigger> jobList = jobService.getJobAndTriggerAll(map);
 
-		PageInfo<JobAndTrigger> page= new PageInfo<JobAndTrigger>(jobList);
+        PageInfo<JobAndTrigger> page = new PageInfo<JobAndTrigger>(jobList);
 
-		return page;
+        return page;
     }
 
     @GetMapping("/select")
-    public List<JobAndTrigger> select(@PathVariable("tenantId") String tenantId){
-        Map<String, Object> map=new HashMap<>();
+    public List<JobAndTrigger> select(@PathVariable("tenantId") String tenantId) {
+        Map<String, Object> map = new HashMap<>();
         map.put("tenantId", tenantId);
-        List<JobAndTrigger> jobList =jobService.getJobAndTriggerAll(map);
+        List<JobAndTrigger> jobList = jobService.getJobAndTriggerAll(map);
         return jobList;
     }
 

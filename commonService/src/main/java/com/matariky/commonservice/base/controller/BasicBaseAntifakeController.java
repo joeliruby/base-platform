@@ -33,7 +33,7 @@ import java.io.InputStreamReader;
  */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = "防伪认证 Information ", tags = "防伪认证 Information ")
+@Api(value = "Anti -counterfeiting certification Information ", tags = "nti -counterfeiting certification Information ")
 public class BasicBaseAntifakeController {
 
     @Value("${message.locale}")
@@ -46,7 +46,7 @@ public class BasicBaseAntifakeController {
     private String iotUrl;
 
 
-    @ApiOperation("列表")
+    @ApiOperation("Pagination")
     @GetMapping("/basicBaseAntifake/list")
     public AjaxResult list(BasicBaseAntifake bean, @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex, @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage) {
         if (com.matariky.utils.StringUtils.isNotEmpty(bean.getValidationTimeStart())) {
@@ -60,7 +60,7 @@ public class BasicBaseAntifakeController {
     }
 
 
-    @ApiOperation("保存")
+    @ApiOperation(" Save ")
     @PostMapping(value = "/basicBaseAntifake")
     public AjaxResult save(@RequestBody BasicBaseAntifake bean) {
         try {
@@ -82,7 +82,7 @@ public class BasicBaseAntifakeController {
         }
     }
 
-    @ApiOperation("删除")
+    @ApiOperation("Delete ")
     @DeleteMapping(value = "/basicBaseAntifake")
     public AjaxResult del(String id) {
         try {
@@ -93,7 +93,7 @@ public class BasicBaseAntifakeController {
         }
     }
 
-    @ApiOperation("详情")
+    @ApiOperation("  Detail ")
     @GetMapping(value = "/basicBaseAntifake/{basicBaseAntifakeId}")
     public AjaxResult getOne(@PathVariable("/basicBaseAntifakeId") Long id) {
         BasicBaseAntifake info = basicBaseAntifakeService.getBasicBaseAntifakeById(id);

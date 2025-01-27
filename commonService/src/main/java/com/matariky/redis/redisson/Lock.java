@@ -20,10 +20,9 @@ public class Lock implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Lock.class);
 
     /**
-     * redisson 锁对象
+     * redisson 锁 Object
      */
     private RLock rLock;
-
 
     /**
      * @Description: 释放锁

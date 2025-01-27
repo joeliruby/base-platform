@@ -17,13 +17,15 @@ import org.quartz.JobExecutionException;
  */
 public class DeviceUpgradeJob implements BaseJob {
 
-    private static final BasicBaseDevicePackageMapper basicBaseDevicePackageMapper = SpringContextUtils.getBean(BasicBaseDevicePackageMapper.class);
-    private static final BasicBaseDeviceMapper basicBaseDeviceMapper = SpringContextUtils.getBean(BasicBaseDeviceMapper.class);
+    private static final BasicBaseDevicePackageMapper basicBaseDevicePackageMapper = SpringContextUtils
+            .getBean(BasicBaseDevicePackageMapper.class);
+    private static final BasicBaseDeviceMapper basicBaseDeviceMapper = SpringContextUtils
+            .getBean(BasicBaseDeviceMapper.class);
     private static final CommonService commonService = SpringContextUtils.getBean(CommonService.class);
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("执行 Device 升级定时 Task ");
+        System.out.println("执行 Device  Upgrade  Scheduled  Task ");
         Long packageId = Long.valueOf(context.getJobDetail().getJobDataMap().get("packageId").toString());
         Long deviceId = Long.valueOf(context.getJobDetail().getJobDataMap().get("deviceId").toString());
         BasicBaseDevicePackage devicePackage = basicBaseDevicePackageMapper.selectById(packageId);
@@ -31,7 +33,7 @@ public class DeviceUpgradeJob implements BaseJob {
             throw new QslException(MessageKey.DEVICE_PACKAGE_NOT_EXIST);
         }
         BasicBaseDevice device = basicBaseDeviceMapper.selectById(deviceId);
-        /**向karaf发送升级指令**/
+        /** 向karaf发送 Upgrade Command **/
         commonService.deviceUpgrade(devicePackage.getMd5(), devicePackage.getPackageVersion(), device.getDeviceCode());
     }
 }

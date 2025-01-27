@@ -17,13 +17,13 @@ import java.util.List;
 public interface BasicBaseDeviceMapper extends BaseMapper<BasicBaseDevice> {
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "d")
     public List<BasicBaseDeviceInfoVO> getBasicBaseDeviceAll(@Param("params") BasicBaseDeviceListVO vo);
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -34,12 +34,12 @@ public interface BasicBaseDeviceMapper extends BaseMapper<BasicBaseDevice> {
     public int selectCountFromPrint(@Param("deviceId") Long deviceId);
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBaseDeviceById(Long id);
 
     /**
-     *  Print 机-下拉选
+     *  Printer-  Drop Down Box
      *
      * @param queryDataIsolation
      * @return
@@ -48,7 +48,7 @@ public interface BasicBaseDeviceMapper extends BaseMapper<BasicBaseDevice> {
     public List<PrintOptionInfo> getPrintOptionList(@Param("params") QueryDataIsolation queryDataIsolation);
 
     /**
-     *  Device 编码下拉选
+     *  Device  Code   Drop Down Box
      *
      * @return
      */

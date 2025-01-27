@@ -10,9 +10,9 @@ import java.util.Date;
 
 public class ErrorLevelConverter implements Converter<Integer> {
 
-
     @Override
-    public WriteCellData<?> convertToExcelData(Integer value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public WriteCellData<?> convertToExcelData(Integer value, ExcelContentProperty contentProperty,
+            GlobalConfiguration globalConfiguration) throws Exception {
         String s = "";
         if (value == 1) {
             s = "info";
@@ -23,6 +23,6 @@ public class ErrorLevelConverter implements Converter<Integer> {
         } else if (value == 4) {
             s = "fatal";
         }
-        return new WriteCellData(s);
+        return new WriteCellData<String>(s);
     }
 }

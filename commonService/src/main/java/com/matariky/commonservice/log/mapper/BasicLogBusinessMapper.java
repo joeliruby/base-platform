@@ -11,81 +11,100 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
 import java.util.Collection;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 import com.matariky.commonservice.log.bean.BasicLogBusiness;
+
 /**
-* Persistence Interface
-* @author AUTOMATION
-*/
-public interface BasicLogBusinessMapper extends BaseMapper<BasicLogBusiness>{
-	 
+ * Persistence Interface
+ * 
+ * @author AUTOMATION
+ */
+public interface BasicLogBusinessMapper extends BaseMapper<BasicLogBusiness> {
+
 	public List<BasicLogBusiness> getBasicLogBusinessAll();
-	 
+
 	public int getBasicLogBusinessAllCount();
-	 
+
 	public int createBasicLogBusiness(BasicLogBusiness bean);
-	 
+
 	public int updateBasicLogBusiness(@Param("params") BasicLogBusiness bean);
-	 
+
 	public int delBasicLogBusinessById(int id);
-	 
+
 	public BasicLogBusiness getBasicLogBusinessById(int id);
-	//插入一条记录
+
+	// Insert a record
 	@Override
 	int insert(BasicLogBusiness record);
-	//根据 ID 删除
+
+	// Delete By ID
 	@Override
 	int deleteById(Serializable id);
-	//根据 columnMap 条件，删除记录
+
+	// Delete By Column Map
 	@Override
 	int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件，删除记录 
+
+	// Delete By Entity
 	@Override
 	int delete(@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	//删除（根据ID 批量删除）
+
+	// Delete Batch By IDs
 	@Override
 	int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-	//根据 ID 修改
+
+	// Update By IDs
 	@Override
 	int updateById(@Param(Constants.ENTITY) BasicLogBusiness entity);
-	//根据 whereEntity 条件，Update记录
+
+	// Update By Entity
 	@Override
-	int update(@Param(Constants.ENTITY) BasicLogBusiness entity, @Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> updateWrapper);
-	//根据 ID  Query   
+	int update(@Param(Constants.ENTITY) BasicLogBusiness entity,
+			@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> updateWrapper);
+
+	// Query By ID
 	@Override
 	BasicLogBusiness selectById(Serializable id);
-	 
+
 	@Override
 	List<BasicLogBusiness> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-	 
+
 	@Override
 	List<BasicLogBusiness> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件， Query 一条记录
+
+	// Query One By Entity
 	@Override
 	BasicLogBusiness selectOne(@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	//根据 Wrapper 条件， Query 总记录数
+
+	// Query Count By Wrapper
 	@Override
 	Long selectCount(@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	//根据 entity 条件， Query 全部记录
+
+	// Query All By Entity
 	@Override
 	List<BasicLogBusiness> selectList(@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+
+	// Query All Maps By Wrapper
 	@Override
 	List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+
+	// Query All Maps By Wrapper
 	@Override
 	List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	//根据 entity 条件， Query 全部记录（并翻页）
-	 Page<BasicLogBusiness> selectPage(Page<BasicLogBusiness> page, @Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
-	public List<BasicLogBusiness> getBasicLogBusinessDAC(@Param("params") Map<String, Object> params);
-	public Long getBasicLogBusinessDACCount(@Param("params") Map<String, Object> params);
-	//根据 Wrapper 条件， Query 全部记录（并翻页）
-	Page<Map<String, Object>> selectMapsPage(Page<BasicLogBusiness> page, @Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
 
+	// Query All By Entity（ With Pagination ）
+	Page<BasicLogBusiness> selectPage(Page<BasicLogBusiness> page,
+			@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
+
+	public List<BasicLogBusiness> getBasicLogBusinessDAC(@Param("params") Map<String, Object> params);
+
+	public Long getBasicLogBusinessDACCount(@Param("params") Map<String, Object> params);
+
+	// Query All Maps By Wrapper（ With Pagination ）
+	Page<Map<String, Object>> selectMapsPage(Page<BasicLogBusiness> page,
+			@Param(Constants.WRAPPER) Wrapper<BasicLogBusiness> queryWrapper);
 
 }

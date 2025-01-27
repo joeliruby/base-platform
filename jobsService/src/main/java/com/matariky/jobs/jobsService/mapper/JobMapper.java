@@ -26,92 +26,86 @@ import com.matariky.jobs.jobsService.bean.domain.JobAndTrigger;
  * @copyright: Copyright (c) 2020
  * @version: V1.0
  */
-public interface JobMapper extends BaseMapper<JobAndTrigger>{
+public interface JobMapper extends BaseMapper<JobAndTrigger> {
     /**
-     *  Query 定时作业和触发器列表
-     * @param tenantId 
+     * Query Scheduled 作业和触发器 Pagination
+     * 
+     * @param tenantId
      *
-     * @return 定时作业和触发器列表
+     * @return Scheduled 作业和触发器 Pagination
      */
-    List<JobAndTrigger> list(@Param("tenantId")String tenantId);
-    
-    @Update ("update qrtz_job_details set tenant_id=#{tenantId} where job_group=#{jobGroupName} and job_class_name =#{jobClassName} ")
-	void updateTenantId(@Param("jobGroupName") String jobGroupName, @Param("jobClassName") String jobClassName, @Param("tenantId") String tenantId);
-    
+    List<JobAndTrigger> list(@Param("tenantId") String tenantId);
+
+    @Update("update qrtz_job_details set tenant_id=#{tenantId} where job_group=#{jobGroupName} and job_class_name =#{jobClassName} ")
+    void updateTenantId(@Param("jobGroupName") String jobGroupName, @Param("jobClassName") String jobClassName,
+            @Param("tenantId") String tenantId);
+
     @Select("select count(*) from qrtz_job_details where job_group=#{jobGroupName} and job_class_name =#{jobClassName}")
-	int getJobByClassAndName( @Param("jobClassName") String jobClassName,@Param("jobGroupName")String jobGroupName);
+    int getJobByClassAndName(@Param("jobClassName") String jobClassName, @Param("jobGroupName") String jobGroupName);
 
-    	@Override
-	int insert(JobAndTrigger entity);
+    @Override
+    int insert(JobAndTrigger entity);
 
-
-	@Override
+    @Override
     int deleteById(Serializable id);
 
-
-	 @Override
+    @Override
     int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 
-
-	 @Override
+    @Override
     int delete(@Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-     @Override
+    @Override
     int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
 
-
-	 @Override
+    @Override
     int updateById(@Param(Constants.ENTITY) JobAndTrigger entity);
 
+    @Override
+    int update(@Param(Constants.ENTITY) JobAndTrigger entity,
+            @Param(Constants.WRAPPER) Wrapper<JobAndTrigger> updateWrapper);
 
-	 @Override
-    int update(@Param(Constants.ENTITY) JobAndTrigger entity, @Param(Constants.WRAPPER) Wrapper<JobAndTrigger> updateWrapper);
-
-
-	 @Override
+    @Override
     JobAndTrigger selectById(Serializable id);
 
-
-	 @Override
+    @Override
     List<JobAndTrigger> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
 
-
-	 @Override
+    @Override
     List<JobAndTrigger> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 
-
-	 @Override
+    @Override
     JobAndTrigger selectOne(@Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-
-	 @Override
+    @Override
     Long selectCount(@Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-
-	 @Override
+    @Override
     List<JobAndTrigger> selectList(@Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-
-	@Override
+    @Override
     List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-
-	 @Override
+    @Override
     List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
+    Page<JobAndTrigger> selectPage(Page<JobAndTrigger> page,
+            @Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-    Page<JobAndTrigger> selectPage(Page<JobAndTrigger> page, @Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
+    Page<Map<String, Object>> selectMapsPage(Page<JobAndTrigger> page,
+            @Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
 
-    Page<Map<String, Object>> selectMapsPage(Page<JobAndTrigger> page, @Param(Constants.WRAPPER) Wrapper<JobAndTrigger> queryWrapper);
+    List<JobAndTrigger> getJobAndTriggerAll(@Param("params") Map<String, Object> map);
 
-	List<JobAndTrigger> getJobAndTriggerAll(@Param("params")Map<String, Object> map);
-	
-	@Update("update qrtz_job_details set requests_recovery=true  where tenant_id=#{tenantId} and job_class_name=#{jobClassName} and job_group=#{jobGroupName}")
-	void pauseRequestRecoveryByMapper(@Param("jobClassName") String jobClassName, @Param("jobGroupName")String jobGroupName, @Param("tenantId")String tenantId);
-	
-	@Update("update qrtz_triggers set trigger_state='PAUSED' where job_group=#{jobGroupName} and tenant_id=#{tenantId} and trigger_name=#{jobClassName}")
-	void pauseTriggerState(@Param("jobClassName")String jobClassName, @Param("jobGroupName")String jobGroupName, @Param("tenantId")String tenantId);
-	
-	@Update("update qrtz_triggers set tenant_id=#{tenantId} where job_group=#{jobGroupName}  and trigger_name=#{jobClassName}")
-	void updateTriggerTenantId(@Param("jobGroupName")String jobGroupName, @Param("jobClassName")String jobClassName, @Param("tenantId")String tenantId);
+    @Update("update qrtz_job_details set requests_recovery=true  where tenant_id=#{tenantId} and job_class_name=#{jobClassName} and job_group=#{jobGroupName}")
+    void pauseRequestRecoveryByMapper(@Param("jobClassName") String jobClassName,
+            @Param("jobGroupName") String jobGroupName, @Param("tenantId") String tenantId);
+
+    @Update("update qrtz_triggers set trigger_state='PAUSED' where job_group=#{jobGroupName} and tenant_id=#{tenantId} and trigger_name=#{jobClassName}")
+    void pauseTriggerState(@Param("jobClassName") String jobClassName, @Param("jobGroupName") String jobGroupName,
+            @Param("tenantId") String tenantId);
+
+    @Update("update qrtz_triggers set tenant_id=#{tenantId} where job_group=#{jobGroupName}  and trigger_name=#{jobClassName}")
+    void updateTriggerTenantId(@Param("jobGroupName") String jobGroupName, @Param("jobClassName") String jobClassName,
+            @Param("tenantId") String tenantId);
 }

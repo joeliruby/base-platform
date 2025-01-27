@@ -95,7 +95,7 @@ public class GenerateMapper {
 		MAPPER_TEMPLATE
 				.append("\t[tablename] selectOne(@Param(Constants.WRAPPER) Wrapper<[tablename]> queryWrapper);\n");
 
-		MAPPER_TEMPLATE.append("\t//根据 Wrapper 条件， Query 总记录数\n");
+		MAPPER_TEMPLATE.append("\t//Query Count By Wrapper\n");
 		MAPPER_TEMPLATE.append("\t@Override\n");
 		MAPPER_TEMPLATE.append("\tLong selectCount(@Param(Constants.WRAPPER) Wrapper<[tablename]> queryWrapper);\n");
 

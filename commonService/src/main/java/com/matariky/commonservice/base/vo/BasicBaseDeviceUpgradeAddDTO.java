@@ -16,10 +16,10 @@ import java.util.List;
 public class BasicBaseDeviceUpgradeAddDTO {
 
 
-    @ApiModelProperty(value = " Device 升级列表")
+    @ApiModelProperty(value = " Device  Upgrade  Pagination ")
     private List<DeviceUpgradeVO> deviceUpgradeList;
 
-    @ApiModelProperty(value = " Device 固件包ID")
+    @ApiModelProperty(value = " Device  Firmware ID")
     @NotNull
     private Long packageId;
 

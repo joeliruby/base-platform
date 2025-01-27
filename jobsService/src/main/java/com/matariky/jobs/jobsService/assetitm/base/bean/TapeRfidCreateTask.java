@@ -68,7 +68,7 @@ public class TapeRfidCreateTask  implements Serializable {
     @ApiModelProperty(value = "文件 Wether  Generation ")
     private Integer isFileCreate;
 
-    @ApiModelProperty(value = "Download地址")
+    @ApiModelProperty(value = "Download Address ")
     private String downloadUrl;
 
     @ApiModelProperty(value = "Download次数")

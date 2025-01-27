@@ -54,28 +54,28 @@ public class OpentelemetryTracerProcessor implements Processor{
         String softwareVersion=jo.getString(TracerConstants.SOFTWAREVERSION);//只有心跳有
         
         Tracer tracer = OpenTelemetryUtils.getTracer();
-        // 创建Span
-        //操作 Name
+        // Create Span
+        // Operation Name
         Span span = tracer.spanBuilder(operation).startSpan();
-        span.setAttribute(TracerConstants.APPNAME,TracerConstants.KARAF);//应用 Name
-        span.setAttribute(TracerConstants.HASERROR,"false");// Wether 有报错
+        span.setAttribute(TracerConstants.APPNAME,TracerConstants.KARAF);//  App  Name
+        span.setAttribute(TracerConstants.HASERROR,"false");// Wether   There is Error 
         span.setAttribute(TracerConstants.OPERATIONNAME,operation);
         span.setAttribute(TracerConstants.DEVICETYPE,deviceType);
         span.setAttribute(TracerConstants.DEVICECODE,deviceCode);
         span.setAttribute(TracerConstants.IP,jo.getString(TracerConstants.IP));//ip
         span.setAttribute(TracerConstants.MACOUT, jo.getString(TracerConstants.MACIN));//mac
-        span.setAttribute(TracerConstants.KIND, "4");//4 Device 日志
+        span.setAttribute(TracerConstants.KIND, "4");//4 Device  Log 
         span.setAttribute(TracerConstants.PARENTSPANID, TracerConstants.KARAF);
         if(!StringUtils.isEmpty(softwareVersion)) {
        	 span.setAttribute(TracerConstants.TRACERVERSION, jo.getString(TracerConstants.TRACERVERSION));
         }
         try (Scope scope = span.makeCurrent()) {
-            // 获取traceId
-            // 获取spanId
-            // 设置属性
+            //   RetrievetraceId
+            //   RetrievespanId
+            //   Configuration Properties
         	if(0==jo.getIntValue("status")) {
         		 
-                 //以下是具体错误消息
+                 //以下是具体 Error   Message 
                  Attributes eventAttributes = Attributes.of(
                          AttributeKey.stringKey(TracerConstants.SUCCESS), TracerConstants.SUCCESS,
                          AttributeKey.stringKey(TracerConstants.DEVICECODE),deviceCode,
@@ -85,7 +85,7 @@ public class OpentelemetryTracerProcessor implements Processor{
                          AttributeKey.stringKey(TracerConstants.EVENT_TIME), sdf.format(new Date(System.currentTimeMillis())));
                  
                 
-                 // 添加事件
+                 //  Add  Event 
                  span.addEvent(operation, eventAttributes);
         	}
         	else {
@@ -97,7 +97,7 @@ public class OpentelemetryTracerProcessor implements Processor{
                          AttributeKey.stringKey(TracerConstants.ORIGINALMESSAGE), jo.getString(TracerConstants.ORIGINALMESSAGE),
                          AttributeKey.stringKey(TracerConstants.EVENT_TIME), sdf.format(new Date(System.currentTimeMillis())));
 
-                 // 添加事件
+                 //  Add  Event 
         		 span.setAttribute(TracerConstants.HASERROR,"true");
                  span.addEvent(operation, eventAttributes);
         		
@@ -115,7 +115,7 @@ public class OpentelemetryTracerProcessor implements Processor{
                     AttributeKey.stringKey(TracerConstants.EVENT_TIME), sdf.format(new Date(System.currentTimeMillis())));
 
         	span.setAttribute(TracerConstants.HASERROR,"true");
-            // 添加事件
+            //  Add  Event 
             span.addEvent(operation, eventAttributes);
         } finally {
 

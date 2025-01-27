@@ -28,73 +28,72 @@ import io.opentelemetry.context.Scope;
  * @description: 启动器
  * @version: V1.0
  */
-@MapperScan(basePackages = { "com.matariky.**.mapper*"})
-@SpringBootApplication(scanBasePackages= {"com.matariky.**.*"},exclude= {org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration.class})
+@MapperScan(basePackages = { "com.matariky.**.mapper*" })
+@SpringBootApplication(scanBasePackages = { "com.matariky.**.*" }, exclude = {
+        org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration.class })
 
 public class JobApplication {
-	
-	
+
     public static void main(String[] args) {
-		
-    	ConfigurableApplicationContext cac=SpringApplication.run(JobApplication.class, args); 
-    	Environment env =cac.getBean(Environment.class);
-        OpenTelemetryUtil.init("jobService",env.getProperty("signoz.tracer.url"));
-        // 获取Tracer
+
+        ConfigurableApplicationContext cac = SpringApplication.run(JobApplication.class, args);
+        Environment env = cac.getBean(Environment.class);
+        OpenTelemetryUtil.init("jobService", env.getProperty("signoz.tracer.url"));
+        // RetrieveTracer
         Tracer tracer = OpenTelemetryUtil.getTracer();
-        // 创建Span
-        //操作 Name
+        // Create Span
+        // Operation Name
         Span span = tracer.spanBuilder(TracerConstants.APPSTART).startSpan();
 
         try (Scope scope = span.makeCurrent()) {
-            // 获取traceId
-            // 获取spanId
-            // 设置属性
-            span.setAttribute(TracerConstants.APPNAME,"jobService");//应用 Name
-            span.setAttribute(TracerConstants.HASERROR,"false");// Wether 有报错
-            //以下是具体错误消息
+            // RetrievetraceId
+            // RetrievespanId
+            // Configuration Properties
+            span.setAttribute(TracerConstants.APPNAME, "jobService");// App Name
+            span.setAttribute(TracerConstants.HASERROR, "false");// Wether There is Error
+            // 以下是具体 Error Message
             Attributes eventAttributes = Attributes.of(
                     AttributeKey.stringKey(TracerConstants.SUCCESS), TracerConstants.SUCCESS,
-                    AttributeKey.stringKey(TracerConstants.EVENT_TIME), DateUtils.format(new Date(System.currentTimeMillis()), DateUtils.DATE_FORMAT_19));
+                    AttributeKey.stringKey(TracerConstants.EVENT_TIME),
+                    DateUtils.format(new Date(System.currentTimeMillis()), DateUtils.DATE_FORMAT_19));
 
-            // 添加事件
+            // Add Event
             span.addEvent(TracerConstants.APPSTART, eventAttributes);
-
 
         } catch (Throwable t) {
             span.setStatus(StatusCode.ERROR, t.getMessage());
-            span.setAttribute(TracerConstants.HASERROR,"true");// Wether 有报错
+            span.setAttribute(TracerConstants.HASERROR, "true");// Wether There is Error
             Attributes eventAttributes = Attributes.of(
-                    
+
                     AttributeKey.stringKey(TracerConstants.ERROR), t.getMessage());
 
-            // 添加事件
+            // Add Event
             span.addEvent(TracerConstants.APPSTART, eventAttributes);
         } finally {
 
-           OpenTelemetryUtil.getExporter().flush();
+            OpenTelemetryUtil.getExporter().flush();
 
-           span.end();
+            span.end();
         }
-        
-        
-        //在docker环境下容器不会调用System.exit 退出，也不会进这关闭HOOk。
+
+        // 在docker环境下容器不会调用System.exit 退出 ,也不会进这 Close HOOk。
         Runtime.getRuntime().addShutdownHook((new Thread() {
-        	public void run() {
-        		Span span = tracer.spanBuilder(TracerConstants.APPSTOP).startSpan();
-        		span.setAttribute(TracerConstants.APPNAME,"jobService");//应用 Name
-                span.setAttribute(TracerConstants.HASERROR,"false");// Wether 有报错
-                //以下是具体错误消息
+            public void run() {
+                Span span = tracer.spanBuilder(TracerConstants.APPSTOP).startSpan();
+                span.setAttribute(TracerConstants.APPNAME, "jobService");// App Name
+                span.setAttribute(TracerConstants.HASERROR, "false");// Wether There is Error
+                // 以下是具体 Error Message
                 Attributes eventAttributes = Attributes.of(
-                       
+
                         AttributeKey.stringKey(TracerConstants.ERROR), TracerConstants.SUCCESS);
 
-                // 添加事件
+                // Add Event
                 span.addEvent(TracerConstants.APPSTOP, eventAttributes);
                 OpenTelemetryUtil.getExporter().flush();
 
                 span.end();
-        	}
+            }
         }));
-        
+
     }
 }

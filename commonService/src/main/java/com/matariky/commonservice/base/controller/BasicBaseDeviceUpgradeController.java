@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = " Device 升级", tags = " Device 升级")
+@Api(value = " Device  Upgrade ", tags = " Device  Upgrade ")
 public class BasicBaseDeviceUpgradeController {
 
     @Value("${message.locale}")
@@ -30,7 +30,7 @@ public class BasicBaseDeviceUpgradeController {
     private BasicBaseDeviceUpgradeService basicBaseDeviceupgradeService;
 
 
-    @ApiOperation(value = "升级列表")
+    @ApiOperation(value = " Upgrade  Pagination ")
     @GetMapping("basicBaseDeviceupgrade/list")
     public AjaxResult list(UpgradeListVO vo) {
         List<BasicBaseDeviceUpgradeResVO> list = basicBaseDeviceupgradeService.list(vo);
@@ -38,21 +38,21 @@ public class BasicBaseDeviceUpgradeController {
     }
 
 
-    @ApiOperation(value = "升级 Device ")
+    @ApiOperation(value = " Upgrade  Device ")
     @PostMapping(value = "/basicBaseDeviceupgrade")
     public AjaxResult save(@RequestBody @Validated BasicBaseDeviceUpgradeAddDTO addDTO) {
         basicBaseDeviceupgradeService.createBasicBaseDeviceupgradeWithOrg(addDTO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation(value = "获取已经升级过包的 Device 列表")
+    @ApiOperation(value = "  Retrieve Upgraded Device  Pagination ")
     @GetMapping(value = "/upgradeDeviceList/{packageId}")
     public AjaxResult upgradeDeviceList(@PathVariable Long packageId) {
         List<UpgradeDeviceVO> list = basicBaseDeviceupgradeService.upgradeDeviceList(packageId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, list);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "Delete ")
     @DeleteMapping(value = "/upgradeDeviceList")
     public AjaxResult del(DeviceUpgradeListVO vo) {
         basicBaseDeviceupgradeService.delete(vo);

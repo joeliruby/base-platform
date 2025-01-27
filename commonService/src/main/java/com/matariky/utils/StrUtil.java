@@ -12,13 +12,13 @@ public class StrUtil {
 	public static final String EMPTY = "";
 
 	/**
-	 *  Wether 空白符<br>
+	 * Wether 空白符<br>
 	 * 空白符包括空格、制表符、全角空格和不间断空格<br>
 	 *
 	 * @see Character#isWhitespace(int)
 	 * @see Character#isSpaceChar(int)
 	 * @param c 字符
-	 * @return  Wether 空白符
+	 * @return Wether 空白符
 	 * @since 4.0.10
 	 */
 	public static boolean isBlankChar(int c) {
@@ -26,11 +26,11 @@ public class StrUtil {
 	}
 
 	/**
-	 *  Wether 空白符<br>
+	 * Wether 空白符<br>
 	 * 空白符包括空格、制表符、全角空格和不间断空格<br>
 	 *
 	 * @param c 字符
-	 * @return  Wether 空白符
+	 * @return Wether 空白符
 	 * @see Character#isWhitespace(int)
 	 * @see Character#isSpaceChar(int)
 	 * @since 4.0.10
@@ -46,7 +46,7 @@ public class StrUtil {
 	 * 3、""<br>
 	 *
 	 * @param str 被检测的字符串
-	 * @return  Wether 为空
+	 * @return Wether 为空
 	 */
 	public static boolean isBlank(CharSequence str) {
 		int length;
@@ -56,7 +56,7 @@ public class StrUtil {
 		}
 
 		for (int i = 0; i < length; i++) {
-			// 只要有一个非空字符即为非空字符串
+			// 只要有 one 非空字符即为非空字符串
 			if (false == isBlankChar(str.charAt(i))) {
 				return false;
 			}
@@ -66,23 +66,23 @@ public class StrUtil {
 	}
 
 	/**
-	 * 字符串 Wether 为空，空的定义如下:<br>
+	 * 字符串 Wether 为空 ,空的定义如下:<br>
 	 * 1、为null <br>
 	 * 2、为""<br>
 	 * 
 	 * @param str 被检测的字符串
-	 * @return  Wether 为空
+	 * @return Wether 为空
 	 */
 	public static boolean isEmpty(CharSequence str) {
 		return str == null || str.length() == 0;
 	}
 
 	/**
-	 * 编码字符串
+	 * Code 字符串
 	 *
-	 * @param str 字符串
-	 * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
-	 * @return 编码后的字节码
+	 * @param str     字符串
+	 * @param charset 字符集 ,如果此字段为空 ,则解码的结果取决于平台
+	 * @return Code 后的字节码
 	 */
 	public static byte[] bytes(CharSequence str, Charset charset) {
 		if (str == null) {
@@ -96,7 +96,7 @@ public class StrUtil {
 	}
 
 	/**
-	 * {@link CharSequence} 转为字符串，null安全
+	 * {@link CharSequence} 转为字符串 ,null安全
 	 *
 	 * @param cs {@link CharSequence}
 	 * @return 字符串
@@ -108,8 +108,8 @@ public class StrUtil {
 	/**
 	 * 解码字节码
 	 *
-	 * @param data 字符串
-	 * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
+	 * @param data    字符串
+	 * @param charset 字符集 ,如果此字段为空 ,则解码的结果取决于平台
 	 * @return 解码后的字符串
 	 */
 	public static String str(byte[] data, Charset charset) {
@@ -125,16 +125,16 @@ public class StrUtil {
 
 	/**
 	 * 改进JDK subString<br>
-	 * index从0开始计算，最后一个字符为-1<br>
-	 * 如果from和to位置一样，返回 "" <br>
-	 * 如果from或to为负数，则按照length从后向前数位置，如果绝对值大于字符串长度，则from归到0，to归到length<br>
-	 * 如果经过修正的index中from大于to，则互换from和to example: <br>
+	 * index从0 Start 计算 ,最后 one 字符为-1<br>
+	 * 如果from和to位置一样 ,返回 "" <br>
+	 * 如果from或to为负数 ,则按照length从后向前数位置 ,如果绝对值大于字符串 length ,则from归到0 ,to归到length<br>
+	 * 如果经过修正的index中from大于to ,则互换from和to example: <br>
 	 * abcdefgh 2 3 =》 c <br>
 	 * abcdefgh 2 -3 =》 cde <br>
 	 *
-	 * @param str String
-	 * @param fromIndex 开始的index（包括）
-	 * @param toIndex 结束的index（不包括）
+	 * @param str       String
+	 * @param fromIndex Start 的index（包括）
+	 * @param toIndex   结束的index（不包括）
 	 * @return 字串
 	 */
 	public static String sub(CharSequence str, int fromIndex, int toIndex) {
@@ -177,7 +177,7 @@ public class StrUtil {
 	/**
 	 * 切割指定位置之前部分的字符串
 	 *
-	 * @param string 字符串
+	 * @param string  字符串
 	 * @param toIndex 切割到的位置（不包括）
 	 * @return 切割后的剩余的前半部分字符串
 	 */
@@ -188,8 +188,8 @@ public class StrUtil {
 	/**
 	 * 切割指定位置之后部分的字符串
 	 *
-	 * @param string 字符串
-	 * @param fromIndex 切割开始的位置（包括）
+	 * @param string    字符串
+	 * @param fromIndex 切割 Start 的位置（包括）
 	 * @return 切割后后剩余的后半部分字符串
 	 */
 	public static String subSuf(CharSequence string, int fromIndex) {
@@ -202,10 +202,10 @@ public class StrUtil {
 	/**
 	 * 指定范围内查找指定字符
 	 *
-	 * @param str 字符串
+	 * @param str        字符串
 	 * @param searchChar 被查找的字符
-	 * @param start 起始位置，如果小于0，从0开始查找
-	 * @param end 终止位置，如果超过str.length()则默认查找到字符串末尾
+	 * @param start      起始位置 ,如果小于0 ,从0 Start 查找
+	 * @param end        终止位置 ,如果超过str.length()则默认查找到字符串末尾
 	 * @return 位置
 	 */
 	public static int indexOf(final CharSequence str, char searchChar, int start, int end) {
@@ -227,9 +227,9 @@ public class StrUtil {
 	/**
 	 * 指定范围内查找指定字符
 	 *
-	 * @param str 字符串
+	 * @param str        字符串
 	 * @param searchChar 被查找的字符
-	 * @param start 起始位置，如果小于0，从0开始查找
+	 * @param start      起始位置 ,如果小于0 ,从0 Start 查找
 	 * @return 位置
 	 */
 	public static int indexOf(final CharSequence str, char searchChar, int start) {
@@ -243,7 +243,7 @@ public class StrUtil {
 	/**
 	 * 指定范围内查找指定字符
 	 *
-	 * @param str 字符串
+	 * @param str        字符串
 	 * @param searchChar 被查找的字符
 	 * @return 位置
 	 */
@@ -252,7 +252,7 @@ public class StrUtil {
 	}
 
 	/**
-	 * 如果字符串是<code>null</code>，则返回指定默认字符串，否则返回字符串本身。
+	 * 如果字符串是<code>null</code> ,则返回指定默认字符串 ,否则返回字符串本身。
 	 *
 	 * <pre>
 	 * nullToDefault(null, &quot;default&quot;)  = &quot;default&quot;
@@ -261,7 +261,7 @@ public class StrUtil {
 	 * nullToDefault(&quot;bat&quot;, &quot;default&quot;) = &quot;bat&quot;
 	 * </pre>
 	 *
-	 * @param str 要转换的字符串
+	 * @param str        要转换的字符串
 	 * @param defaultStr 默认字符串
 	 *
 	 * @return 字符串本身或指定的默认字符串
@@ -271,7 +271,7 @@ public class StrUtil {
 	}
 
 	/**
-	 * 当给定字符串为null时，转换为Empty
+	 * 当给定字符串为null时 ,转换为Empty
 	 *
 	 * @param str 被转换的字符串
 	 * @return 转换后的字符串

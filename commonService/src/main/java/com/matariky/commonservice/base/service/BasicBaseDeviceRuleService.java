@@ -35,7 +35,7 @@ public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceR
     private HttpServletRequest request;
 
     /**
-     * New Rule 配置
+     * New Rule  Configuration 
      */
     public Long createBasicBaseDeviceruleWithOrg(BasicBaseDeviceRuleAddVO addVO, String jwt) {
         String  tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -62,7 +62,7 @@ public class BasicBaseDeviceRuleService extends BaseServiceImpl<BasicBaseDeviceR
     }
 
     /**
-     * 编辑 Device  Rule 配置
+     *   Update Device  Rule  Configuration 
      *
      * @param updateVO
      * @param jwt

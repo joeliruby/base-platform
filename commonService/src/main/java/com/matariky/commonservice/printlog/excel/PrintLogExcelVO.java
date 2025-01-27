@@ -2,7 +2,6 @@ package com.matariky.commonservice.printlog.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.matariky.commonservice.error.excel.DeviceTypeConvert;
 import com.matariky.commonservice.error.excel.LongTimeConverterTime;
 import lombok.Data;
 
@@ -14,19 +13,19 @@ import lombok.Data;
 @Data
 public class PrintLogExcelVO {
 
-    @ExcelProperty(value = "系统版本")
+    @ExcelProperty(value = "  System Version")
     @ColumnWidth(30)
     private String systemVersionNumber;
 
-    @ExcelProperty(value = "业务 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Business  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long businessTime;
 
-    @ExcelProperty(value = " Print  Task 编号")
+    @ExcelProperty(value = " Print  Task   Code ")
     @ColumnWidth(30)
     private String printTaskNumber;
 
-    @ExcelProperty(value = " Print 详情ID")
+    @ExcelProperty(value = " Print   Detail ID")
     @ColumnWidth(30)
     private String printDetailId;
 
@@ -34,41 +33,40 @@ public class PrintLogExcelVO {
     @ColumnWidth(30)
     private Integer printStatus;
 
-    @ExcelProperty(value = "商品SKU")
+    @ExcelProperty(value = "SKU")
     @ColumnWidth(30)
     private String sku;
 
-    @ExcelProperty(value = " Print 内容")
+    @ExcelProperty(value = " Print   Content")
     @ColumnWidth(30)
     private String printContent;
 
-    @ExcelProperty(value = "返回TID")
+    @ExcelProperty(value = " Returned TID")
     @ColumnWidth(30)
     private String returnTid;
 
-    @ExcelProperty(value = "RFID设置")
+    @ExcelProperty(value = "RFID  Configuration")
     @ColumnWidth(30)
     private String rfidSetting;
 
-    @ExcelProperty(value = " Device 编码")
+    @ExcelProperty(value = " Device  Code ")
     @ColumnWidth(30)
     private String deviceCode;
 
-    @ExcelProperty(value = "MAC地址")
+    @ExcelProperty(value = "MAC Address ")
     @ColumnWidth(30)
     private String macAddress;
 
-    @ExcelProperty(value = "访问账号")
+    @ExcelProperty(value = "  Access account")
     @ColumnWidth(30)
     private String accessAccount;
 
-    @ExcelProperty(value = "服务器访问地址")
+    @ExcelProperty(value = "   Server IP Address ")
     @ColumnWidth(30)
-    private  String  serverIp;
+    private String serverIp;
 
-    @ExcelProperty(value = "日志存储 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Log  Storage  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long createTime;
-
 
 }

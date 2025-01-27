@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Data
 public class BasicBaseDeviceUpdateVO {
 
@@ -15,16 +14,16 @@ public class BasicBaseDeviceUpdateVO {
     @NotNull
     private Long typeId;
 
-    @ApiModelProperty(value = " Device 编号")
+    @ApiModelProperty(value = " Device   Code ")
     @NotBlank
     @Size(max = 200)
     private String deviceCode;
 
-    @ApiModelProperty(value = " Device 描述")
+    @ApiModelProperty(value = " Device  Description ")
     @Size(max = 500)
     private String deviceDescribe;
 
-    @ApiModelProperty(value = " Device 功率")
+    @ApiModelProperty(value = " Device  Power ")
     @Size(max = 100)
     private String deviceDbm;
 
@@ -32,23 +31,23 @@ public class BasicBaseDeviceUpdateVO {
     @Size(max = 50)
     private String deviceIp;
 
-    @ApiModelProperty(value = " Device MAC地址")
+    @ApiModelProperty(value = " Device MAC Address ")
     @Size(max = 200)
     private String deviceMac;
 
-    @ApiModelProperty(value = "gis地址")
+    @ApiModelProperty(value = "gis Address ")
     @Size(max = 100)
     private String gisAddress;
 
-    @ApiModelProperty(value = "gis地址 Name")
+    @ApiModelProperty(value = "gis Address  Name")
     @Size(max = 200)
-    private String  gisAddressName;
+    private String gisAddressName;
 
-    @ApiModelProperty(value = "安装地址")
+    @ApiModelProperty(value = " Install  Address ")
     @Size(max = 200)
     private String installAddress;
 
-    @ApiModelProperty(value = "安装图片")
+    @ApiModelProperty(value = " Install  Image ")
     @Size(max = 200)
     private String installImg;
 

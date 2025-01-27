@@ -9,7 +9,7 @@ import java.util.Properties;
 
 
 /**
- *  Generation 验证码配置
+ *  Generation 验证码 Configuration 
  *
  */
 @Configuration

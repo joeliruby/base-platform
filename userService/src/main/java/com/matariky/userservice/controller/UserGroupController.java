@@ -121,7 +121,7 @@ public class UserGroupController {
 		//角色集合
 		List<Long> roleIdList = userGroupService.getRoleIdList(id);
 
-		//用户集合
+		// User 集合
 		List<Long> userIdList = userGroupService.getUserIdList(id);
 
 
@@ -153,7 +153,7 @@ public class UserGroupController {
 			if(StringUtil.isEmpty(bean.getGroupName())) {
 				throw new QslException(MessageKey.GROUP_NAME_NULL);
 			}
-//			//分组 Name保持唯一
+//			//分组 Name保持  Unique 
 //			Map<String, Object> columnMap=new HashMap<>();
 //			columnMap.put("group_name", bean.getGroupName());
 //			columnMap.put("tenant_id", tenantId);
@@ -182,7 +182,7 @@ public class UserGroupController {
 			if(StringUtil.isEmpty(bean.getGroupName())) {
 				throw new QslException(MessageKey.GROUP_NAME_NULL);
 			}
-			//分组 Name保持唯一
+			//分组 Name保持  Unique 
 //			Map<String, Object> columnMap=new HashMap<>();
 //			columnMap.put("group_name", bean.getGroupName());
 //			columnMap.put("tenant_id", bean.getTenantId());
@@ -226,13 +226,13 @@ public class UserGroupController {
 	}
 
 
-	//查看授权详情
+	//查看授权  Detail 
 	@RequestMapping(value = "/userGroup",method = RequestMethod.GET)
 	public Object getPermissionByGroup(HttpServletRequest request,
 			Long groupId,
 			 @PathVariable("tenantId") String tenantId){
 
-		//根据 Tenant id Query 应用
+		//根据 Tenant id Query   App 
 		List<Map<String,Object>> listMaps=userGroupService.getAppByTenantId(tenantId);
 		List<Map<String, Object>> maps=new ArrayList<>();
 

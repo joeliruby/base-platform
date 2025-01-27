@@ -16,19 +16,19 @@ import java.util.List;
  */
 public interface BasicBaseDeviceRuleDetailMapper extends BaseMapper<BasicBaseDeviceRuleDetail> {
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "r")
     public List<BasicBaseDeviceRuleDetailVO> getBasicBaseDeviceruleDetailAll(BasicBaseDeviceRuleDetailListVO vo);
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBaseDeviceruleDetail(BasicBaseDeviceRuleDetail bean);
 
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBaseDeviceruleDetailById(Long id);
 

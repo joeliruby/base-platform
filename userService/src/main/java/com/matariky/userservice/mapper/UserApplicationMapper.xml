@@ -223,7 +223,7 @@
 	</select>
 	
 	
-	<!--批量删除应用和租户的中间表数据 -->
+	<!--批量Delete   App 和租户的中间表数据 -->
 	<delete id="deleteTenantByApplicationIds" >
 		DELETE FROM user_r_application_tenant WHERE application_id  in
 		 <foreach item="applicationId" collection="array" open="(" separator="," close=")">
@@ -239,7 +239,7 @@
 	</delete>
 	
 	
-	<!--批量删除应用和资源的中间表数据 -->
+	<!--批量Delete   App 和资源的中间表数据 -->
 	<delete id="deletePermissionByApplicationIds" >
 		DELETE FROM user_r_application_permission WHERE application_id  in
 		 <foreach item="applicationId" collection="array" open="(" separator="," close=")">
@@ -249,7 +249,7 @@
 	
 	
 	
-	<!-- 向应用和租户中间表插入数据 -->
+	<!-- 向  App 和租户中间表插入数据 -->
 	<insert id="saveRApplicationTenant" parameterType="Map" >
 		INSERT INTO user_r_application_tenant ( application_id, tenant_id, tenant_code, application_name )
 		VALUES

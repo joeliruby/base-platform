@@ -1,33 +1,26 @@
 package com.matariky.commonservice.base.service;
 
-import cn.hutool.core.lang.UUID;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.alibaba.fastjson2.JSONObject;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.matariky.commonservice.base.bean.BasicBaseFormConfig;
-import com.matariky.commonservice.base.bean.BasicBaseFormExtend;
-import com.matariky.commonservice.base.mapper.BasicBaseFormConfigMapper;
-import com.matariky.commonservice.base.mapper.BasicBaseFormExtendMapper;
-import com.matariky.commonservice.base.mapper.BasicBaseGoodsMapper;
-import com.matariky.commonservice.base.vo.*;
-import com.matariky.commonservice.commondict.bean.CommonDict;
-import com.matariky.commonservice.commondict.bean.CommonDictType;
-import com.matariky.commonservice.commondict.mapper.CommonDictMapper;
-import com.matariky.commonservice.commondict.mapper.CommonDictTypeMapper;
-import com.matariky.commonservice.commondict.service.CommonDictService;
-import com.matariky.commonservice.commondict.service.CommonDictTypeService;
-import com.matariky.commonservice.minio.utils.MinioUtil;
-import com.matariky.commonservice.upload.constant.MessageKey;
-import com.matariky.constant.PermissionConstant;
-import com.matariky.excel.EasyExcelUtil;
-import com.matariky.exception.QslException;
-import com.matariky.utils.DrawServer;
-import com.matariky.utils.QRCodeGenerator;
-import com.matariky.utils.StringUtils;
-import com.matariky.utils.TokenUtils;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.io.IOUtils;
@@ -40,19 +33,43 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.matariky.commonservice.base.bean.BasicBaseFormConfig;
+import com.matariky.commonservice.base.bean.BasicBaseFormExtend;
+import com.matariky.commonservice.base.mapper.BasicBaseFormConfigMapper;
+import com.matariky.commonservice.base.mapper.BasicBaseFormExtendMapper;
+import com.matariky.commonservice.base.mapper.BasicBaseGoodsMapper;
+import com.matariky.commonservice.base.vo.AddExtendFieldDetailVO;
+import com.matariky.commonservice.base.vo.AddExtendFieldInfoVO;
+import com.matariky.commonservice.base.vo.AddExtendFieldVO;
+import com.matariky.commonservice.base.vo.BasicBaseFormExtendQueryVO;
+import com.matariky.commonservice.base.vo.BasicBaseGoodsListVO;
+import com.matariky.commonservice.base.vo.RfidTagInfo;
+import com.matariky.commonservice.commondict.bean.CommonDict;
+import com.matariky.commonservice.commondict.bean.CommonDictType;
+import com.matariky.commonservice.commondict.mapper.CommonDictMapper;
+import com.matariky.commonservice.commondict.mapper.CommonDictTypeMapper;
+import com.matariky.commonservice.commondict.service.CommonDictService;
+import com.matariky.commonservice.commondict.service.CommonDictTypeService;
+import com.matariky.commonservice.minio.utils.MinioUtil;
+import com.matariky.commonservice.upload.constant.MessageKey;
+import com.matariky.constant.PermissionConstant;
+import com.matariky.exception.QslException;
+import com.matariky.utils.DrawServer;
+import com.matariky.utils.EasyExcelUtil;
+import com.matariky.utils.QRCodeGenerator;
+import com.matariky.utils.StringUtils;
+import com.matariky.utils.TokenUtils;
+
+import cn.hutool.core.lang.UUID;
 
 /**
- *  Business Inteface Implementation
+ * Business Inteface Implementation
  *
  * @author AUTOMATION
  */
@@ -89,7 +106,7 @@ public class CommonService {
     private String upgradeFileUrl;
 
     /**
-     *  Generation  QR Code 
+     * Generation QR Code
      *
      * @param text
      * @param tenantId
@@ -99,10 +116,10 @@ public class CommonService {
         String uploadUrl = StringUtils.EMPTY;
         try {
             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".png";
-            /** 创建图片 **/
+            /** Create Image **/
             String property = System.getProperty("user.dir");
             File file = new File(property + File.separator + fileName);
-            /** 将 QR Code 内容写入图片 **/
+            /** QR Code overlay on Image **/
             QRCodeGenerator.generateQRCodeImage(applicationUrl + text, 350, 350, file.getAbsolutePath());
             try {
                 minioUtil.createBucket(bucket);
@@ -126,38 +143,8 @@ public class CommonService {
         return uploadUrl;
     }
 
-
     /**
-     * 删除临时目录
-     */
-    private static void deleteTempDirectory() {
-        String tempDirPath = System.getProperty("java.io.tmpdir");
-        File tempDir = new File(tempDirPath);
-        if (tempDir.exists()) {
-            File[] files = tempDir.listFiles();
-            for (File file : files) {
-                if (!file.isDirectory()) {
-                    boolean deleted = file.delete();
-                    if (deleted) {
-                        System.out.println("成功删除文件：" + file.getName());
-                    } else {
-                        System.err.println("无法删除文件：" + file.getName());
-                    }
-                }
-            }
-            boolean directoryDeleted = tempDir.delete();
-            if (directoryDeleted) {
-                System.out.println("成功删除临时目录：" + tempDir.getName());
-            } else {
-                System.err.println("无法删除临时目录：" + tempDir.getName());
-            }
-        } else {
-            System.out.println("临时目录不存在！");
-        }
-    }
-
-    /**
-     * 获取 Device Type  Data 字典
+     * Retrieve Device Type Data Dictionary
      *
      * @param dictKey
      * @return
@@ -183,7 +170,7 @@ public class CommonService {
     }
 
     /**
-     * 获取app客户端Type - Data 字典
+     * Retrieve App Client Type - Data Dictionary
      *
      * @param dictValue
      * @return
@@ -208,9 +195,8 @@ public class CommonService {
         return deviceTypeCode;
     }
 
-
     /**
-     *  Generation excel Import 
+     * Generation excel Import
      *
      * @param response
      * @param classVO
@@ -221,7 +207,8 @@ public class CommonService {
         response.setContentType("application/vnd.ms-excel; charset=utf-8");
         response.setCharacterEncoding("utf-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName + "_" + System.currentTimeMillis() + ".xlsx", "utf-8"));
+            response.setHeader("Content-Disposition", "attachment;filename="
+                    + URLEncoder.encode(fileName + "_" + System.currentTimeMillis() + ".xlsx", "utf-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,9 +223,8 @@ public class CommonService {
         }
     }
 
-
     /**
-     *  Generation excel Import   下拉选用这个
+     * Generation excel Import Drop Down Box
      *
      * @param response
      * @param classVO
@@ -246,11 +232,13 @@ public class CommonService {
      * @param sheetName
      * @param tenantId
      */
-    public void createTemplate(HttpServletResponse response, Class<?> classVO, String fileName, String sheetName, String tenantId) {
+    public void createTemplate(HttpServletResponse response, Class<?> classVO, String fileName, String sheetName,
+            String tenantId) {
         response.setContentType("application/vnd.ms-excel; charset=utf-8");
         response.setCharacterEncoding("utf-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName + "_" + System.currentTimeMillis() + ".xlsx", "utf-8"));
+            response.setHeader("Content-Disposition", "attachment;filename="
+                    + URLEncoder.encode(fileName + "_" + System.currentTimeMillis() + ".xlsx", "utf-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -265,7 +253,7 @@ public class CommonService {
     }
 
     /**
-     * 获取  Device 功率- Data 字典
+     * Retrieve Device Power - Data Dictionary
      *
      * @param
      * @return
@@ -287,7 +275,7 @@ public class CommonService {
     }
 
     /**
-     * 获取 Label  Data 
+     * Retrieve Label Data
      *
      * @return
      */
@@ -304,7 +292,7 @@ public class CommonService {
     }
 
     /**
-     * 长传图片
+     * 长传 Image
      *
      * @param file
      * @param bucket
@@ -315,7 +303,7 @@ public class CommonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /**获取文件名**/
+        /** Retrieve File Name **/
         String fileName = file.getOriginalFilename();
         try {
             minioUtil.uploadFile(file.getInputStream(), bucket, fileName);
@@ -325,9 +313,8 @@ public class CommonService {
         return "api/v1/tenant/1/file/downloadFile?bucket=" + bucket + "&objectName=" + fileName;
     }
 
-
     /**
-     * 对 .tar.gz 文件进行 md5
+     * generate MD 5 for tar.gz
      *
      * @param gzFile
      * @return
@@ -365,7 +352,7 @@ public class CommonService {
     }
 
     /**
-     * map  下划线 转 驼峰
+     * map undercore to camel case
      *
      * @param map
      * @return
@@ -383,7 +370,7 @@ public class CommonService {
     }
 
     /**
-     * 下划线 转 驼峰
+     * underscore to camel case
      *
      * @param input
      * @return
@@ -393,17 +380,18 @@ public class CommonService {
             return input;
         }
         /**
-         * 使用正则表达式将下划线替换为空格，然后使用trim()去除首尾空格
+         * Use the regular expression to replace the downline line into the space, and
+         * then use trim () to remove the front and tail space
          */
         String[] words = input.replaceAll("_", " ").trim().split("\\s+");
         StringBuilder camelCase = new StringBuilder();
         /**
-         * 将每个单词的首字母大写并拼接起来
+         * Patch the first letters of each word and stitch it up
          */
         for (int i = 0; i < words.length; i++) {
             if (i == 0) {
                 /**
-                 * 第一个单词保持小写
+                 * The first word is kept lowercase
                  */
                 camelCase.append(words[i].toLowerCase());
             } else {
@@ -414,7 +402,7 @@ public class CommonService {
     }
 
     /**
-     * 添加扩展字段
+     * Add Augment Field
      */
     @Transactional(rollbackFor = Exception.class)
     public void addExtendField(AddExtendFieldVO vo) {
@@ -422,8 +410,9 @@ public class CommonService {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
         List<Long> addIds = new ArrayList<>();
 
-        vo.getList().sort(Comparator.comparing(AddExtendFieldInfoVO::getId, Comparator.nullsLast(Comparable::compareTo)));
-        final int[] index = {0};
+        vo.getList()
+                .sort(Comparator.comparing(AddExtendFieldInfoVO::getId, Comparator.nullsLast(Comparable::compareTo)));
+        final int[] index = { 0 };
         vo.getList().stream().forEach(item -> {
             if (item.getId() == null) {
                 /**
@@ -453,7 +442,7 @@ public class CommonService {
                 addIds.add(config.getId());
             } else if (item.getId() != null) {
                 /**
-                 * 修改
+                 * Update
                  */
                 Long count = basicBaseFormConfigMapper.selectCount(Wrappers.lambdaQuery(BasicBaseFormConfig.class)
                         .eq(BasicBaseFormConfig::getDeleteTime, 0)
@@ -480,23 +469,25 @@ public class CommonService {
             }
         });
         /**
-         * 删除
+         * Delete
          */
         List<Long> ids = basicBaseFormConfigMapper.selectConfigIds(tenantId);
         ids = ids.stream().filter(item -> !addIds.contains(item)).collect(Collectors.toList());
-        List<Long> newIds = vo.getList().stream().filter(item -> item.getId() != null).map(AddExtendFieldInfoVO::getId).collect(Collectors.toList());
+        List<Long> newIds = vo.getList().stream().filter(item -> item.getId() != null).map(AddExtendFieldInfoVO::getId)
+                .collect(Collectors.toList());
         List<Long> deleteIds = ids.stream().filter(item -> !newIds.contains(item)).collect(Collectors.toList());
         if (deleteIds.isEmpty()) {
             return;
         }
-        List<BasicBaseFormConfig> deleteConfig = basicBaseFormConfigMapper.selectList(Wrappers.lambdaQuery(BasicBaseFormConfig.class)
-                .in(BasicBaseFormConfig::getId, deleteIds));
+        List<BasicBaseFormConfig> deleteConfig = basicBaseFormConfigMapper
+                .selectList(Wrappers.lambdaQuery(BasicBaseFormConfig.class)
+                        .in(BasicBaseFormConfig::getId, deleteIds));
         deleteIds.stream().forEach(item -> {
             basicBaseFormConfigMapper.delBasicBaseFormConfigById(item);
         });
 
         /**
-         * 清空之前业务 Data 的旧值
+         * The old value of the business DATA before empty
          */
         List<BasicBaseFormExtend> basicBaseFormExtends = basicBaseFormExtendMapper.selectExtendClearList();
         basicBaseFormExtends.stream().forEach(item -> {
@@ -517,7 +508,7 @@ public class CommonService {
     }
 
     /**
-     * 通过表单 Query  扩展字段
+     * Via form Query Augment Field
      *
      * @param name
      */
@@ -528,8 +519,10 @@ public class CommonService {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             vo.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -547,7 +540,7 @@ public class CommonService {
 
         list.stream().forEach(item -> {
             /**
-             * 该字段 Wether 存在 Data 
+             * This field WETHER exists DATA
              */
             BasicBaseFormExtendQueryVO extend = new BasicBaseFormExtendQueryVO();
             extend.setBusinessIds(businessIds);
@@ -572,7 +565,7 @@ public class CommonService {
     }
 
     /**
-     * 向karaf发送升级指令
+     * 向karaf发送 Upgrade Command
      */
     public void deviceUpgrade(String md5, String vers, String deviceCode) {
         JSONObject jsonObject = new JSONObject();
@@ -582,7 +575,7 @@ public class CommonService {
         JSONObject data = new JSONObject();
         data.put("md5", md5);
         data.put("vers", vers);
-        upgradeFileUrl="http://172.28.1.17:8012";
+        upgradeFileUrl = "http://172.28.1.17:8012";
         data.put("web", upgradeFileUrl + "/readerFile");
         jsonObject.put("data", data);
         jsonObject.put("deviceCode", deviceCode);

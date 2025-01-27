@@ -11,9 +11,9 @@ public class PrintOptionInfo {
     @ApiModelProperty(value = " Device Type  Name")
     private String typeName;
 
-    @ApiModelProperty(value = " Device 编号")
+    @ApiModelProperty(value = " Device   Code ")
     private String deviceCode;
 
-    @ApiModelProperty(value = "显示文本")
+    @ApiModelProperty(value = "Display Text ")
     private String label;
 }

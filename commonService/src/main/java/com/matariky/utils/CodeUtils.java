@@ -6,20 +6,19 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * 单据编号 Generation  Rule 
+ * 单据 Code Generation Rule
  *
  * @author chenyajun
  */
-public class CodeUtils
-{
+public class CodeUtils {
 
-//    public static void main(String[] args){
-//        CodeUtils codeUtils = new CodeUtils();
-//
-//        String code = CodeUtils.CreateCode(OrderType.DIC);
-//
-//        System.out.println(code);
-//    }
+    // public static void main(String[] args){
+    // CodeUtils codeUtils = new CodeUtils();
+    //
+    // String code = CodeUtils.CreateCode(OrderType.DIC);
+    //
+    // System.out.println(code);
+    // }
 
     /**
      * @param digit 位数
@@ -36,43 +35,41 @@ public class CodeUtils
         return str.toString();
     }
 
-
-
-
-    public static String CreateNo(){
+    public static String CreateNo() {
         String datetime = DateUtil.getCurrentTime();
         String random = getNum(6);
-        String code=datetime+random;
+        String code = datetime + random;
         return code;
     }
 
-    public static String CreateBatchCode(){
+    public static String CreateBatchCode() {
         String datetime = DateUtil.getCurrentTime();
         String random = getNum(4);
-        String code=datetime+random;
+        String code = datetime + random;
         return code;
     }
 
-    public enum CsType{
-        EP("EP","员工"),
-        CM("CM","收银机"),
-        S("S","店铺"),
-        VIP("S","会员"),
-        OD("OD","订单"),
-        GD("GD","商品"),
-        P("P","支付"),
-        PR("PR","退款"),
-        PT("PT"," Print "),
+    public enum CsType {
+        EP("EP", "员工"),
+        CM("CM", "收银机"),
+        S("S", "店铺"),
+        VIP("S", "会员"),
+        OD("OD", "订单"),
+        GD("GD", "商品"),
+        P("P", "支付"),
+        PR("PR", "退款"),
+        PT("PT", " Print "),
         ;
+
         /**
-         * Type 
+         * Type
          */
         private String type;
 
         /**
-         * 描述
+         * Description
          */
-        private String desc ;
+        private String desc;
 
         CsType(String type, String desc) {
             this.type = type;
@@ -96,18 +93,18 @@ public class CodeUtils
         char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i< length; i++) {
+        for (int i = 0; i < length; i++) {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }
         return sb.toString();
     }
 
-    public static String randomHexGenerator(){
+    public static String randomHexGenerator() {
         SecureRandom secureRandom = new SecureRandom();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 8; i++) {
-            int num = secureRandom.nextInt(16); //  Generation 0-15的随机数
+            int num = secureRandom.nextInt(16); // Generation 0-15的随机数
             sb.append(Integer.toHexString(num)); // 将随机数转换为16进制字符
         }
         String hexString = sb.toString();

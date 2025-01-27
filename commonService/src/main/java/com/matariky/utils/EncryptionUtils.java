@@ -3,92 +3,111 @@ package com.matariky.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptionUtils {  
-	  
-    /** 
-     * 由于MD5 与SHA-1均是从MD4 发展而来，它们的结构和强度等特性有很多相似之处 
-     * SHA-1与MD5 的最大区别在于其摘要比MD5 摘要长 32 比特（1byte=8bit，相当于长4byte，转换16进制后比MD5多8个字符）。  
-     * 对于强行攻击，：MD5 是2128  Quantity级的操作，SHA-1 是2160 Quantity级的操作。 
-     * 对于相同摘要的两个报文的难度：MD5是 264 是 Quantity级的操作，SHA-1 是280  Quantity级的操作。 
-     * 因而，SHA-1 对强行攻击的强度更大。 但由于SHA-1 的循环步骤比MD5 多（80:64）且要处理的缓存大（160 比特:128 比特），SHA-1 的运行速度比MD5 慢。 
-     *  
-     * @param source 需要加密的字符串 
-     * @param hashType 加密Type  （MD5 和 SHA） 
-     * @return 
-     */  
-    public static String getHash(String source, String hashType) {  
-        // 用来将字节转换成 16 进制表示的字符  
-        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};  
-  
-        try {  
-            MessageDigest md = MessageDigest.getInstance(hashType);  
-            md.update(source.getBytes()); // 通过使用 update 方法处理 Data ,使指定的 byte数组Update摘要   (为什么需要先使用update方法   有的md5方法中怎么不使用？)
-            byte[] encryptStr = md.digest(); // 获得密文完成哈希计算,产生128 位的长整数  
-            char str[] = new char[16 * 2]; // 每个字节用 16 进制表示的话，使用两个字符  
-            int k = 0; // 表示转换结果中对应的字符位置  
-            for (int i = 0; i < 16; i++) { // 从第一个字节开始，对每一个字节,转换成 16 进制字符的转换  
-                byte byte0 = encryptStr[i]; // 取第 i 个字节  
-                str[k++] = hexDigits[byte0 >>> 4 & 0xf]; // 取字节中高 4 位的数字转换, >>> 为逻辑右移，将符号位一起右移  
-                str[k++] = hexDigits[byte0 & 0xf]; // 取字节中低 4 位的数字转换  
-            }  
-            return new String(str); // 换后的结果转换为字符串  
-        } catch (NoSuchAlgorithmException e) {  
-            e.printStackTrace();  
-        }  
-        return null;  
-    }  
-  
-    /** @param source 需要加密的字符串 
-     * @param hashType  加密Type  （MD5 和 SHA） 
-     * @return 
-     */  
-    public static String getHash2(String source, String hashType) {  
-        StringBuilder sb = new StringBuilder();  
-        MessageDigest md5;  
-        try {  
-            md5 = MessageDigest.getInstance(hashType);  
-            md5.update(source.getBytes());  
-            for (byte b : md5.digest()) {  
-                sb.append(String.format("%02X", b)); // 10进制转16进制，X 表示以十六进制形式输出，02 表示不足两位前面补0输出  
-            }  
-            return sb.toString();  
-        } catch (NoSuchAlgorithmException e) {  
-            e.printStackTrace();  
-        }  
-        return null;  
-    }  
-  
-    /** @param source 需要加密的字符串 
-     * @param hashType  加密Type  （MD5 和 SHA） 
-     * @return 
-     */  
-    public static String getHash3(String source, String hashType) {  
-        // 用来将字节转换成 16 进制表示的字符  
-        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};  
-          
-        StringBuilder sb = new StringBuilder();  
-        MessageDigest md5;  
-        try {  
-            md5 = MessageDigest.getInstance(hashType);  
-            md5.update(source.getBytes());  
-            byte[] encryptStr = md5.digest();  
-            for (int i = 0; i < encryptStr.length; i++) {  
-                int iRet = encryptStr[i];  
-                if (iRet < 0) {  
-                    iRet += 256;  
-                }  
-                int iD1 = iRet / 16;  
-                int iD2 = iRet % 16;  
-                sb.append(hexDigits[iD1] + "" + hexDigits[iD2]);  
-            }  
-            return sb.toString();  
-        } catch (NoSuchAlgorithmException e) {  
-            e.printStackTrace();  
-        }  
-        return null;  
-    }  
-    
+public class EncryptionUtils {
+
+    /**
+     * Since MD5 and SHA-1 are developed from MD4, their structure and strength have
+     * many similarities
+     * The biggest difference of Sha-1 and MD5 is that its abstract is 32 bites
+     * longer than MD5 summary (1byte = 8bit, which is equivalent to 4BYTE
+     * , More than 8 characters more than MD5 after converting hexadecimal).
+     * For forcibly attack,: MD5 is the 2128 Quantity level Operation, SHA-1 is the
+     * 2160 Quantity level Operation.
+     * Difficulty for the two packets of the same abstract: MD5 is 264 is the
+     * quantity level of Operation, SHA-1 is 280 Quantity level
+     * Operation.
+     * Therefore, SHA-1 has a greater intensity for forced attacks. However, since
+     * SHA-1's cycle steps are more than MD5 (80:64) and the cache to be processed
+     * is large (160 bit: 128 Bit)
+     * , SHA-1 runs slower than MD5.
+     * 
+     * @param source   The encryption string needs to be encrypted
+     * @param hashType encryption Type （MD5 and SHA）
+     * @return
+     */
+    public static String getHash(String source, String hashType) {
+        // It is used to convert bytes into hexadecimal representations
+        char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+        try {
+            MessageDigest md = MessageDigest.getInstance(hashType);
+            md.update(source.getBytes()); // By using Update Method to process Data to make the specified Byte array
+                                          // UPDATE Abstract (why do you need to use Update Method first
+                                          // Why not use in some MD5 METHOD？)
+            byte[] encryptStr = md.digest(); // Get the ciphertext to complete the hash calculation, generate 128 -bit
+                                             // long integer
+            char str[] = new char[16 * 2]; // If each byte is expressed in hexadecimal, use two characters
+            int k = 0; // 表示转换结果中对应的字符位置
+            for (int i = 0; i < 16; i++) { // From the ONE byte Start, convert to the conversion of hexadecimal
+                                           // characters for each ONE byte
+                byte byte0 = encryptStr[i]; // Take the i -Le byte
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf]; // Take the number of numbers in the height of the byte, >>>
+                                                         // for the logical right movement, move the symbol position to
+                                                         // the right
+                str[k++] = hexDigits[byte0 & 0xf]; // Take 4 -bit digital conversion by byte
+            }
+            return new String(str); // After changing the result, convert to a string
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @param source   The encryption string needs to be encrypted
+     * @param hashType encryption Type （MD5 and SHA）
+     * @return
+     */
+    public static String getHash2(String source, String hashType) {
+        StringBuilder sb = new StringBuilder();
+        MessageDigest md5;
+        try {
+            md5 = MessageDigest.getInstance(hashType);
+            md5.update(source.getBytes());
+            for (byte b : md5.digest()) {
+                sb.append(String.format("%02X", b)); // 10 inlet -to -6 hexadecimal, x means output in the form of
+                                                     // hexadecimal, 02 indicates that less than two places are not
+                                                     // enough to make up 0 output in front of the 0 output
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @param source   The encryption string needs to be encrypted
+     * @param hashType encryption Type （MD5 and SHA）
+     * @return
+     */
+    public static String getHash3(String source, String hashType) {
+        // It is used to convert bytes into hexadecimal representations
+        char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+        StringBuilder sb = new StringBuilder();
+        MessageDigest md5;
+        try {
+            md5 = MessageDigest.getInstance(hashType);
+            md5.update(source.getBytes());
+            byte[] encryptStr = md5.digest();
+            for (int i = 0; i < encryptStr.length; i++) {
+                int iRet = encryptStr[i];
+                if (iRet < 0) {
+                    iRet += 256;
+                }
+                int iD1 = iRet / 16;
+                int iD2 = iRet % 16;
+                sb.append(hexDigits[iD1] + "" + hexDigits[iD2]);
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
-		System.out.println(System.currentTimeMillis());
-	}
+        System.out.println(System.currentTimeMillis());
+    }
 }

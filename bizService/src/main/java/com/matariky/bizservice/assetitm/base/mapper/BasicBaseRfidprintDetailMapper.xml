@@ -32,11 +32,11 @@
                 and is_print =#{isPrint}
             </if>
             <if test="printTimeStart!=null and printTimeStart!='' ">
-                <!--  开始时间检索  -->
+                <!--  Starting time search  -->
                 and DATE_FORMAT(FROM_UNIXTIME(print_time / 1000), '%Y-%m-%d %H:%i:%s') &gt;= #{printTimeStart}
             </if>
             <if test="printTimeEnd!=null and printTimeEnd!='' ">
-                <!--  结束时间检索  -->
+                <!--  End time search  -->
                 and DATE_FORMAT(FROM_UNIXTIME(print_time / 1000), '%Y-%m-%d %H:%i:%s')  &lt;= #{printTimeEnd}
             </if>
         </where>

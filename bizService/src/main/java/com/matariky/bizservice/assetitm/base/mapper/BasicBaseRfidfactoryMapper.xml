@@ -33,11 +33,11 @@
                 and a.rfid_type =#{params.rfidType}
             </if>
             <if test="params.createDateStart!=null and params.createDateStart!='' ">
-                <!--  开始时间检索  -->
+                <!--  Starting time search  -->
                 and DATE_FORMAT(FROM_UNIXTIME(a.create_time / 1000), '%Y-%m-%d %H:%i:%s') &gt;= #{params.createDateStart}
             </if>
             <if test="params.createDateEnd!=null and params.createDateEnd!='' ">
-                <!--  结束时间检索  -->
+                <!-- End time search  -->
                 and DATE_FORMAT(FROM_UNIXTIME(a.create_time / 1000), '%Y-%m-%d %H:%i:%s')  &lt;= #{params.createDateEnd}
             </if>
         </where>

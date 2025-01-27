@@ -44,14 +44,16 @@ public class BasicBaseErrorLogController {
     @Autowired
     private CommonDictTypeService commonDictTypeService;
 
-     
     @RequestMapping("/basicBaseErrorLog/list")
-    public AjaxResult list(HttpServletRequest request, BasicBaseErrorLog bean, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex, @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult list(HttpServletRequest request, BasicBaseErrorLog bean,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
+            @ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
-        PageInfo<BasicBaseErrorLog> page = new PageInfo(basicBaseErrorLogService.getBasicBaseErrorLogAll(bean));
+        PageInfo<BasicBaseErrorLog> page = new PageInfo<>(basicBaseErrorLogService.getBasicBaseErrorLogAll(bean));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
-
 
     @ApiOperation(" Export ")
     @GetMapping("/basicBaseErrorLog/export")
@@ -61,11 +63,15 @@ public class BasicBaseErrorLogController {
     }
 
     @RequestMapping("/basicBaseErrorLog/daclist")
-    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params, @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
+    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+            @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
+            @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         String hid = request.getHeader("id");
         String resourceIdDictKey = "dp" + hid.substring(0, hid.length() - 1);
-        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
-        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId, commonDictType.getId());
+        CommonDictType commonDictType = commonDictTypeService.getDictTypeByKey(
+                TokenUtils.extractTenantIdFromHttpReqeust(request), PermissionConstant.DATA_ACCESS_PERMISSION);
+        CommonDict dict = commonDictService.getCommonDictByIdTenantIdAndDictType(resourceIdDictKey, tenantId,
+                commonDictType.getId());
         if (dict == null) {
             params.put("strategyCode", PermissionConstant.COMMON_DATA_ACCESS_ALL);
         } else {
@@ -82,37 +88,37 @@ public class BasicBaseErrorLogController {
         page.setTotal(count);
         page.setPageSize(perPage);
         page.setPageNum(pageIndex);
-        page.setPages(Integer.parseInt(new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1).toString()));
+        page.setPages(Integer.parseInt(
+                new Long(count % new Long(perPage) == 0 ? count % new Long(perPage) : count % new Long(perPage) + 1)
+                        .toString()));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
     }
 
-     
     @RequestMapping(value = "/basicBaseErrorLog", method = RequestMethod.POST)
-    public AjaxResult save(@RequestBody List<BasicBaseErrorLog> beanList, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult save(@RequestBody List<BasicBaseErrorLog> beanList, HttpServletRequest request,
+            HttpServletResponse response) {
         basicBaseErrorLogService.createBasicBaseErrorLogWithOrg(beanList, request);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseErrorLog", method = RequestMethod.PUT)
-    public AjaxResult update(@RequestBody BasicBaseErrorLog bean, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult update(@RequestBody BasicBaseErrorLog bean, HttpServletRequest request,
+            HttpServletResponse response) {
         basicBaseErrorLogService.updateBasicBaseErrorLog(bean);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseErrorLog", method = RequestMethod.DELETE)
     public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         basicBaseErrorLogService.deleteById(Long.parseLong(id));
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/basicBaseErrorLog/{basicBaseErrorLogId}", method = RequestMethod.GET)
-    public AjaxResult getOne(@PathVariable("/basicBaseErrorLogId") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult getOne(@PathVariable("/basicBaseErrorLogId") Long id, HttpServletRequest request,
+            HttpServletResponse response) {
         BasicBaseErrorLog info = basicBaseErrorLogService.selectById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }
-
 
 }

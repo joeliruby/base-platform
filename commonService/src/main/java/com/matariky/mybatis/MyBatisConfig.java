@@ -39,7 +39,7 @@ public class MyBatisConfig {
     }
 
     /**
-     * @Description: 配置分页拦截器
+     * @Description:  Configuration 分页拦截器
      * @Author: bo.chen
      * @Date: 2023/1/3 16:57
      * @return com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor

@@ -17,26 +17,26 @@ import java.util.List;
 public interface BasicBaseAppVersionMapper extends BaseMapper<BasicBaseAppVersion> {
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "a")
     public List<BasicBaseAppVersionListVO> getBasicBaseAppversionAll(@Param("params") BasicBaseAppVersionQueryVO vo);
 
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBaseAppversion(BasicBaseAppVersion bean);
 
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBaseAppversionById(Long id);
 
 
     /**
-     * 获取 Print 机app
+     *   Retrieve Printer App
      *
      * @return
      */

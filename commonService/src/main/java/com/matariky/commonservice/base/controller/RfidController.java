@@ -30,7 +30,7 @@ public class RfidController {
 
 
     /**
-     * 获取 Label  Data 
+     *   Retrieve Label  Data 
      *
      * @param
      * @return

@@ -12,7 +12,7 @@ public class BasicBaseDeviceRuleUpdateVO {
     private Long id;
 
     @NotNull
-    @ApiModelProperty(value = " Wether 记录日志")
+    @ApiModelProperty(value = " Wether  Record  Log ")
     private Boolean isRecordLog;
 
 }

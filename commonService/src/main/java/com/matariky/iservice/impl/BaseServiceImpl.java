@@ -39,28 +39,28 @@ import com.matariky.mybatis.MybatisPlusDataScopeInterceptor;
 import com.matariky.utils.TokenUtils;
 
 /**
- * 基础服务类，所有Service都要继承
+ * Base Service 类 ,所有Service都要继承
  */
 public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements BaseService<T> {
     @Autowired
     protected M baseDao;
 
     @Autowired
-//    @Lazy
+    // @Lazy
     private CommonSharingPoolService sharingPoolService;
-    
+
     @Autowired
     protected MybatisPlusDataScopeInterceptor mybatisPlusDataScopeInterceptor;
 
     /**
-     * 获取分页对象
+     * Retrieve分页 Object
      *
-     * @param params            分页 Query  Parameter 
+     * @param params            Pagination Query Parameter
      * @param defaultOrderField 默认排序字段
      * @param isAsc             排序方式
      */
     protected IPage<T> getPage(Map<String, Object> params, String defaultOrderField, boolean isAsc) {
-        //分页 Parameter 
+        // Pagination Parameter
         long curPage = 1;
         long limit = 10;
 
@@ -71,30 +71,31 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
             limit = Long.parseLong((String) params.get(Constant.LIMIT));
         }
 
-        //分页对象
+        // 分页 Object
         Page<T> page = new Page<>(curPage, limit);
 
-        //分页 Parameter 
+        // Pagination Parameter
         params.put(Constant.PAGE, page);
 
-        //排序字段
+        // 排序字段
         String orderField = (String) params.get(Constant.ORDER_FIELD);
         String order = (String) params.get(Constant.ORDER);
-        //前端字段排序
+        // 前端字段排序
         if (StringUtils.isNotBlank(orderField) && StringUtils.isNotBlank(order)) {
             if (Constant.ASC.equalsIgnoreCase(order)) {
                 return page.addOrder(Stream.of(orderField.split(",")).map(OrderItem::asc).collect(Collectors.toList()));
             } else {
-                return page.addOrder(Stream.of(orderField.split(",")).map(OrderItem::desc).collect(Collectors.toList()));
+                return page
+                        .addOrder(Stream.of(orderField.split(",")).map(OrderItem::desc).collect(Collectors.toList()));
             }
         }
 
-        //没有排序字段，则不排序
+        // 没有排序字段 ,则不排序
         if (StringUtil.isEmpty(defaultOrderField)) {
             return page;
         }
 
-        //默认排序
+        // 默认排序
         if (isAsc) {
             page.addOrder(Stream.of(defaultOrderField.split(",")).map(OrderItem::asc).collect(Collectors.toList()));
         } else {
@@ -104,25 +105,25 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
         return page;
     }
 
-
     protected void strategyCodeToParams(Map<String, Object> params, HttpServletRequest request) {
         String strategyCode = (String) params.get("strategyCode");
         if (StringUtil.isEmpty(strategyCode))
-            strategyCode = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;//  By default only visible by owner
+            strategyCode = PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;// By default only visible by owner
         switch (strategyCode) {
-            case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE://Visible to owner with special sharing rules
+            case PermissionConstant.COMMON_DATA_ACCESS_PRIVATE:// Visible to owner with special sharing rules
                 Map<String, List<String>> sharingOrgCodes0 = extractedSharingOrgCodes(request);
                 params.put("selfOrgCode", TokenUtils.extractSelfOrgCode(request));
                 params.putAll(sharingOrgCodes0);
                 break;
-            case PermissionConstant.COMMON_DATA_ACCESS_ALL://All visible to all without special sharing rules
+            case PermissionConstant.COMMON_DATA_ACCESS_ALL:// All visible to all without special sharing rules
                 break;
-            case PermissionConstant.COMMON_DATA_ACCESS_ORG://Visible to organizations of same or upper level
+            case PermissionConstant.COMMON_DATA_ACCESS_ORG:// Visible to organizations of same or upper level
                 Map<String, List<String>> sharingOrgCodes3 = extractedSharingOrgCodes(request);
                 params.put("orgCode", TokenUtils.extractOrgCode(request));
                 params.putAll(sharingOrgCodes3);
                 break;
-            case PermissionConstant.COMMON_DATA_ACCESS_LEVEL://Visible to organizations of same level with special sharing rules
+            case PermissionConstant.COMMON_DATA_ACCESS_LEVEL:// Visible to organizations of same level with special
+                                                             // sharing rules
                 Map<String, List<String>> sharingOrgCodes2 = extractedSharingOrgCodes(request);
                 params.put("orgCode", TokenUtils.extractOrgCode(request));
                 params.putAll(sharingOrgCodes2);
@@ -133,8 +134,10 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     }
 
     public Map<String, List<String>> extractedSharingOrgCodes(HttpServletRequest request) {
-        List<CommonSharingPool> obtainedBySelfOrgCodes0 = sharingPoolService.selectByOrgCode(TokenUtils.extractSelfOrgCode(request));
-        List<CommonSharingPool> obtainedByOrgCodes0 = sharingPoolService.selectByOrgCode(TokenUtils.extractOrgCode(request));
+        List<CommonSharingPool> obtainedBySelfOrgCodes0 = sharingPoolService
+                .selectByOrgCode(TokenUtils.extractSelfOrgCode(request));
+        List<CommonSharingPool> obtainedByOrgCodes0 = sharingPoolService
+                .selectByOrgCode(TokenUtils.extractOrgCode(request));
         obtainedByOrgCodes0.addAll(obtainedBySelfOrgCodes0);
         List<String> selfOrgCodes = new ArrayList<String>();
         List<String> orgCodes = new ArrayList<String>();
@@ -154,15 +157,16 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
         return map;
     }
 
-//    protected <T> PageData<T> getPageData(List<?> list, long total, Class<T> target){
-//        List<T> targetList = ConvertUtils.sourceToTarget(list, target);
-//
-//        return new PageData<>(targetList, total);
-//    }
-//
-//    protected <T> PageData<T> getPageData(IPage page, Class<T> target){
-//        return getPageData(page.getRecords(), page.getTotal(), target);
-//    }
+    // protected <T> PageData<T> getPageData(List<?> list, long total, Class<T>
+    // target){
+    // List<T> targetList = ConvertUtils.sourceToTarget(list, target);
+    //
+    // return new PageData<>(targetList, total);
+    // }
+    //
+    // protected <T> PageData<T> getPageData(IPage page, Class<T> target){
+    // return getPageData(page.getRecords(), page.getTotal(), target);
+    // }
 
     protected Map<String, Object> paramsToLike(Map<String, Object> params, String... likes) {
         for (String like : likes) {
@@ -178,13 +182,13 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
     /**
      * <p>
-     * 判断 Data 库操作 Wether 成功
+     * 判断 Data 库 Operation Wether 成功
      * </p>
      * <p>
-     * 注意！！ 该方法为 Integer 判断，不可传入 int 基本Type 
+     * 注意！！ 该 Method 为 Integer 判断 ,不可传入 int 基本Type
      * </p>
      *
-     * @param result  Data 库操作返回影响条数
+     * @param result Data 库 Operation返回影响条数
      * @return boolean
      */
     protected static boolean retBool(Integer result) {
@@ -197,7 +201,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
     /**
      * <p>
-     * 批量操作 SqlSession
+     * 批量 Operation SqlSession
      * </p>
      */
     protected SqlSession sqlSessionBatch() {
@@ -214,7 +218,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     }
 
     /**
-     * 获取SqlStatement
+     * RetrieveSqlStatement
      *
      * @param sqlMethod
      * @return
@@ -312,7 +316,6 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     @Override
     public boolean deleteById(Serializable id) {
 
-
         return SqlHelper.retBool(baseDao.deleteById(id));
     }
 
@@ -320,7 +323,5 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     public boolean deleteBatchIds(Collection<? extends Serializable> idList) {
         return SqlHelper.retBool(baseDao.deleteBatchIds(idList));
     }
-
-
 
 }

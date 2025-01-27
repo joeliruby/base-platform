@@ -7,15 +7,15 @@ import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
 public class PrintStatusConverter implements Converter<Integer> {
 
-
     @Override
-    public WriteCellData<?> convertToExcelData(Integer value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public WriteCellData<?> convertToExcelData(Integer value, ExcelContentProperty contentProperty,
+            GlobalConfiguration globalConfiguration) throws Exception {
         String s = "";
         if (value == 1) {
-            s = "开始 Print ";
+            s = " Start  Print ";
         } else if (value == 2) {
             s = " Printed ";
         }
-        return new WriteCellData(s);
+        return new WriteCellData<String>(s);
     }
 }

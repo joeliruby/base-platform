@@ -13,15 +13,15 @@ public class BasicBaseDeviceUpgradeListVO extends QueryDataIsolation {
     @ApiModelProperty(value = "Page Size", required = true)
     private Integer perPage;
 
-    @ApiModelProperty(value = "升级包 Name")
+    @ApiModelProperty(value = "  Upgrade Package Name")
     private String packageName;
 
-    @ApiModelProperty(value = "升级包版本号")
+    @ApiModelProperty(value = "  Upgrade Package Version Number")
     private String packageVersion;
 
-    @ApiModelProperty(value = "升级描述")
+    @ApiModelProperty(value = " Upgrade  Description ")
     private String upgradeContent;
 
     @ApiModelProperty(value = " Device Type Id")
-    private Long  typeId;
+    private Long typeId;
 }

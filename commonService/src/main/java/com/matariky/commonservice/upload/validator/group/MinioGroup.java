@@ -1,6 +1,8 @@
 package com.matariky.commonservice.upload.validator.group;
+
 /**
- * minio云
+ * minio Cloud
+ * 
  * @author Admin
  *
  */

@@ -14,13 +14,13 @@ public class TreeModel2 extends TreeNode<Object>{
 	private String label;
 	private String code;
 	
-	//链接地址
+	//链接 Address 
 	private String url;
 	
 	//资源Type 
 	private Integer resourceType;
 	
-	//所属应用
+	//所属  App 
 	private String applicationName;
 	
 	//图标

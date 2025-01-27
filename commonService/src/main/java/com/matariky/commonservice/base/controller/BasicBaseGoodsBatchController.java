@@ -40,7 +40,7 @@ public class BasicBaseGoodsBatchController {
 
 
     /**
-     * 保存操作
+     *  Save  Operation
      *
      * @param vo
      * @return
@@ -52,7 +52,7 @@ public class BasicBaseGoodsBatchController {
     }
 
     /**
-     * Update操作
+     * Update Operation
      *
      * @param updateVO
      * @return
@@ -64,7 +64,7 @@ public class BasicBaseGoodsBatchController {
     }
 
     /**
-     * 删除操作
+     * Delete  Operation
      *
      * @param id
      * @return
@@ -76,7 +76,7 @@ public class BasicBaseGoodsBatchController {
     }
 
     /**
-     * 单个擦寻详情操作
+     *  Query One  Detail  Operation
      *
      * @param id
      * @return
@@ -86,7 +86,7 @@ public class BasicBaseGoodsBatchController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseGoodsBatchService.getBasicBaseGoodsBatchById(id));
     }
 
-    @ApiOperation("批量绑定")
+    @ApiOperation(" Batch Binding")
     @PostMapping(value = "/basicBaseGoodsBatch/rfidBinding")
     public AjaxResult batchBind(@RequestBody @Validated BatchGoodsBindVO vo) {
         basicBaseGoodsBatchService.batchGoodsBind(vo);
@@ -95,7 +95,7 @@ public class BasicBaseGoodsBatchController {
 
 
     /**
-     *  Item 批次详情
+     *  Item  Batch   Detail 
      *
      * @param vo
      * @return

@@ -22,75 +22,78 @@ import java.util.*;
 public class SqlUtils {
 
     /**
-     * 获取aop中的SQL语句
+     * Retrieve SQL statements in AOP
+     * 
      * @param pjp
      * @param sqlSessionFactory
      * @return
      * @throws IllegalAccessException
      */
-    public static String getMybatisSql(ProceedingJoinPoint pjp, SqlSessionFactory sqlSessionFactory) throws IllegalAccessException {
-        Map<String,Object> map = new HashMap<>();
-        //1.获取namespace+methdoName
+    public static String getMybatisSql(ProceedingJoinPoint pjp, SqlSessionFactory sqlSessionFactory)
+            throws IllegalAccessException {
+        Map<String, Object> map = new HashMap<>();
+        // 1. Retrieve namespace + methodName
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod();
-        
+
         String namespace = method.getDeclaringClass().getName();
         if (namespace.equals(EnhanceBaseMapper.class.getName()) || namespace.equals(BaseMapper.class.getName())) {
             return namespace + "." + method;
         }
         String methodName = method.getName();
-        //2.根据namespace+methdoName获取相对应的MappedStatement
+        // 2. Retrieve the corresponding MappedStatement based on namespace + methodName
         Configuration configuration = sqlSessionFactory.getConfiguration();
-        MappedStatement mappedStatement = configuration.getMappedStatement(namespace+"."+methodName);
-//        //3.获取方法 Parameter 列表名
-//        Parameter[] parameters = method.getParameters();
-        //4.形参和实参的映射
-        Object[] objects = pjp.getArgs(); //获取实参
+        MappedStatement mappedStatement = configuration.getMappedStatement(namespace + "." + methodName);
+        // //3. Retrieve method parameter names
+        // Parameter[] parameters = method.getParameters();
+        // 4. Map formal parameters to actual parameters
+        Object[] objects = pjp.getArgs(); // Retrieve actual parameters
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        for (int i = 0;i<parameterAnnotations.length;i++){
+        for (int i = 0; i < parameterAnnotations.length; i++) {
             Object object = objects[i];
-            if (parameterAnnotations[i].length == 0){ //说明该 Parameter 没有注解，此时该 Parameter 可能是实体类，也可能是Map，也可能只是单 Parameter 
-                if (object !=null &&object.getClass().getClassLoader() == null && object instanceof Map){
+            if (parameterAnnotations[i].length == 0) { // Indicates that the parameter has no annotations, it may be an
+                                                       // entity class, a Map, or just a single parameter
+                if (object != null && object.getClass().getClassLoader() == null && object instanceof Map) {
                     map.putAll((Map<? extends String, ?>) object);
-                    System.out.println("该对象为Map");
-                }else{//形参为自定义实体类
-                	if(object !=null)
-                    map.putAll(objectToMap(object));
-                    System.out.println("该对象为用户自定义的对象");
+                    System.out.println("The object is a Map");
+                } else { // The parameter is a custom entity class
+                    if (object != null)
+                        map.putAll(objectToMap(object));
+                    System.out.println("The object is a user-defined object");
                 }
-            }else{//说明该 Parameter 有注解，且必须为@Param
-                for (Annotation annotation : parameterAnnotations[i]){
-                    if (annotation instanceof Param){
-                        map.put(((Param) annotation).value(),object);
+            } else { // Indicates that the parameter has annotations and must be @Param
+                for (Annotation annotation : parameterAnnotations[i]) {
+                    if (annotation instanceof Param) {
+                        map.put(((Param) annotation).value(), object);
                     }
                 }
             }
         }
-        //过滤掉delet
+        // Filter out delete
         int delete = mappedStatement.getId().indexOf("delete");
-        if(delete>=0){
-        	return "delete";
+        if (delete >= 0) {
+            return "delete";
         }
-        
-        //过滤掉创建 create
+
+        // Filter out create
         int create = mappedStatement.getId().indexOf("create");
-        if(create>=0){
-        	return "create";
+        if (create >= 0) {
+            return "create";
         }
-        
-        //5.获取boundSql 
+
+        // 5. Retrieve boundSql
         BoundSql boundSql = mappedStatement.getBoundSql(map);
-        return showSql(configuration,boundSql);
+        return showSql(configuration, boundSql);
     }
-    
 
     /**
-     * 解析BoundSql， Generation 不含占位符的SQL语句
+     * Parse BoundSql and generate SQL statements without placeholders
+     * 
      * @param configuration
      * @param boundSql
      * @return
      */
-    private  static String showSql(Configuration configuration, BoundSql boundSql) {
+    private static String showSql(Configuration configuration, BoundSql boundSql) {
         Object parameterObject = boundSql.getParameterObject();
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         String sql = boundSql.getSql().replaceAll("[\\s]+", " ");
@@ -116,7 +119,8 @@ public class SqlUtils {
     }
 
     /**
-     * 若为字符串或者日期Type ，则在 Parameter 两边添加''
+     * If it is a string or date type, add '' around the parameter
+     * 
      * @param obj
      * @return
      */
@@ -138,7 +142,7 @@ public class SqlUtils {
     }
 
     /**
-     * 获取利用反射获取类里面的值和 Name
+     * Retrieve values and names in the class using reflection
      *
      * @param obj
      * @return
@@ -146,15 +150,7 @@ public class SqlUtils {
      */
     private static Map<String, String> objectToMap(Object obj) throws IllegalAccessException {
         Map<String, String> map = new HashMap<>();
-        map=BeanUtils.beanToMap(obj);
-//        Class<?> clazz = obj.getClass();
-//        System.out.println(clazz);
-//        for (Field field : clazz.getDeclaredFields()) {
-//            field.setAccessible(true);
-//            String fieldName = field.getName();
-//            Object value = field.get(obj);
-//            map.put(fieldName, value);
-//        }
+        map = BeanUtils.beanToMap(obj);
         return map;
     }
 }

@@ -13,8 +13,7 @@ public class BasicBasePcVersionQueryVO extends QueryDataIsolation {
     @ApiModelProperty(value = "Page Size", required = true)
     private Integer perPage;
 
-    @ApiModelProperty(value = "版本号")
+    @ApiModelProperty(value = " Version Number")
     private String versionNo;
-
 
 }

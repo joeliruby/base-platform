@@ -260,7 +260,7 @@ public class MybatisPlusDataScopeInterceptor extends JsqlParserSupport implement
     }
 
     /**
-     * @Description: 获取方法
+     * @Description:   Retrieve  Method  
      * @Author: bo.chen
      * @Date: 2023/10/19 13:26
      * @param clazz

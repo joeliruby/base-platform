@@ -22,20 +22,20 @@ import java.util.Map;
 public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
 
     /**
-     *  Query 扩展字段
+     *  Query  Augment Field 
      * @param tenantId
      * @return
      */
     public  List<String> selectFieldExtend(@Param("tenantId") Long  tenantId);
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "g")
     public List<HashMap> getBasicBaseGoodsAll(@Param("params") BasicBaseGoodsListVO vo);
 
     /**
-     * New方法
+     * New  Method  
      *
      * @param bean
      * @return
@@ -43,7 +43,7 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
     public int createBasicBaseGoods(BasicBaseGoods bean);
 
     /**
-     * 删除方法
+     * Delete   Method  
      *
      * @param id
      * @return
@@ -52,7 +52,7 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
 
 
     /**
-     *  Item -下拉选
+     *  Item -  Drop Down Box
      *
      * @param queryDataIsolation
      * @return
@@ -77,7 +77,7 @@ public interface BasicBaseGoodsMapper extends BaseMapper<BasicBaseGoods> {
     public Integer getGoodsCountFromRfidPrint(@Param("goodsId") Long goodsId);
 
     /**
-     *  Query 详情
+     *  Query   Detail 
      * @return
      */
     public BasicBaseGoods getBasicBaseGoodsById(@Param("id") Long id);

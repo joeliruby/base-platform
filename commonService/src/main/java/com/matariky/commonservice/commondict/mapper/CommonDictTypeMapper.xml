@@ -86,7 +86,7 @@
         select id,dict_type_name,tenant_id,comment,create_time,update_time,is_active,created_by,updated_by,dict_type_key from common_dict_type where tenant_id=#{tenantId,jdbcType=VARCHAR} and  dict_type_key=#{dictTypeKey,jdbcType=VARCHAR}
 	</select>
 
-	<!-- 根据字典组编码查询字典详情的联合查询 -->
+	<!-- according to  Dictionary group Code query  Dictionary   Detail -->
 	<select id="getDictsByDictTypeKey"  resultType="com.matariky.commonservice.commondict.bean.CommonDict">
         SELECT
             t2.id,

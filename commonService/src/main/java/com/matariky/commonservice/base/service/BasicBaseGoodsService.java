@@ -56,7 +56,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
     private BasicBaseFormExtendMapper basicBaseFormExtendMapper;
 
     /**
-     * 分页 Query 
+     *  Pagination Query 
      *
      * @return
      */
@@ -75,7 +75,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         vo.setOrgCode(TokenUtils.extractOrgCode(request));
         vo.setTenantId(tenantId);
         /**
-         *  Query 扩展字段
+         *  Query  Augment Field 
          */
         List<String> extendFieldList = basicBaseGoodsMapper.selectFieldExtend(TokenUtils.longify(tenantId));
         vo.setExtendFieldList(extendFieldList);
@@ -227,7 +227,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
         boolean isHaveExtendField = updateVO.keySet().stream().anyMatch(key -> key.toString().contains("field"));
         if (isHaveExtendField && extendId == null) {
             /**
-             * New扩展字段
+             * New Augment Field 
              */
             BasicBaseFormExtend extend = new BasicBaseFormExtend();
             extend.setCreateBy(userId);
@@ -260,7 +260,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
             }
         } else if (isHaveExtendField && extendId != null) {
             /**
-             * 修改扩展字段
+             *   Update Augment Field 
              */
             BasicBaseFormExtend extend = new BasicBaseFormExtend();
             Iterator<Map.Entry> iterator = updateVO.entrySet().iterator();
@@ -288,7 +288,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
     }
 
     /**
-     * 删除
+     * Delete 
      *
      * @param id
      * @return
@@ -328,7 +328,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
 
 
     /**
-     *  Item  - 下拉选列表
+     *  Item  -   Drop Down Box Pagination 
      *
      * @param
      */
@@ -355,7 +355,7 @@ public class BasicBaseGoodsService extends BaseServiceImpl<BasicBaseGoodsMapper,
     }
 
     /**
-     *  Query 详情
+     *  Query   Detail 
      *
      * @param id
      */

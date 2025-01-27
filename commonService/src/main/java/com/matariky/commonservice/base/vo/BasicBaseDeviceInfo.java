@@ -12,46 +12,46 @@ public class BasicBaseDeviceInfo {
     @ApiModelProperty(value = " Device Type ID")
     private Long typeId;
 
-    @ApiModelProperty(value = " Device 编号")
+    @ApiModelProperty(value = " Device   Code ")
     private String deviceCode;
 
-    @ApiModelProperty(value = " Device 描述")
+    @ApiModelProperty(value = " Device  Description ")
     private String deviceDescribe;
 
-    @ApiModelProperty(value = " Device 功率")
+    @ApiModelProperty(value = " Device  Power ")
     private String deviceDbm;
 
     @ApiModelProperty(value = " Device IP")
     private String deviceIp;
 
-    @ApiModelProperty(value = " Device MAC地址")
+    @ApiModelProperty(value = " Device MAC Address ")
     private String deviceMac;
 
-    @ApiModelProperty(value = "经度")
+    @ApiModelProperty(value = "  longitude ")
     private String longitude;
 
-    @ApiModelProperty(value = "纬度")
+    @ApiModelProperty(value = "  latitude ")
     private String latitude;
 
-    @ApiModelProperty(value = "gis地址 Name")
-    private String  gisAddressName;
+    @ApiModelProperty(value = "gis Address  Name")
+    private String gisAddressName;
 
-    @ApiModelProperty(value = "安装地址")
+    @ApiModelProperty(value = " Install  Address ")
     private String installAddress;
 
-    @ApiModelProperty(value = "安装图片")
+    @ApiModelProperty(value = " Install  Image ")
     private String installImg;
 
-    @ApiModelProperty(value = "上一版本号")
+    @ApiModelProperty(value = "  Previous  Version Number")
     private String prevVersion;
 
-    @ApiModelProperty(value = "当前版本号")
+    @ApiModelProperty(value = "  Current  Version Number")
     private String currentVersion;
 
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
 
     @ApiModelProperty(value = "Update Time ")
@@ -60,21 +60,21 @@ public class BasicBaseDeviceInfo {
     @ApiModelProperty(value = "Update Time ")
     private Long deleteTime;
 
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
 
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
 
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Vistiting Operator Department Code ")
     private String operatorOrgCode;
 
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Vistitor Organization Code Code ")
     private String operatorSelfOrgCode;
 
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
 
-    @ApiModelProperty(value = "gis地址")
-    private  String gisAddress;
+    @ApiModelProperty(value = "gis Address ")
+    private String gisAddress;
 }

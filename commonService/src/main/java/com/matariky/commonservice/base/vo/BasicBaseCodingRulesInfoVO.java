@@ -10,32 +10,32 @@ public class BasicBaseCodingRulesInfoVO {
     private Long id;
     @ApiModelProperty(value = " Rule  Name")
     private String rulesName;
-    @ApiModelProperty(value = "编码长度")
+    @ApiModelProperty(value = " Code  length ")
     private Integer codingLength;
-    @ApiModelProperty(value = "唯一码开头字符 第一条为E1 第二条为E2")
+    @ApiModelProperty(value = "  Unique The first character at the beginning of the code is E1 The second is E2")
     private String uniqueCode;
     @ApiModelProperty(value = " Remark ")
     private String remark;
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
-    @ApiModelProperty(value = "创建用户ID")
+    @ApiModelProperty(value = "Create  User ID")
     private Long createBy;
-    @ApiModelProperty(value = "Update用户ID")
+    @ApiModelProperty(value = "Update User ID")
     private Long updateBy;
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Visiting the Sectional Department Code ")
     private String operatorOrgCode;
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Visit the generator personal organization Code ")
     private String operatorSelfOrgCode;
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
-    @ApiModelProperty(value = "创建人")
+    @ApiModelProperty(value = "Creater")
     private String realName;
-    @ApiModelProperty(value = " Status （0：停用，1：启用）")
+    @ApiModelProperty(value = " Status （0： Deactivate  ,1： Activate）")
     private Integer status;
-    @ApiModelProperty(value = " Rule Type ，来自 Data 字典")
+    @ApiModelProperty(value = " Rule Type   , From  Data   Dictionary ")
     private Integer rulesType;
 }

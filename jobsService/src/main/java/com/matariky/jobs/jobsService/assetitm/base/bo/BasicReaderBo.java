@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @description: 读写器基础 Information 
+ * @description: Reader Base Information
  * @author: bo.chen
  * @create: 2023/10/8 13:50
  **/
@@ -13,17 +13,17 @@ import java.io.Serializable;
 public class BasicReaderBo implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-     * 机架编码
+    /**
+     * Library Code
      */
     private String rackCode;
 
     /**
-     * 读写器编码
+     * Reader Code
      */
     private String readerCode;
 }

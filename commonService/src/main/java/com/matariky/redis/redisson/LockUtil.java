@@ -21,10 +21,10 @@ public class LockUtil {
     private static final RedissonClient redissonClient = SpringContextUtils.getBean(RedissonClient.class);
 
     /**
-     * @Description: 获取锁
+     * @Description: Retrieve锁
      * @Author: bo.chen
      * @Date: 2023/4/17 15:26
-     * @param waitSeconds 获取锁等待秒 Data 
+     * @param waitSeconds Retrieve锁等待秒 Data
      * @param key
      * @return org.redisson.api.RLock
      **/
@@ -34,16 +34,16 @@ public class LockUtil {
         try {
             success = rLock.tryLock(waitSeconds, TimeUnit.SECONDS);
         } catch (Exception e) {
-            logger.error("获取锁异常！lockName={}", key, e);
+            logger.error("  Retrieve锁异常！lockName={}", key, e);
         }
         if (!success) {
-           throw new QslException("系统繁忙，请稍后再试！");
+            throw new QslException("  System繁忙  ,请稍后再试！");
         }
         return new Lock(rLock);
     }
 
     /**
-     * @Description: 获取锁
+     * @Description: Retrieve锁
      * @Author: bo.chen
      * @Date: 2023/4/17 15:43
      * @param key

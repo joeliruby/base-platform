@@ -11,7 +11,7 @@ public class BasicBaseCodingRulesUpdateStatusVO {
     @NotNull
     private Long id;
 
-    @ApiModelProperty(value = " Status （0：停用，1：启用）")
+    @ApiModelProperty(value = " Status 0: Deactivate,1: Activate")
     @NotNull
     private Integer status;
 

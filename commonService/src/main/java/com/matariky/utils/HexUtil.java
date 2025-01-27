@@ -5,31 +5,43 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 十六进制（简写为hex或下标16）在数学中是一种逢16进1的进位制，一般用数字0到9和字母A到F表示（其中:A~F即10~15）。<br>
- * 例如十进制数57，在二进制写作111001，在16进制写作39。<br>
- * 像java,c这样的语言为了区分十六进制和十进制数值,会在十六进制数的前面加上 0x,比如0x20是十进制的32,而不是十进制的20<br>
+ * Sixteen -proof (abbreviated as HEX or down bidding 16) is a kind of inlet
+ * system every 16 in 1 in mathematics. Generally, use numbers 0 to 9 and
+ * alphabet A to F (where: a ~ f is 10 ~ 15 To. <br>
+ * For example, the number of decimal system 57, in binary writing 111001, in
+ * hexadecimal writing 39. <br>
+ * Language like Java, C In order to distinguish the value of hexada and
+ * decimal, it will add 0x to the front of the hexadecimal number. For example,
+ * 0x20 is a decimal 32 instead of the decimal 20 <br>
  * <p>
- * 参考：https://my.oschina.net/xinxingegeya/blog/287476
+ * Reference: https://my.oschina.net/xinxingegeya/blog/287476
  *
  */
 public class HexUtil {
 
 	/**
-	 * 用于建立十六进制字符的输出的小写字符数组
+	 * Lowwriter arrays for the establishment of the output of hexadecimal
+	 * characters
 	 */
-	private static final char[] DIGITS_LOWER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+	private static final char[] DIGITS_LOWER = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
+			'e', 'f' };
 	/**
-	 * 用于建立十六进制字符的输出的大写字符数组
+	 * The uppercase character array for the establishment of the output of
+	 * hexadecimal characters
 	 */
-	private static final char[] DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	private static final char[] DIGITS_UPPER = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+			'E', 'F' };
 
 	/**
-	 * 判断给定字符串 Wether 为16进制数<br>
-	 * 如果是，需要使用对应数字Type 对象的<code>decode</code>方法解码<br>
-	 * 例如：{@code Integer.decode}方法解码intType 的16进制数字
+	 * Determine the given string Wether is hexadecimal number <br>
+	 * If it is, you need to use the corresponding number Type Object
+	 * <Code> Decode </code> method <br>
+	 * <br>
+	 * For example: {@Code Integer.Decode} Method decoding Inttype's hexadecimal
+	 * number
 	 *
-	 * @param value 值
-	 * @return  Wether 为16进制
+	 * @param value value
+	 * @Return Wether is hexadecimal
 	 */
 	public static boolean isHexNumber(String value) {
 		final int index = (value.startsWith("-") ? 1 : 0);
@@ -45,100 +57,100 @@ public class HexUtil {
 		}
 	}
 
-	// ---------------------------------------------------------------------------------------------------- encode
-
 	/**
-	 * 将字节数组转换为十六进制字符数组
+	 * Convert byte array to array of hexadecimal character array
 	 *
 	 * @param data byte[]
-	 * @return 十六进制char[]
+	 * @return hexadecimal char[]
 	 */
 	public static char[] encodeHex(byte[] data) {
 		return encodeHex(data, true);
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符数组
+	 * Convert byte array to array of hexadecimal character array
 	 *
-	 * @param str     字符串
-	 * @param charset 编码
-	 * @return 十六进制char[]
+	 * @param str     String
+	 * @param charset Code
+	 * @return hexadecimal char[]
 	 */
 	public static char[] encodeHex(String str, Charset charset) {
 		return encodeHex(StrUtil.bytes(str, charset), true);
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符数组
+	 * Convert byte array to array of hexadecimal character array
 	 *
 	 * @param data        byte[]
-	 * @param toLowerCase <code>true</code> 传换成小写格式 ， <code>false</code> 传换成大写格式
-	 * @return 十六进制char[]
+	 * @param toLowerCase <code>true</code> Pass to a lowercase format ,
+	 *                    <code>false</code>Change to a capital format
+	 * @return hexadecimal char[]
 	 */
 	public static char[] encodeHex(byte[] data, boolean toLowerCase) {
 		return encodeHex(data, toLowerCase ? DIGITS_LOWER : DIGITS_UPPER);
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符串
+	 * Convert byte array to hexadecimal string
 	 *
 	 * @param data byte[]
-	 * @return 十六进制String
+	 * @return hexadecimal String
 	 */
 	public static String encodeHexStr(byte[] data) {
 		return encodeHexStr(data, true);
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符串，结果为小写
+	 * Convert the byte array to a hexadecimal strings, and the result is a
+	 * lowercase
 	 *
-	 * @param data    被编码的字符串
-	 * @param charset 编码
-	 * @return 十六进制String
+	 * @param data    被 Code String
+	 * @param charset Code
+	 * @return hexadecimal String
 	 */
 	public static String encodeHexStr(String data, Charset charset) {
 		return encodeHexStr(StrUtil.bytes(data, charset), true);
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符串，结果为小写，默认编码是UTF-8
+	 * Convert the byte array to a hexadecimal string, the result is a lowercase,
+	 * and the default code isUTF-8
 	 *
-	 * @param data 被编码的字符串
-	 * @return 十六进制String
+	 * @param data Code string
+	 * @return Sixteen -in -made String
 	 */
 	public static String encodeHexStr(String data) {
 		return encodeHexStr(data, StandardCharsets.UTF_8);
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符串
+	 * Convert byte array to hexadecimal string
 	 *
 	 * @param data        byte[]
-	 * @param toLowerCase <code>true</code> 传换成小写格式 ， <code>false</code> 传换成大写格式
-	 * @return 十六进制String
+	 * @param toLowerCase <code>true</code> Pass to a lowercase format ,
+	 *                    <code>false</code> Change to a capital format
+	 * @return hexadecimal String
 	 */
 	public static String encodeHexStr(byte[] data, boolean toLowerCase) {
 		return encodeHexStr(data, toLowerCase ? DIGITS_LOWER : DIGITS_UPPER);
 	}
 
-	// ---------------------------------------------------------------------------------------------------- decode
-
 	/**
-	 * 将十六进制字符数组转换为字符串，默认编码UTF-8
+	 * Convert the hexadecimal character array to a string, default Code UTF-8
 	 *
-	 * @param hexStr 十六进制String
-	 * @return 字符串
+	 * @param hexStr hexadecimal String
+	 * @return String
 	 */
 	public static String decodeHexStr(String hexStr) {
 		return decodeHexStr(hexStr, StandardCharsets.UTF_8);
 	}
 
 	/**
-	 * 将十六进制字符数组转换为字符串
+	 * Converts a hexadecimal character array to a string
 	 *
-	 * @param hexStr  十六进制String
-	 * @param charset 编码
-	 * @return 字符串
+	 * @param hexStr  hexadecimal String
+	 * @param charset Charset
+	 * @return String
 	 */
 	public static String decodeHexStr(String hexStr, Charset charset) {
 		if (StrUtil.isEmpty(hexStr)) {
@@ -148,22 +160,23 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将十六进制字符数组转换为字符串
+	 * Converts a hexadecimal character array to a string
 	 *
-	 * @param hexData 十六进制char[]
-	 * @param charset 编码
-	 * @return 字符串
+	 * @param hexData hexadecimal char[]
+	 * @param charset Charset
+	 * @return String
 	 */
 	public static String decodeHexStr(char[] hexData, Charset charset) {
 		return StrUtil.str(decodeHex(hexData), charset);
 	}
 
 	/**
-	 * 将十六进制字符数组转换为字节数组
+	 * Converts a hexadecimal character array to a byte array
 	 *
-	 * @param hexData 十六进制char[]
+	 * @param hexData hexadecimal char[]
 	 * @return byte[]
-	 * @throws RuntimeException 如果源十六进制字符数组是一个奇怪的长度，将抛出运行时异常
+	 * @throws RuntimeException if the source hexadecimal character array has an odd
+	 *                          length, a runtime exception will be thrown
 	 */
 	public static byte[] decodeHex(char[] hexData) {
 
@@ -188,9 +201,9 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将十六进制字符串解码为byte[]
+	 * Decodes a hexadecimal string into a byte array
 	 *
-	 * @param hexStr 十六进制String
+	 * @param hexStr hexadecimal String
 	 * @return byte[]
 	 */
 	public static byte[] decodeHex(String hexStr) {
@@ -200,13 +213,14 @@ public class HexUtil {
 		return decodeHex(hexStr.toCharArray());
 	}
 
-	// ---------------------------------------------------------------------------------------- Color
+	// ----------------------------------------------------------------------------------------
+	// Color
 
 	/**
-	 * 将{@link Color}编码为Hex形式
+	 * Converts {@link Color} to Hex format
 	 *
 	 * @param color {@link Color}
-	 * @return Hex字符串
+	 * @return Hex String
 	 * @since 3.0.8
 	 */
 	public static String encodeColor(Color color) {
@@ -214,11 +228,11 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将{@link Color}编码为Hex形式
+	 * Converts {@link Color} to Hex format
 	 *
 	 * @param color  {@link Color}
-	 * @param prefix 前缀字符串，可以是#、0x等
-	 * @return Hex字符串
+	 * @param prefix prefix string, can be #, 0x, etc.
+	 * @return Hex String
 	 * @since 3.0.8
 	 */
 	public static String encodeColor(Color color, String prefix) {
@@ -243,9 +257,9 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将Hex颜色值转为
+	 * Converts a Hex color value to {@link Color}
 	 *
-	 * @param hexColor 16进制颜色值，可以以#开头，也可以用0x开头
+	 * @param hexColor Hex color value, can start with # or 0x
 	 * @return {@link Color}
 	 * @since 3.0.8
 	 */
@@ -254,15 +268,17 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将指定int值转换为Unicode字符串形式，常用于特殊字符（例如汉字）转Unicode形式<br>
-	 * 转换的字符串如果u后不足4位，则前面用0填充，例如：
+	 * Converts the specified int value to a Unicode string format, commonly used to
+	 * convert special characters (e.g. Chinese characters) to Unicode format
+	 * If the converted string is less than 4 digits after u, it will be padded with
+	 * 0 in front, for example:
 	 *
 	 * <pre>
-	 * '我' =》\u4f60
+	 * '我' => \u4f60
 	 * </pre>
 	 *
-	 * @param value int值，也可以是char
-	 * @return Unicode表现形式
+	 * @param value int value, can also be char
+	 * @return Unicode representation
 	 */
 	public static String toUnicodeHex(int value) {
 		final StringBuilder builder = new StringBuilder(6);
@@ -271,7 +287,7 @@ public class HexUtil {
 		String hex = toHex(value);
 		int len = hex.length();
 		if (len < 4) {
-			builder.append("0000", 0, 4 - len);// 不足4位补0
+			builder.append("0000", 0, 4 - len);// Pad with 0 if less than 4 digits
 		}
 		builder.append(hex);
 
@@ -279,30 +295,32 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将指定char值转换为Unicode字符串形式，常用于特殊字符（例如汉字）转Unicode形式<br>
-	 * 转换的字符串如果u后不足4位，则前面用0填充，例如：
+	 * Converts the specified char value to a Unicode string format, commonly used
+	 * to convert special characters (e.g. Chinese characters) to Unicode format
+	 * If the converted string is less than 4 digits after u, it will be padded with
+	 * 0 in front, for example:
 	 *
 	 * <pre>
-	 * '我' =》\u4f60
+	 * '我' => \u4f60
 	 * </pre>
 	 *
-	 * @param ch char值
-	 * @return Unicode表现形式
+	 * @param ch char value
+	 * @return Unicode representation
 	 * @since 4.0.1
 	 */
 	public static String toUnicodeHex(char ch) {
-		return "\\u" +//
-				DIGITS_LOWER[(ch >> 12) & 15] +//
-				DIGITS_LOWER[(ch >> 8) & 15] +//
-				DIGITS_LOWER[(ch >> 4) & 15] +//
+		return "\\u" + //
+				DIGITS_LOWER[(ch >> 12) & 15] + //
+				DIGITS_LOWER[(ch >> 8) & 15] + //
+				DIGITS_LOWER[(ch >> 4) & 15] + //
 				DIGITS_LOWER[(ch) & 15];
 	}
 
 	/**
-	 * 转为16进制字符串
+	 * Converts to a hexadecimal string
 	 *
-	 * @param value int值
-	 * @return 16进制字符串
+	 * @param value int value
+	 * @return Hexadecimal string
 	 * @since 4.4.1
 	 */
 	public static String toHex(int value) {
@@ -310,10 +328,10 @@ public class HexUtil {
 	}
 
 	/**
-	 * 转为16进制字符串
+	 * Converts to a hexadecimal string
 	 *
-	 * @param value int值
-	 * @return 16进制字符串
+	 * @param value int value
+	 * @return Hexadecimal string
 	 * @since 4.4.1
 	 */
 	public static String toHex(long value) {
@@ -321,60 +339,62 @@ public class HexUtil {
 	}
 
 	/**
-	 * 将byte值转为16进制并添加到{@link StringBuilder}中
+	 * Converts the byte value to hexadecimal and adds it to {@link StringBuilder}
 	 *
 	 * @param builder     {@link StringBuilder}
 	 * @param b           byte
-	 * @param toLowerCase  Wether 使用小写
+	 * @param toLowerCase Whether to use lowercase
 	 * @since 4.4.1
 	 */
 	public static void appendHex(StringBuilder builder, byte b, boolean toLowerCase) {
 		final char[] toDigits = toLowerCase ? DIGITS_LOWER : DIGITS_UPPER;
 
-		int high = (b & 0xf0) >>> 4;//高位
-		int low = b & 0x0f;//低位
+		int high = (b & 0xf0) >>> 4;// High bits
+		int low = b & 0x0f;// Low bits
 		builder.append(toDigits[high]);
 		builder.append(toDigits[low]);
 	}
 
-	// ---------------------------------------------------------------------------------------- Private method start
+	// ----------------------------------------------------------------------------------------
+	// Private method start
 
 	/**
-	 * 将字节数组转换为十六进制字符串
+	 * Converts a byte array to a hexadecimal string
 	 *
 	 * @param data     byte[]
-	 * @param toDigits 用于控制输出的char[]
-	 * @return 十六进制String
+	 * @param toDigits char[] used to control output
+	 * @return hexadecimal String
 	 */
 	private static String encodeHexStr(byte[] data, char[] toDigits) {
 		return new String(encodeHex(data, toDigits));
 	}
 
 	/**
-	 * 将字节数组转换为十六进制字符数组
+	 * Converts a byte array to a hexadecimal character array
 	 *
 	 * @param data     byte[]
-	 * @param toDigits 用于控制输出的char[]
-	 * @return 十六进制char[]
+	 * @param toDigits char[] used to control output
+	 * @return hexadecimal char[]
 	 */
 	private static char[] encodeHex(byte[] data, char[] toDigits) {
 		final int len = data.length;
-		final char[] out = new char[len << 1];//len*2
+		final char[] out = new char[len << 1];// len*2
 		// two characters from the hex value.
 		for (int i = 0, j = 0; i < len; i++) {
-			out[j++] = toDigits[(0xF0 & data[i]) >>> 4];// 高位
-			out[j++] = toDigits[0x0F & data[i]];// 低位
+			out[j++] = toDigits[(0xF0 & data[i]) >>> 4];// High bits
+			out[j++] = toDigits[0x0F & data[i]];// Low bits
 		}
 		return out;
 	}
 
 	/**
-	 * 将十六进制字符转换成一个整数
+	 * Converts a hexadecimal character to an integer
 	 *
-	 * @param ch    十六进制char
-	 * @param index 十六进制字符在字符数组中的位置
-	 * @return 一个整数
-	 * @throws RuntimeException 当ch不是一个合法的十六进制字符时，抛出运行时异常
+	 * @param ch    hexadecimal char
+	 * @param index position of the hexadecimal character in the char array
+	 * @return integer
+	 * @throws RuntimeException when ch is not a valid hexadecimal character, a
+	 *                          runtime exception is thrown
 	 */
 	private static int toDigit(char ch, int index) {
 		int digit = Character.digit(ch, 16);
@@ -383,5 +403,5 @@ public class HexUtil {
 		}
 		return digit;
 	}
-	// ---------------------------------------------------------------------------------------- Private method end
+
 }

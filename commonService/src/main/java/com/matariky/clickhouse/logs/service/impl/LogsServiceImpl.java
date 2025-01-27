@@ -116,7 +116,7 @@ public class LogsServiceImpl extends ServiceImpl<LogsMapper, Logs> implements IL
             ServletOutputStream outputStream = response.getOutputStream();
             EasyExcel.write(outputStream, LogsExcelVO.class)
                     .excelType(ExcelTypeEnum.XLSX)
-                    .sheet("运行日志")
+                    .sheet("运行 Log ")
                     .doWrite(newList);
         } catch (Exception e) {
             e.printStackTrace();

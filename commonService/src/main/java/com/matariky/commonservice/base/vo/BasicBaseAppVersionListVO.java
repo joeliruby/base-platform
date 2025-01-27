@@ -3,7 +3,6 @@ package com.matariky.commonservice.base.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
 @Data
 public class BasicBaseAppVersionListVO {
 
@@ -12,54 +11,54 @@ public class BasicBaseAppVersionListVO {
     @ApiModelProperty(value = "APP Name")
     private String appName;
 
-    @ApiModelProperty(value = "版本 Name")
+    @ApiModelProperty(value = " Version Name")
     private String versionName;
 
-    @ApiModelProperty(value = "版本号")
+    @ApiModelProperty(value = " Version Number")
     private String versionNo;
 
-    @ApiModelProperty(value = "客户端Type ")
+    @ApiModelProperty(value = "Client Type ")
     private String upgradeType;
 
-    @ApiModelProperty(value = "版本内容")
+    @ApiModelProperty(value = " Version content")
     private String versionContent;
 
-    @ApiModelProperty(value = "升级文件")
+    @ApiModelProperty(value = " Upgrade document")
     private String upgradeFile;
 
     @ApiModelProperty(value = "Download QR Code ")
     private String downloadQrcode;
 
-    @ApiModelProperty(value = " Wether 强制Update 1是 0否")
+    @ApiModelProperty(value = " Wether Forced Update 1 yes 0 no")
     private Integer isForceUpdates;
 
     @ApiModelProperty(value = " Remark ")
     private String remark;
 
-    @ApiModelProperty(value = "创建 Time ")
+    @ApiModelProperty(value = "Create  Time ")
     private Long createTime;
 
     @ApiModelProperty(value = "Update Time ")
     private Long updateTime;
 
-    @ApiModelProperty(value = "删除 Time ")
+    @ApiModelProperty(value = "Delete  Time ")
     private Long deleteTime;
 
-    @ApiModelProperty(value = "创建人ID")
+    @ApiModelProperty(value = "Creater ID")
     private Long createBy;
 
-    @ApiModelProperty(value = "Update人ID")
+    @ApiModelProperty(value = "Updater ID")
     private Long updateBy;
 
-    @ApiModelProperty(value = "访问产生者部门编码")
+    @ApiModelProperty(value = "Visiting the Sectional Department Code ")
     private String operatorOrgCode;
 
-    @ApiModelProperty(value = "访问产生者个人组织机构编码")
+    @ApiModelProperty(value = "Visit the generator personal organization Code ")
     private String operatorSelfOrgCode;
 
     @ApiModelProperty(value = " Tenant ID")
     private String tenantId;
 
-    @ApiModelProperty(value = "创建人")
+    @ApiModelProperty(value = "Creater")
     private String realName;
 }

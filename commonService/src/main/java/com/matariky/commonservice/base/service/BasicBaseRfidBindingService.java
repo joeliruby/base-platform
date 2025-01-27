@@ -46,7 +46,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
     private BasicBaseRfidInfoMapper basicBaseRfidInfoMapper;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      *
      * @param vo
      * @return
@@ -120,7 +120,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
     }
 
     /**
-     * New-多个相同 Item 绑定
+     * New- Multiple Item  Binding 
      *
      * @param batchAddVO
      * @return
@@ -139,7 +139,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
 
 
     /**
-     * 修改方法
+     *   Update  Method  
      *
      * @param updateVO
      * @return
@@ -183,7 +183,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
 
 
     /**
-     * 删除
+     * Delete 
      *
      * @param id
      */
@@ -195,7 +195,7 @@ public class BasicBaseRfidBindingService extends BaseServiceImpl<BasicBaseRfidBi
     }
 
     /**
-     * 获取 Label 自增编码
+     *   Retrieve Label  Incremental  Code 
      */
     public Long getRfidCode() {
         Long rfidCode = 1L;

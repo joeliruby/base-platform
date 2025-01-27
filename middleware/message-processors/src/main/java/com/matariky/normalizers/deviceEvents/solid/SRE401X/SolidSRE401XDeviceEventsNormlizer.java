@@ -19,7 +19,7 @@ import com.matariky.processor.constants.TracerConstants;
         }
 	}
 
- Device 升级topic 配置格式  update-mqtt/SRE401X/deviceCode123
+ Device  Upgrade topic  Configuration 格式  update-mqtt/SRE401X/deviceCode123
   */
 
 public class SolidSRE401XDeviceEventsNormlizer implements Processor{
@@ -46,7 +46,7 @@ public class SolidSRE401XDeviceEventsNormlizer implements Processor{
         obj.put(TracerConstants.DEVICECODE, deviceCode);
         obj.put(TracerConstants.ORININALMESSAGE,  payloadOuter);
         
-        if("60005".equals(jo.getString("cmd")))//升级
+        if("60005".equals(jo.getString("cmd")))// Upgrade 
         	obj.put(TracerConstants.OPERATION, TracerConstants.DEVICEUPDATE);
        
         String normalizedStr=JSON.toJSONString(obj);

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = "PC端版本 Information ", tags = "PC端版本 Information ")
+@Api(value = "PC Version Information ", tags = "PC Version Information ")
 public class BasicBasePcVersionController {
 
     @Autowired
@@ -37,21 +37,21 @@ public class BasicBasePcVersionController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("编辑")
+    @ApiOperation("  Update")
     @PutMapping(value = "/basicBasePcversion")
     public AjaxResult update(@RequestBody @Validated BasicBasePcVersionUpdateVO updateVO) {
         basicBasePcversionService.updateBasicBasePcversion(updateVO);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("删除")
+    @ApiOperation("Delete ")
     @DeleteMapping(value = "/basicBasePcversion/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBasePcversionService.delBasicBasePcversionById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("批量删除")
+    @ApiOperation("批量Delete ")
     @DeleteMapping(value = "/basicBasePcversion")
     public AjaxResult del(@RequestBody @Validated BasicBasePcVersionDelVO vo) {
         basicBasePcversionService.delBasicBasePcversionByIds(vo.getIds());

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class FileUtil {
 
     /**
-     * 转换MultipartFile对象为java.io.FileType 
+     * Convert Multipartfile Object to java.io.Filetype
      *
      * @param multipartFile
      * @return
@@ -22,19 +22,30 @@ public class FileUtil {
         File result = null;
         try {
             /**
-             * UUID.randomUUID().toString()是javaJDK提供的一个自动 Generation 主键的方法。
-             * UUID(Universally Unique Identifier)全局唯一标识符,是指在一台机器上 Generation 的数字，
-             * 它保证对在同一时空中的所有机器都是唯一的，是由一个十六位的数字组成,表现出来的形式。
-             * 由以下几部分的组合：当前日期和 Time (UUID的第一个部分与 Time 有关，如果你在 Generation 一个UUID之后，
-             * 过几秒又 Generation 一个UUID，则第一个部分不同，其余相同)，时钟序列，
-             * 全局唯一的IEEE机器识别号（如果有网卡，从网卡获得，没有网卡以其他方式获得），
-             * UUID的唯一缺陷在于 Generation 的结果串会比较长。
+             * UUID.RANDOMUUID (). Tostring () is the One Automatic Generation Primary Key
+             * provided by Javajdk
+             * Method.
+             * UUID (Universally Unique Identifier) ​​global Unique identifier refers to the
+             * number of generation on a machine,
+             * It guarantees that all machines in the same time are unique, and it is
+             * composed of one 16 digit number, which shows a form.
+             * Combination of the following parts: Current date is related to time (UUID's
+             * first one part and time, if you are in the Generation One
+             * UUID after UUID
+             * ,
+             * After a few seconds, the Generation One UUID, then the first one is
+             * different, the rest is the same), the clock sequence,
+             * Global UNIQUE's IEEE machine recognition number (if there is a network card,
+             * get from the network card, no network card is obtained in other ways),
+             * UUID's unique defect is that the results of Generation will be longer.
              *
              *
-             * File.createTempFile和File.createNewFile()的区别：
-             *  后者只是创建文件，而前者可以给文件名加前缀和后缀
+             * File.createTempfile and File.createnewfile ():
+             * The latter is just a Create file, and the former can add prefix and suffix to
+             * the File Name
              */
-            //这里对 Generation 的文件名加了UUID随机 Generation 的前缀,后缀是null
+            // Add the prefix of the UUID random generation to the file name of Generation,
+            // and the suffix is ​​NULL
             result = File.createTempFile(UUID.randomUUID().toString(), null);
             multipartFile.transferTo(result);
             result.deleteOnExit();
@@ -45,15 +56,15 @@ public class FileUtil {
     }
 
     /**
-     * 根据url获取文件对象
+     * According to the URL RETRIEVE file Object
      *
      * @param fileUrl
      * @return
      */
     public static File downloadFile(String fileUrl) {
         File result = null;
-        BufferedInputStream bis=null;
-        BufferedOutputStream bos=null;
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
         try {
             result = File.createTempFile(UUID.randomUUID().toString(), null);
             URL url = new URL(fileUrl);
@@ -66,33 +77,30 @@ public class FileUtil {
             while ((l = bis.read(car)) != -1) {
                 bos.write(car, 0, l);
             }
-            if(bis!=null)
-            bis.close();
-            if(bos!=null)
-            bos.close();
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
         } catch (Exception e) {
-        	try {
-        	 if(bis!=null)
-                 bis.close();
-             if(bos!=null)
-                 bos.close();
-        	}
-        	catch(IOException ioe) {
-        		ioe.printStackTrace();
-        	}
-            e.printStackTrace();
-        }
-        finally{
-        	try {
-           	 if(bis!=null)
+            try {
+                if (bis != null)
                     bis.close();
-                if(bos!=null)
+                if (bos != null)
                     bos.close();
-           	}
-           	catch(IOException ioe) {
-           		ioe.printStackTrace();
-           	}
-               
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bis != null)
+                    bis.close();
+                if (bos != null)
+                    bos.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
         }
         return result;
     }
@@ -112,7 +120,5 @@ public class FileUtil {
         FileUtils.writeByteArrayToFile(new File(savePath, fileFullName), file.getBytes());
         return uploadFile.exists();
     }
-
-
 
 }

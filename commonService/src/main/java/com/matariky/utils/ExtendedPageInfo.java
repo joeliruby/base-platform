@@ -5,14 +5,14 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 
 public class ExtendedPageInfo<T> extends PageInfo<T> {
-    private String code; // New的字段
+    private String code; // New Field
 
     public ExtendedPageInfo(List<T> list, int navigatePages, String code) {
         super(list, navigatePages);
         this.code = code;
     }
 
-    // 省略getter和setter方法
+    // 省略getter和setter Method
 
     public String getCode() {
         return code;

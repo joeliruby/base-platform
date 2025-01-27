@@ -1,269 +1,264 @@
 package com.matariky.commonservice.upload.constant;
 
-/**
- * @description: message key class
- * @author: bo.chen
- * @create: 2023/9/6 18:06
- **/
 public class MessageKey {
     /**
-     *  Remark 长度不能超过255个字符
+     * Remark length Can't exceed 255 characters
      **/
     public static final String COMMON_REMARK_LENGTH_LIMIT = "COMMON_REMARK_LENGTH_LIMIT";
     /**
-     *  Status 为空
+     * Status Be empty
      **/
     public static final String COMMON_STATUS_IS_NULL = "COMMON_STATUS_IS_NULL";
     /**
-     *  Status 非法
+     * Status illegal
      **/
     public static final String COMMON_STATUS_ILLEGAL = "COMMON_STATUS_ILLEGAL";
     /**
-     * 日期范围为空
+     * Date range is empty
      **/
     public static final String COMMON_DATE_RANGE_IS_NULL = "COMMON_DATE_RANGE_IS_NULL";
     /**
-     * 日期范围月份差超过限制
+     * Date range differences exceeding restrictions
      **/
     public static final String COMMON_DATE_RANGE_DIFF_MONTH_LIMIT = "COMMON_DATE_RANGE_DIFF_MONTH_LIMIT";
     /**
-     * 图片大小不能超过%sM
+     * ImageThe size cannot exceed%sM
      **/
     public static final String COMMON_IMAGE_SIZE_LIMIT = "COMMON_IMAGE_SIZE_LIMIT";
     /**
-     * 图片格式错误
+     * Image Format Error
      **/
     public static final String COMMON_FILE_NOT_IMAGE = "COMMON_FILE_NOT_IMAGE";
     /**
-     * 最多只能上传%s张图片
+     * At most, you can only upload%s Image
      **/
     public static final String COMMON_UPLOAD_IMAGE_LIMIT = "COMMON_UPLOAD_IMAGE_LIMIT";
     /**
-     *  Data 过期
+     * Data Expired
      **/
     public static final String COMMON_DATA_EXPIRE = "COMMON_DATA_EXPIRE";
     /**
-     * 地点为空
+     * The location is empty
      **/
     public static final String TAPE_LOCATION_IS_NULL = "TAPE_LOCATION_IS_NULL";
     /**
-     * 机架不存在
+     * Library No existence
      **/
     public static final String TAPE_LIBRARY_NOT_EXISTENT = "TAPE_LOCATION_LIBRARY_NOT_EXISTENT";
     /**
-     * 机架正在盘点中
+     * Library In the inventory
      **/
     public static final String TAPE_LIBRARY_INVENTORY_IN_PROGRESS = "TAPE_LIBRARY_INVENTORY_IN_PROGRESS";
     /**
-     * 机架正在入库中
+     * Library In the warehouse
      **/
     public static final String TAPE_LIBRARY_STOCK_IN_PROGRESS = "TAPE_LIBRARY_STOCK_IN_PROGRESS";
     /**
-     * 机架正在出库中
+     * Library In the warehouse
      **/
     public static final String TAPE_LIBRARY_STOCK_OUT_PROGRESS = "TAPE_LIBRARY_STOCK_OUT_PROGRESS";
     /**
-     * 出入库Type 为空
+     * In/Out Library Type Be empty
      **/
     public static final String TAPE_INOUT_TYPE_IS_NULL = "TAPE_INOUT_TYPE_IS_NULL";
     /**
-     * 出入库Type 非法
+     * In/Out Library Type illegal
      **/
     public static final String TAPE_INOUT_TYPE_ILLEGAL = "TAPE_INOUT_TYPE_ILLEGAL";
     /**
-     * 没有可出库的磁带
+     * There is no tape that can be out of the warehouse
      **/
     public static final String TAPE_INOUT_OUT_EMPTY_STOCK = "TAPE_INOUT_OUT_EMPTY_STOCK";
     /**
-     * 磁带出库Failed，请检查 Data 
+     * Tape out of the warehouse Failed ,Check, please Data
      **/
     public static final String TAPE_INOUT_OUT_FAIL = "TAPE_INOUT_OUT_FAIL";
     /**
-     * 磁带入库Failed，请检查 Data 
+     * Tape into warehouse Failed ,Check, please Data
      **/
     public static final String TAPE_INOUT_IN_FAIL = "TAPE_INOUT_IN_FAIL";
     /**
-     * 机架正在出入库中
+     * Library In/Out In progress
      **/
     public static final String TAPE_LIBRARY_START_INOUT = "TAPE_LIBRARY_START_INOUT";
     /**
-     * 机架未绑定读写器
+     * Library unbinding Reader
      **/
     public static final String TAPE_LIBRARY_NOT_BIND_READER = "TAPE_LIBRARY_NOT_BIND_READER";
     /**
-     * 机架"%s"未绑定读写器
+     * Library "%s"Unbinding Reader
      **/
     public static final String TAPE_LIBRARY_NOT_BIND_READER_SINGLE = "TAPE_LIBRARY_NOT_BIND_READER_SINGLE";
     /**
-     * 记录不存在
+     * Record No existence
      **/
     public static final String BIZ_RECORD_NON_EXISTENT = "BIZ_RECORD_NON_EXISTENT";
     /**
-     *  Task 已取消
+     * Task Canceled
      **/
     public static final String BIZ_TASK_CANCELED = "BIZ_TASK_CANCELED";
     /**
-     *  Task 已结束
+     * Task Ended
      **/
     public static final String BIZ_TASK_ENDED = "BIZ_TASK_ENDED";
     /**
-     * 未扫描到入库 Label 或者 Data 已过期
+     * No Scan Label Found or Data Expired
      **/
     public static final String TAPE_INOUT_IN_SCAN_LABEL_EMPTY_OR_EXPIRE = "TAPE_INOUT_IN_SCAN_LABEL_EMPTY_OR_EXPIRE";
     /**
-     * 未扫描到出库 Label 或者 Data 已过期
+     * No Outbound Label Found or Data Expired
      **/
     public static final String TAPE_INOUT_OUT_SCAN_LABEL_EMPTY_OR_EXPIRE = "TAPE_INOUT_OUT_SCAN_LABEL_EMPTY_OR_EXPIRE";
     /**
-     * 出库Failed，库存为空
+     * Outbound Failed, Stock Is Empty
      **/
     public static final String TAPE_INOUT_OUT_STOCK_IS_NULL = "TAPE_INOUT_OUT_STOCK_IS_NULL";
     /**
-     * 出库Failed，扫描的 Label 有误
+     * Outbound Failed, Label Error
      **/
     public static final String TAPE_INOUT_OUT_LABEL_ERROR = "TAPE_INOUT_OUT_LABEL_ERROR";
     /**
-     * 入库Failed，扫描的 Label 有误
+     * Inbound Failed, Label Error
      **/
     public static final String TAPE_INOUT_IN_LABEL_ERROR = "TAPE_INOUT_IN_LABEL_ERROR";
     /**
-     * 出库 Quantity大于库存 Quantity
+     * Outbound Quantity Greater Than Stock Quantity
      **/
     public static final String TAPE_OUTBOUND_QUANTITY_GT_STOCK_QUANTITY = "TAPE_OUTBOUND_QUANTITY_GT_STOCK_QUANTITY";
     /**
-     *  Task  Name为空
+     * Task Name Is Empty
      **/
     public static final String TAPE_INVENTORY_TASK_NAME_IS_NULL = "TAPE_INVENTORY_TASK_NAME_IS_NULL";
     /**
-     *  Task  Name长度超过50个字符
+     * Task Name Length Exceeds 50 Characters
      **/
     public static final String TAPE_INVENTORY_TASK_NAME_LENGTH_LIMIT = "TAPE_INVENTORY_TASK_NAME_LENGTH_LIMIT";
     /**
-     *  Task Type 为空
+     * Task Type Is Empty
      **/
     public static final String TAPE_INVENTORY_TASK_TYPE_IS_NULL = "TAPE_INVENTORY_TASK_TYPE_IS_NULL";
     /**
-     *  Task Type 非法
+     * Task Type Is Illegal
      **/
     public static final String TAPE_INVENTORY_TASK_TYPE_ILLEGAL = "TAPE_INVENTORY_TASK_TYPE_ILLEGAL";
     /**
-     *  Task 日期为空
+     * Task Date Is Empty
      **/
     public static final String TAPE_INVENTORY_TASK_DATE_IS_NULL = "TAPE_INVENTORY_TASK_DATE_IS_NULL";
     /**
-     *  Time 间隔为空
+     * Time Interval Is Empty
      **/
     public static final String TAPE_INVENTORY_TASK_TIME_INTERVAL_IS_NULL = "TAPE_INVENTORY_TASK_TIME_INTERVAL_IS_NULL";
     /**
-     *  Time 间隔单位为空
+     * Time Interval Unit Is Empty
      **/
     public static final String TAPE_INVENTORY_TASK_INTERVAL_UNIT_IS_NULL = "TAPE_INVENTORY_TASK_INTERVAL_UNIT_IS_NULL";
     /**
-     *  Task  Name已存在
+     * Task Name Already Exists
      **/
     public static final String TAPE_INVENTORY_TASK_TASK_NAME_EXIST = "TAPE_INVENTORY_TASK_TASK_NAME_EXIST";
     /**
-     * 盘点 Task 不存在
+     * Inventory Task Does Not Exist
      **/
     public static final String TAPE_INVENTORY_TASK_NOT_EXIST = "TAPE_INVENTORY_TASK_NOT_EXIST";
     /**
-     * 盘点 Task 已取消
+     * Inventory Task Canceled
      **/
     public static final String TAPE_INVENTORY_TASK_CANCELED = "TAPE_INVENTORY_TASK_CANCELED";
     /**
-     * 盘点 Task 不在”扫描中“
+     * Inventory Task Not Scanning
      **/
     public static final String TAPE_INVENTORY_TASK_NOT_SCANNING = "TAPE_INVENTORY_TASK_END_SCAN";
     /**
-     * 取消 Task Failed
+     * Cancel Task Failed
      **/
     public static final String TAPE_INVENTORY_TASK_CANCEL_TASK_FAIL = "TAPE_INVENTORY_TASK_CANCEL_TASK_FAIL";
     /**
-     * 开始 Time 必须在当前 Time 5分钟之后
+     * Start Time Must Be 5 Minutes After Current Time
      **/
     public static final String TAPE_INVENTORY_TASK_START_TIME_ERROR = "TAPE_INVENTORY_TASK_START_TIME_ERROR";
     /**
-     * 盘点结果不存在！
+     * Inventory Result Does Not Exist!
      **/
     public static final String TAPE_INVENTORY_TASK_RESULT_NOT_EXISTENT = "TAPE_INVENTORY_TASK_RESULT_NOT_EXISTENT";
     /**
-     *  Task 正在盘点中！
+     * Task Is In Progress!
      **/
     public static final String TAPE_INVENTORY_TASK_ING = "TAPE_INVENTORY_TASK_ING";
     /**
-     *  Task 没有差异！
+     * Task Has No Differences!
      **/
     public static final String TAPE_INVENTORY_TASK_NOT_DIFF = "TAPE_INVENTORY_TASK_NOT_DIFF";
     /**
-     * 盘点 Task 已Update！
+     * Inventory Task Updated!
      **/
     public static final String TAPE_INVENTORY_TASK_UPDATED = "TAPE_INVENTORY_TASK_UPDATED";
     /**
-     * 盘点结果不存在差异
+     * Inventory Result Has No Differences
      **/
     public static final String TAPE_INVENTORY_TASK_RESULT_NOT_DIFF = "TAPE_INVENTORY_TASK_RESULT_NOT_DIFF";
     /**
-     * 盘点结果处理Failed
+     * Inventory Result Handling Failed
      **/
     public static final String TAPE_INVENTORY_RESULT_HANDING_ERROR = "TAPE_INVENTORY_RESULT_HANDING_ERROR";
     /**
-     * 原因长度不能超过255个字符
+     * Reason Length Cannot Exceed 255 Characters
      **/
     public static final String TAPE_INVENTORY_RESULT_REASON_LENGTH_LIMIT = "TAPE_INVENTORY_RESULT_REASON_LENGTH_LIMIT";
     /**
-     * 机架存在正在盘点的 Task ， Task  Name：
+     * Library Has Ongoing Inventory Task, Task Name:
      **/
     public static final String TAPE_INVENTORY_TASK_RACK_ING = "TAPE_INOUT_INVENTORY_ING";
     /**
-     * 机架存在未处理的盘点差异， Task  Name：
+     * Library Has Unresolved Inventory Discrepancies, Task Name:
      **/
     public static final String TAPE_INOUT_INVENTORY_DISCREPANCY = "TAPE_INOUT_INVENTORY_DISCREPANCY";
     /**
-     * 盘点 Task 机架正在做入库，单号:
+     * Inventory Task Library Has Inbound In Progress, Order Number:
      **/
     public static final String TAPE_INVENTORY_RACK_INBOUND_ING = "TAPE_INVENTORY_RACK_INBOUND_ING";
     /**
-     * 盘点 Task 机架正在做出库，单号:
+     * Inventory Task Library Has Outbound In Progress, Order Number:
      **/
     public static final String TAPE_INVENTORY_RACK_OUTBOUND_ING = "TAPE_INVENTORY_RACK_OUTBOUND_ING";
     /**
-     * 机架有新的盘点 Task 执行差异自动取消, Task  Name：
+     * New Inventory Task Execution Conflict, Task Name:
      **/
     public static final String TAPE_INVENTORY_DISCREPANCY_CONFLICT = "TAPE_INVENTORY_DISCREPANCY_CONFLICT";
     /**
-     * 盘点 Task 已启用
+     * Inventory Task Activated
      **/
     public static final String TAPE_INVENTORY_TASK_ENABLED = "TAPE_INVENTORY_TASK_ENABLED";
     /**
-     * 盘点 Task 已停用
+     * Inventory Task Deactivated
      **/
     public static final String TAPE_INVENTORY_TASK_DISABLED = "TAPE_INVENTORY_TASK_DISABLED";
     /**
-     * 盘点 Task 已结束
+     * Inventory Task Ended
      **/
     public static final String TAPE_INVENTORY_TASK_END = "TAPE_INVENTORY_TASK_END";
     /**
-     *  Task 禁用取消
+     * Task Disable Cancel
      **/
     public static final String TAPE_INVENTORY_DISABLE_CANCEL = "TAPE_INVENTORY_DISABLE_CANCEL";
     /**
-     * 盘点结果取消
+     * Inventory Result Cancel
      **/
     public static final String TAPE_INVENTORY_RESULT_CANCEL = "TAPE_INVENTORY_RESULT_CANCEL";
     /**
-     * 盘点 Task 禁用Failed
+     * Inventory Task Disable Failed
      **/
     public static final String TAPE_INVENTORY_TASK_DISABLE_FAIL = "TAPE_INVENTORY_TASK_DISABLE_FAIL";
     /**
-     * 盘点 Task 启用Failed
+     * Inventory Task Activation Failed
      **/
     public static final String TAPE_INVENTORY_TASK_ENABLE_FAIL = "TAPE_INVENTORY_TASK_ENABLE_FAIL";
     /**
-     * 周期盘点 Task ，开始 Time 不能大于结束 Time 
+     * Periodic Inventory Task, Start Time Cannot Be Greater Than End Time
      **/
     public static final String TAPE_INVENTORY_PERIODIC_TIME_ERROR = "TAPE_INVENTORY_PERIODIC_TIME_ERROR";
     /**
-     * 结束 Time 五分钟之内，无法启用 Task 
+     * End Time Within Five Minutes, Cannot Activate Task
      **/
     public static final String TAPE_INVENTORY_PERIODIC_END_TIME_ERROR = "TAPE_INVENTORY_PERIODIC_END_TIME_ERROR";
 
@@ -370,203 +365,221 @@ public class MessageKey {
     public static final String USER_APPLICATION_NOT_UNDER_SAME_TENANT = "USER_APPLICATION_NOT_UNDER_SAME_TENANT";
     public static final String USER_DOES_NOT_HAVE_APPLICATION = "USER_DOES_NOT_HAVE_APPLICATION";
 
-
-    //登录Failed,订单不存在,已过期或已终止,请确认
+    // Login Failed, order does not exist, has expired, or has been terminated,
+    // please confirm
     public static final String USER_LOGIN_ORDER_IS_NOT_EXIST = "USER_LOGIN_ORDER_IS_NOT_EXIST";
-    //程序错误
+    // Program Error
     public static final String TAPE_LABEL_PROGRAM_ERROR = "TAPE_LABEL_PROGRAM_ERROR";
-    //上传文件错误
+    // Upload file Error
     public static final String TAPE_LABEL_UPLOAD_FILE_ERROR = "TAPE_LABEL_UPLOAD_FILE_ERROR";
-    // Export  Data 错误
+    // Export Data Error
     public static final String TAPE_LABEL_EXPORT_DATA_ERROR = "TAPE_LABEL_EXPORT_DATA_ERROR";
-    //Download错误download
+    // Download Error
     public static final String TAPE_LABEL_DOWNLOAD_FILE_ERROR = "TAPE_LABEL_DOWNLOAD_FILE_ERROR";
-    // Data 不存在
+    // Data does not exist
     public static final String TAPE_LABEL_DATA_NOT_EXIST = "TAPE_LABEL_DATA_NOT_EXIST";
-    //保存错误
+    // Save Error
     public static final String TAPE_LABEL_SAVE_ERROR = "TAPE_LABEL_SAVE_ERROR";
-
-    //保存错误, Data 已存在
+    // Save Error, Data already exists
     public static final String TAPE_LABEL_SAVE_DATA_ALREADY_EXISTS = "TAPE_LABEL_SAVE_DATA_ALREADY_EXISTS";
 
     public static final String TAPE_LABEL_SAVE_LOCATION_DATA_ALREADY_EXISTS = "TAPE_LABEL_SAVE_LOCATION_DATA_ALREADY_EXISTS";
     public static final String TAPE_LABEL_SAVE_RANK_DATA_ALREADY_EXISTS = "TAPE_LABEL_SAVE_RANK_DATA_ALREADY_EXISTS";
-    // Data 存在关联
+    // Data has associations
     public static final String TAPE_LABEL_DATA_DISABLED_ALREADY = "TAPE_LABEL_DATA_DISABLED_ALREADY";
-
-    // Data 已禁用
+    // Data has been disabled
     public static final String TAPE_LABEL_DATA_DISABLED_EXISTS = "TAPE_LABEL_DATA_DISABLED_EXISTS";
     public static final String TAPE_LABEL_RACK_DATA_DISABLED_EXISTS = "TAPE_LABEL_RACK_DATA_DISABLED_EXISTS";
-    // Data 存在关联
+    // Data has associations
     public static final String TAPE_LABEL_DATA_ASSOCIATION_ALREADY = "TAPE_LABEL_DATA_ASSOCIATION_ALREADY";
-    //已有天线的读写器不可删除
+    // Reader with antenna cannot be deleted
     public static final String TAPE_LABEL_DATA_ASSOCIATION_ALREADY_ISNOT_DELETE = "TAPE_LABEL_DATA_ASSOCIATION_ALREADY_ISNOT_DELETE";
-    public static final String NETWORK_DISRUPTION = "NETWORK_DISRUPTION";
-    public static final String DATA_BACKUP_EXCEPTION = "DATA_BACKUP_EXCEPTION";
-    public static final String INVALID_DATA_ID = "INVALID_DATA_ID";
-    public static final String USER_NOT_ACTIVE = "USER_NOT_ACTIVE";
 
-
-    //人数结束 Quantity必须大于开始 Quantity For the user number the upper bound must be greater or equal to lower bound
+    // Number of users end quantity must be greater than start quantity
     public static final String ORDER_USER_NUMBER_MUSTBE = "ORDER_USER_NUMBER_MUSTBE";
-    //使用人数配置重叠，请调整 there are overlaps between time frames of user number configuration, please adjust.
+    // User number configuration overlaps, please adjust
     public static final String ORDER_USER_NUMBER_OVERLAP = "ORDER_USER_NUMBER_OVERLAP";
 
-    //订单不存在 Order Not Exist
+    // Order does not exist
     public static final String ORDER_DOES_NOT_EXIST = "ORDER_DOES_NOT_EXIST";
-    //选择到期日期必须大于订单到期日期 The selected end date must be greater or equal to the order end date
+    // Selected expiration date must be greater than or equal to order expiration
+    // date
     public static final String ORDER_SELECTION_DATE_THAN_EXPIRATION_DATE = "ORDER_SELECTION_DATE_THAN_EXPIRATION_DATE";
 
-    //无法删除,存在订单用户; Cannot delete user with order.
+    // Cannot delete, order exists
     public static final String ORDER_UNABLE_DELETE_PRESENT_ORDER = "ORDER_UNABLE_DELETE_PRESENT_ORDER";
 
-    //开通账号数范围超出产品设置 Quantity Number of accounts exceeded limit
+    // Number of allowed accounts exceeds the configuration range
     public static final String ORDER_ACCOUNTS_NUMBER_RANGE_OUT = "ORDER_ACCOUNTS_NUMBER_RANGE_OUT";
 
-    //使用人数配置,开始人数不能小于结束人数 User Number Configuration, upper bound must be greater or equal to lower bound.
+    // User number configuration, start number must not be less than end number
     public static final String ORDER_USING_NUMBER_CONFIG_THAN_ENDING_NUMBER = "ORDER_USING_NUMBER_CONFIG_THAN_ENDING_NUMBER";
 
-    //使用人数配置重叠，请调整 There are overlaps between the time frames of user number configuration.
+    // User number configuration overlaps, please adjust
     public static final String ORDER_USING_NUMBER_CONFIG_OVERLAPS = "ORDER_USING_NUMBER_CONFIG_OVERLAPS";
 
-    //到期日期重叠，请调整 There are overlaps between the time frames of expiration data configuration.
+    // Expiration date overlaps, please adjust
     public static final String ORDER_EXPIRATION_DATA_OVERLAPS = "ORDER_EXPIRATION_DATA_OVERLAPS";
-    //套餐使用中，无法编辑；The suite is in use, cannot be changed
+    // Suite in use, cannot update
     public static final String ORDER_SUITE_USED_NOT_EDIT = "ORDER_SUITE_USED_NOT_EDIT";
 
-    //合同编号已存在 Contract Code is Exist
+    // Contract Code already exists
     public static final String ORDER_CONTRACT_IS_EXIST = "ORDER_CONTRACT_IS_EXIST";
 
-    //套餐 Name已使用；The suite name is in use;
+    // Suite name already in use
     public static final String ORDER_SUITE_NAME_IS_USED = "ORDER_SUITE_NAME_IS_USED";
 
-
-    // Tenant 用户 Quantity超出订单范围；The number of users has exceeded the limit per license.
+    // Tenant user quantity exceeds the order limit
     public static final String TENANT_USE_NUMBER_RANGE_OUT = "TENANT_USE_NUMBER_RANGE_OUT";
 
-    //有效期必须大于当前 Time  The validity period must be greater than the current time
+    // Validity period must be greater than the current time
     public static final String ORDER_EXPIRATION_DATA_THAN_NOW = "ORDER_EXPIRATION_DATA_THAN_NOW";
 
-
-    //开通账号数必须大于同 Tenant 开通账户数总和 The number of allowed account must be than less suite user number
+    // Allowed accounts must be greater than or equal to the total of existing
+    // tenant accounts
     public static final String ORDER_ACCOUNTS_NUMBER_THAN_SAME_ACCOUNTS_NUMBER = "ORDER_ACCOUNTS_NUMBER_THAN_SAME_ACCOUNTS_NUMBER";
 
-    //使用人数必须大于同 Tenant 开通账户数总和 The user number  must be greater less number of allowed account
+    // User number must be greater than or equal to the total number of existing
+    // tenant accounts
     public static final String ORDER_USER_NUMBER_THAN_SAME_ACCOUNTS_NUMBER = "ORDER_USER_NUMBER_THAN_SAME_ACCOUNTS_NUMBER";
 
-    //货物 Name不能重复
+    // Goods Name cannot be repeated
     public static final String GOODS_NAME_NOT_REPEAT = "GOODS_NAME_NOT_REPEAT";
-    //货物编码不能重复
+    // Goods Code cannot be repeated
     public static final String GOODS_CODE_NOT_REPEAT = "GOODS_CODE_NOT_REPEAT";
 
-    // Rule  Name不能重复
+    // Rule Name cannot be repeated
     public static final String RULES_NAME_NOT_REPEAT = "RULES_NAME_NOT_REPEAT";
-    // Device 型号不能重复
+    // Device Type cannot be repeated
     public static final String DEVICE_MODEL_NOT_REPEAT = "DEVICE_MODEL_NOT_REPEAT";
-    //  Device Type 不存在
+    // Device Type does not exist
     public static final String DEVICE_TYPE_NOT_EXIST = "DEVICE_TYPE_NOT_EXIST";
-    //  Device 编码不能重复
+    // Device Code cannot be repeated
     public static final String DEVICE_CODE_NOT_REPEAT = "DEVICE_CODE_NOT_REPEAT";
-    //  Device Type - Data 字典Type -不存在
+    // Device Type - Data Dictionary Type does not exist
     public static final String DEVICE_TYPE_CODE_DICT_TYPE_NOT_EXIST = "DEVICE_TYPE_CODE_DICT_TYPE_NOT_EXIST";
-    //  Device Type - Data 字典-不存在
+    // Device Type - Data Dictionary does not exist
     public static final String DEVICE_TYPE_CODE_DICT_NOT_EXIST = "DEVICE_TYPE_CODE_DICT_NOT_EXIST";
-    // app客户端Type - Data 字典Type -不存在
+    // App Client Type - Data Dictionary Type does not exist
     public static final String APP_UPGRADE_TYPE_DICT_TYPE_NOT_EXIST = "APP_UPGRADE_TYPE_DICT_TYPE_NOT_EXIST";
-    // app客户端Type - Data 字典-不存在
+    // App Client Type - Data Dictionary does not exist
     public static final String APP_UPGRADE_TYPE_DICT_NOT_EXIST = "APP_UPGRADE_TYPE_DICT_NOT_EXIST";
-    //  Device 编码长度不能超过200字符
-    public static final String DEVICE_CODE_LENGTH_CANNOT_EXCEED = "DEVICE_CODE_LENGTH_CANNOT_EXCEED: 200";
-    //  Device 功率长度不能超过100字符
-    public static final String DEVICE_DBM_LENGTH_CANNOT_EXCEED = "DEVICE_DBM_LENGTH_CANNOT_EXCEED: 100";
-    //  Device IP长度不能超过50
-    public static final String DEVICE_IP_LENGTH_CANNOT_EXCEED = "DEVICE_IP_LENGTH_CANNOT_EXCEED: 50";
-    //  Device max地址不能超过200
-    public static final String DEVICE_MAX_LENGTH_CANNOT_EXCEED = "DEVICE_MAX_LENGTH_CANNOT_EXCEED: 200";
-    //  Device 经度长度不能超过100
-    public static final String DEVICE_LONGITUDE_LENGTH_CANNOT_EXCEED = "DEVICE_LONGITUDE_LENGTH_CANNOT_EXCEED: 100";
-    //  Device 纬度长度不能超过 100
-    public static final String DEVICE_LATITUDE_LENGTH_CANNOT_EXCEED = "DEVICE_LATITUDE_LENGTH_CANNOT_EXCEED: 100";
-    //  Device 安装地址长度不能超过200
-    public static final String DEVICE_INSTALL_ADDRESS_LENGTH_CANNOT_EXCEED = "DEVICE_INSTALL_ADDRESS_LENGTH_CANNOT_EXCEED: 200";
-    //  Label ID不能重复
-    public static final String BASE_RFID_NOT_REPEAT = "BASE_RFID_NOT_REPEAT";
-    //货物ID不能重复
-    public static final String BASE_GOODSID_NOT_REPEAT = "BASE_GOODSID_NOT_REPEAT";
-    //EPC不能重复
-    public static final String BASE_EPC_NOT_REPEAT = "BASE_EPC_NOT_REPEAT";
-    // TID 不能重复
-    public static final String BASE_TID_NOT_REPEAT = "BASE_TID_NOT_REPEAT";
-    //  Label 不存在
-    public static final String BASE_RFID_INFO_NOT_EXIST = "BASE_RFID_INFO_NOT_EXIST";
-    //  Device 升级包不存在
-    public static final String DEVICE_PACKAGE_NOT_EXIST = "DEVICE_PACKAGE_NOT_EXIST";
-    // Device  Rule 配置不能重复
-    public static final String DEVICE_RULE_NOT_REPEAT = "DEVICE_RULE_NOT_REPEAT";
-    public static final String KEYCLOAK_TOKEN_NOT_EXIST = "KEYCLOAK_TOKEN_NOT_EXIST";
-    public static final String IOT_INVOCATION_FAILED = "IOT_INVOCATION_FAILED";
-    // Device Type 已经被使用，不能删除
-    public static final String BASE_DEVICE_TYPE_USED = "BASE_DEVICE_TYPE_USED";
-    // Device  Rule  Detail Data 不存在
-    public static final String DEVICE_RULE_DETAIL_NOT_EXIST = "DEVICE_RULE_DETAIL_NOT_EXIST";
-    // xlsx 文件格式不正确
-    public static final String XLSX_FILE_INCORRECT_FORMAT = "XLSX_FILE_INCORRECT_FORMAT";
-    // 编码 Rule 已经被使用，不能删除
-    public static final String BASE_CODING_RULES_USED = "BASE_CODING_RULES_USED";
-    // Device 功率值不正确
-    public static final String BASE_DEVICE_DBM_VALUE_INCORRECT = "BASE_DEVICE_DBM_VALUE_INCORRECT";
-    // Device ip地址不能重复
-    public static final String BASE_DEVICE_IP_REPEAT = "BASE_DEVICE_IP_REPEAT";
-    // Device mac地址不能重复
-    public static final String BASE_DEVICE_MAC_REPEAT = "BASE_DEVICE_MAC_REPEAT";
-    //登录超时退出
-    public static final String LOGIN_TIMED_OUT = "LOGIN_TIMED_OUT";
-    //这个资源存在子项
-    public static final String THIS_RESOURCE_HAS_SUB_SETS = "THIS_RESOURCE_HAS_SUB_SETS";
-    //角色已经被引用，不能删除
-    public static final String USER_ROLE_USED = "USER_ROLE_USED";
-    //编辑用户Failed
-    public static final String EDIT_USER_FAILD = "EDIT_USER_FAILD";
-    //用户已经存在
-    public static final String USER_EXISTED = "USER_EXISTED";
-    //token超时
-    public static final String TOKEN_TIMEOUT = "TOKEN_TIMEOUT";
-    // Device 已经被使用，不能删除
-    public static final String BASE_DEVICE_USED = "BASE_DEVICE_USED";
-    // Device 不存在
-    public static final String BASE_DEVICE_NOT_EXIST = "BASE_DEVICE_NOT_EXIST";
-    //同一机构下，不能存在相同小组
-    public static final String USER_GROUP_NOT_REPEAT = "USER_GROUP_NOT_REPEAT";
-    //组名不能重复
-    public static final String USER_GROUP_NAME_NOT_REPEAT = "USER_GROUP_NAME_NOT_REPEAT";
-    //组织机构已经被用户绑定，不能删除
-    public static final String ORG_CODE_USED_BY_USER = "ORG_CODE_USED_BY_USER";
-    //存在相同产品
-    public static final String SAME_PRODUCT_IS_EXIST = "SAME_PRODUCT_IS_EXIST";
 
+    // Device Code length cannot exceed 200 characters
+    public static final String DEVICE_CODE_LENGTH_CANNOT_EXCEED = "DEVICE_CODE_LENGTH_CANNOT_EXCEED: 200";
+    // Device Power length cannot exceed 100 characters
+    public static final String DEVICE_DBM_LENGTH_CANNOT_EXCEED = "DEVICE_DBM_LENGTH_CANNOT_EXCEED: 100";
+    // Device IP length cannot exceed 50 characters
+    public static final String DEVICE_IP_LENGTH_CANNOT_EXCEED = "DEVICE_IP_LENGTH_CANNOT_EXCEED: 50";
+
+    // The same organization cannot have identical groups
+    public static final String USER_GROUP_NOT_REPEAT = "USER_GROUP_NOT_REPEAT";
+    // Group Name cannot be repeated
+    public static final String USER_GROUP_NAME_NOT_REPEAT = "USER_GROUP_NAME_NOT_REPEAT";
+
+    // Organization already bound by a user, cannot delete
+    public static final String ORG_CODE_USED_BY_USER = "ORG_CODE_USED_BY_USER";
+    // Same product already exists
+    public static final String SAME_PRODUCT_IS_EXIST = "SAME_PRODUCT_IS_EXIST";
+    
     public static final String PRODUCT_EXPIRING_DAY_NOT_EXIST = "PRODUCT_EXPIRING_DAY_NOT_EXIST";
-    //开通账号数不在产品设置范围内
-    public static final String ACCOUNT_NUMBER_NOT_RIGHT = "ACCOUNT_NUMBER_NOT_RIGHT";
-    // 小组已经归属其它组织机构
-    public static final String USER_GROUP_ORGANIZATION_IS_EXIST = "USER_GROUP_ORGANIZATION_IS_EXIST";
-    // Tenant 没有购买订单
-    public static final String TENANT_HAVA_NOT_ORDER = "TENANT_NOT_HAVA_ORDER";
-    // Tenant 订单已经终止或者过期，不能登录
-    public static final String USER_ORDER_END_NOT_LOGIN = "USER_ORDER_END_NOT_LOGIN";
-    // Item 已经被使用
-    public static final String GOODS_USED = "GOODS_USED";
-    //字段 Name不能重复
-    public static final String FIELD_NAME_NOT_REPEAT = "FIELD_NAME_NOT_REPEAT";
-    // Item Batch Number不能重复
-    public static final String GOODS_BATCHCODE_NOT_REPEAT = "GOODS_BATCHCODE_NOT_REPEAT";
-    // Rule 已经被使用，不能编辑
-    public static final String RULE_USED_CANT_NOT_EDIT = "RULE_USED_CANT_NOT_EDIT";
-    // Device 升级Failed
-    public static final String DEVICE_UPGRAD_FAIL = "DEVICE_UPGRAD_FAIL";
-    //非管理员不能分配 编码 Rule 菜单权限
-    public static final String CODINGRULES_NOT_ALLOCATION = "CODINGRULES_NOT_ALLOCATION";
-    // Export  Data 超过五万
-    public static final String EXPORT_DATA_LENG_OUT_SIZE = "EXPORT_DATA_LENG_OUT_SIZE";
-    //tid不能与epc相等
-    public static final String TID_CANNOT_BE_EQUAL_TO_EPC = "TID_CANNOT_BE_EQUAL_TO_EPC";
+    
+	 // Account number is not within the product settings range
+	 public static final String ACCOUNT_NUMBER_NOT_RIGHT = "ACCOUNT_NUMBER_NOT_RIGHT";
+	 // The group already belongs to another organization
+	 public static final String USER_GROUP_ORGANIZATION_IS_EXIST = "USER_GROUP_ORGANIZATION_IS_EXIST";
+	 // Tenant has no purchase orders
+	 public static final String TENANT_HAVA_NOT_ORDER = "TENANT_NOT_HAVA_ORDER";
+	 // Tenant order has been terminated or expired, cannot log in
+	 public static final String USER_ORDER_END_NOT_LOGIN = "USER_ORDER_END_NOT_LOGIN";
+	 // Item has been used
+	 public static final String GOODS_USED = "GOODS_USED";
+	 // Field name cannot be duplicated
+	 public static final String FIELD_NAME_NOT_REPEAT = "FIELD_NAME_NOT_REPEAT";
+	 // Item batch number cannot be duplicated
+	 public static final String GOODS_BATCHCODE_NOT_REPEAT = "GOODS_BATCHCODE_NOT_REPEAT";
+	 // Rule has been used, cannot edit
+	 public static final String RULE_USED_CANT_NOT_EDIT = "RULE_USED_CANT_NOT_EDIT";
+	 // Device upgrade failed
+	 public static final String DEVICE_UPGRAD_FAIL = "DEVICE_UPGRAD_FAIL";
+	 // Non-admin cannot allocate coding rule menu permissions
+	 public static final String CODINGRULES_NOT_ALLOCATION = "CODINGRULES_NOT_ALLOCATION";
+	 // Export data exceeds 50,000
+	 public static final String EXPORT_DATA_LENG_OUT_SIZE = "EXPORT_DATA_LENG_OUT_SIZE";
+	 // TID cannot be equal to EPC
+	 public static final String TID_CANNOT_BE_EQUAL_TO_EPC = "TID_CANNOT_BE_EQUAL_TO_EPC";
+	 
+	 // Coding Rule in use cannot be deleted
+	 public static final String BASE_CODING_RULES_USED = "BASE_CODING_RULES_USED";
+	 
+	 // Device  Rule  Detail Data not exist
+	 public static final String DEVICE_RULE_DETAIL_NOT_EXIST = "DEVICE_RULE_DETAIL_NOT_EXIST";
+	 
+	 // Device  Rule configuration cannot repeat
+	 public static final String DEVICE_RULE_NOT_REPEAT = "DEVICE_RULE_NOT_REPEAT";
+	 
+	 //  Device upgrade package not exist
+	 public static final String DEVICE_PACKAGE_NOT_EXIST = "DEVICE_PACKAGE_NOT_EXIST";
+	 
+	 // Device ip address cannot repeat
+	 public static final String BASE_DEVICE_IP_REPEAT = "BASE_DEVICE_IP_REPEAT";
+	 // Device mac address cannot repeat
+	 public static final String BASE_DEVICE_MAC_REPEAT = "BASE_DEVICE_MAC_REPEAT";
+	 
+	 // Device Type in use, cannot be deleted
+	 public static final String BASE_DEVICE_TYPE_USED = "BASE_DEVICE_TYPE_USED";
+	 // xlsx format incorrect
+	 public static final String XLSX_FILE_INCORRECT_FORMAT = "XLSX_FILE_INCORRECT_FORMAT";
+	 // Device power value incorrect
+	 public static final String BASE_DEVICE_DBM_VALUE_INCORRECT = "BASE_DEVICE_DBM_VALUE_INCORRECT";
+	 
+	// Device in use cannot be deleted
+	public static final String BASE_DEVICE_USED = "BASE_DEVICE_USED";
+	// Device not exist
+	public static final String BASE_DEVICE_NOT_EXIST = "BASE_DEVICE_NOT_EXIST";
+	
+	//EPC cannot repeat
+    public static final String BASE_EPC_NOT_REPEAT = "BASE_EPC_NOT_REPEAT";
+    // TID cannot repeat
+    public static final String BASE_TID_NOT_REPEAT = "BASE_TID_NOT_REPEAT";
+    //  Label cannot repeat
+    public static final String BASE_RFID_INFO_NOT_EXIST = "BASE_RFID_INFO_NOT_EXIST";
+    
+    //  Label ID cannot repeat
+    public static final String BASE_RFID_NOT_REPEAT = "BASE_RFID_NOT_REPEAT";
+    
+    //item ID cannot repeat
+    public static final String BASE_GOODSID_NOT_REPEAT = "BASE_GOODSID_NOT_REPEAT";
+    
+    //  Device max length cannot exceed 200
+    public static final String DEVICE_MAX_LENGTH_CANNOT_EXCEED = "DEVICE_MAX_LENGTH_CANNOT_EXCEED: 200";
+    
+    //  Device longitude length cannot exceed 100
+    public static final String DEVICE_LONGITUDE_LENGTH_CANNOT_EXCEED = "DEVICE_LONGITUDE_LENGTH_CANNOT_EXCEED: 100";
+    
+    //  Device latitude length cannot exceed 100
+    public static final String DEVICE_LATITUDE_LENGTH_CANNOT_EXCEED = "DEVICE_LATITUDE_LENGTH_CANNOT_EXCEED: 100";
+
+    //  Device install address length cannot exceed 200
+    public static final String DEVICE_INSTALL_ADDRESS_LENGTH_CANNOT_EXCEED = "DEVICE_INSTALL_ADDRESS_LENGTH_CANNOT_EXCEED: 200";
+    
+    //Login time out 
+    public static final String LOGIN_TIMED_OUT = "LOGIN_TIMED_OUT";
+    
+    //Resource has sub set
+    public static final String THIS_RESOURCE_HAS_SUB_SETS = "THIS_RESOURCE_HAS_SUB_SETS";
+    
+    //User existed
+    public static final String USER_EXISTED = "USER_EXISTED";
+    
+    //User role in use cannot be deleted
+    public static final String USER_ROLE_USED = "USER_ROLE_USED";
+    
+	 public static final String NETWORK_DISRUPTION = "NETWORK_DISRUPTION";
+	 public static final String DATA_BACKUP_EXCEPTION = "DATA_BACKUP_EXCEPTION";
+	 public static final String INVALID_DATA_ID = "INVALID_DATA_ID";
+	 public static final String USER_NOT_ACTIVE = "USER_NOT_ACTIVE";
+	 public static final String KEYCLOAK_TOKEN_NOT_EXIST = "KEYCLOAK_TOKEN_NOT_EXIST";
+	 public static final String IOT_INVOCATION_FAILED = "IOT_INVOCATION_FAILED";
+
 }

@@ -90,9 +90,9 @@ public class ServiceLogServiceImpl extends ServiceImpl<ServiceLogMapper, Service
             }
             if (item.getHasError() != null) {
                 if (item.getHasError()) {
-                    vo.setHasError("是");
+                    vo.setHasError("YES");
                 } else {
-                    vo.setHasError("否");
+                    vo.setHasError("NO");
                 }
             }
             if (StringUtils.isNotBlank(item.getTimestamp())) {
@@ -111,7 +111,7 @@ public class ServiceLogServiceImpl extends ServiceImpl<ServiceLogMapper, Service
             ServletOutputStream outputStream = response.getOutputStream();
             EasyExcel.write(outputStream, ServiceLogExcelVO.class)
                     .excelType(ExcelTypeEnum.XLSX)
-                    .sheet("服务日志")
+                    .sheet("Service log")
                     .doWrite(newList);
         } catch (Exception e) {
             e.printStackTrace();

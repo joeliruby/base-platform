@@ -4,7 +4,6 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.matariky.commonservice.error.excel.DeviceTypeConvert;
 import com.matariky.commonservice.error.excel.LongTimeConverterTime;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -17,27 +16,27 @@ import java.math.BigDecimal;
 @Data
 public class DeviceLogExcelVO {
 
-    @ExcelProperty(value = "业务 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Business  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long businessTime;
 
-    @ExcelProperty(value = "系统版本")
+    @ExcelProperty(value = "  System Version")
     @ColumnWidth(30)
     private String systemVersionNumber;
 
-    @ExcelProperty(value = "访问终端", converter = DeviceTypeConvert.class)
+    @ExcelProperty(value = " Access Terminal ", converter = DeviceTypeConvert.class)
     @ColumnWidth(30)
     private String deviceType;
 
-    @ExcelProperty(value = "访问系统地址")
+    @ExcelProperty(value = " Access URL  Address ")
     @ColumnWidth(30)
     private String url;
 
-    @ExcelProperty(value = "访问接口名")
+    @ExcelProperty(value = " API Name ")
     @ColumnWidth(30)
     private String apiName;
 
-    @ExcelProperty(value = "访问模块")
+    @ExcelProperty(value = " Business Module ")
     @ColumnWidth(30)
     private String businessModule;
 
@@ -45,15 +44,15 @@ public class DeviceLogExcelVO {
     @ColumnWidth(30)
     private Long triggerTime;
 
-    @ExcelProperty(value = " Device 编码")
+    @ExcelProperty(value = " Device  Code ")
     @ColumnWidth(30)
     private String deviceCode;
 
-    @ExcelProperty(value = "MAC地址")
+    @ExcelProperty(value = "MAC Address ")
     @ColumnWidth(30)
     private String macAddress;
 
-    @ExcelProperty(value = " Device 读写器功率")
+    @ExcelProperty(value = " Device   Reader  Power ")
     @ColumnWidth(30)
     private BigDecimal power;
 
@@ -61,21 +60,20 @@ public class DeviceLogExcelVO {
     @ColumnWidth(30)
     private String collectContent;
 
-    @ExcelProperty(value = "访问账号")
+    @ExcelProperty(value = "  Access account")
     @ColumnWidth(30)
     private String accessAccount;
 
-    @ExcelProperty(value = "外网IP（访问人）")
+    @ExcelProperty(value = " Public Network IP（访问人）")
     @ColumnWidth(30)
     private String serverIp;
 
-    @ExcelProperty(value = "登录地点")
+    @ExcelProperty(value = " Access Physical Address")
     @ColumnWidth(30)
     private String physicalAddress;
 
-    @ExcelProperty(value = "日志存储 Time ", converter = LongTimeConverterTime.class)
+    @ExcelProperty(value = " Log  Storage  Time ", converter = LongTimeConverterTime.class)
     @ColumnWidth(30)
     private Long createTime;
-
 
 }

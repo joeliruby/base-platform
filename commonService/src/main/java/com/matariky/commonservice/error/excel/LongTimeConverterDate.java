@@ -10,12 +10,12 @@ import java.util.Date;
 
 public class LongTimeConverterDate implements Converter<Long> {
 
-
     @Override
-    public WriteCellData<?> convertToExcelData(Long value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        Date date =new Date(value);
-        SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd");
+    public WriteCellData<?> convertToExcelData(Long value, ExcelContentProperty contentProperty,
+            GlobalConfiguration globalConfiguration) throws Exception {
+        Date date = new Date(value);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String format = dateFormat.format(date);
-        return new WriteCellData(format);
+        return new WriteCellData<String>(format);
     }
 }

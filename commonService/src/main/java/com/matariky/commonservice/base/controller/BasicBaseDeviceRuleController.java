@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/tenant/{tenantId}")
-@Api(value = " Device  Rule 配置", tags = " Device  Rule 配置")
+@Api(value = " Device  Rule  Configuration ", tags = " Device  Rule  Configuration ")
 public class BasicBaseDeviceRuleController {
 
     @Autowired
@@ -25,21 +25,21 @@ public class BasicBaseDeviceRuleController {
     private BasicBaseDeviceRuleDetailService basicBaseDeviceruleDetailService;
 
 
-    @ApiOperation(" Rule  Detail列表")
+    @ApiOperation(" Rule  Detail Pagination ")
     @RequestMapping("/basicBaseDeviceruleDetail/list")
     public AjaxResult list(@Validated BasicBaseDeviceRuleDetailListVO vo, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         BasicBaseDeviceRuleDetailInfo data = basicBaseDeviceruleDetailService.getBasicBaseDeviceruleDetailAll(vo, jwt);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, data);
     }
 
-    @ApiOperation("New Rule 配置")
+    @ApiOperation("New Rule  Configuration ")
     @PostMapping(value = "/basicBaseDevicerule")
     public AjaxResult save(@RequestBody @Validated BasicBaseDeviceRuleAddVO addVO, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         Long ruleId = basicBaseDeviceruleService.createBasicBaseDeviceruleWithOrg(addVO, jwt);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, ruleId);
     }
 
-    @ApiOperation("编辑 Rule 配置")
+    @ApiOperation("  Update Rule  Configuration ")
     @PutMapping(value = "/basicBaseDevicerule")
     public AjaxResult update(@RequestBody @Validated BasicBaseDeviceRuleUpdateVO updateVO, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         basicBaseDeviceruleService.updateBasicBaseDevicerule(updateVO, jwt);
@@ -53,7 +53,7 @@ public class BasicBaseDeviceRuleController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-    @ApiOperation("修改 Rule  Detail")
+    @ApiOperation("  Update Rule  Detail")
     @PutMapping(value = "/basicBaseDeviceruleDetail")
     public AjaxResult update(@RequestBody BasicBaseDeviceRuleDetailUpdateByIdVO updateVO, @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         basicBaseDeviceruleDetailService.updateBasicBaseDeviceruleDetail(updateVO, jwt);
@@ -61,7 +61,7 @@ public class BasicBaseDeviceRuleController {
     }
 
 
-    @ApiOperation("删除 Rule  Detail")
+    @ApiOperation("Delete  Rule  Detail")
     @DeleteMapping(value = "/basicBaseDeviceruleDetail/{id}")
     public AjaxResult del(@PathVariable Long id) {
         basicBaseDeviceruleDetailService.delBasicBaseDeviceruleDetailById(id);

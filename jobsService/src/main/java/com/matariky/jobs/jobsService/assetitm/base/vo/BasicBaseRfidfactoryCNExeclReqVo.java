@@ -15,13 +15,12 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BasicBaseRfidfactoryCNExeclReqVo  implements Serializable {
+public class BasicBaseRfidfactoryCNExeclReqVo implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 118157189495042162L;
-
 
     /**
      * 序列号
@@ -30,14 +29,12 @@ public class BasicBaseRfidfactoryCNExeclReqVo  implements Serializable {
     @ColumnWidth(20)
     private String EPC;
 
-
     /**
      * epc
      */
-    @ExcelProperty("EPC锁定 Password ")
+    @ExcelProperty("EPC Lock  Password ")
     @ColumnWidth(20)
     private String password;
-
 
     /**
      * location
@@ -46,27 +43,24 @@ public class BasicBaseRfidfactoryCNExeclReqVo  implements Serializable {
     @ColumnWidth(20)
     private String goodsName;
 
-
     /**
      * Library
      */
-    @ExcelProperty(" Item 编码")
+    @ExcelProperty(" Item  Code ")
     @ColumnWidth(20)
     private String goodsCode;
-
 
     /**
      * BarCode
      */
-    @ExcelProperty(" Barcode 内容")
+    @ExcelProperty(" Barcode   Content")
     @ColumnWidth(20)
     private String odContent;
-
 
     /**
      * location
      */
-    @ExcelProperty(" QR Code 内容")
+    @ExcelProperty(" QR Code   Content")
     @ColumnWidth(20)
     private String qrContent;
 

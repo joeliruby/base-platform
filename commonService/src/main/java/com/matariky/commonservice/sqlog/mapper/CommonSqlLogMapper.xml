@@ -18,12 +18,6 @@
             and  execution_time >= #{executionDuration}
        </if>
         
-<!--         <if test="orderField != null and orderField !=''"> -->
-<!--         order by  #{orderField} -->
-<!--         </if> -->
-<!--         <if test="order != null and order !=''"> -->
-<!--          #{order} -->
-<!--         </if> -->
 	</select>
 	
 

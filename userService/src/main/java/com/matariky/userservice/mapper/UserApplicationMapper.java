@@ -35,28 +35,28 @@ public interface UserApplicationMapper extends BaseMapper<UserApplication>{
 	public int delUserApplicationById(int id);
 	 
 	public UserApplication getUserApplicationById(Long id);
-	//插入一条记录
+	//Insert a record
 	@Override
 	int insert(UserApplication record);
-	//根据 ID 删除
+	//Delete By ID
 	@Override
 	int deleteById(Serializable id);
-	//根据 columnMap 条件，删除记录
+	//Delete By Column Map
 	@Override
 	int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件，删除记录 
+	//Delete By Entity
 	@Override
 	int delete(@Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//删除（根据ID 批量删除）
+	//Delete Batch By IDs
 	@Override
 	int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-	//根据 ID 修改
+	//Update By IDs
 	@Override
 	int updateById(@Param(Constants.ENTITY) UserApplication entity);
-	//根据 whereEntity 条件，Update记录
+	//Update By Entity
 	@Override
 	int update(@Param(Constants.ENTITY) UserApplication entity, @Param(Constants.WRAPPER) Wrapper<UserApplication> updateWrapper);
-	//根据 ID  Query   
+	//Query By ID   
 	@Override
 	UserApplication selectById(Serializable id);
 	 
@@ -65,24 +65,24 @@ public interface UserApplicationMapper extends BaseMapper<UserApplication>{
 	 
 	@Override
 	List<UserApplication> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-	//根据 entity 条件， Query 一条记录
+	//Query One By Entity
 	@Override
 	UserApplication selectOne(@Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//根据 Wrapper 条件， Query 总记录数
+	//Query Count By Wrapper
 	@Override
 	Long selectCount(@Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//根据 entity 条件， Query 全部记录
+	//Query All By Entity
 	@Override
 	List<UserApplication> selectList(@Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+	//Query All Maps By Wrapper
 	@Override
 	List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录
+	//Query All Maps By Wrapper
 	@Override
 	List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//根据 entity 条件， Query 全部记录（并翻页）
+	//Query All By Entity（ With Pagination ）
 	Page<UserApplication> selectPage(Page<UserApplication> page, @Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
-	//根据 Wrapper 条件， Query 全部记录（并翻页）
+	//Query All Maps By Wrapper（ With Pagination ）
 	Page<Map<String, Object>> selectMapsPage(Page<UserApplication> page, @Param(Constants.WRAPPER) Wrapper<UserApplication> queryWrapper);
 	
 	@Select("select r.application_id from user_r_user_application r, user_application a  where a.id=r.application_id and a.is_active=1 and a.delete_time=0 and r.user_id=#{userId} and r.tenant_id=#{tenantId} limit 1")

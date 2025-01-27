@@ -14,18 +14,19 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
 @Configuration
-@EnableConfigurationProperties({RedisProperties.class})
+@EnableConfigurationProperties({ RedisProperties.class })
 public class RedisConfig {
-	
+
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
-		JedisConnectionFactory jcf =new JedisConnectionFactory();
+		JedisConnectionFactory jcf = new JedisConnectionFactory();
 		jcf.setHostName(redisProperties.getHost());
 		jcf.setPort(redisProperties.getPort());
-		if(!StringUtil.isEmpty(redisProperties.getPassword())){
+		if (!StringUtil.isEmpty(redisProperties.getPassword())) {
 			jcf.setPassword(redisProperties.getPassword());
-		}else {
+		} else {
 			jcf.setPassword("");
 		}
 		jcf.setDatabase(redisProperties.getDb());
@@ -40,12 +41,11 @@ public class RedisConfig {
 		redisTemplate.setKeySerializer(stringSerializer);
 		redisTemplate.setHashKeySerializer(stringSerializer);
 		GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer();
-		//设置序列化Value的实例化对象
+		// Configuration序列化Value的实例化 Object
 		redisTemplate.setValueSerializer(serializer);
 		redisTemplate.setHashValueSerializer(serializer);
 		return redisTemplate;
 	}
-
 
 	@Bean
 	public CacheManager cacheManager(RedisConnectionFactory factory) {

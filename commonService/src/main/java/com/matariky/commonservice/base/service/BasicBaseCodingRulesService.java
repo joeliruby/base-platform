@@ -46,7 +46,7 @@ public class BasicBaseCodingRulesService extends BaseServiceImpl<BasicBaseCoding
     private BasicBaseDeviceRuleDetailMapper basicBaseDeviceRuleDetailMapper;
 
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     public List<BasicBaseCodingRulesInfoVO> getBasicBaseCodingrulesAll(BasicBaseCodingRulesListVO vo) {
         String hid = request.getHeader("id");
@@ -67,7 +67,7 @@ public class BasicBaseCodingRulesService extends BaseServiceImpl<BasicBaseCoding
     }
 
     /**
-     * 获取 Rule 唯一编码
+     *   Retrieve Rule   Unique  Code 
      *
      * @return
      */
@@ -93,7 +93,7 @@ public class BasicBaseCodingRulesService extends BaseServiceImpl<BasicBaseCoding
     }
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBaseCodingrulesWithOrg(BasicBaseCodingRulesAddVO addVO) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
@@ -138,7 +138,7 @@ public class BasicBaseCodingRulesService extends BaseServiceImpl<BasicBaseCoding
     }
 
     /**
-     * 修改方法
+     *   Update  Method  
      *
      * @param updateVO
      * @return
@@ -183,7 +183,7 @@ public class BasicBaseCodingRulesService extends BaseServiceImpl<BasicBaseCoding
 
 
     /**
-     * 删除方法
+     * Delete   Method  
      */
     public int delBasicBaseCodingrulesById(Long id) {
         Long count = basicBaseDeviceRuleDetailMapper.selectCount(Wrappers.lambdaQuery(BasicBaseDeviceRuleDetail.class)
@@ -204,7 +204,7 @@ public class BasicBaseCodingRulesService extends BaseServiceImpl<BasicBaseCoding
     }
 
     /**
-     * 下拉选列表
+     *   Drop Down Box Pagination 
      *
      * @param
      */

@@ -8,19 +8,19 @@ import lombok.Data;
 import com.matariky.commonservice.upload.validator.group.LocalGroup;
 
 /**
-  *本地存储配置 Information 
+ * Local Storage ConfigurationInformation
  *
  */
 @Data
 public class LocalCloudJsonModel {
-	
-    @NotBlank(message="{local.domain.require}", groups = LocalGroup.class)
-    @URL(message = "{local.domain.url}", groups = LocalGroup.class)
-    private String localDomain;
 
-    private String localPrefix;
+  @NotBlank(message = "{local.domain.require}", groups = LocalGroup.class)
+  @URL(message = "{local.domain.url}", groups = LocalGroup.class)
+  private String localDomain;
 
-    @NotBlank(message="{local.path.url}", groups = LocalGroup.class)
-    private String localPath;
+  private String localPrefix;
+
+  @NotBlank(message = "{local.path.url}", groups = LocalGroup.class)
+  private String localPath;
 
 }

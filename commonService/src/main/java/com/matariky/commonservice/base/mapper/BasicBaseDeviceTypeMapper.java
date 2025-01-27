@@ -18,13 +18,13 @@ import java.util.List;
  */
 public interface BasicBaseDeviceTypeMapper extends BaseMapper<BasicBaseDeviceType> {
     /**
-     *  Query 所有分页
+     *  Query   All 
      */
     @DataScope(alias = "t")
     public List<BasicBaseDeviceTypeInfoVO> getBasicBaseDevicetypeAll(@Param("params") BasicBaseDeviceTypeListVO vo);
 
     /**
-     *  Device Type 下拉选
+     *  Device Type   Drop Down Box
      *
      * @return
      */
@@ -32,13 +32,13 @@ public interface BasicBaseDeviceTypeMapper extends BaseMapper<BasicBaseDeviceTyp
     public List<DeviceTypeOption> getOptionList(QueryDataIsolation vo);
 
     /**
-     * New方法
+     * New  Method  
      */
     public int createBasicBaseDevicetype(BasicBaseDeviceType bean);
 
 
     /**
-     * 删除方法
+     * Delete   Method  
      *
      * @param id
      * @return

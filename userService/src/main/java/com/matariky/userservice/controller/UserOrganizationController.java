@@ -60,9 +60,10 @@ public class UserOrganizationController {
     @Autowired
     UserGroupService groupService;
 
-     
     @RequestMapping("/userOrganization/list")
-    public Object list(HttpServletRequest request, UserOrganization bean, @PathVariable("tenantId") String tenantId, @RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage, @RequestHeader("Authorization") String jwt) {
+    public Object list(HttpServletRequest request, UserOrganization bean, @PathVariable("tenantId") String tenantId,
+            @RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage,
+            @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
         Page<UserOrganization> page = userOrganizationService.getUserOrganizationAll();
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, page);
@@ -82,21 +83,19 @@ public class UserOrganizationController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
     }
 
-    //New下级
+    // New下级
     @RequestMapping(value = "/userOrganization/create/parentId/{parentId}", method = RequestMethod.GET)
     public Object create(HttpServletRequest request,
-                         @PathVariable("tenantId") String tenantId,
-                         @PathVariable("parentId") Long parentId) {
+            @PathVariable("tenantId") String tenantId,
+            @PathVariable("parentId") Long parentId) {
         JSONObject jsonObject = new JSONObject();
-        //编码自动 Generation 01父 00x子
+        // Code Automatic Generation 01父 00x子
 
         jsonObject.put("code", "");
         jsonObject.put("tenantName", tenantService.selectBytenantCode(tenantId).getTenantName());
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, jsonObject);
     }
 
-
-     
     @RequestMapping(value = "/userOrganization", method = RequestMethod.POST)
     public Object save(
             @RequestBody UserOrganization bean,
@@ -104,7 +103,7 @@ public class UserOrganizationController {
             HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> map = new HashMap<>();
-        //校验
+        // 校验
         map.put("organization_name", bean.getOrganizationName());
         map.put("tenant_id", tenantId);
         map.put("parent_id", bean.getParentId());
@@ -117,25 +116,25 @@ public class UserOrganizationController {
             throw new QslException(MessageKey.USER_GROUP_ORGANIZATION_IS_EXIST);
         }
 
-        //先判断 Name Wether 重复
+        // 先判断 Name Wether 重复
         List<UserOrganization> selectByMap = userOrganizationService.selectByMap(map);
 
         if (CollUtil.isNotEmpty(selectByMap)) {
             throw new QslException(MessageKey.ORGANIZATION_NAME_NULL);
         }
 
-        //机构 Name不能为空
+        // 机构 Name不能为空
         if (StringUtil.isEmpty(bean.getOrganizationName())) {
             throw new QslException(MessageKey.ORGANIZATION_NAME_ERR);
         }
 
-        //机构Type 不能为空
+        // 机构Type 不能为空
         if (bean.getOrgType() == null) {
             throw new QslException(MessageKey.ORGANIZATION_TYPE_ERR);
         }
 
         /*
-         * //编码自动 Generation 01父 00x子 String code="";
+         * // Code Automatic Generation 01父 00x子 String code="";
          *
          * String
          * parentcode=userOrganizationService.getParentcodeByParentId(bean.getParentId()
@@ -149,10 +148,8 @@ public class UserOrganizationController {
          * code=parentcode+"-"+countByParentId; } } bean.setOrganizationCode(code);
          */
 
-
         bean.setTenantId(tenantId);
         userOrganizationService.saveUserOrganization(bean);
-
 
         Map<String, Object> groupMap = new HashMap<>();
         groupMap.put("group_name", bean.getOrganizationName());
@@ -167,17 +164,17 @@ public class UserOrganizationController {
             groupService.updateById(grp);
         }
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, bean);
-//        return bean;
+        // return bean;
     }
 
-     
     @RequestMapping(value = "/userOrganization", method = RequestMethod.PUT)
-    public AjaxResult update(@RequestBody UserOrganization bean, HttpServletRequest request, HttpServletResponse response, @PathVariable("tenantId") String tenantId) {
-        //机构 Name不能为空
+    public AjaxResult update(@RequestBody UserOrganization bean, HttpServletRequest request,
+            HttpServletResponse response, @PathVariable("tenantId") String tenantId) {
+        // 机构 Name不能为空
         if (StringUtil.isEmpty(bean.getOrganizationName())) {
             throw new QslException(MessageKey.ORGANIZATION_NAME_ERR);
         }
-        //机构Type 不能为空
+        // 机构Type 不能为空
         if (bean.getOrgType() == null) {
             throw new QslException(MessageKey.ORGANIZATION_TYPE_ERR);
         }
@@ -194,9 +191,9 @@ public class UserOrganizationController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS);
     }
 
-     
     @RequestMapping(value = "/userOrganization", method = RequestMethod.DELETE)
-    public Object del(String id, @PathVariable("tenantId") String tenantId, HttpServletRequest request, HttpServletResponse response) {
+    public Object del(String id, @PathVariable("tenantId") String tenantId, HttpServletRequest request,
+            HttpServletResponse response) {
 
         String code = userOrganizationService.getParentcodeByParentId(Long.parseLong(id), tenantId);
 
@@ -206,25 +203,24 @@ public class UserOrganizationController {
         if (organizationIds != null && organizationIds.length > 1) {
             throw new QslException(MessageKey.ORGANIZATION_CHILDREN_ERR);
 
-            //return new Result<>().error(503, "有子部门，不能删除");
+            // return new Result<>().error(503, "有子部门 ,不能Delete ");
         }
 
-        // 判断部门下面 Wether 有用户
+        // 判断部门下面 Wether 有 User
         int count = userService.getCountByOrganizationId(organizationIds, tenantId);
         if (count > 0) {
 
             throw new QslException(MessageKey.ORGANIZATION_USER_ERR);
-            //return new Result<>().error(504, "机构下有用户");
+            // return new Result<>().error(504, "机构下有 User ");
         }
 
         userOrganizationService.delete(Long.parseLong(id), tenantId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
-//        return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        // return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
     }
 
-
     /**
-     *  Query  Data  查出组织机构,并以树结构 Data 格式响应给前端
+     * Query Data 查出组织机构,并以树结构 Data 格式响应给前端
      *
      * @return
      */
@@ -237,7 +233,7 @@ public class UserOrganizationController {
     }
 
     /**
-     *  Query  Data  查出组织机构,并以树结构 Data 格式响应给前端
+     * Query Data 查出组织机构,并以树结构 Data 格式响应给前端
      *
      * @return
      */
@@ -246,7 +242,6 @@ public class UserOrganizationController {
         List<TreeModel> treeList = userOrganizationService.getOrganizationTreeWithInd(tenantId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, treeList);
     }
-
 
     // Query 组织机构树没有子节点去掉children
     @RequestMapping(value = "/userOrganization/nochildren/treeList", method = RequestMethod.GET)
@@ -257,15 +252,14 @@ public class UserOrganizationController {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, treeList);
     }
 
-    //查看组织架构图
+    // 查看组织架构图
     @RequestMapping(value = "/userOrganization/view/treeList", method = RequestMethod.GET)
     public Object queryTreeListView(@PathVariable("tenantId") String tenantId,
-                                    @RequestParam String code) {
+            @RequestParam String code) {
 
         List<TreeModel> treeList = userOrganizationService.queryTreeListView(tenantId, code);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, treeList);
     }
-
 
     @GetMapping("/userOrganization/all")
     public Object selectUserAllByTenantId(@PathVariable("tenantId") String tenantId) {
@@ -275,6 +269,5 @@ public class UserOrganizationController {
         List<UserOrganization> userList = userOrganizationService.selectByMap(columnMap);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userList);
     }
-
 
 }
