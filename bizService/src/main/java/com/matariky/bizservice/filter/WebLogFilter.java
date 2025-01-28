@@ -39,16 +39,15 @@ import cn.hutool.core.lang.UUID;
 @Component
 public class WebLogFilter extends OncePerRequestFilter implements Ordered {
 
-    // put filter at the end of all other filters to make sure we are processing after all others
+    // put filter at the end of all other filters to make sure we are processing
+    // after all others
     private int order = Ordered.LOWEST_PRECEDENCE - 8;
 
     public static final String SPLIT_STRING_M = "=";
 
     public static final String SPLIT_STRING_DOT = ", ";
 
-    private
-    @Autowired
-    CommonAccessLogService calService;
+    private @Autowired CommonAccessLogService calService;
 
     @Autowired
     PermissionService permissionService;
@@ -62,29 +61,30 @@ public class WebLogFilter extends OncePerRequestFilter implements Ordered {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         ContentCachingRequestWrapper wrapperRequest = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper wrapperResponse = new ContentCachingResponseWrapper(response);
         filterChain.doFilter(wrapperRequest, wrapperResponse);
-        if(!request.getRequestURL().toString().contains("randomImage")
-                &&!request.getRequestURL().toString().endsWith("/login")
-                &&!HttpUtils.isStatic(request)
-                &&!request.getRequestURL().toString().endsWith("/readerFile/reader.tar.gz")
-                &&!request.getRequestURL().toString().endsWith("/api/v1/rfid/stock/inout/insert")
-                &&!request.getRequestURL().toString().contains("swagger-resources")&&!request.getRequestURL().toString().contains("api-docs")
-        		&&!request.getRequestURL().toString().contains("commonAccessLog")
-        		&&!request.getRequestURL().toString().contains("commonLoginLog")
-        		&&!request.getRequestURL().toString().contains("commonSqlLog")
-        		&&!request.getRequestURL().toString().contains("fileUpload")
-        		&&!request.getRequestURL().toString().contains("api/image")
-        		&&!request.getRequestURL().toString().contains("index")
-        		&&!request.getRequestURL().toString().contains("viewImage")
-                &&!request.getRequestURL().toString().endsWith("downloadFile")
-        		&&!request.getRequestURL().toString().contains("pdf.svg")
-        		&&!request.getRequestURL().toString().contains("listFiles")
-        		&&!request.getRequestURL().toString().contains("userApplications/user")
-        		&&!request.getRequestURL().toString().contains("IOTUserInfo")
-        		) {
+        if (!request.getRequestURL().toString().contains("randomImage")
+                && !request.getRequestURL().toString().endsWith("/login")
+                && !HttpUtils.isStatic(request)
+                && !request.getRequestURL().toString().endsWith("/readerFile/reader.tar.gz")
+                && !request.getRequestURL().toString().endsWith("/api/v1/rfid/stock/inout/insert")
+                && !request.getRequestURL().toString().contains("swagger-resources")
+                && !request.getRequestURL().toString().contains("api-docs")
+                && !request.getRequestURL().toString().contains("commonAccessLog")
+                && !request.getRequestURL().toString().contains("commonLoginLog")
+                && !request.getRequestURL().toString().contains("commonSqlLog")
+                && !request.getRequestURL().toString().contains("fileUpload")
+                && !request.getRequestURL().toString().contains("api/image")
+                && !request.getRequestURL().toString().contains("index")
+                && !request.getRequestURL().toString().contains("viewImage")
+                && !request.getRequestURL().toString().endsWith("downloadFile")
+                && !request.getRequestURL().toString().contains("pdf.svg")
+                && !request.getRequestURL().toString().contains("listFiles")
+                && !request.getRequestURL().toString().contains("userApplications/user")
+                && !request.getRequestURL().toString().contains("IOTUserInfo")) {
             CommonAccessLog cal = new CommonAccessLog();
             cal.setAccessTime(System.currentTimeMillis());
             cal.setAccount(TokenUtils.extractUserIdFromHttpReqeust(request));
@@ -108,7 +108,8 @@ public class WebLogFilter extends OncePerRequestFilter implements Ordered {
             try {
                 String rId = request.getHeader("Id");
                 if (!StringUtils.isEmpty(rId) && rId.length() > NumberUtils.INTEGER_TWO && StringUtils.isNumber(rId)) {
-                    Permission permission = permissionService.selectById(rId.substring(NumberUtils.INTEGER_ZERO, rId.length() - NumberUtils.INTEGER_ONE));
+                    Permission permission = permissionService.selectById(
+                            rId.substring(NumberUtils.INTEGER_ZERO, rId.length() - NumberUtils.INTEGER_ONE));
                     if (Objects.nonNull(permission)) {
                         cal.setOperationName(permission.getOrigId());
                         cal.setOperationNameString(permission.getPermissionName());
@@ -117,36 +118,39 @@ public class WebLogFilter extends OncePerRequestFilter implements Ordered {
                     }
                     calService.insert(cal);
                 }
-                redisUtils.set(RedisKey.USER_LAST_ACTIVE_TIME_PREFIX+"_"+TokenUtils.extractUserIdFromHttpReqeust(request), System.currentTimeMillis(), RedisUtils.HOUR_SIX_EXPIRE);
-            } catch(Exception e) {
+                redisUtils.set(
+                        RedisKey.USER_LAST_ACTIVE_TIME_PREFIX + "_" + TokenUtils.extractUserIdFromHttpReqeust(request),
+                        System.currentTimeMillis(), RedisUtils.HOUR_SIX_EXPIRE);
+            } catch (Exception e) {
                 LoggerFactory.getLogger(WebLogFilter.class).error("Logging Exception！", e);
             }
         }
         wrapperResponse.copyBodyToResponse();
     }
 
-    private String getRequestBody(ContentCachingRequestWrapper request) {
+    public String getRequestBody(ContentCachingRequestWrapper request) {
         ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
-        if(wrapper != null) {
+        if (wrapper != null) {
             byte[] buf = wrapper.getContentAsByteArray();
-            if(buf.length > 0) {
+            if (buf.length > 0) {
                 String payload;
                 try {
                     payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
                 } catch (UnsupportedEncodingException e) {
                     payload = "[unknown]";
                 }
-                return payload.replaceAll("\\n","");
+                return payload.replaceAll("\\n", "");
             }
         }
         return "";
     }
 
-    private String getResponseBody(ContentCachingResponseWrapper response) {
-        ContentCachingResponseWrapper wrapper = WebUtils.getNativeResponse(response, ContentCachingResponseWrapper.class);
-        if(wrapper != null) {
+    public String getResponseBody(ContentCachingResponseWrapper response) {
+        ContentCachingResponseWrapper wrapper = WebUtils.getNativeResponse(response,
+                ContentCachingResponseWrapper.class);
+        if (wrapper != null) {
             byte[] buf = wrapper.getContentAsByteArray();
-            if(buf.length > 0) {
+            if (buf.length > 0) {
                 String payload;
                 try {
                     payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
@@ -165,7 +169,7 @@ public class WebLogFilter extends OncePerRequestFilter implements Ordered {
         while (enu.hasMoreElements()) {
             String name = enu.nextElement();
             sb.append(name + SPLIT_STRING_M).append(request.getParameter(name));
-            if(enu.hasMoreElements()) {
+            if (enu.hasMoreElements()) {
                 sb.append(SPLIT_STRING_DOT);
             }
         }
