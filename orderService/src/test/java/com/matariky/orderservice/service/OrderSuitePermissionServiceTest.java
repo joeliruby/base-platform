@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 public class OrderSuitePermissionServiceTest {
