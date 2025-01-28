@@ -71,13 +71,6 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>javax.validation</groupId>-->
-<!--			<artifactId>validation-api</artifactId>-->
-<!--			<version>2.0.1.Final</version>-->
-<!--		</dependency>-->
-
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -166,27 +159,32 @@
 			<artifactId>commonService</artifactId>
 			<version>2</version>
 		</dependency>
+			 <!-- JUnit 5 -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Spring Boot Test -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>${spring.boot.version}</version>
+        <scope>test</scope>
+    </dependency>
 
 	</dependencies>
 	<build>
-<!--		<plugins>-->
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<version>${spring.boot.version}</version>-->
-<!--				<configuration>-->
-<!--					<mainClass>${classPath}</mainClass>-->
-<!--					<layout>ZIP</layout>-->
-<!--				</configuration>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<goals>-->
-<!--							<goal>repackage</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
-<!--		</plugins>-->
 
 
 		<resources>
