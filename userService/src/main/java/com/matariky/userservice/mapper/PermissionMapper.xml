@@ -38,9 +38,7 @@
     delete_time, application_id, resource_type, icon, is_active, sort_order, url, created_by,
     updated_by, access_type, resource_attribute, orig_id, in_suite
   </sql>
-
-
-	<select id="getPermissionsById"  parameterType="String" resultType="com.matariky.userservice.dto.PermissionInfoVO" >
+  <select id="getPermissionsById"  parameterType="String" resultType="com.matariky.userservice.dto.PermissionInfoVO" >
         SELECT
             u.id,
             u.parent_id,
@@ -67,86 +65,83 @@
         WHERE
             u.id = #{value}
 	</select>
-
-	<update id="updatePermission" parameterType="com.matariky.userservice.bean.Permission">
+  <update id="updatePermission" parameterType="com.matariky.userservice.bean.Permission">
         update user_organization
          set id=#{params.id}
-			<if test="params.parentId != null ">
+    <if test="params.parentId != null ">
         	,parent_id=#{params.parentId}
         </if>
-			<if test="params.permissionName != null ">
+    <if test="params.permissionName != null ">
 			        	,permission_name=#{params.permissionName}
 			        </if>
-			<if test="params.description != null ">
+    <if test="params.description != null ">
 			        	,description=#{params.description}
 			        </if>
-			<if test="params.tenantId != null ">
+    <if test="params.tenantId != null ">
 			        	,tenant_id=#{params.tenantId}
 			        </if>
-			<if test="params.createTime != null ">
+    <if test="params.createTime != null ">
 			        	,create_time=#{params.createTime}
 			        </if>
-			<if test="params.updateTime != null ">
+    <if test="params.updateTime != null ">
 			        	,update_time=#{params.updateTime}
 			        </if>
-			<if test="params.deleteTime != null ">
+    <if test="params.deleteTime != null ">
 			        	,delete_time=#{params.deleteTime}
 			        </if>
-			<if test="params.applicationId != null ">
+    <if test="params.applicationId != null ">
 			        	,application_id=#{params.applicationId}
 			        </if>
-			<if test="params.resourceType != null ">
+    <if test="params.resourceType != null ">
 			        	,resource_type=#{params.resourceType}
 			        </if>
-			<if test="params.icon != null ">
+    <if test="params.icon != null ">
 			        	,icon=#{params.icon}
 			        </if>
-			<if test="params.isActive != null ">
+    <if test="params.isActive != null ">
 			        	,is_active=#{params.isActive}
 			        </if>
-			<if test="params.sortOrder != null ">
+    <if test="params.sortOrder != null ">
 			        	,sort_order=#{params.sortOrder}
 			        </if>
-			<if test="params.url != null ">
+    <if test="params.url != null ">
 			        	,url=#{params.url}
 			        </if>
-			<if test="params.createdBy != null ">
+    <if test="params.createdBy != null ">
 			        	,created_by=#{params.createdBy}
 			        </if>
-			<if test="params.updatedBy != null ">
+    <if test="params.updatedBy != null ">
 			        	,updated_by=#{params.updatedBy}
 			        </if>
-			<if test="params.accessType != null ">
+    <if test="params.accessType != null ">
 			        	,access_type=#{params.accessType}
 			        </if>
-			<if test="params.resourceAttribute != null ">
+    <if test="params.resourceAttribute != null ">
 			        	,resource_attribute=#{params.resourceAttribute}
 			        </if>
-			<if test="params.alias != null ">
+    <if test="params.alias != null ">
 			        	,alias=#{params.alias}
 			        </if>
-			<if test="params.origId != null ">
+    <if test="params.origId != null ">
 			        	,orig_id=#{params.origId}
 			        </if>
-			<if test="params.inSuite != null ">
+    <if test="params.inSuite != null ">
 			        	,in_suite=#{params.inSuite}
 			        </if>
 
         where id = #{params.id} and delete_time=0
-	</update>
-
-  	<update id="updateDeleteTimeById">
+  </update>
+  <update id="updateDeleteTimeById">
     	update user_permission
-    	<set >
+    <set >
         	delete_time = unix_timestamp()
     	</set>
     	where id in
-    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+    <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-  	</update>
-
-   <select id="getAllMenuList" parameterType="Map" resultType="com.matariky.userservice.bean.TreeModel">
+  </update>
+  <select id="getAllMenuList" parameterType="Map" resultType="com.matariky.userservice.bean.TreeModel">
 		SELECT
 			p.id,
 			p.parent_id AS pid,
@@ -161,11 +156,10 @@
 			user_permission p
 			LEFT JOIN user_application a ON p.application_id = a.id
 		where p.delete_time=0 and p.is_active=1 and a.delete_time=0 and a.is_active=1
-		<if test="params.tenantId != null and params.tenantId !=''">
+    <if test="params.tenantId != null and params.tenantId !=''">
             AND  p.tenant_id= #{params.tenantId}
         </if>
-   </select>
-
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     <!--
       WARNING - @mbggenerated
@@ -208,7 +202,6 @@
       #{inSuite,jdbcType=BIGINT}
       )
   </insert>
-
   <insert id="createPermission" parameterType="com.matariky.userservice.bean.Permission" >
   	insert into user_permission ( parent_id, permission_name,
       description, tenant_id, create_time,
@@ -225,7 +218,7 @@
       #{updatedBy,jdbcType=BIGINT}, #{accessType,jdbcType=INTEGER}, #{resourceAttribute,jdbcType=INTEGER},
       #{inSuite,jdbcType=BIGINT}
       )
-       <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
          SELECT LAST_INSERT_ID();
      </selectKey>
   </insert>
@@ -291,7 +284,7 @@
       <if test="resourceAttribute != null" >
         resource_attribute,
       </if>
-        <if test="inSuite != null" >
+      <if test="inSuite != null" >
             in_suite,
         </if>
     </trim>
@@ -350,7 +343,7 @@
       <if test="resourceAttribute != null" >
         #{resourceAttribute,jdbcType=INTEGER},
       </if>
-        <if test="inSuite != null" >
+      <if test="inSuite != null" >
             #{inSuite,jdbcType=BIGINT},
         </if>
     </trim>
@@ -414,7 +407,7 @@
       <if test="resourceAttribute != null" >
         resource_attribute = #{resourceAttribute,jdbcType=INTEGER},
       </if>
-        <if test="inSuite != null" >
+      <if test="inSuite != null" >
             in_suite = #{inSuite,jdbcType=BIGINT},
         </if>
     </set>
@@ -447,7 +440,6 @@
       in_suite = #{inSuite,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
   <select id="getPermissionByTenantId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -459,7 +451,6 @@
     from user_permission
     where tenant_id = #{tenantId,jdbcType=BIGINT}
   </select>
-
   <select id="getPermissionTreeByTenantId" resultType="com.matariky.userservice.bean.TreeModel">
 	    SELECT
 			id,
@@ -473,14 +464,12 @@
 		AND is_active = 1
 		AND application_id = #{applicationId}
 		AND tenant_id =#{tenantId}
-        <if test="inSuiteVaild != null">
+    <if test="inSuiteVaild != null">
             AND in_suite in (1,2)
         </if>
         
         order by id asc
- 	</select>
-
-
+  </select>
   <select id="getPermissionList" resultType="com.matariky.userservice.dto.PermissionDTO">
 		SELECT
 		id, parent_id AS pid, permission_name, description, tenant_id, create_time, update_time,
@@ -489,36 +478,33 @@
 		FROM
 			user_permission t1
 		LEFT JOIN user_r_user_permission t2 ON t1.id = t2.permission_id
-		<where>
-			<if test="userId!= null">
+    <where>
+      <if test="userId!= null">
 			t2.user_id =#{userId}
 			</if>
-			<if test="tenantId!= null">
+      <if test="tenantId!= null">
 			and t1.tenant_id =#{tenantId}
 			</if>
-		</where>
+    </where>
   </select>
-
-  	<select id="getTreeByApplicationId"  resultType="com.matariky.userservice.bean.TreeModel">
+  <select id="getTreeByApplicationId"  resultType="com.matariky.userservice.bean.TreeModel">
      	SELECT
 			p.id,
 			p.parent_id AS pid,
 			p.permission_name AS NAME
 		FROM
 			user_permission p , user_r_user_permission r
-		<where>
+    <where>
 			p.tenant_id =#{tenantId ,jdbcType=VARCHAR}
 		AND p.application_id = #{applicationId,jdbcType=BIGINT}
 		AND p.is_active = 1 and p.delete_time=0
 		AND r.permission_id = p.id
-
-		<if test="userId!=null and userId!='' ">
+      <if test="userId!=null and userId!='' ">
             AND r.user_id=#{userId,jdbcType=BIGINT}
         </if>
-        </where>
-  	</select>
-
-  	<select id="selectByTenantIdAndPermissionName" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    </where>
+  </select>
+  <select id="selectByTenantIdAndPermissionName" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
       This element is automatically generated by MyBatis Generator, do not modify.
@@ -529,10 +515,7 @@
     from user_permission
     where tenant_id = #{tenantId,jdbcType=VARCHAR} and permission_name =#{permissionName,jdbcType=VARCHAR} and delete_time=0
   </select>
-
-
-
-    <select id="getOrderSuitePermissionByParam" parameterType="java.util.Map"  resultMap="BaseResultMap">
+  <select id="getOrderSuitePermissionByParam" parameterType="java.util.Map"  resultMap="BaseResultMap">
         SELECT
             p.*
         FROM
@@ -541,18 +524,17 @@
            
         WHERE
           p.delete_time=0
-            <if test="params.resourceType != null">
+    <if test="params.resourceType != null">
           AND p.resource_type = #{params.resourceType}
             </if>
-        <if test="params.permissionName != null">
+    <if test="params.permissionName != null">
             AND p.permission_name like concat('%', #{params.permissionName}, '%')
         </if>
-        <if test="params.applicationId != null">
+    <if test="params.applicationId != null">
             AND p.application_id = #{params.applicationId}
         </if>
-    </select>
-
-    <select id="getOrderSuitePermissionByUserId" parameterType="java.util.Map"  resultMap="BaseResultMap">
+  </select>
+  <select id="getOrderSuitePermissionByUserId" parameterType="java.util.Map"  resultMap="BaseResultMap">
         SELECT
             p.*
         FROM
@@ -565,7 +547,7 @@
                     order_info AS o
                 WHERE
                 o.delete_time = 0
-                  <if test="params.orderTenantId != null">
+    <if test="params.orderTenantId != null">
                     AND o.order_tenant_id = #{params.orderTenantId}
                   </if>
                   AND o.order_status = 1
@@ -573,10 +555,8 @@
         WHERE
             a.suite_code = osp.suite_code
           AND osp.permission_id = p.id
-    </select>
-
-
-    <select id="selectPermissionByTenantId" parameterType="java.util.Map"  resultMap="BaseResultMap">
+  </select>
+  <select id="selectPermissionByTenantId" parameterType="java.util.Map"  resultMap="BaseResultMap">
         SELECT
             p.*
         FROM

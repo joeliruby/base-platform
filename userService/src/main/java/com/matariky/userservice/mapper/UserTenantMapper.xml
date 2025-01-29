@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.userservice.mapper.UserTenantMapper">
-
 	<select id="getUserTenantAll" parameterType="Map" resultType="com.matariky.userservice.bean.UserTenant">
 			    SELECT
 					tenant_code,
@@ -25,46 +24,43 @@
 				FROM
 					user_tenant 
 				WHERE
-					delete_time = 0 
-				<if test="params.tenantId !=null and params.tenantId !=''">
+					delete_time = 0
+		<if test="params.tenantId !=null and params.tenantId !=''">
             		AND  id like '%${params.tenantId}%'
         		</if>
-        		<if test="params.tenantName !=null and params.tenantName !=''">
+		<if test="params.tenantName !=null and params.tenantName !=''">
             		AND  tenant_name like '%${params.tenantName}%'
         		</if>
-        		<if test="params.liaison !=null and params.liaison !=''">
+		<if test="params.liaison !=null and params.liaison !=''">
             		AND  liaison like '%${params.value}%'
         		</if>
-        		<if test="params.is_active != null and params.is_active !=''">
+		<if test="params.is_active != null and params.is_active !=''">
             		AND  is_active  = #{params.is_active}
         		</if>
-        		<if test="params.theme != null and params.theme !=''">
+		<if test="params.theme != null and params.theme !=''">
             		AND  theme  = #{params.theme}
         		</if>
-        		<if test="params.begin != null and params.begin !=''">
+		<if test="params.begin != null and params.begin !=''">
            			AND  create_time >= ${params.begin}
         		</if>
-        		<if test="params.end !=null and params.end!=''">
-        		<![CDATA[  AND  create_time <= ${params.end}   ]]>     
-        		</if>
-<!--        		<if test="params.tenantId != null and params.tenantId !=''">-->
-<!--           			AND ( tenant_code = ${params.tenantId} or tenant_code like concat('${params.tenantId}_', '%'))-->
-<!--        		</if>-->
+		<if test="params.end !=null and params.end!=''">
+			<![CDATA[  AND  create_time <= ${params.end}   ]]>
+		</if>
+		<!--        		<if test="params.tenantId != null and params.tenantId !=''">-->
+		<!--           			AND ( tenant_code = ${params.tenantId} or tenant_code like concat('${params.tenantId}_', '%'))-->
+		<!--        		</if>-->
 	</select>
-
 	<select id="getUserTenantAllCount" parameterType="Map" resultType="int">
         select count(1) from user_tenant 
 	</select>
-
 	<insert id="createUserTenant" parameterType="com.matariky.userservice.bean.UserTenant">
         insert into user_tenant(tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description) 
         values(#{tenantCode},#{tenantName},#{updateTime},#{deleteTime},#{createTime},#{id},#{createdBy},#{updatedBy},#{address},#{liaison},#{liaisonMobile},#{isActive},#{domainName},#{parentId},#{theme},#{orderNum},#{description})
 	</insert>
-
 	<update id="updateUserTenant" parameterType="com.matariky.userservice.bean.UserTenant">
         update user_tenant
-        	 set id=#{params.id} 
-			<if test="params.tenantCode != null ">
+        	 set id=#{params.id}
+		<if test="params.tenantCode != null ">
         	,tenant_code=#{params.tenantCode}
         </if>
 		<if test="params.tenantName != null ">
@@ -113,35 +109,27 @@
 		        	,description=#{params.description}
 		        </if>
         where id = #{params.id} and delete_time=0
- 
-        
 	</update>
-
 	<delete id="delUserTenantById" parameterType="int">
         delete from user_tenant where id=#{value}
 	</delete>
-
 	<select id="getUserTenantById"  parameterType="String" resultType="com.matariky.userservice.bean.UserTenant" >
         select tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description from user_tenant where id=#{value} 
 	</select>
-	
 	<select id="selectByTenantCode"  parameterType="String" resultType="com.matariky.userservice.bean.UserTenant" >
         select id,tenant_code,tenant_name,update_time,delete_time,create_time,id,created_by,updated_by,address,liaison,liaison_mobile,is_active,domain_name,parent_id,theme,order_num,description from user_tenant where tenant_code=#{tenantCode} 
 	</select>
-	
 	<!-- Logic delete includes batches -->
-  	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
+	<update id="updateDeleteTimeById"  parameterType="java.lang.Long" >
     	update user_tenant
-    	<set >
+		<set >
         	delete_time = unix_timestamp()
     	</set>
     	where id in
-    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+		<foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-  	</update>
-	
-	
+	</update>
 	<!--Batch delete tenant and app intermediate table data -->
 	<delete id="deleteApplicationByTenantCodes" >
 		DELETE FROM user_r_application_tenant WHERE tenant_code  in
@@ -149,13 +137,10 @@
             #{tenantCode}
         </foreach>
 	</delete>
-	
 	<!--Insert data to the intermediate table of User and tenants and organizations -->
 	<insert id="saveRApplicationTenant" parameterType="Map" >
             INSERT INTO user_r_application_tenant (application_id,tenant_id,tenant_code, application_name)
                  values
                     (#{application_id},#{tenant_id},#{tenant_code},#{application_name});
     </insert>
-	
-
 </mapper>

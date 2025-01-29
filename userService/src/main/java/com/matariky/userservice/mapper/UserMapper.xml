@@ -31,17 +31,12 @@
     <result column="locale" property="locale" jdbcType="CHAR" />
     <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
   </resultMap>
-  
-  
-  
-   <select id="searchByUserNamePrefix" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+  <select id="searchByUserNamePrefix" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
     <include refid="Base_Column_List" />
     from user_user
     where tenant_id=#{tenantId} and real_name like concat(#{userNamePrefix}, '%')
   </select>
-  
-  
   <select id="getUserAllWithRoleAndGroup" parameterType="Map" resultType="java.util.Map">
         select 
         u.id,u.login_name as loginName,u.pazzword,u.real_name as realName,u.cell_phone as cellPhone,u.email,u.create_time as createTime,
@@ -69,33 +64,32 @@
  		AND  u.organization_id=org.id
  		AND  u.id = urgu.user_id
  		AND  ug.id = urgu.group_id
-        <if test="params.tenantId != null and params.tenantId !=''">
+    <if test="params.tenantId != null and params.tenantId !=''">
             AND  u.tenant_id= #{params.tenantId}
         </if>
-        <if test="params.value !=null and params.value !=''">
+    <if test="params.value !=null and params.value !=''">
             AND  u.${params.type} like '%${params.value}%'
         </if>
-		<if test="params.gender != null and params.gender !=''">
+    <if test="params.gender != null and params.gender !=''">
             AND u.gender = #{params.gender}
         </if>
-        <if test="params.is_active != null and params.is_active !=''">
+    <if test="params.is_active != null and params.is_active !=''">
             AND u.is_active  = #{params.is_active}
         </if>
-        <if test="params.begin != null and params.begin !=''">
+    <if test="params.begin != null and params.begin !=''">
            AND u.create_time >= ${params.begin}
         </if>
-        <if test="params.end !=null and params.end!=''">
-        <![CDATA[  AND u.create_time <= ${params.end}   ]]>     
-        </if>
-        <if test="params.organizations != null">
+    <if test="params.end !=null and params.end!=''">
+      <![CDATA[  AND u.create_time <= ${params.end}   ]]>
+    </if>
+    <if test="params.organizations != null">
            AND u.organization_id   in
-		<foreach item="organizationId" index="index" collection="params.organizations" open="(" separator="," close=")">
+      <foreach item="organizationId" index="index" collection="params.organizations" open="(" separator="," close=")">
             #{organizationId}
         </foreach>
-        </if>
+    </if>
         GROUP BY u.id
   </select>
-  
   <select id="getUserAllWithRoleAndGroupByIds" parameterType="Map" resultType="java.util.Map">
         select 
         u.id,u.login_name as loginName,u.pazzword,u.real_name as realName,u.cell_phone as cellPhone,u.email,u.create_time as createTime,
@@ -122,12 +116,11 @@
  		AND  u.id = urgu.user_id
  		AND  ug.id = urgu.group_id
         AND u.id in
-		 <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+    <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
         GROUP BY u.id
   </select>
-  
   <select id="getUserAll" parameterType="Map" resultType="com.matariky.userservice.bean.User">
         select 
         u.id,u.login_name,u.pazzword,u.real_name,u.cell_phone,u.email,u.create_time,
@@ -143,61 +136,59 @@
 		LEFT JOIN user_role ur ON urr.role_id = ur.id
         where 1=1 
         AND  u.delete_time=0
-        <if test="params.tenantId != null and params.tenantId !=''">
+    <if test="params.tenantId != null and params.tenantId !=''">
             AND  u.tenant_id =#{params.tenantId}
         </if>
-        <if test="params.value !=null and params.value !=''">
+    <if test="params.value !=null and params.value !=''">
             AND  u.${params.type} like '%${params.value}%'
         </if>
-		<if test="params.gender != null and params.gender !=''">
+    <if test="params.gender != null and params.gender !=''">
             AND u.gender = #{params.gender}
         </if>
-        <if test="params.is_active != null and params.is_active !=''">
+    <if test="params.is_active != null and params.is_active !=''">
             AND u.is_active  = #{params.is_active}
         </if>
-        <if test="params.begin != null and params.begin !=''">
+    <if test="params.begin != null and params.begin !=''">
            AND u.create_time >= ${params.begin}
         </if>
-        <if test="params.end !=null and params.end!=''">
-        <![CDATA[  AND u.create_time <= ${params.end}   ]]>     
-        </if>
-        <if test="params.organizations != null and params.organizations !=''">
+    <if test="params.end !=null and params.end!=''">
+      <![CDATA[  AND u.create_time <= ${params.end}   ]]>
+    </if>
+    <if test="params.organizations != null and params.organizations !=''">
            AND u.department_organization_code like '${params.organizations}%'
         </if>
         GROUP BY u.id
   </select>
-
   <select id="getUserAllCount" parameterType="Map" resultType="int">
         select count(1) from user_user 
         where 1=1 
         and  delete_time=0
-        <if test="params.tenantId != null and params.tenantId !=''">
+    <if test="params.tenantId != null and params.tenantId !=''">
             and  tenant_id= #{params.tenantId}
         </if>
-        <if test="params.value !=null and params.value !=''">
+    <if test="params.value !=null and params.value !=''">
             and  ${params.type} like '%${params.value}%'
         </if>
-		<if test="params.gender != null and params.gender !=''">
+    <if test="params.gender != null and params.gender !=''">
             and gender = #{params.gender}
         </if>
-        <if test="params.is_active != null and params.is_active !=''">
+    <if test="params.is_active != null and params.is_active !=''">
             and is_active  = #{params.is_active}
         </if>
-        <if test="params.begin != null and params.begin !=''">
+    <if test="params.begin != null and params.begin !=''">
             and create_time >= ${params.begin}
         </if>
-        <if test="params.end !=null and params.end!=''">
-        <![CDATA[ and  create_time <= ${params.end}   ]]>     
-        </if>
-        <if test="params.orderField != null and params.orderField !=''">
+    <if test="params.end !=null and params.end!=''">
+      <![CDATA[ and  create_time <= ${params.end}   ]]>
+    </if>
+    <if test="params.orderField != null and params.orderField !=''">
         order by  #{params.orderField}
         </if>
-        <if test="params.order != null and params.order !=''">
+    <if test="params.order != null and params.order !=''">
          #{params.order}
         </if>
-  </select>	
-  
-			  	<!-- select u.id,
+  </select>
+  <!-- select u.id,
 				  u.login_name,
 				  u.pazzword,
 				  u.real_name,
@@ -227,7 +218,6 @@
 				LEFT JOIN user_r_user_role urr ON u.id = urr.user_id
 				LEFT JOIN user_role ur ON urr.role_id = ur.id
 			  group by u.id; -->
-	
   <insert id="createUser" parameterType="com.matariky.userservice.bean.User">
         insert into user_user(id,login_name,pazzword,real_name,cell_phone,email,create_time,login_time,last_login_time,login_count,
                               update_time,is_active,tenant_id,organization_id,self_organization_code,department_organization_code,delete_time,
@@ -236,8 +226,7 @@
                #{login_count},#{update_time},#{is_active},#{tenant_id},#{organization_id},#{self_organization_code},#{department_organization_code},
                #{delete_time},#{gender}, #{created_by},#{locale},#{orderCode})
 	</insert>
-	
-	<insert id="createUserAndTenantAndOrganization" parameterType="Map">
+  <insert id="createUserAndTenantAndOrganization" parameterType="Map">
 			INSERT INTO user_r_user_tenant (
 					user_id,
 					tenant_code,
@@ -255,90 +244,85 @@
 			#{params.self_organization_code}
 			)
 	</insert>
-	
-
-	<update id="updateUser" parameterType="com.matariky.userservice.bean.User">
+  <update id="updateUser" parameterType="com.matariky.userservice.bean.User">
         update user_user 
-        set id=#{params.id} 
-		<if test="params.loginName != null ">
+        set id=#{params.id}
+    <if test="params.loginName != null ">
         	,login_name=#{params.loginName}
         </if>
-			<if test="params.pazzword != null ">
+    <if test="params.pazzword != null ">
 			        	,pazzword=#{params.pazzword}
 			        </if>
-			<if test="params.realName != null ">
+    <if test="params.realName != null ">
 			        	,real_name=#{params.realName}
 			        </if>
-			<if test="params.cellPhone != null ">
+    <if test="params.cellPhone != null ">
 			        	,cell_phone=#{params.cellPhone}
 			        </if>
-			<if test="params.email != null ">
+    <if test="params.email != null ">
 			        	,email=#{params.email}
 			        </if>
-			<if test="params.createTime != null ">
+    <if test="params.createTime != null ">
 			        	,create_time=#{params.createTime}
 			        </if>
-			<if test="params.loginTime != null ">
+    <if test="params.loginTime != null ">
 			        	,login_time=#{params.loginTime}
 			        </if>
-			<if test="params.lastLoginTime != null ">
+    <if test="params.lastLoginTime != null ">
 			        	,last_login_time=#{params.lastLoginTime}
 			        </if>
-			<if test="params.loginCount != null ">
+    <if test="params.loginCount != null ">
 			        	,login_count=#{params.loginCount}
 			        </if>
-			<if test="params.updateTime != null ">
+    <if test="params.updateTime != null ">
 			        	,update_time=#{params.updateTime}
 			        </if>
-			<if test="params.isActive != null ">
+    <if test="params.isActive != null ">
 			        	,is_active=#{params.isActive}
 			        </if>
-			<if test="params.tenantId != null ">
+    <if test="params.tenantId != null ">
 			        	,tenant_id=#{params.tenantId}
 			        </if>
-			<if test="params.organizationId != null ">
+    <if test="params.organizationId != null ">
 			        	,organization_id=#{params.organizationId}
 			        </if>
-			<if test="params.selfOrganizationCode != null ">
+    <if test="params.selfOrganizationCode != null ">
 			        	,self_organization_code=#{params.selfOrganizationCode}
 			        </if>
-			<if test="params.departmentOrganizationCode != null ">
+    <if test="params.departmentOrganizationCode != null ">
 			        	,department_organization_code=#{params.departmentOrganizationCode}
 			        </if>
-			<if test="params.deleteTime != null ">
+    <if test="params.deleteTime != null ">
 			        	,delete_time=#{params.deleteTime}
 			        </if>
-			<if test="params.gender != null ">
+    <if test="params.gender != null ">
 			        	,gender=#{params.gender}
 			        </if>
-			<if test="params.applicationId != null ">
+    <if test="params.applicationId != null ">
 			        	,application_id=#{params.applicationId}
 			        </if>
-			<if test="params.createdBy != null ">
+    <if test="params.createdBy != null ">
 			        	,created_by=#{params.createdBy}
 			        </if>
-			<if test="params.theme != null ">
+    <if test="params.theme != null ">
 			        	,theme=#{params.theme}
 			        </if>
-			<if test="params.orderCode != null ">
+    <if test="params.orderCode != null ">
 			        	,order_code=#{params.orderCode}
 			        </if>
-			<if test="params.locale != null ">
+    <if test="params.locale != null ">
 			        	,locale=#{params.locale}
 			        </if>
 
         where id = #{params.id} and delete_time=0
-	</update>
-
-	<delete id="delUserById" parameterType="int">
+  </update>
+  <delete id="delUserById" parameterType="int">
         delete from user_user where id=#{value}
 	</delete>
-
-	<select id="getUserById"  parameterType="java.lang.Long" resultType="com.matariky.userservice.bean.User" >
+  <select id="getUserById"  parameterType="java.lang.Long" resultType="com.matariky.userservice.bean.User" >
         select id,login_name,pazzword,real_name,cell_phone,email,create_time,login_time,last_login_time,login_count,update_time,is_active,tenant_id,
                organization_id,self_organization_code,department_organization_code,delete_time,gender,created_by,order_code from user_user where id=#{value}
-	</select>		
-	
+	</select>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbggenerated
@@ -355,7 +339,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       This element was generated on Wed Dec 09 11:51:39 CST 2020.
     -->
-    select 
+    select
     <include refid="Base_Column_List" />
     from user_user
     where id = #{id,jdbcType=BIGINT}
@@ -533,7 +517,7 @@
       <if test="theme != null" >
         #{theme,jdbcType=BIGINT},
       </if>
-        <if test="orderCode != null" >
+      <if test="orderCode != null" >
             #{orderCode,jdbcType=VARCHAR},
         </if>
     </trim>
@@ -609,7 +593,7 @@
       <if test="locale != null" >
         locale = #{locale,jdbcType=CHAR},
       </if>
-        <if test="orderCode != null" >
+      <if test="orderCode != null" >
             order_code = #{orderCode,jdbcType=VARCHAR},
         </if>
     </set>
@@ -645,99 +629,78 @@
       order_code = #{orderCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
       This element is automatically generated by MyBatis Generator, do not modify.
       This element was generated on Thu Sep 03 09:36:16 CST 2020.
     -->
-    select 
+    select
     <include refid="Base_Column_List" />
     from user_user
     where login_name = #{loginName,jdbcType=VARCHAR} and delete_time=0
   </select>
-  
-  
-  	<!--批量Delete  User 和组的中间表数据 -->
-	<delete id="deleteGroupByUserIds" >
+  <!--批量Delete  User 和组的中间表数据 -->
+  <delete id="deleteGroupByUserIds" >
 		DELETE FROM user_r_group_user WHERE user_id  in
-		<foreach item="userId" collection="array" open="(" separator="," close=")">
+    <foreach item="userId" collection="array" open="(" separator="," close=")">
             #{userId}
         </foreach>
-	</delete>
-	
-	
-	<!--批量Delete  User 和租户和组织机构的中间表数据 -->
-	<delete id="deleteTenantAndOrganizationByUserIds">
+  </delete>
+  <!--批量Delete  User 和租户和组织机构的中间表数据 -->
+  <delete id="deleteTenantAndOrganizationByUserIds">
 		DELETE FROM user_r_user_tenant WHERE user_id  in
-		<foreach item="userId" collection="array" open="(" separator="," close=")">
+    <foreach item="userId" collection="array" open="(" separator="," close=")">
             #{userId}
         </foreach>
-	</delete>
-	
-	
-	<!--批量Delete  User 和角色的中间表数据 -->
-	<delete id="deleteRoleByUserIds" >
+  </delete>
+  <!--批量Delete  User 和角色的中间表数据 -->
+  <delete id="deleteRoleByUserIds" >
 		DELETE FROM user_r_user_role WHERE user_id  in
-		 <foreach item="userId" collection="array" open="(" separator="," close=")">
+    <foreach item="userId" collection="array" open="(" separator="," close=")">
             #{userId}
         </foreach>
-	</delete>
-	
-	<!-- 向 User 和租户和组织机构的中间表插入数据 -->
-	<insert id="saveTenantAndOrganization" parameterType="Map" >
+  </delete>
+  <!-- 向 User 和租户和组织机构的中间表插入数据 -->
+  <insert id="saveTenantAndOrganization" parameterType="Map" >
             INSERT INTO user_r_user_tenant (user_id,tenant_code,organization_id,organization_code,tenant_id,self_organization_code)
                  values
                     (#{user_id},#{tenant_code},#{organization_id},#{organization_code},#{tenant_id},#{self_organization_code});
     </insert>
-	
-	
-	<!-- 向 User 和组中间表插入数据 -->
-	<insert id="saveRGroupUser" parameterType="java.lang.Long" >
+  <!-- 向 User 和组中间表插入数据 -->
+  <insert id="saveRGroupUser" parameterType="java.lang.Long" >
             INSERT INTO user_r_group_user (group_id,user_id)
                  values
                     (#{groupId},#{userId});
     </insert>
-    
-    
-    <!-- 向 User 和角色中间表插入数据 -->
-	<insert id="saveRRoleUser" parameterType="java.lang.Long" >
+  <!-- 向 User 和角色中间表插入数据 -->
+  <insert id="saveRRoleUser" parameterType="java.lang.Long" >
             INSERT INTO user_r_user_role (role_id,user_id)
                  values
                     (#{roleId},#{userId});
     </insert>
-    
-    <select id="getRoleIdList" resultType="long">
+  <select id="getRoleIdList" resultType="long">
     <!-- select role_id from user_user u,user_r_user_role r where r.user_id =  AND u.id=r.user_id AND u.delete_time=0 AND u.is_active=1 -->
         select role_id from user_r_user_role where user_id = #{value}
-    </select>
-    
-    <select id="getGroupIdList" resultType="long">
+  </select>
+  <select id="getGroupIdList" resultType="long">
     <!-- select group_id from user_user u,user_r_group_user g where  g.user_id =1 AND u.id=g.user_id AND u.delete_time=0 AND u.is_active=1 -->
         select group_id from user_r_group_user where user_id = #{value}
-    </select>
-    
-    
-    
-    <update id="updateDeleteTimeById">
+  </select>
+  <update id="updateDeleteTimeById">
     	update user_user
-    	<set >
+    <set >
         	delete_time = unix_timestamp()
     	</set>
     	where id in
-    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+    <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-  	</update>
-  	
-  
-    <select id="getApplicationByUser"  resultType="java.util.LinkedHashMap"> 
+  </update>
+  <select id="getApplicationByUser"  resultType="java.util.LinkedHashMap"> 
     	SELECT t1.id,t1.application_name FROM user_application t1,user_r_user_application t2 WHERE t2.application_id=t1.id and t1.is_active=1 and t1.delete_time=0 AND t2.user_id=#{user_id,jdbcType=BIGINT} AND t2.tenant_id=#{tenant_id,jdbcType=VARCHAR}
   	</select>
-  	
-  	
-  	<select id="getPermissionByUser"  resultType="com.matariky.userservice.bean.TreeModel">
+  <select id="getPermissionByUser"  resultType="com.matariky.userservice.bean.TreeModel">
     	SELECT
 			p.id,
 			p.parent_id AS pid,
@@ -754,10 +717,7 @@
 		AND p.is_active = 1 and p.delete_time=0
 		AND u.id =#{user_id,jdbcType=BIGINT} and u.delete_time=0 and u.is_active=1		GROUP BY p.id
   	</select>
-  	
-  	
-  	
-  	<select id="getPermissionByUserAndRoleAndGroup"  resultType="com.matariky.userservice.bean.TreeModel">
+  <select id="getPermissionByUserAndRoleAndGroup"  resultType="com.matariky.userservice.bean.TreeModel">
     		SELECT
 				p.id,
 				p.parent_id AS pid,
@@ -812,19 +772,15 @@
 			AND p.is_active = 1 
 			AND u.id = #{user_id,jdbcType=BIGINT}
   	</select>
-  	
-  	<select id="getCountByOrganizationId"  resultType="int">
+  <select id="getCountByOrganizationId"  resultType="int">
   	SELECT count(1) from user_user  WHERE  organization_id in
-		 <foreach item="organizationId" collection="organizationIds" open="(" separator="," close=")">
+    <foreach item="organizationId" collection="organizationIds" open="(" separator="," close=")">
             #{organizationId,jdbcType=BIGINT}
         </foreach>
         AND tenant_id =#{tenant_id,jdbcType=VARCHAR} 
         AND delete_time=0
-  	</select> 
-  	
-  	<update id="updatePassword">
+  </select>
+  <update id="updatePassword">
 		update user_user set pazzword = #{newPassword} where id = #{userId}
 	</update>
-  
-  
 </mapper>

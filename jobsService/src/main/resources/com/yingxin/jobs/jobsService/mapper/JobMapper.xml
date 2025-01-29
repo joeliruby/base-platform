@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.jobs.jobsService.mapper.JobMapper">
-
-  <select id="list" resultType="com.matariky.jobs.jobsService.bean.domain.JobAndTrigger">
+	<select id="list" resultType="com.matariky.jobs.jobsService.bean.domain.JobAndTrigger">
 	SELECT
 		job_details.`JOB_NAME`,
 		job_details.`JOB_GROUP`,
@@ -20,10 +19,7 @@
 		LEFT JOIN `QRTZ_TRIGGERS` qrtz_triggers ON qrtz_triggers.`TRIGGER_NAME` = job_details.`JOB_NAME`
 		AND qrtz_triggers.`TRIGGER_GROUP` = job_details.`JOB_GROUP` where job_details.tenant_id=#{tenantId}
     </select>
-    
-    
-    
-    <select id="getJobAndTriggerAll" parameterType="Map" resultType="com.matariky.jobs.jobsService.bean.domain.JobAndTrigger">
+	<select id="getJobAndTriggerAll" parameterType="Map" resultType="com.matariky.jobs.jobsService.bean.domain.JobAndTrigger">
 			    SELECT
 					job_details.`JOB_NAME`,
 					job_details.`JOB_GROUP`,
@@ -42,7 +38,7 @@
 					AND qrtz_triggers.`TRIGGER_GROUP` = job_details.`JOB_GROUP`
 				WHERE
 					1=1
-				<if test="params.tenantId !=null and params.tenantId !=''">
+		<if test="params.tenantId !=null and params.tenantId !=''">
             		AND  job_details.tenant_id=#{params.tenantId}
         		</if>
 	</select>

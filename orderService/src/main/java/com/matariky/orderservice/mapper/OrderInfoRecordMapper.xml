@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.orderservice.mapper.OrderInfoRecordMapper">
-
-<sql id="baseQueryListSql"> 
+        <sql id="baseQueryListSql"> 
  SELECT t.id,t.record_type,t.operator_org_code,t.operator_self_org_code,t.order_code,t.order_show_code,t.contract_code,t.tenant_id,
         t.order_tenant_id,t.suite_code,t.suite_config_code,
         t.contacts,t.contacts_phone,t.expiration_start_time,t.expiration_end_time,t.account_number,t.charge_mode,t.price,t.discount_price,t.payment_time,
@@ -12,29 +11,26 @@
     order_info_record t 
  WHERE 
     t.delete_time = 0 
- </sql> 
- <sql id="baseQueryCountSql"> 
+ </sql>
+        <sql id="baseQueryCountSql"> 
    SELECT 
     count(1) 
  FROM 
     order_info_record t 
  WHERE 
     t.delete_time = 0 
- </sql> 
-	<select id="getOrderInfoRecordAll" parameterType="Map" resultType="com.matariky.orderservice.bean.OrderInfoRecord">
+ </sql>
+        <select id="getOrderInfoRecordAll" parameterType="Map" resultType="com.matariky.orderservice.bean.OrderInfoRecord">
         select id,record_type,operator_org_code,operator_self_org_code,order_code,order_show_code,contract_code,tenant_id,order_tenant_id,suite_code,suite_config_code,contacts,contacts_phone,expiration_start_time,expiration_end_time,account_number,charge_mode,price,discount_price,payment_time,payment_voucher_path,order_status,remark,created_by,create_time,update_by,update_time,delete_time from order_info_record where delete_time=0
 	</select>
-
-	<select id="getOrderInfoRecordAllCount" parameterType="Map" resultType="int">
+        <select id="getOrderInfoRecordAllCount" parameterType="Map" resultType="int">
         select count(1) from order_info_record where delete_time=0 
 	</select>
-
-	<insert id="createOrderInfoRecord" parameterType="com.matariky.orderservice.bean.OrderInfoRecord">
+        <insert id="createOrderInfoRecord" parameterType="com.matariky.orderservice.bean.OrderInfoRecord">
         insert into order_info_record(record_type,operator_org_code,operator_self_org_code,order_code,order_show_code,contract_code,tenant_id,order_tenant_id,suite_code,suite_config_code,contacts,contacts_phone,expiration_start_time,expiration_end_time,account_number,charge_mode,price,discount_price,payment_time,payment_voucher_path,order_status,remark,created_by,create_time,update_by,update_time,delete_time)
         values(#{recordType},#{operatorOrgCode},#{operatorSelfOrgCode},#{orderCode},#{orderShowCode},#{contractCode},#{tenantId},#{orderTenantId},#{suiteCode},#{suiteConfigCode},#{contacts},#{contactsPhone},#{expirationStartTime},#{expirationEndTime},#{accountNumber},#{chargeMode},#{price},#{discountPrice},#{paymentTime},#{paymentVoucherPath},#{orderStatus},#{remark},#{createdBy},#{createTime},#{updateBy},#{updateTime},#{deleteTime})
 	</insert>
-
-	<update id="updateOrderInfoRecord" parameterType="com.matariky.orderservice.bean.OrderInfoRecord">
+        <update id="updateOrderInfoRecord" parameterType="com.matariky.orderservice.bean.OrderInfoRecord">
         update order_info_record 
         set record_type=#{recordType},operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode},order_code=#{orderCode},order_show_code=#{orderShowCode},
             contract_code=#{contractCode},tenant_id=#{tenantId},order_tenant_id=#{orderTenantId},suite_code=#{suiteCode},suite_config_code=#{suiteConfigCode},contacts=#{contacts},contacts_phone=#{contactsPhone},
@@ -43,17 +39,14 @@
             create_time=#{createTime},update_by=#{updateBy},update_time=#{updateTime},delete_time=#{deleteTime}
         where id = #{id} and delete_time=0 
 	</update>
-
-	<update id="delOrderInfoRecordById" parameterType="int">
+        <update id="delOrderInfoRecordById" parameterType="int">
         update  order_info_record set delete_time=now() where id=#{value}
 	</update>
-
-	<select id="getOrderInfoRecordById"  parameterType="Integer" resultType="com.matariky.orderservice.bean.OrderInfoRecord" >
+        <select id="getOrderInfoRecordById"  parameterType="Integer" resultType="com.matariky.orderservice.bean.OrderInfoRecord" >
         select id,record_type,operator_org_code,operator_self_org_code,order_code,order_show_code,contract_code,tenant_id,order_tenant_id,suite_code,suite_config_code,contacts,contacts_phone,
                expiration_start_time,expiration_end_time,account_number,charge_mode,price,discount_price,payment_time,payment_voucher_path,order_status,remark,created_by,create_time,update_by,update_time,delete_time from order_info_record where id=#{value} and delete_time=0
 	</select>
-
-<select id="getOrderInfoRecordDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        <select id="getOrderInfoRecordDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
     SELECT
         count(1)
     FROM
@@ -62,7 +55,7 @@
         t.delete_time = 0
         t.order_code = #{orderCode}
 </select>
-<select id="getOrderInfoRecordDAC" parameterType="java.util.Map" resultType="com.matariky.orderservice.vo.OrderInfoRecordPageVo">
+        <select id="getOrderInfoRecordDAC" parameterType="java.util.Map" resultType="com.matariky.orderservice.vo.OrderInfoRecordPageVo">
 
     SELECT t.id,t.record_type,t.operator_org_code,t.operator_self_org_code,t.order_code,t.order_show_code,t.contract_code,t.tenant_id,t.order_tenant_id,t.suite_code,t.suite_config_code,
     t.contacts,t.contacts_phone,t.expiration_start_time,t.expiration_end_time,t.account_number,t.charge_mode,t.price,t.discount_price,t.payment_time,

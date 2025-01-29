@@ -2,147 +2,120 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.userservice.mapper.UserOrganizationMapper">
-
 	<select id="getUserOrganizationAll" parameterType="Map" resultType="com.matariky.userservice.bean.UserOrganization">
         select id,organization_code,organization_name,create_time,update_time,description,tenant_id,is_virtual,created_by,updated_by,org_type,order_num,comment,liaison_name,liaison_mobile,parent_id,delete_time from user_organization
 	</select>
-
 	<select id="getUserOrganizationAllCount" parameterType="Map" resultType="int">
         select count(1) from user_organization
 	</select>
-
 	<select id="getCountByParentId"  resultType="int">
        select count(1) from user_organization  WHERE tenant_id=#{tenantId} AND delete_time=0 AND parent_id=#{parentId}
 	</select>
-
-
 	<insert id="createUserOrganization" parameterType="com.matariky.userservice.bean.UserOrganization">
         insert into user_organization(organization_code,organization_name,create_time,update_time,description,tenant_id,is_virtual,created_by,updated_by,org_type,order_num,comment,liaison_name,liaison_mobile,parent_id,delete_time)
         values(#{organizationCode},#{organizationName},#{createTime},#{updateTime},#{description},#{tenantId},#{isVirtual},#{createdBy},#{updatedBy},#{orgType},#{orderNum},#{comment},#{liaisonName},#{liaisonMobile},#{parentId},#{deleteTime})
 	</insert>
-
 	<update id="updateUserOrganization" parameterType="com.matariky.userservice.bean.UserOrganization">
         update user_organization
         set id=#{params.id}
-			<if test="params.organizationCode != null ">
+		<if test="params.organizationCode != null ">
         	,organization_code=#{params.organizationCode}
         </if>
-			<if test="params.organizationName != null ">
+		<if test="params.organizationName != null ">
 			        	,organization_name=#{params.organizationName}
 			        </if>
-			<if test="params.createTime != null ">
+		<if test="params.createTime != null ">
 			        	,create_time=#{params.createTime}
 			        </if>
-			<if test="params.updateTime != null ">
+		<if test="params.updateTime != null ">
 			        	,update_time=#{params.updateTime}
 			        </if>
-			<if test="params.description != null ">
+		<if test="params.description != null ">
 			        	,description=#{params.description}
 			        </if>
-			<if test="params.tenantId != null ">
+		<if test="params.tenantId != null ">
 			        	,tenant_id=#{params.tenantId}
 			        </if>
-			<if test="params.isVirtual != null ">
+		<if test="params.isVirtual != null ">
 			        	,is_virtual=#{params.isVirtual}
 			        </if>
-			<if test="params.createdBy != null ">
+		<if test="params.createdBy != null ">
 			        	,created_by=#{params.createdBy}
 			        </if>
-			<if test="params.updatedBy != null ">
+		<if test="params.updatedBy != null ">
 			        	,updated_by=#{params.updatedBy}
 			        </if>
-			<if test="params.orgType != null ">
+		<if test="params.orgType != null ">
 			        	,org_type=#{params.orgType}
 			        </if>
-			<if test="params.orderNum != null ">
+		<if test="params.orderNum != null ">
 			        	,order_num=#{params.orderNum}
 			        </if>
-			<if test="params.comment != null ">
+		<if test="params.comment != null ">
 			        	,comment=#{params.comment}
 			        </if>
-			<if test="params.liaisonName != null ">
+		<if test="params.liaisonName != null ">
 			        	,liaison_name=#{params.liaisonName}
 			        </if>
-			<if test="params.liaisonMobile != null ">
+		<if test="params.liaisonMobile != null ">
 			        	,liaison_mobile=#{params.liaisonMobile}
 			        </if>
-			<if test="params.parentId != null ">
+		<if test="params.parentId != null ">
 			        	,parent_id=#{params.parentId}
 			        </if>
-			<if test="params.deleteTime != null ">
+		<if test="params.deleteTime != null ">
 			        	,delete_time=#{params.deleteTime}
 			        </if>
         where id = #{params.id} and delete_time=0
 	</update>
-
 	<delete id="delUserOrganizationById" parameterType="int">
         delete from user_organization where id=#{value}
 	</delete>
-
 	<select id="getUserOrganizationById"  parameterType="String" resultType="com.matariky.userservice.bean.UserOrganization" >
         select id,organization_code,organization_name,create_time,update_time,description,tenant_id,is_virtual,created_by,updated_by,
                org_type,order_num,comment,liaison_name,liaison_mobile,parent_id,delete_time , user_group_id from user_organization where id=#{value}
 	</select>
-
 	<select id="selectByOrgCode"  parameterType="String" resultType="com.matariky.userservice.bean.UserOrganization" >
         select id,organization_code,organization_name,create_time,update_time,description,tenant_id,is_virtual,created_by,updated_by,org_type,order_num,comment,liaison_name,liaison_mobile,parent_id,delete_time from user_organization where organization_code=#{organizationCode}
 	</select>
-
-
 	<select id="getOrganizationList"  parameterType="String" resultType="com.matariky.userservice.bean.TreeModel" >
 		SELECT id,parent_id AS pid,organization_name as name,organization_code as code, org_type as resourceType , order_num as sort_order  , user_group_id  FROM
 		 user_organization WHERE delete_time=0 AND tenant_id=#{value} and organization_code like 'org_%' ORDER BY order_num asc
 	</select>
-
 	<select id="getOrganizationListWithInd"  parameterType="String" resultType="com.matariky.userservice.bean.TreeModel" >
 		SELECT id,parent_id AS pid,organization_name as name,organization_code as code, org_type as resourceType, order_num as sort_order
 		FROM user_organization WHERE delete_time=0 AND tenant_id=#{value}  ORDER BY order_num asc
 	</select>
-
-
 	<select id="getChildrenOrganization"   resultType="java.lang.Long" >
 	SELECT id FROM user_organization WHERE delete_time=0 AND tenant_id=#{tenantId,jdbcType=VARCHAR}  AND organization_code LIKE CONCAT(CONCAT('%', #{organizationCode,jdbcType=VARCHAR}),'%')
 	</select>
-
 	<select id="getParentcodeByParentId"   resultType="String" >
 		SELECT organization_code FROM user_organization WHERE delete_time=0 AND tenant_id=#{tenantId}  AND id=#{parentId}
 	</select>
-
-
-
 	<update id="updateDeleteTimeById"  >
     	update user_organization
-    	<set >
+		<set >
         	delete_time = unix_timestamp()
     	</set>
     	where id = #{id,jdbcType=BIGINT}
     	and  tenant_id=#{tenantId,jdbcType=VARCHAR}
-  	</update>
-
-
-
-
-  	<select id="selectNameById"  resultType="String" >
+	</update>
+	<select id="selectNameById"  resultType="String" >
 		SELECT organization_name FROM user_organization WHERE delete_time=0 AND id=#{value}
 	</select>
-
-
 	<select id="getOrgNamesByCode"  resultType="String" >
 			SELECT
 				GROUP_CONCAT( organization_name )
 			FROM
 				user_organization
 		where organization_code in
-    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+		<foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
 	</select>
-
-
 	<select id="getOrganizationByCode"  resultType="com.matariky.userservice.bean.UserOrganization" >
 		SELECT id,organization_code,organization_name,create_time,update_time,description,tenant_id,is_virtual,created_by,updated_by,org_type,order_num,comment,liaison_name,liaison_mobile,parent_id,delete_time FROM user_organization WHERE delete_time=0 AND organization_code=#{code,jdbcType=VARCHAR} AND tenant_id=#{tenantId,jdbcType=VARCHAR}
 	</select>
-
 	<select id="queryTreeListView"  resultType="com.matariky.userservice.bean.TreeModel" >
 			SELECT
 				id,
@@ -156,5 +129,4 @@
 			AND tenant_id = #{tenantId,jdbcType=VARCHAR}
 			AND organization_code LIKE CONCAT(CONCAT( #{code,jdbcType=VARCHAR}),'%')
 	</select>
-
 </mapper>
