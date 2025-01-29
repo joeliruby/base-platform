@@ -19,7 +19,7 @@
     t.delete_time = 0
  </sql>
 	<select id="getBasicBaseRfidprintAll" resultType="com.matariky.bizservice.assetitm.base.bean.BasicBaseRfidPrint">
-        select a.id,a.task_name,'盈芯物联网  Base 平台' as project_name,a.task_time,a.device_id,a.goods_id,a.print_type,a.print_num,a.printed_num,a.unprint_num,d.rules_name as epc_rule,a.is_lock_epc,a.epc_password,a.is_odcode,a.od_fixed_content,a.is_qrcode,a.qr_fixed_content,a.rfid_img,a.remark,a.create_time,a.update_time,a.delete_time,a.create_by,a.update_by,a.operator_org_code,a.operator_self_org_code,b.goods_name,c.device_code as print_code,concat("打印机（",c.device_code,"）") as print_name , u.real_name,a.print_status,IFNULL(a.is_lock,0) as is_lock
+        select a.id,a.task_name,'  Base platform' as project_name,a.task_time,a.device_id,a.goods_id,a.print_type,a.print_num,a.printed_num,a.unprint_num,d.rules_name as epc_rule,a.is_lock_epc,a.epc_password,a.is_odcode,a.od_fixed_content,a.is_qrcode,a.qr_fixed_content,a.rfid_img,a.remark,a.create_time,a.update_time,a.delete_time,a.create_by,a.update_by,a.operator_org_code,a.operator_self_org_code,b.goods_name,c.device_code as print_code,concat("打印机（",c.device_code,"）") as print_name , u.real_name,a.print_status,IFNULL(a.is_lock,0) as is_lock
         from basic_base_rfidprint a
         left join basic_base_goods b on a.goods_id=b.id
         left join basic_base_device c on a.device_id=c.id
