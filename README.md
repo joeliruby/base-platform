@@ -10,17 +10,15 @@ The Base Platform is a simple generic platform flexible for different scenrios. 
 
 ![Generic Access Aontrol Model](er.png)
 User:
-A stakeholder that can login the system to use its functionalities
+A stakeholder that can login the system to use its functionalities.
 Permission:
 A unique token to represent a user's allocated resources of the system. The resources comprises HTTP Restful interface, static HTTP UI components.
 Role:
-A template set of permissions designated to a specific type of business operator. It simplifies
-user permission assignment.
+A template set of permissions designated to a specific type of business operator. It simplifies user permission assignment.
 Group:
 A collection of users who share a common purpose or need to access similar resources. Groups can be used to manage user accounts and permissions collectively. For instance it can be used for a temporary workforce external to a cooperation.
 Relations:
-For any 2 entities of User, Permission, Role and Group there is a multiple-to-multiple relationship between them. I semantic of the relationship is self explanatory as per the ER diagram and I shall not elaborate.
-This generic and comprehensive access control data model maximizes the framwork's adaptability to different authorization requirements of different business scenarios.
+For any 2 entities of User, Permission, Role and Group there is a multiple-to-multiple relationship between them. I semantic of the relationship is self explanatory as per the ER diagram and I shall not elaborate.This generic and comprehensive access control data model maximizes the framwork's adaptability to different authorization requirements of different business scenarios.
 
 ## Integrate with your tools
 
