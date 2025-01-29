@@ -21,9 +21,9 @@ A collection of users who share a common purpose or need to access similar resou
 For any 2 entities of User, Permission, Role and Group there is a multiple-to-multiple relationship between them. I semantic of the relationship is self explanatory as per the ER diagram and I shall not elaborate.This generic and comprehensive access control data model maximizes the framwork's adaptability to different authorization requirements of different business scenarios.
 
 <br>
-The flexibility of the Basic Platform also lends itself to applications of different scale and business maturity.By tweaking on the maven profile of each micro service, each micro service can be either packaged in to a autonomous<br>
-Spring boot micro service jar or a library jar that can be refenerence by a higher level web application. For corporate scenarios, an all-in-one application could probably be a good fit. The same holds true for projects at the early stage of <br>
-domain driven design, as the solution avoid basing comlexity on volatile business functions, instead it should build upon business functions they are certain and not susceptble to change according to the first principles.<br>
+The flexibility of the Basic Platform also lends itself to the applications of different scale and business maturity.By tweaking on the maven profile of each micro service, each micro service can be either packaged in to a autonomous<br>
+Spring boot micro service jar or a library jar that is refenerence by a higher level web application. For corporate scenarios, an all-in-one application could probably be a good fit. The same holds true for projects at the early stage<br> 
+of domain driven design, as the solution avoid basing comlexity on volatile business functions, instead it should build upon business functions they are certain and not susceptble to change according to the first principles.<br>
 
 ## Integrate with your tools
 
