@@ -45,13 +45,13 @@ public class BasicBaseDevicecommandController {
     private CommonDictTypeService commonDictTypeService;
 
     @RequestMapping("/basicBaseDevicecommand/list")
-    public Object list(BasicBaseDevicecommand bean) {
+    public AjaxResult list(BasicBaseDevicecommand bean) {
         List<BasicBaseDevicecommand> list = basicBaseDevicecommandService.getBasicBaseDevicecommandAll(bean);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, list);
     }
 
     @RequestMapping("/basicBaseDevicecommand/daclist")
-    public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+    public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
             @ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
             @ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
         String hid = request.getHeader("id");
@@ -84,7 +84,7 @@ public class BasicBaseDevicecommandController {
     }
 
     @RequestMapping(value = "/basicBaseDevicecommand", method = RequestMethod.POST)
-    public Object save(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request,
+    public AjaxResult save(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request,
             HttpServletResponse response) {
         try {
             int success = basicBaseDevicecommandService.createBasicBaseDevicecommandWithOrg(bean, request);
@@ -100,7 +100,7 @@ public class BasicBaseDevicecommandController {
     }
 
     @RequestMapping(value = "/basicBaseDevicecommand", method = RequestMethod.PUT)
-    public Object update(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request,
+    public AjaxResult update(@RequestBody BasicBaseDevicecommand bean, HttpServletRequest request,
             HttpServletResponse response) {
         try {
             int success = basicBaseDevicecommandService.updateBasicBaseDevicecommand(bean);
@@ -116,7 +116,7 @@ public class BasicBaseDevicecommandController {
     }
 
     @RequestMapping(value = "/basicBaseDevicecommand", method = RequestMethod.DELETE)
-    public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         try {
             Boolean success = basicBaseDevicecommandService.deleteById(Long.parseLong(id));
             if (success) {
@@ -131,7 +131,7 @@ public class BasicBaseDevicecommandController {
     }
 
     @RequestMapping(value = "/basicBaseDevicecommand/{basicBaseDevicecommandId}", method = RequestMethod.GET)
-    public Object getOne(@PathVariable("/basicBaseDevicecommandId") Long id, HttpServletRequest request,
+    public AjaxResult getOne(@PathVariable("/basicBaseDevicecommandId") Long id, HttpServletRequest request,
             HttpServletResponse response) {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseDevicecommandService.selectById(id));
     }

@@ -19,12 +19,12 @@ public class MessageController {
 
     @SourcePermission("533304969136181248")
     @RequestMapping("/list")
-    public Object getList(QueryMessageParam params) {
+    public AjaxResult getList(QueryMessageParam params) {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, messageService.getPage(params));
     }
 
     @RequestMapping("/setRead")
-    public Object setRead(PrimaryParam param) {
+    public AjaxResult setRead(PrimaryParam param) {
         messageService.setRead(param);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, null);
     }

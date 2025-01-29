@@ -64,7 +64,7 @@ public class UserRoleController {
     UserApplicationService userApplicationService;
 
     @RequestMapping(value = "/userRole/list", method = RequestMethod.GET)
-    public Object list(
+    public AjaxResult list(
             HttpServletRequest request,
             @RequestParam Map<String, Object> map,
             @PathVariable("tenantId") String tenantId
@@ -119,7 +119,7 @@ public class UserRoleController {
     }
 
     @RequestMapping(value = "/userRole/edit", method = RequestMethod.GET)
-    public Object edit(HttpServletRequest request, String id) {
+    public AjaxResult edit(HttpServletRequest request, String id) {
 
         UserRole bean = userRoleService.getUserRoleById(Long.parseLong(id));
 
@@ -127,7 +127,7 @@ public class UserRoleController {
     }
 
     @RequestMapping(value = "/userRole", method = RequestMethod.POST)
-    public Object save(
+    public AjaxResult save(
             @RequestBody @Valid UserRole bean,
             @PathVariable("tenantId") String tenantId,
             HttpServletRequest request,
@@ -163,7 +163,8 @@ public class UserRoleController {
     }
 
     @RequestMapping(value = "/userRole", method = RequestMethod.PUT)
-    public Object update(@RequestBody @Valid UserRole bean, HttpServletRequest request, HttpServletResponse response,
+    public AjaxResult update(@RequestBody @Valid UserRole bean, HttpServletRequest request,
+            HttpServletResponse response,
             @PathVariable("tenantId") String tenantId) {
         try {
             if (StringUtil.isEmpty(bean.getRoleName())) {
@@ -185,7 +186,7 @@ public class UserRoleController {
     }
 
     @RequestMapping(value = "/userRole", method = RequestMethod.DELETE)
-    public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
         String[] split = id.split(",");
         int success = userRoleService.updateDeleteTimeById(split);
         if (success > 0) {
@@ -197,14 +198,14 @@ public class UserRoleController {
 
     // The role of the character
     @GetMapping("/userRole/box")
-    public Object selectRole(@PathVariable("tenantId") String tenantId) {
+    public AjaxResult selectRole(@PathVariable("tenantId") String tenantId) {
         List<UserRole> roleList = userRoleService.selectRole(tenantId);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, roleList);
     }
 
     // Character view permissions Detail
     @RequestMapping(value = "/userRole/permission", method = RequestMethod.GET)
-    public Object getPermissionByUser(HttpServletRequest request,
+    public AjaxResult getPermissionByUser(HttpServletRequest request,
             @RequestParam String roleId,
             @PathVariable("tenantId") String tenantId) {
 

@@ -60,7 +60,8 @@ public class CommonSharingPoolController {
 
 	@RequestMapping("/CommonSharingPool/list")
 	@ApiOperation(value = " Speicial  Rule  Pagination")
-	public Object list(HttpServletRequest request, CommonSharingPool bean, @PathVariable("tenantId") String tenantId,
+	public AjaxResult list(HttpServletRequest request, CommonSharingPool bean,
+			@PathVariable("tenantId") String tenantId,
 			@RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage,
 			@RequestHeader("Authorization") String jwt, @RequestParam("resourceId") Long resourceId) {
 		PageHelper.startPage(pageIndex, perPage);
@@ -70,7 +71,7 @@ public class CommonSharingPoolController {
 	}
 
 	@RequestMapping(value = "/CommonSharingPool", method = RequestMethod.PUT)
-	public Object update(CommonSharingPool bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult update(CommonSharingPool bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = CommonSharingPoolService.updateCommonSharingPool(bean);
 			if (success > 0) {
@@ -86,7 +87,7 @@ public class CommonSharingPoolController {
 
 	// New Speicial Rule
 	@RequestMapping(value = "/CommonSharingPool/specialRule", method = RequestMethod.POST)
-	public Object newSpecialRule(@RequestHeader("Authorization") String token,
+	public AjaxResult newSpecialRule(@RequestHeader("Authorization") String token,
 			@RequestBody JSONObject resourceAllocation, HttpServletRequest request, HttpServletResponse response) {
 		String visitorType = resourceAllocation.getString("receiverType");
 		String visitors = resourceAllocation.getString("receivingOrgCode");
@@ -151,7 +152,7 @@ public class CommonSharingPoolController {
 	}
 
 	@RequestMapping(value = "/CommonSharingPool", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = CommonSharingPoolService.delCommonSharingPoolById(Long.parseLong(id));
 			if (success > 0) {
@@ -166,7 +167,7 @@ public class CommonSharingPoolController {
 	}
 
 	@RequestMapping(value = "/CommonSharingPool/{organizationCode}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("organizationCode") String organizationCode, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("organizationCode") String organizationCode, HttpServletRequest request,
 			HttpServletResponse response) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,
 				(List<CommonSharingPool>) CommonSharingPoolService.selectByOrgCode(organizationCode));
@@ -174,7 +175,7 @@ public class CommonSharingPoolController {
 	}
 
 	@RequestMapping(value = "/CommonSharingPool/alias", method = RequestMethod.GET)
-	public Object getAliases() {
+	public AjaxResult getAliases() {
 		List<String> toReturn = new ArrayList<String>();
 		String[] beans = applicationContext.getBeanDefinitionNames();
 		for (String bean : beans) {

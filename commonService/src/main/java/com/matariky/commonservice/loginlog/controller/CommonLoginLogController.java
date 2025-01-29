@@ -64,7 +64,7 @@ public class CommonLoginLogController {
 	String storageDictType;
 
 	@RequestMapping("/commonLoginLog/list")
-	public Object list(HttpServletRequest request,
+	public AjaxResult list(HttpServletRequest request,
 			@RequestParam Map<String, Object> params,
 			@PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt) {
@@ -131,7 +131,7 @@ public class CommonLoginLogController {
 	}
 
 	@RequestMapping(value = "/commonLoginLog", method = RequestMethod.POST)
-	public Object save(CommonLoginLog bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult save(CommonLoginLog bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = commonLoginLogService.createCommonLoginLog(bean);
 			if (success > 0) {
@@ -146,14 +146,14 @@ public class CommonLoginLogController {
 	}
 
 	@RequestMapping(value = "/commonLoginLog/{commonLoginLogId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("commonLoginLogId") Long id, HttpServletRequest request,
+	public CommonLoginLog getOne(@PathVariable("commonLoginLogId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return commonLoginLogService.selectById(id);
 
 	}
 
 	@RequestMapping(value = "/commonLoginLog", method = RequestMethod.PUT)
-	public Object update(CommonLoginLog bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult update(CommonLoginLog bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = commonLoginLogService.updateCommonLoginLog(bean);
 			if (success > 0) {
@@ -168,7 +168,7 @@ public class CommonLoginLogController {
 	}
 
 	@RequestMapping(value = "/commonLoginLog", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = commonLoginLogService.delCommonLoginLogById(Integer.parseInt(id));
 			if (success > 0) {

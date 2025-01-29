@@ -122,7 +122,7 @@ public class PermissionController {
     @GetMapping("/permission/")
     @RequirePermission
     @VerifyTenantId
-    public Object searchUserByName(@PathVariable("tenantId") String tenantId, @RequestParam("index") int pageIndex,
+    public AjaxResult searchUserByName(@PathVariable("tenantId") String tenantId, @RequestParam("index") int pageIndex,
             @RequestParam("perPage") int perPage, @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
         Page<Permission> page = permissionMapper.getPermissionByTenantId(tenantId);
@@ -130,7 +130,7 @@ public class PermissionController {
     }
 
     @PutMapping("/permission/{permissionId}/{dataPermissionFlag}")
-    public Object setDataPermission(HttpServletRequest request, @PathVariable("tenantId") String tenantId,
+    public AjaxResult setDataPermission(HttpServletRequest request, @PathVariable("tenantId") String tenantId,
             @PathVariable("permissionId") Long permissionId,
             @PathVariable("dataPermissionFlag") String dataPermissionFlag, @RequestHeader("Authorization") String jwt) {
         Permission perm = permissionService.selectById(permissionId);
@@ -173,7 +173,7 @@ public class PermissionController {
     @UserLoginToken
     @VerifyTenantId
     @GetMapping("/application/{applicationId}/permission/{permissionName}")
-    public Object searchPermissionByNamePrefix(@PathVariable("tenantId") String tenantId,
+    public AjaxResult searchPermissionByNamePrefix(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt, @PathVariable("applicationId") Long applicationId,
             @PathVariable("permissionName") String permissionName) {
         UserApplication application = applicationService.selectById(applicationId);
@@ -185,7 +185,7 @@ public class PermissionController {
     }
 
     @GetMapping("/application/{applicationId}/permission/url/")
-    public Object getDataPermissionLevelByAlias(@PathVariable("tenantId") String tenantId,
+    public AjaxResult getDataPermissionLevelByAlias(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt, @PathVariable("applicationId") Long applicationId,
             @RequestParam("url") String url) {
         UserApplication application = applicationService.selectById(applicationId);
@@ -264,7 +264,7 @@ public class PermissionController {
 
     // Role authorization
     @PostMapping("/permission/role/{roleId}")
-    public Object assignPermissionToRole(
+    public AjaxResult assignPermissionToRole(
             @PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt,
             @RequestBody Map<String, Object> map,
@@ -292,7 +292,7 @@ public class PermissionController {
     }
 
     @PostMapping("/permission/userGroup/{groupId}")
-    public Object assignPermissionToGroup(@PathVariable("tenantId") String tenantId,
+    public AjaxResult assignPermissionToGroup(@PathVariable("tenantId") String tenantId,
             @RequestBody Map<String, String> params,
             HttpServletRequest httpServletRequest) {
         String groupId = params.get("groupId");
@@ -320,7 +320,7 @@ public class PermissionController {
     }
 
     @GetMapping("/userInfo")
-    public Object getUserInfo(@RequestHeader("Authorization") String jwt) {
+    public AjaxResult getUserInfo(@RequestHeader("Authorization") String jwt) {
         if (StringUtils.isEmpty(jwt)) {
             return null;
         }
@@ -354,7 +354,7 @@ public class PermissionController {
     }
 
     @GetMapping("/permissionTree/application/{applicationId}/user/{userId}")
-    public Object getPermissionTree(@PathVariable("tenantId") String tenantId,
+    public AjaxResult getPermissionTree(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt,
             @PathVariable("applicationId") Long applicationId,
             @PathVariable("userId") Long userId) {
@@ -431,7 +431,7 @@ public class PermissionController {
 
     // Role authorization back
     @RequestMapping(value = "/permission/and/application/all/role/{roleId}", method = RequestMethod.GET)
-    public Object getPermissionAndApplicationByRole(
+    public AjaxResult getPermissionAndApplicationByRole(
             HttpServletRequest request,
             @PathVariable("roleId") Long roleId,
             @PathVariable("tenantId") String tenantId) {
@@ -515,7 +515,7 @@ public class PermissionController {
 
     // Grouping authorization back
     @RequestMapping(value = "/permission/and/application/all/group/{groupId}", method = RequestMethod.GET)
-    public Object getPermissionAndApplicationByGroup(
+    public AjaxResult getPermissionAndApplicationByGroup(
             HttpServletRequest request,
             @PathVariable("groupId") Long groupId,
             @PathVariable("tenantId") String tenantId) {
@@ -598,7 +598,7 @@ public class PermissionController {
 
     // Retrieve Tenant App Related resource drop -down box
     @RequestMapping(value = "/permission/and/application/all/user/{userId}", method = RequestMethod.GET)
-    public Object getPermissionAndApplicationByAll(
+    public AjaxResult getPermissionAndApplicationByAll(
             HttpServletRequest request,
             @PathVariable("userId") Long userId,
             @PathVariable("tenantId") String tenantId) {
@@ -710,7 +710,7 @@ public class PermissionController {
     @GetMapping("/dataPermissionTree/application/{applicationId}/")
     @RequirePermission
     @VerifyTenantId
-    public Object getDataPermissionTree(@PathVariable("tenantId") String tenantId,
+    public AjaxResult getDataPermissionTree(@PathVariable("tenantId") String tenantId,
             @RequestHeader("Authorization") String jwt, @PathVariable("applicationId") Long applicationId) {
         Map<Long, JSONObject> permissionTreeMap = new ConcurrentHashMap<Long, JSONObject>();
         // Configuration Root node
@@ -745,7 +745,7 @@ public class PermissionController {
     }
 
     @PostMapping(value = "/application/{applicationId}/permission")
-    public Object createPermission(
+    public AjaxResult createPermission(
             @RequestBody Permission permission,
             @RequestHeader("Authorization") String jwt,
             @PathVariable("applicationId") Long applicationId,
@@ -916,7 +916,7 @@ public class PermissionController {
      * @return Result<List < TreeModel>>
      */
     @RequestMapping(value = "/permission/dropDownParent/{applicationId}", method = RequestMethod.GET)
-    public Object dropDownParentPermission(
+    public AjaxResult dropDownParentPermission(
             @PathVariable("tenantId") String tenantId,
             @PathVariable("applicationId") Long applicationId) {
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
@@ -1080,7 +1080,7 @@ public class PermissionController {
 
     // Resource tree view all resources under this TENANT
     @GetMapping("/order/permissionTree/{disabled}/{applicationId}")
-    public Object getPermissionOrderTreeByTenantId(@PathVariable("tenantId") String tenantId,
+    public AjaxResult getPermissionOrderTreeByTenantId(@PathVariable("tenantId") String tenantId,
             @PathVariable("applicationId") Long applicationId,
             @PathVariable("disabled") boolean disabled) {
         List<TreeModel> list = permissionService.getPermissionTreeByTenantId(tenantId, applicationId, 1L);
@@ -1108,7 +1108,7 @@ public class PermissionController {
 
     // App Management resources Pagination
     @GetMapping("/permission/list/{applicationId}")
-    public Object list(
+    public AjaxResult list(
             @PathVariable("tenantId") String tenantId,
             @PathVariable("applicationId") Long applicationId,
             @RequestParam Map<String, Object> map) {
@@ -1173,7 +1173,7 @@ public class PermissionController {
 
     // AppManagement resource UPDATE and viewing
     @RequestMapping(value = "/permission/edit", method = RequestMethod.GET)
-    public Object edit(String id) {
+    public AjaxResult edit(String id) {
 
         PermissionInfoVO bean = permissionService.getPermissionsById(id);
 
@@ -1182,7 +1182,7 @@ public class PermissionController {
 
     // Update resource
     @RequestMapping(value = "/permission", method = RequestMethod.PUT)
-    public Object update(@RequestBody Permission bean) {
+    public AjaxResult update(@RequestBody Permission bean) {
 
         try {
             int success = permissionService.updatePermission(bean);
@@ -1199,7 +1199,7 @@ public class PermissionController {
 
     // Delete resource
     @RequestMapping(value = "/permission", method = RequestMethod.DELETE)
-    public Object del(String id, HttpServletRequest request, HttpServletResponse response,
+    public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response,
             @PathVariable("tenantId") String tenantId) {
 
         String[] split;
@@ -1240,7 +1240,7 @@ public class PermissionController {
 
     // DATA permissions Tenant ID resource ID under this resource
     @RequestMapping(value = "/permission/{permissionId}/data", method = RequestMethod.GET)
-    public Object getDataPermissionById(
+    public AjaxResult getDataPermissionById(
             @PathVariable("tenantId") String tenantId,
             @PathVariable("permissionId") String permissionId,
             HttpServletRequest request) {
@@ -1267,7 +1267,7 @@ public class PermissionController {
 
     // Import
     @RequestMapping(value = "/permission/bulk", method = RequestMethod.POST)
-    public Object userBulkUpload(
+    public AjaxResult userBulkUpload(
             @RequestParam("file") MultipartFile multipartfile,
             @RequestParam("nonce") String nonce,
             @RequestHeader("Authorization") String jwt) {

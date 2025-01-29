@@ -155,7 +155,7 @@ public class UserController {
 	@PostMapping("/password/reset/user/{userId}")
 	@RequirePermission()
 	@VerifyTenantId
-	public Object resetPassword(@PathVariable("userId") Long userId,
+	public AjaxResult resetPassword(@PathVariable("userId") Long userId,
 			@PathVariable("tenantId") String tenantId) {
 		User user = userService.selectById(userId);
 		if (user == null) {
@@ -301,7 +301,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/list/override", method = RequestMethod.PUT)
-	public Object overrideUsers(HttpServletResponse response,
+	public AjaxResult overrideUsers(HttpServletResponse response,
 			@RequestBody List<User> userList,
 			@PathVariable("tenantId") String tenantId) {
 		for (User user : userList) {
@@ -637,7 +637,8 @@ public class UserController {
 
 	// View personal authorization permission
 	@RequestMapping(value = "/user/permission", method = RequestMethod.GET)
-	public Object getPermissionByUser(HttpServletRequest request, Long id, @PathVariable("tenantId") String tenantId) {
+	public AjaxResult getPermissionByUser(HttpServletRequest request, Long id,
+			@PathVariable("tenantId") String tenantId) {
 		String tenantIdData = "";
 		String[] tenantStr = tenantId.split("_");
 		if (tenantStr != null && tenantStr.length > 1) {
@@ -657,7 +658,7 @@ public class UserController {
 
 	// Check the final authorization
 	@RequestMapping(value = "/user/permission/all", method = RequestMethod.GET)
-	public Object getPermissionByAll(HttpServletRequest request,
+	public AjaxResult getPermissionByAll(HttpServletRequest request,
 			Long id,
 			@PathVariable("tenantId") String tenantId) {
 
@@ -680,7 +681,7 @@ public class UserController {
 
 	// Save Operation
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public Object save(@RequestBody User bean,
+	public AjaxResult save(@RequestBody User bean,
 			@PathVariable("tenantId") String tenantId,
 			HttpServletRequest request, HttpServletResponse response) {
 		// Account number: Need to do unique certification, the User account in the
@@ -776,7 +777,8 @@ public class UserController {
 
 	// Update Operation
 	@RequestMapping(value = "/user", method = RequestMethod.PUT)
-	public Object update(@RequestBody User bean, @PathVariable("tenantId") String tenantId, HttpServletRequest request,
+	public AjaxResult update(@RequestBody User bean, @PathVariable("tenantId") String tenantId,
+			HttpServletRequest request,
 			HttpServletResponse response) {
 
 		// loginNameThe account cannot be empty
@@ -862,7 +864,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/userInfo", method = RequestMethod.PUT)
-	public Object updateUserInfo(@RequestBody User bean, HttpServletRequest request,
+	public AjaxResult updateUserInfo(@RequestBody User bean, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		// Effect Data
@@ -885,7 +887,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/userDetail/{userId}", method = RequestMethod.GET)
-	public Object getUserDetail(@PathVariable("tenantId") String tenantId, @PathVariable("userId") Long userId,
+	public AjaxResult getUserDetail(@PathVariable("tenantId") String tenantId, @PathVariable("userId") Long userId,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		// Effect Data
@@ -907,7 +909,7 @@ public class UserController {
 
 	// Delete Operation
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 
 		String[] split;
 		if (id.contains(",")) {
@@ -943,7 +945,7 @@ public class UserController {
 
 	// Switch theme
 	@RequestMapping(value = "/user/{userId}/theme/{theme}", method = RequestMethod.PUT)
-	public Object switchTheme(@PathVariable("tenantId") String tenantId,
+	public AjaxResult switchTheme(@PathVariable("tenantId") String tenantId,
 			@PathVariable("userId") Long userId,
 			@PathVariable("theme") String theme,
 			HttpServletRequest request) {
@@ -984,7 +986,7 @@ public class UserController {
 	}
 
 	@GetMapping("/admin")
-	public Object getAdmin(@RequestHeader("Authorization") String jwt,
+	public AjaxResult getAdmin(@RequestHeader("Authorization") String jwt,
 			@PathVariable("tenantCode") String tenantCode) {
 
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userService.getAdminByTenantCode(tenantCode));
@@ -994,7 +996,7 @@ public class UserController {
 	// Tenant Configuration administrator
 	@PostMapping("/admin")
 	@Transactional(rollbackFor = Exception.class)
-	public Object addAdmin(@RequestHeader("Authorization") String jwt,
+	public AjaxResult addAdmin(@RequestHeader("Authorization") String jwt,
 			@PathVariable("tenantId") String tenantId,
 			@RequestBody User user, HttpServletRequest request) {
 		if (StringUtil.isEmpty(user.getCellPhone())) {
@@ -1122,7 +1124,7 @@ public class UserController {
 
 	// Import
 	@RequestMapping(value = "/user/bulk", method = RequestMethod.POST)
-	public Object userBulkUpload(
+	public Map<String, Object> userBulkUpload(
 			@RequestParam("file") MultipartFile multipartfile,
 			@RequestParam("nonce") String nonce,
 			@RequestHeader("Authorization") String jwt)
@@ -1343,7 +1345,7 @@ public class UserController {
 
 	// Update Password
 	@RequestMapping(value = "/user/newPassword/user/{userId}", method = RequestMethod.POST)
-	public Object password(@RequestBody Map<String, Object> map, @PathVariable("userId") Long userId,
+	public AjaxResult password(@RequestBody Map<String, Object> map, @PathVariable("userId") Long userId,
 			@PathVariable("tenantId") String tenantId, HttpServletRequest request) {
 
 		String pazzword = EncryptionUtils.getHash3(map.get("password").toString(), "SHA");
@@ -1371,7 +1373,7 @@ public class UserController {
 
 	// Tenant Drop -down box
 	@GetMapping("/admin/{tenantCode}")
-	public Object selectTenant(@PathVariable("tenantId") String tenantId,
+	public AjaxResult selectTenant(@PathVariable("tenantId") String tenantId,
 			@PathVariable("tenantCode") String tenantCode) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userService.getAdminByTenantCode(tenantCode));
 	}

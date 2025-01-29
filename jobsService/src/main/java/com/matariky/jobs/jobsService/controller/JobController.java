@@ -78,7 +78,7 @@ public class JobController {
      * Save Scheduled Task
      */
     @PostMapping
-    public Object addJob(@Valid JobForm form, @PathVariable("tenantId") String tenantId) {
+    public ResponseEntity<JSONObject> addJob(@Valid JobForm form, @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(form.getJobClassName(), form.getJobGroupName());
         if (jobExists) {
             return new ResponseEntity<JSONObject>(commonDictService.getServiceMessage(
@@ -105,7 +105,7 @@ public class JobController {
      * Save inventory Scheduled Task
      */
     @PostMapping("addInventoryJob")
-    public Object addInventoryJob(@Valid @RequestBody InventoryJobForm form,
+    public ResponseEntity<JSONObject> addInventoryJob(@Valid @RequestBody InventoryJobForm form,
             @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeInventoryTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
@@ -163,7 +163,7 @@ public class JobController {
      * Save Label Generation Scheduled Task
      */
     @PostMapping("addRfidCreateJob")
-    public Object addRfidCreateJob(@Valid @RequestBody RfidCreateJobForm form,
+    public ResponseEntity<JSONObject> addRfidCreateJob(@Valid @RequestBody RfidCreateJobForm form,
             @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeRfidCreateTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
@@ -192,7 +192,7 @@ public class JobController {
      * Save Label Print Scheduled Task
      */
     @PostMapping("addRfidPrintJob")
-    public Object addRfidPrintJob(@Valid @RequestBody RfidPrintJobForm form,
+    public ResponseEntity<JSONObject> addRfidPrintJob(@Valid @RequestBody RfidPrintJobForm form,
             @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeRfidPrintTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {
@@ -221,7 +221,7 @@ public class JobController {
      * Save Label Import Scheduled Task
      */
     @PostMapping("addRfidUploadJob")
-    public Object addRfidUploadJob(@Valid @RequestBody RfidUploadJobForm form,
+    public ResponseEntity<JSONObject> addRfidUploadJob(@Valid @RequestBody RfidUploadJobForm form,
             @PathVariable("tenantId") String tenantId) {
         Boolean jobExists = jobService.getJob(TapeRfidUploadTaskJob.class.getName(), form.getTaskId().toString());
         if (jobExists) {

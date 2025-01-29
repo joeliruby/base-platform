@@ -76,7 +76,7 @@ public class BasicLogDeviceController {
 	}
 
 	@RequestMapping("/basicLogDevice/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public PageInfo<BasicLogDevice> daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -156,7 +156,7 @@ public class BasicLogDeviceController {
 	}
 
 	@RequestMapping(value = "/basicLogDevice/{basicLogDeviceId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicLogDeviceId") Long id, HttpServletRequest request,
+	public BasicLogDevice  getOne(@PathVariable("/basicLogDeviceId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return basicLogDeviceService.selectById(id);
 	}

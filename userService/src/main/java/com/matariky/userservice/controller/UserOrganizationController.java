@@ -61,7 +61,7 @@ public class UserOrganizationController {
     UserGroupService groupService;
 
     @RequestMapping("/userOrganization/list")
-    public Object list(HttpServletRequest request, UserOrganization bean, @PathVariable("tenantId") String tenantId,
+    public AjaxResult list(HttpServletRequest request, UserOrganization bean, @PathVariable("tenantId") String tenantId,
             @RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage,
             @RequestHeader("Authorization") String jwt) {
         PageHelper.startPage(pageIndex, perPage);
@@ -70,7 +70,8 @@ public class UserOrganizationController {
     }
 
     @RequestMapping(value = "/userOrganization/edit", method = RequestMethod.GET)
-    public Object edit(HttpServletRequest request, @RequestParam String id, @PathVariable("tenantId") String tenantId) {
+    public AjaxResult edit(HttpServletRequest request, @RequestParam String id,
+            @PathVariable("tenantId") String tenantId) {
         UserOrganization bean = userOrganizationService.getUserOrganizationById(id);
         Tenant selectBytenantCode = tenantService.selectBytenantCode(bean.getTenantId());
         if (selectBytenantCode != null) {
@@ -85,7 +86,7 @@ public class UserOrganizationController {
 
     // New Subordinate
     @RequestMapping(value = "/userOrganization/create/parentId/{parentId}", method = RequestMethod.GET)
-    public Object create(HttpServletRequest request,
+    public AjaxResult create(HttpServletRequest request,
             @PathVariable("tenantId") String tenantId,
             @PathVariable("parentId") Long parentId) {
         JSONObject jsonObject = new JSONObject();
@@ -97,7 +98,7 @@ public class UserOrganizationController {
     }
 
     @RequestMapping(value = "/userOrganization", method = RequestMethod.POST)
-    public Object save(
+    public AjaxResult save(
             @RequestBody UserOrganization bean,
             @PathVariable("tenantId") String tenantId,
             HttpServletRequest request, HttpServletResponse response) {
@@ -176,7 +177,7 @@ public class UserOrganizationController {
     }
 
     @RequestMapping(value = "/userOrganization", method = RequestMethod.DELETE)
-    public Object del(String id, @PathVariable("tenantId") String tenantId, HttpServletRequest request,
+    public AjaxResult del(String id, @PathVariable("tenantId") String tenantId, HttpServletRequest request,
             HttpServletResponse response) {
 
         String code = userOrganizationService.getParentcodeByParentId(Long.parseLong(id), tenantId);
@@ -207,7 +208,7 @@ public class UserOrganizationController {
      * @return
      */
     @RequestMapping(value = "/userOrganization/treeList", method = RequestMethod.GET)
-    public Object queryTreeList(@PathVariable("tenantId") String tenantId) {
+    public AjaxResult queryTreeList(@PathVariable("tenantId") String tenantId) {
 
         List<TreeModel> treeList = userOrganizationService.getOrganizationTree(tenantId);
 
@@ -237,7 +238,7 @@ public class UserOrganizationController {
 
     // View organizational architecture
     @RequestMapping(value = "/userOrganization/view/treeList", method = RequestMethod.GET)
-    public Object queryTreeListView(@PathVariable("tenantId") String tenantId,
+    public AjaxResult queryTreeListView(@PathVariable("tenantId") String tenantId,
             @RequestParam String code) {
 
         List<TreeModel> treeList = userOrganizationService.queryTreeListView(tenantId, code);
@@ -245,7 +246,7 @@ public class UserOrganizationController {
     }
 
     @GetMapping("/userOrganization/all")
-    public Object selectUserAllByTenantId(@PathVariable("tenantId") String tenantId) {
+    public AjaxResult selectUserAllByTenantId(@PathVariable("tenantId") String tenantId) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("tenant_id", tenantId);
         columnMap.put("delete_time", 0);

@@ -76,7 +76,7 @@ public class BasicLogNetworkController {
 	}
 
 	@RequestMapping("/basicLogNetwork/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public PageInfo<BasicLogNetwork> daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -156,7 +156,7 @@ public class BasicLogNetworkController {
 	}
 
 	@RequestMapping(value = "/basicLogNetwork/{basicLogNetworkId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicLogNetworkId") Long id, HttpServletRequest request,
+	public BasicLogNetwork  getOne(@PathVariable("/basicLogNetworkId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return basicLogNetworkService.selectById(id);
 	}

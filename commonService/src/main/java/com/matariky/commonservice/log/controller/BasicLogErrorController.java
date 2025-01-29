@@ -76,7 +76,7 @@ public class BasicLogErrorController {
 	}
 
 	@RequestMapping("/basicLogError/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public PageInfo<BasicLogError> daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -156,7 +156,7 @@ public class BasicLogErrorController {
 	}
 
 	@RequestMapping(value = "/basicLogError/{basicLogErrorId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicLogErrorId") Long id, HttpServletRequest request,
+	public BasicLogError  getOne(@PathVariable("/basicLogErrorId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return basicLogErrorService.selectById(id);
 	}

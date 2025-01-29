@@ -58,7 +58,7 @@ public class CommonAccessLogController {
 	private RedisUtils redisUtils;
 
 	@RequestMapping("/commonAccessLog/list")
-	public Object list(HttpServletRequest request,
+	public AjaxResult list(HttpServletRequest request,
 			@RequestParam Map<String, Object> params,
 			@PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt) {
@@ -75,7 +75,7 @@ public class CommonAccessLogController {
 	}
 
 	@GetMapping("/commonAccessLog/daclist")
-	public Object daclist(HttpServletRequest request,
+	public AjaxResult daclist(HttpServletRequest request,
 			@RequestParam Map<String, Object> params,
 			@PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt) {
@@ -123,7 +123,7 @@ public class CommonAccessLogController {
 	}
 
 	@RequestMapping(value = "/commonAccessLog/{commonAccessLogId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("commonAccessLogId") String id, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("commonAccessLogId") String id, HttpServletRequest request,
 			HttpServletResponse response) {
 		CommonAccessLog log = commonAccessLogService.getCommonAccessLogById(id);
 		Date date = new Date(log.getAccessTime());
@@ -253,7 +253,7 @@ public class CommonAccessLogController {
 	}
 
 	@RequestMapping(value = "/commonAccessLog", method = RequestMethod.POST)
-	public Object save(CommonAccessLog bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult save(CommonAccessLog bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = commonAccessLogService.createCommonAccessLog(bean);
 			if (success > 0) {
@@ -268,7 +268,7 @@ public class CommonAccessLogController {
 	}
 
 	@RequestMapping(value = "/commonAccessLog", method = RequestMethod.PUT)
-	public Object update(CommonAccessLog bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult update(CommonAccessLog bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = commonAccessLogService.updateCommonAccessLog(bean);
 			if (success > 0) {
@@ -283,7 +283,7 @@ public class CommonAccessLogController {
 	}
 
 	@RequestMapping(value = "/commonAccessLog", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int success = commonAccessLogService.delCommonAccessLogById(Integer.parseInt(id));
 			if (success > 0) {

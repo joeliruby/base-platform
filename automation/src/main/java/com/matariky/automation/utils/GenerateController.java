@@ -72,7 +72,7 @@ public class GenerateController {
 		CONTROLLER_TEMPLATE.append("\t//PAGINATION\n");
 		CONTROLLER_TEMPLATE.append("\t@RequestMapping(\"/[xtablename]/list\")\n");
 		CONTROLLER_TEMPLATE.append(
-				"\tpublic Object list(HttpServletRequest request,[tablename] bean, @ApiParam(value = \"TENANTID\", required = true) @PathVariable(\"tenantId\") String tenantId, @ApiParam(value = \"PAGE INDEX\", required = true) @RequestParam(\"index\") int pageIndex,@ApiParam(value = \"PAGE SIZE\", required = true) @RequestParam(\"perPage\") int perPage, @ApiParam(value = \"JWT Token\", required = true) @RequestHeader(\"Authorization\") String jwt) {\n");
+				"\tpublic AjaxResult list(HttpServletRequest request,[tablename] bean, @ApiParam(value = \"TENANTID\", required = true) @PathVariable(\"tenantId\") String tenantId, @ApiParam(value = \"PAGE INDEX\", required = true) @RequestParam(\"index\") int pageIndex,@ApiParam(value = \"PAGE SIZE\", required = true) @RequestParam(\"perPage\") int perPage, @ApiParam(value = \"JWT Token\", required = true) @RequestHeader(\"Authorization\") String jwt) {\n");
 		CONTROLLER_TEMPLATE.append("\t\tPageHelper.startPage(pageIndex, perPage);\n");
 		CONTROLLER_TEMPLATE.append(
 				"\t\tPageInfo<[tablename]> page = new PageInfo( [xtablename]Service.get[tablename]All(bean));\n");
@@ -81,7 +81,7 @@ public class GenerateController {
 
 		CONTROLLER_TEMPLATE.append("\t@RequestMapping(\"/[xtablename]/daclist\")\n");
 		CONTROLLER_TEMPLATE.append(
-				"\tpublic Object daclist(HttpServletRequest request,@ApiIgnore @RequestParam Map<String, Object> params,	@ApiParam(value = \"TENANT ID\", required = true) @PathVariable(\"tenantId\") String tenantId,	@ApiParam(value = \"JWT Token\", required = true) @RequestHeader(\"Authorization\") String jwt) {\n");
+				"\tpublic AjaxResult daclist(HttpServletRequest request,@ApiIgnore @RequestParam Map<String, Object> params,	@ApiParam(value = \"TENANT ID\", required = true) @PathVariable(\"tenantId\") String tenantId,	@ApiParam(value = \"JWT Token\", required = true) @RequestHeader(\"Authorization\") String jwt) {\n");
 		CONTROLLER_TEMPLATE.append("\t\t\t String hid=request.getHeader(\"id\");\n");
 		CONTROLLER_TEMPLATE.append("\t\t\tString resourceIdDictKey=\"dp\"+hid.substring(0, hid.length()-1);\n");
 		CONTROLLER_TEMPLATE.append(
@@ -118,7 +118,7 @@ public class GenerateController {
 		CONTROLLER_TEMPLATE.append("\t//SAVE\n");
 		CONTROLLER_TEMPLATE.append("\t@RequestMapping(value = \"/[xtablename]\",method = RequestMethod.POST)\n");
 		CONTROLLER_TEMPLATE.append(
-				"\tpublic Object save(@RequestBody [tablename] bean,HttpServletRequest request, HttpServletResponse response) {\n");
+				"\tpublic AjaxResult save(@RequestBody [tablename] bean,HttpServletRequest request, HttpServletResponse response) {\n");
 		CONTROLLER_TEMPLATE.append("\t\ttry{\n");
 		CONTROLLER_TEMPLATE
 				.append("\t\t\tint success = [xtablename]Service.create[tablename]WithOrg(bean, request);\n");
@@ -135,7 +135,7 @@ public class GenerateController {
 		CONTROLLER_TEMPLATE.append("\t//UPDATE\n");
 		CONTROLLER_TEMPLATE.append("\t@RequestMapping(value = \"/[xtablename]\",method = RequestMethod.PUT)\n");
 		CONTROLLER_TEMPLATE.append(
-				"\tpublic Object update(@RequestBody [tablename] bean,HttpServletRequest request, HttpServletResponse response) {\n");
+				"\tpublic AjaxResult update(@RequestBody [tablename] bean,HttpServletRequest request, HttpServletResponse response) {\n");
 		CONTROLLER_TEMPLATE.append("\t\ttry{\n");
 		CONTROLLER_TEMPLATE.append("\t\t\tint success = [xtablename]Service.update[tablename](bean);\n");
 		CONTROLLER_TEMPLATE.append("\t\t\t\tif(success > 0){\n");
@@ -152,7 +152,7 @@ public class GenerateController {
 		CONTROLLER_TEMPLATE.append("\t//DELETE\n");
 		CONTROLLER_TEMPLATE.append("\t@RequestMapping(value = \"/[xtablename]\",method = RequestMethod.DELETE)\n");
 		CONTROLLER_TEMPLATE
-				.append("\tpublic Object del(String id,HttpServletRequest request, HttpServletResponse response) {\n");
+				.append("\tpublic AjaxResult del(String id,HttpServletRequest request, HttpServletResponse response) {\n");
 		CONTROLLER_TEMPLATE.append("\t\ttry{\n");
 		CONTROLLER_TEMPLATE.append("\t\t\tBoolean success = [xtablename]Service.deleteById(Long.parseLong(id));\n");
 		CONTROLLER_TEMPLATE.append("\t\t\t\tif(success ){\n");
@@ -170,7 +170,7 @@ public class GenerateController {
 		CONTROLLER_TEMPLATE
 				.append("\t@RequestMapping(value = \"/[xtablename]/{[xtablename]Id}\",method = RequestMethod.GET)\n");
 		CONTROLLER_TEMPLATE.append(
-				"\tpublic Object getOne(@PathVariable(\"/[xtablename]Id\") Long id, HttpServletRequest request, HttpServletResponse response) {\n");
+				"\tpublic AjaxResult getOne(@PathVariable(\"/[xtablename]Id\") Long id, HttpServletRequest request, HttpServletResponse response) {\n");
 		CONTROLLER_TEMPLATE.append(
 				"\t\t\t return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,[xtablename]Service.selectById(id));\n");
 		CONTROLLER_TEMPLATE.append("}\n\n\n");

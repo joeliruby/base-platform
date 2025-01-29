@@ -63,7 +63,7 @@ public class BasicBaseDevicePackageController {
 
     @ApiOperation(value = "Query Detail By ID")
     @GetMapping(value = "/basicBaseDevicepackage/{id}")
-    public Object getOne(@PathVariable Long id) {
+    public AjaxResult getOne(@PathVariable Long id) {
         BasicBaseDevicePackage info = basicBaseDevicepackageService.selectById(id);
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, info);
     }

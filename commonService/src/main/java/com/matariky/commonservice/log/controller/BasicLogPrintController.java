@@ -76,7 +76,7 @@ public class BasicLogPrintController {
 	}
 
 	@RequestMapping("/basicLogPrint/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public PageInfo<BasicLogPrint> daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -156,7 +156,7 @@ public class BasicLogPrintController {
 	}
 
 	@RequestMapping(value = "/basicLogPrint/{basicLogPrintId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicLogPrintId") Long id, HttpServletRequest request,
+	public BasicLogPrint  getOne(@PathVariable("/basicLogPrintId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return basicLogPrintService.selectById(id);
 	}

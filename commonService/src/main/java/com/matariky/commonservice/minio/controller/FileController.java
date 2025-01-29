@@ -23,7 +23,7 @@ public class FileController {
 
 	@RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
 	@ResponseBody
-	public Object fileupload(@RequestParam MultipartFile uploadfile, @RequestParam String bucket,
+	public AjaxResult fileupload(@RequestParam MultipartFile uploadfile, @RequestParam String bucket,
 			@RequestParam(required = false) String objectName) throws Exception {
 		minioUtil.createBucket(bucket);
 		if (objectName != null) {

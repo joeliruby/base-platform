@@ -39,7 +39,7 @@ public class BasicBaseRfidfactoryController {
 
 	@ApiOperation(value = "Pagination", response = BasicBaseRfidfactory.class)
 	@RequestMapping("/basicBaseRfidfactory/list")
-	public Object list(HttpServletRequest request, BasicBaseRfidfactory bean,
+	public AjaxResult list(HttpServletRequest request, BasicBaseRfidfactory bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
@@ -57,7 +57,7 @@ public class BasicBaseRfidfactoryController {
 
 	@ApiOperation(value = "New")
 	@PostMapping(value = "/basicBaseRfidfactory")
-	public Object save(@RequestBody @Validated BasicBaseRfidfactoryAddVO bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody @Validated BasicBaseRfidfactoryAddVO bean, HttpServletRequest request,
 			HttpServletResponse response, @PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt) {
 		try {
@@ -78,7 +78,7 @@ public class BasicBaseRfidfactoryController {
 
 	@ApiOperation(value = "Download")
 	@GetMapping(value = "/basicBaseRfidfactory/export/{id}")
-	public Object getExport(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id,
+	public AjaxResult getExport(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id,
 			@PathVariable("tenantId") String tenantId, @RequestHeader("Authorization") String jwt) {
 		return new AjaxResult(response.getStatus(), AjaxResult.SUCCESS,
 				basicBaseRfidfactoryService.download(response, id));
@@ -86,7 +86,7 @@ public class BasicBaseRfidfactoryController {
 
 	@ApiOperation(value = "Import")
 	@PostMapping("/basicBaseRfidfactory/importData")
-	public Object upload(@RequestParam("file") MultipartFile file, HttpServletRequest request,
+	public AjaxResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request,
 			HttpServletResponse response,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,

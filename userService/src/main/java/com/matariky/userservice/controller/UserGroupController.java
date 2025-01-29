@@ -57,7 +57,7 @@ public class UserGroupController {
 	private UserOrganizationService orgService;
 
 	@RequestMapping(value = "/userGroup/list", method = RequestMethod.GET)
-	public Object list(
+	public AjaxResult list(
 			HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
 			@PathVariable("tenantId") String tenantId
@@ -95,7 +95,7 @@ public class UserGroupController {
 	}
 
 	@RequestMapping(value = "/userGroup/edit", method = RequestMethod.GET)
-	public Object edit(
+	public AjaxResult edit(
 			HttpServletRequest request,
 			@RequestParam Long id,
 			@PathVariable("tenantId") String tenantId) {
@@ -126,7 +126,7 @@ public class UserGroupController {
 	}
 
 	@RequestMapping(value = "/userGroup", method = RequestMethod.POST)
-	public Object save(
+	public AjaxResult save(
 			@RequestBody @Valid UserGroup bean,
 			@PathVariable("tenantId") String tenantId,
 			HttpServletRequest request,
@@ -140,7 +140,7 @@ public class UserGroupController {
 	}
 
 	@RequestMapping(value = "/userGroup", method = RequestMethod.PUT)
-	public Object update(
+	public AjaxResult update(
 			@RequestBody @Valid UserGroup bean,
 			HttpServletRequest request,
 			HttpServletResponse response,
@@ -169,7 +169,7 @@ public class UserGroupController {
 	}
 
 	@RequestMapping(value = "/userGroup", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		String[] split = id.split(",");
 		int success = userGroupService.updateDeleteTimeById(split);
 		if (success > 0) {
@@ -182,14 +182,14 @@ public class UserGroupController {
 
 	// The drop -down box of the group
 	@GetMapping("/userGroup/box")
-	public Object selectGroup(@PathVariable("tenantId") String tenantId) {
+	public AjaxResult selectGroup(@PathVariable("tenantId") String tenantId) {
 		List<UserGroup> groupList = userGroupService.selectGroup(tenantId);
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, groupList);
 	}
 
 	// View authorization Detail
 	@RequestMapping(value = "/userGroup", method = RequestMethod.GET)
-	public Object getPermissionByGroup(HttpServletRequest request,
+	public AjaxResult getPermissionByGroup(HttpServletRequest request,
 			Long groupId,
 			@PathVariable("tenantId") String tenantId) {
 

@@ -116,7 +116,7 @@ public class LoginController {
      * @param key
      */
     @GetMapping(value = "/randomImage")
-    public Object randomImage(HttpServletResponse response, String uuid) {
+    public AjaxResult randomImage(HttpServletResponse response, String uuid) {
         try {
 
             String code = RandomUtil.randomString(BASE_CHECK_CODES, 4);
@@ -137,7 +137,8 @@ public class LoginController {
 
     @PostMapping("/renewal/application/{applicationId}")
     @PassToken
-    public Object renew(@RequestHeader("Authorization") String token, @PathVariable("applicationId") Long applicationId,
+    public AjaxResult renew(@RequestHeader("Authorization") String token,
+            @PathVariable("applicationId") Long applicationId,
             @RequestParam(name = "locale", required = false) String locale) {
         // Performing here token has been valid after verification
         // ,AuthenticationInterceptor
@@ -200,7 +201,7 @@ public class LoginController {
     @RequestMapping(value = "/tenant/{tenantId}/user/", method = RequestMethod.GET)
     @RequirePermission
     @VerifyTenantId
-    public Object searchUserByName(@PathVariable("tenantId") String tenantId,
+    public AjaxResult searchUserByName(@PathVariable("tenantId") String tenantId,
             @RequestParam("filter") String userNamePrefix, @RequestHeader("Authorization") String jwt) {
         List<User> userList = userService.searchByUserNamePrefix(tenantId, userNamePrefix);
         List<Map<String, Object>> formatedUserList = new ArrayList<Map<String, Object>>();
@@ -226,7 +227,7 @@ public class LoginController {
 
     @RequestMapping(value = "/tenant/{tenantId}/user/{id}", method = RequestMethod.GET)
     @Cacheable(key = "'user-'+#userId", value = "users")
-    public Object getUserById(@PathVariable("id") String userId) {
+    public AjaxResult getUserById(@PathVariable("id") String userId) {
         return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userService.findUserById(userId));
     }
 
@@ -234,7 +235,7 @@ public class LoginController {
     @PostMapping("/logout/user/{userId}")
     @PassToken
     @UserLoginToken
-    public Object logout(@PathVariable("userId") String userId, HttpServletRequest request) {
+    public AjaxResult logout(@PathVariable("userId") String userId, HttpServletRequest request) {
         String tenantId = TokenUtils.extractTenantIdFromHttpReqeust(request);
         if (tenantId == null) {
             throw new QslException(MessageKey.KEYCLOAK_TOKEN_NOT_EXIST);
@@ -251,7 +252,7 @@ public class LoginController {
     }
 
     @GetMapping("/IOTUserInfo/{userName}")
-    public Object iotUserByUsername(HttpServletRequest request, @PathVariable("userName") String userName) {
+    public AjaxResult iotUserByUsername(HttpServletRequest request, @PathVariable("userName") String userName) {
         String basicAuthStr = request.getHeader("authorization");
         byte[] decodedBytes = Base64.getDecoder().decode(basicAuthStr.substring(6));
         String decodedString = new String(decodedBytes);
@@ -270,7 +271,7 @@ public class LoginController {
     }
 
     @GetMapping("/IOTUserInfo/{userName}/credentials")
-    public Object iotCreentialsByUsername(HttpServletRequest request, @PathVariable("userName") String userName) {
+    public AjaxResult iotCreentialsByUsername(HttpServletRequest request, @PathVariable("userName") String userName) {
         String basicAuthStr = request.getHeader("authorization");
         byte[] decodedBytes = Base64.getDecoder().decode(basicAuthStr.substring(6));
         String decodedString = new String(decodedBytes);
@@ -291,7 +292,7 @@ public class LoginController {
     }
 
     @GetMapping("/IOTUserInfo")
-    public Object iOTUserInfo(HttpServletRequest request) {
+    public AjaxResult iOTUserInfo(HttpServletRequest request) {
         String basicAuthStr = request.getHeader("authorization");
         byte[] decodedBytes = Base64.getDecoder().decode(basicAuthStr.substring(6));
         String decodedString = new String(decodedBytes);
@@ -420,7 +421,7 @@ public class LoginController {
 
     @RequestMapping(value = "/userApplications/user/{loginName}", method = RequestMethod.GET)
     @PassToken
-    public Object userApplicationList(HttpServletRequest request, @PathVariable("loginName") String loginName,
+    public AjaxResult userApplicationList(HttpServletRequest request, @PathVariable("loginName") String loginName,
             @RequestParam("applicationType") Integer applicationType) {
         User userForBase = userService.findByUsername(loginName);
         if (userForBase == null) {

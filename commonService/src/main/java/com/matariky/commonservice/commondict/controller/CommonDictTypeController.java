@@ -37,7 +37,7 @@ public class CommonDictTypeController {
 	private CommonDictTypeService commonDictTypeService;
 
 	@RequestMapping(value = "/commonDictType/list", method = RequestMethod.GET)
-	public Object list(HttpServletRequest request,
+	public AjaxResult list(HttpServletRequest request,
 			@RequestParam Map<String, Object> params,
 			@PathVariable("tenantId") String tenantId) {
 		params.put("tenantId", tenantId);
@@ -59,7 +59,7 @@ public class CommonDictTypeController {
 	}
 
 	@RequestMapping(value = "/commonDictType/edit", method = RequestMethod.GET)
-	public Object edit(HttpServletRequest request, String id) {
+	public AjaxResult edit(HttpServletRequest request, String id) {
 
 		CommonDictType bean = commonDictTypeService.getCommonDictTypeById(id);
 
@@ -67,7 +67,7 @@ public class CommonDictTypeController {
 	}
 
 	@RequestMapping(value = "/commonDictType", method = RequestMethod.POST)
-	public Object save(@RequestBody CommonDictType bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult save(@RequestBody CommonDictType bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			bean.setIsActive(true);
 			bean.setTenantId(TokenUtils.extractTenantIdFromHttpReqeust(request));
@@ -84,7 +84,8 @@ public class CommonDictTypeController {
 	}
 
 	@RequestMapping(value = "/commonDictType", method = RequestMethod.PUT)
-	public Object update(@RequestBody CommonDictType bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult update(@RequestBody CommonDictType bean, HttpServletRequest request,
+			HttpServletResponse response) {
 		try {
 			int success = commonDictTypeService.updateCommonDictType(bean);
 			if (success > 0) {
@@ -99,7 +100,7 @@ public class CommonDictTypeController {
 	}
 
 	@RequestMapping(value = "/commonDictType", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 
 		String[] split;
 		if (id.contains(",")) {

@@ -70,7 +70,7 @@ public class CommonDictController {
 	}
 
 	@RequestMapping(value = "/commonDict/edit", method = RequestMethod.GET)
-	public Object edit(HttpServletRequest request, Long id) {
+	public AjaxResult edit(HttpServletRequest request, Long id) {
 
 		CommonDict bean = commonDictService.getCommonDictById(id);
 
@@ -79,7 +79,7 @@ public class CommonDictController {
 
 	@RequestMapping(value = "/commonDict/initialList", method = RequestMethod.GET)
 	@PassToken
-	public Object initialList(@PathVariable("tenantId") String tenantId) {
+	public AjaxResult initialList(@PathVariable("tenantId") String tenantId) {
 		List<Map<String, Object>> dictList = commonDictService.initialList(tenantId, locale);
 		Map<String, JSONObject> joMap = buildJOMap(dictList);
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, joMap);
@@ -101,7 +101,7 @@ public class CommonDictController {
 	}
 
 	@RequestMapping(value = "/commonDict", method = RequestMethod.POST)
-	public Object save(@RequestBody CommonDict bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult save(@RequestBody CommonDict bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			bean.setIsActive(true);
 			bean.setTenantId(TokenUtils.extractTenantIdFromHttpReqeust(request));
@@ -119,7 +119,7 @@ public class CommonDictController {
 	}
 
 	@RequestMapping(value = "/commonDict", method = RequestMethod.PUT)
-	public Object update(@RequestBody CommonDict bean, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult update(@RequestBody CommonDict bean, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			boolean success = commonDictService.updateById(bean);
 			if (success) {
@@ -134,7 +134,7 @@ public class CommonDictController {
 	}
 
 	@RequestMapping(value = "/commonDict", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 
 		String[] split;
 		if (id.contains(",")) {
@@ -157,7 +157,7 @@ public class CommonDictController {
 	}
 
 	@RequestMapping(value = "/commonDict/listByTypeKey", method = RequestMethod.GET)
-	public Object dictListByTypeKey(@PathVariable("tenantId") String tenantId,
+	public AjaxResult dictListByTypeKey(@PathVariable("tenantId") String tenantId,
 			String typeKey,
 			Long isActive,
 			Long deleteTime) {

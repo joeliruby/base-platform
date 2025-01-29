@@ -66,7 +66,7 @@ public class BasicBaseFormExtendController {
 	private CommonDictTypeService commonDictTypeService;
 
 	@RequestMapping("/basicBaseFormExtend/list")
-	public Object list(HttpServletRequest request, BasicBaseFormExtend bean,
+	public AjaxResult list(HttpServletRequest request, BasicBaseFormExtend bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
@@ -77,7 +77,7 @@ public class BasicBaseFormExtendController {
 	}
 
 	@RequestMapping("/basicBaseFormExtend/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -111,7 +111,7 @@ public class BasicBaseFormExtendController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormExtend", method = RequestMethod.POST)
-	public Object save(@RequestBody BasicBaseFormExtend bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody BasicBaseFormExtend bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseFormExtendService.createBasicBaseFormExtendWithOrg(bean, request);
@@ -127,7 +127,7 @@ public class BasicBaseFormExtendController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormExtend", method = RequestMethod.PUT)
-	public Object update(@RequestBody BasicBaseFormExtend bean, HttpServletRequest request,
+	public AjaxResult update(@RequestBody BasicBaseFormExtend bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseFormExtendService.updateBasicBaseFormExtend(bean);
@@ -143,7 +143,7 @@ public class BasicBaseFormExtendController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormExtend", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Boolean success = basicBaseFormExtendService.deleteById(Long.parseLong(id));
 			if (success) {
@@ -158,7 +158,7 @@ public class BasicBaseFormExtendController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormExtend/{basicBaseFormExtendId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicBaseFormExtendId") Long id, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("/basicBaseFormExtendId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseFormExtendService.selectById(id));
 	}

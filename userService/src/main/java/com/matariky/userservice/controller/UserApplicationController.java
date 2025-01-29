@@ -80,7 +80,7 @@ public class UserApplicationController {
 
 	// Check App Detail
 	@RequestMapping(value = "/userApplication/{applicationId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("applicationId") Long id, CommonLoginLog bean, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("applicationId") Long id, CommonLoginLog bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		UserApplication application = userApplicationService.selectById(id);
 
@@ -96,7 +96,7 @@ public class UserApplicationController {
 	}
 
 	@RequestMapping(value = "/userApplication/list", method = RequestMethod.GET)
-	public Object list(HttpServletRequest request,
+	public AjaxResult list(HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
 			@PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt) {
@@ -122,7 +122,7 @@ public class UserApplicationController {
 	}
 
 	@RequestMapping(value = "/userApplication/list/user/{userId}", method = RequestMethod.GET)
-	public Object listByUserId(HttpServletRequest request,
+	public AjaxResult listByUserId(HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
 			@PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt,
@@ -150,7 +150,7 @@ public class UserApplicationController {
 	}
 
 	@RequestMapping(value = "/userApplication/edit", method = RequestMethod.GET)
-	public Object edit(HttpServletRequest request, Long id) {
+	public AjaxResult edit(HttpServletRequest request, Long id) {
 
 		UserApplication bean = userApplicationService.getUserApplicationById(id);
 
@@ -167,7 +167,7 @@ public class UserApplicationController {
 	}
 
 	@RequestMapping(value = "/userApplication/{applicationId}", method = RequestMethod.POST)
-	public Object bindResourcesToTenantAndApplication(@RequestHeader("Authorization") String token,
+	public AjaxResult bindResourcesToTenantAndApplication(@RequestHeader("Authorization") String token,
 			@PathVariable("tenantId") String tenantId, @PathVariable("applicationId") Long applicationId,
 			@RequestBody String permissions) {
 		try {
@@ -199,7 +199,7 @@ public class UserApplicationController {
 	}
 
 	@RequestMapping(value = "/userApplication", method = RequestMethod.POST)
-	public Object save(@RequestBody UserApplicationDTO bean,
+	public AjaxResult save(@RequestBody UserApplicationDTO bean,
 			@RequestHeader("Authorization") String jwt,
 			HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -271,7 +271,7 @@ public class UserApplicationController {
 	}
 
 	@RequestMapping(value = "/userApplication", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String[] split;
 			if (id.contains(",")) {
@@ -294,7 +294,7 @@ public class UserApplicationController {
 
 	// App View resource
 	@RequestMapping(value = "/userApplication/TreeModel", method = RequestMethod.GET)
-	public Object getPermissionTreeModel(Long applicationId, @PathVariable("tenantId") String tenantId) {
+	public AjaxResult getPermissionTreeModel(Long applicationId, @PathVariable("tenantId") String tenantId) {
 		// 根据 App id Query
 		List<TreeModel> list = userApplicationService.getTreeListByApplicationId(applicationId);
 		List<TreeModel> build;
@@ -308,25 +308,25 @@ public class UserApplicationController {
 
 	// App Drop -down box
 	@GetMapping("/userApplication/box")
-	public Object selectApp(@PathVariable("tenantId") String tenantId) {
+	public AjaxResult selectApp(@PathVariable("tenantId") String tenantId) {
 		List<UserApplication> roleList = userApplicationService.selectApplication(tenantId);
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, roleList);
 	}
 
 	// all App
 	@GetMapping("/userApplication/appList")
-	public Object getAppList(@RequestParam("tenantId") String tenantId) {
+	public AjaxResult getAppList(@RequestParam("tenantId") String tenantId) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userApplicationService.getAppList(tenantId));
 	}
 
 	@GetMapping("/userApplication/appListAll")
-	public Object getAppListAll(@PathVariable("tenantId") String tenantId) {
+	public AjaxResult getAppListAll(@PathVariable("tenantId") String tenantId) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, userApplicationService.selectApplication(""));
 	}
 
 	// Tenant Managed Tenant App New
 	@RequestMapping(value = "/userApplication/userTenant", method = RequestMethod.PUT)
-	public Object addApplicationByTenant(@RequestBody UserApplication bean, HttpServletRequest request,
+	public AjaxResult addApplicationByTenant(@RequestBody UserApplication bean, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		userApplicationService.addApplicationByTenant(bean);
@@ -335,7 +335,7 @@ public class UserApplicationController {
 
 	// Tenant Management Tenant App View Detail
 	@RequestMapping(value = "/userApplication/userTenant/edit", method = RequestMethod.GET)
-	public Object getAppById(Long applicationId) {
+	public AjaxResult getAppById(Long applicationId) {
 		UserApplication bean = userApplicationService.getUserApplicationById(applicationId);
 
 		// View the existence of the middle watch Name
@@ -363,7 +363,7 @@ public class UserApplicationController {
 
 	// Tenant Managed Tenant App Pagination
 	@RequestMapping(value = "/userApplication/userTenant/list", method = RequestMethod.GET)
-	public Object tenantList(HttpServletRequest request,
+	public AjaxResult tenantList(HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
 			@PathVariable("tenantId") String tenantId, @RequestParam("id") String bizTenantId) {
 
@@ -392,7 +392,7 @@ public class UserApplicationController {
 	// Tenant Managed Tenant App 的Delete
 
 	@RequestMapping(value = "/userApplication/userTenant/del", method = RequestMethod.DELETE)
-	public Object delUserTenant(String id, @PathVariable("tenantId") String tenantId) {
+	public AjaxResult delUserTenant(String id, @PathVariable("tenantId") String tenantId) {
 
 		try {
 			String[] split;
@@ -411,7 +411,7 @@ public class UserApplicationController {
 
 	// App Image Source
 	@RequestMapping(value = "/userApplication/img", method = RequestMethod.GET)
-	public Object getImg(@PathVariable("tenantId") String tenantId) {
+	public List<Map<String, Object>> getImg(@PathVariable("tenantId") String tenantId) {
 		List<Map<String, Object>> lsitMaps = new ArrayList<>();
 		if (ClassUtils.getDefaultClassLoader().getResource("static/image") == null) {
 			return lsitMaps;
@@ -432,7 +432,7 @@ public class UserApplicationController {
 				}
 			}
 		}
-		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, lsitMaps);
+		return lsitMaps;
 	}
 
 	// Retrieve File Expand Name

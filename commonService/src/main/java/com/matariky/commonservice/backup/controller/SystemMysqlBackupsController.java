@@ -23,8 +23,6 @@ import com.matariky.exception.QslException;
 import com.matariky.utils.AjaxResult;
 import com.matariky.utils.BeanUtils;
 
-
-
 /**
  * ClassName:SystemMysqlBackupsController
  * Classification： MySQL Data Backup interface
@@ -33,41 +31,39 @@ import com.matariky.utils.BeanUtils;
 @RequestMapping(value = "/api/v1/system/baskups")
 public class SystemMysqlBackupsController {
 
-  
-
     @Autowired
     private SystemMysqlBackupsService systemMysqlBackupsService;
 
     @RequestMapping("/backupsList")
-    public Object backupsList(@RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage, @RequestHeader("Authorization") String jwt) {
-    	PageHelper.startPage(pageIndex, perPage);
+    public AjaxResult backupsList(@RequestParam("index") int pageIndex, @RequestParam("perPage") int perPage,
+            @RequestHeader("Authorization") String jwt) {
+        PageHelper.startPage(pageIndex, perPage);
         Page<SystemMysqlBackups> systemMysqlBackups = systemMysqlBackupsService.selectBackupsList();
-        PageInfo<SystemMysqlBackups> pi=new PageInfo<SystemMysqlBackups>();
+        PageInfo<SystemMysqlBackups> pi = new PageInfo<SystemMysqlBackups>();
         BeanUtils.copyProperties(systemMysqlBackups, pi);
         pi.setList(systemMysqlBackups.getResult());
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,pi);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, pi);
     }
 
     @PostMapping("/mysqlBackups")
-    public Object mysqlBackups() {
+    public AjaxResult mysqlBackups() {
         Object systemMysqlBackups = systemMysqlBackupsService.mysqlBackups();
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,systemMysqlBackups);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, systemMysqlBackups);
     }
 
     @PutMapping("/rollback")
-    public Object rollback( @RequestBody Map<String, Object> map) {
-    	String idS=(String)map.get("id");
-    	 if (StringUtils.isEmpty(idS) ) {
-         	throw new QslException(MessageKey.INVALID_DATA_ID);
-         }
+    public AjaxResult rollback(@RequestBody Map<String, Object> map) {
+        String idS = (String) map.get("id");
+        if (StringUtils.isEmpty(idS)) {
+            throw new QslException(MessageKey.INVALID_DATA_ID);
+        }
         Long id = Long.valueOf(idS.toString());
-       
+
         SystemMysqlBackups smb = systemMysqlBackupsService.selectListId(id);
-	     // Restore Database
-	    Object rollback = systemMysqlBackupsService.rollback(smb);
-	     // Update operation count
+        // Restore Database
+        Object rollback = systemMysqlBackupsService.rollback(smb);
+        // Update operation count
         systemMysqlBackupsService.updateById(smb);
-        return new AjaxResult(HttpStatus.OK.value(),AjaxResult.SUCCESS,rollback);
+        return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, rollback);
     }
 }
-

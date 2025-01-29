@@ -51,7 +51,7 @@ public class BasicBaseRfidtemplateController {
 	private CommonDictTypeService commonDictTypeService;
 
 	@RequestMapping("/basicBaseRfidtemplate/list")
-	public Object list(HttpServletRequest request, BasicBaseRfidtemplate bean,
+	public AjaxResult list(HttpServletRequest request, BasicBaseRfidtemplate bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
@@ -63,7 +63,7 @@ public class BasicBaseRfidtemplateController {
 	}
 
 	@RequestMapping("/basicBaseRfidtemplate/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -97,7 +97,7 @@ public class BasicBaseRfidtemplateController {
 	}
 
 	@RequestMapping(value = "/basicBaseRfidtemplate", method = RequestMethod.POST)
-	public Object save(@RequestBody BasicBaseRfidtemplate bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody BasicBaseRfidtemplate bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseRfidtemplateService.createBasicBaseRfidtemplateWithOrg(bean, request);
@@ -113,7 +113,7 @@ public class BasicBaseRfidtemplateController {
 	}
 
 	@RequestMapping(value = "/basicBaseRfidtemplate", method = RequestMethod.PUT)
-	public Object update(@RequestBody BasicBaseRfidtemplate bean, HttpServletRequest request,
+	public AjaxResult update(@RequestBody BasicBaseRfidtemplate bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseRfidtemplateService.updateBasicBaseRfidtemplate(bean);
@@ -129,7 +129,7 @@ public class BasicBaseRfidtemplateController {
 	}
 
 	@RequestMapping(value = "/basicBaseRfidtemplate", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Boolean success = basicBaseRfidtemplateService.deleteById(Long.parseLong(id));
 			if (success) {
@@ -144,7 +144,7 @@ public class BasicBaseRfidtemplateController {
 	}
 
 	@RequestMapping(value = "/basicBaseRfidtemplate/{basicBaseRfidtemplateId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicBaseRfidtemplateId") Long id, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("/basicBaseRfidtemplateId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseRfidtemplateService.selectById(id));
 	}

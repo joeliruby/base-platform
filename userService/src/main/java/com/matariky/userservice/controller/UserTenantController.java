@@ -68,7 +68,7 @@ public class UserTenantController {
 	String locale;
 
 	@RequestMapping(value = "/userTenant/list", method = RequestMethod.GET)
-	public Object list(
+	public AjaxResult list(
 			HttpServletRequest request,
 			@RequestParam Map<String, Object> map,
 			@PathVariable("tenantId") String tenantId) {
@@ -114,7 +114,7 @@ public class UserTenantController {
 	}
 
 	@RequestMapping(value = "/userTenant/edit", method = RequestMethod.GET)
-	public Object edit(
+	public AjaxResult edit(
 			HttpServletRequest request,
 			@RequestParam String id,
 			@PathVariable("tenantId") String tenantId) {
@@ -143,7 +143,7 @@ public class UserTenantController {
 	}
 
 	@RequestMapping(value = "/userTenant/parentNameAndId", method = RequestMethod.GET)
-	public Object getParentNameAndId(@PathVariable("tenantId") String tenantId) {
+	public AjaxResult getParentNameAndId(@PathVariable("tenantId") String tenantId) {
 		UserTenant bean = new UserTenant();
 
 		UserTenant selectBytenantCode = userTenantService.selectBytenantCode(tenantId);
@@ -167,7 +167,7 @@ public class UserTenantController {
 
 	@RequestMapping(value = "/userTenant", method = RequestMethod.POST)
 	@Transactional(rollbackFor = Exception.class)
-	public Object save(@RequestBody @Valid UserTenant bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody @Valid UserTenant bean, HttpServletRequest request,
 			HttpServletResponse response,
 			@PathVariable("tenantId") String tenantId) {
 		try {
@@ -223,7 +223,7 @@ public class UserTenantController {
 	}
 
 	@RequestMapping(value = "/userTenant", method = RequestMethod.PUT)
-	public Object update(@RequestBody UserTenant bean, HttpServletRequest request, HttpServletResponse response,
+	public AjaxResult update(@RequestBody UserTenant bean, HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("tenantId") String tenantId) {
 		if (StringUtils.isEmpty(bean.getTenantName())) {
 			throw new QslException(MessageKey.EMPTY_TENANT_NAME);
@@ -238,7 +238,7 @@ public class UserTenantController {
 	}
 
 	@RequestMapping(value = "/userTenant/logo", method = RequestMethod.PUT)
-	public Object updateLogo(@RequestParam MultipartFile uploadfile, @RequestParam String bucket,
+	public AjaxResult updateLogo(@RequestParam MultipartFile uploadfile, @RequestParam String bucket,
 			@RequestParam(required = false) String objectName, @PathVariable("tenantId") String tenantId)
 			throws Exception {
 		minioUtil.createBucket(bucket);
@@ -254,7 +254,7 @@ public class UserTenantController {
 
 	// Switch theme
 	@RequestMapping(value = "/userTenant/{theme}", method = RequestMethod.PUT)
-	public Object switchThem(@PathVariable("tenantId") String tenantId, @PathVariable("theme") String theme,
+	public AjaxResult switchThem(@PathVariable("tenantId") String tenantId, @PathVariable("theme") String theme,
 			HttpServletRequest request) {
 		if (StringUtils.isEmpty(tenantId)) {
 			throw new QslException(MessageKey.EMPTY_TENANT_ID);
@@ -273,7 +273,7 @@ public class UserTenantController {
 	}
 
 	@RequestMapping(value = "/userTenant", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String[] split = id.split(",");
 
@@ -291,7 +291,7 @@ public class UserTenantController {
 
 	// Tenant Drop -down box
 	@GetMapping("/subTenants")
-	public Object selectTenant(@PathVariable("tenantId") String tenantId, HttpServletRequest request) {
+	public AjaxResult selectTenant(@PathVariable("tenantId") String tenantId, HttpServletRequest request) {
 		UserTenant tenant = userTenantService.selectBytenantCode(tenantId);
 		if (tenant == null) {
 			throw new QslException(MessageKey.TENANT_NOT_EXIST);

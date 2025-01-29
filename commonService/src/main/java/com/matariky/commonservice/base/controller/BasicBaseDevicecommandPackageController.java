@@ -66,7 +66,7 @@ public class BasicBaseDevicecommandPackageController {
 	private CommonDictTypeService commonDictTypeService;
 
 	@RequestMapping("/basicBaseDevicecommandPackage/list")
-	public Object list(HttpServletRequest request, BasicBaseDevicecommandPackage bean,
+	public AjaxResult list(HttpServletRequest request, BasicBaseDevicecommandPackage bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
@@ -78,7 +78,7 @@ public class BasicBaseDevicecommandPackageController {
 	}
 
 	@RequestMapping("/basicBaseDevicecommandPackage/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -112,7 +112,7 @@ public class BasicBaseDevicecommandPackageController {
 	}
 
 	@RequestMapping(value = "/basicBaseDevicecommandPackage", method = RequestMethod.POST)
-	public Object save(@RequestBody BasicBaseDevicecommandPackage bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody BasicBaseDevicecommandPackage bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseDevicecommandPackageService.createBasicBaseDevicecommandPackageWithOrg(bean,
@@ -129,7 +129,7 @@ public class BasicBaseDevicecommandPackageController {
 	}
 
 	@RequestMapping(value = "/basicBaseDevicecommandPackage", method = RequestMethod.PUT)
-	public Object update(@RequestBody BasicBaseDevicecommandPackage bean, HttpServletRequest request,
+	public AjaxResult update(@RequestBody BasicBaseDevicecommandPackage bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseDevicecommandPackageService.updateBasicBaseDevicecommandPackage(bean);
@@ -145,7 +145,7 @@ public class BasicBaseDevicecommandPackageController {
 	}
 
 	@RequestMapping(value = "/basicBaseDevicecommandPackage", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Boolean success = basicBaseDevicecommandPackageService.deleteById(Long.parseLong(id));
 			if (success) {
@@ -160,7 +160,7 @@ public class BasicBaseDevicecommandPackageController {
 	}
 
 	@RequestMapping(value = "/basicBaseDevicecommandPackage/{basicBaseDevicecommandPackageId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicBaseDevicecommandPackageId") Long id, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("/basicBaseDevicecommandPackageId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS,
 				basicBaseDevicecommandPackageService.selectById(id));

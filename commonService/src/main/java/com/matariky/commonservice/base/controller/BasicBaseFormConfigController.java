@@ -66,7 +66,7 @@ public class BasicBaseFormConfigController {
 	private CommonDictTypeService commonDictTypeService;
 
 	@RequestMapping("/basicBaseFormConfig/list")
-	public Object list(HttpServletRequest request, BasicBaseFormConfig bean,
+	public AjaxResult list(HttpServletRequest request, BasicBaseFormConfig bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
@@ -77,7 +77,7 @@ public class BasicBaseFormConfigController {
 	}
 
 	@RequestMapping("/basicBaseFormConfig/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public AjaxResult daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -111,7 +111,7 @@ public class BasicBaseFormConfigController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormConfig", method = RequestMethod.POST)
-	public Object save(@RequestBody BasicBaseFormConfig bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody BasicBaseFormConfig bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseFormConfigService.createBasicBaseFormConfigWithOrg(bean, request);
@@ -127,7 +127,7 @@ public class BasicBaseFormConfigController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormConfig", method = RequestMethod.PUT)
-	public Object update(@RequestBody BasicBaseFormConfig bean, HttpServletRequest request,
+	public AjaxResult update(@RequestBody BasicBaseFormConfig bean, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			int success = basicBaseFormConfigService.updateBasicBaseFormConfig(bean);
@@ -143,7 +143,7 @@ public class BasicBaseFormConfigController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormConfig", method = RequestMethod.DELETE)
-	public Object del(String id, HttpServletRequest request, HttpServletResponse response) {
+	public AjaxResult del(String id, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Boolean success = basicBaseFormConfigService.deleteById(Long.parseLong(id));
 			if (success) {
@@ -158,7 +158,7 @@ public class BasicBaseFormConfigController {
 	}
 
 	@RequestMapping(value = "/basicBaseFormConfig/{basicBaseFormConfigId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicBaseFormConfigId") Long id, HttpServletRequest request,
+	public AjaxResult getOne(@PathVariable("/basicBaseFormConfigId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return new AjaxResult(HttpStatus.OK.value(), AjaxResult.SUCCESS, basicBaseFormConfigService.selectById(id));
 	}

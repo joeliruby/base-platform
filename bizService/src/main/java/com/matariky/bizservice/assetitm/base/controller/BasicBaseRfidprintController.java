@@ -57,7 +57,7 @@ public class BasicBaseRfidprintController {
 
 	@ApiOperation(value = "Pagination", response = BasicBaseRfidPrint.class)
 	@RequestMapping("/basicBaseRfidprint/list")
-	public Object list(HttpServletRequest request, BasicBaseRfidPrint bean,
+	public AjaxResult list(HttpServletRequest request, BasicBaseRfidPrint bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage,
@@ -75,7 +75,7 @@ public class BasicBaseRfidprintController {
 
 	@ApiOperation(value = "App Print  Task Pagination", response = BasicBaseRfidPrint.class)
 	@RequestMapping("/basicBaseRfidprint/applist")
-	public Object applist(HttpServletRequest request, BasicBaseRfidPrint bean,
+	public AjaxResult applist(HttpServletRequest request, BasicBaseRfidPrint bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@RequestParam String deviceCode,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
@@ -96,7 +96,7 @@ public class BasicBaseRfidprintController {
 
 	@ApiOperation(value = "New")
 	@RequestMapping(value = "/basicBaseRfidprint", method = RequestMethod.POST)
-	public Object save(@RequestBody BasicBaseRfidprintAddVO bean, HttpServletRequest request,
+	public AjaxResult save(@RequestBody BasicBaseRfidprintAddVO bean, HttpServletRequest request,
 			HttpServletResponse response, @PathVariable("tenantId") String tenantId,
 			@RequestHeader("Authorization") String jwt) {
 		try {
@@ -117,14 +117,14 @@ public class BasicBaseRfidprintController {
 
 	@ApiOperation(value = "Query Detail By ID")
 	@GetMapping(value = "/basicBaseRfidprint/{id}")
-	public Object getOne(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) {
+	public AjaxResult getOne(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) {
 		return new AjaxResult(response.getStatus(), AjaxResult.SUCCESS,
 				basicBaseRfidprintService.getBasicBaseRfidprintById(id));
 	}
 
 	@ApiOperation(value = "Upload Image")
 	@RequestMapping(value = "/basicBaseRfidprint/uploadimg", method = RequestMethod.PUT)
-	public Object uploadImg(@RequestParam MultipartFile file, @RequestParam String bucket,
+	public AjaxResult uploadImg(@RequestParam MultipartFile file, @RequestParam String bucket,
 			@RequestParam(required = false) String objectName, @PathVariable("tenantId") String tenantId)
 			throws Exception {
 		minioUtil.createBucket(bucket);
@@ -137,7 +137,7 @@ public class BasicBaseRfidprintController {
 
 	@ApiOperation(value = "Query Print Pagination")
 	@RequestMapping("/basicBaseRfidprint/print")
-	public Object print(HttpServletRequest request, BasicBaseRfidprintDetail bean,
+	public AjaxResult print(HttpServletRequest request, BasicBaseRfidprintDetail bean,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "Page Index", required = true) @RequestParam("index") int pageIndex,
 			@ApiParam(value = "Page Size", required = true) @RequestParam("perPage") int perPage) {
@@ -154,7 +154,7 @@ public class BasicBaseRfidprintController {
 
 	@ApiOperation(value = "Compensation Print")
 	@GetMapping(value = "/basicBaseRfidprint/suppprint/{id}")
-	public Object suppprint(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id,
+	public AjaxResult suppprint(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id,
 			@RequestHeader("Authorization") String jwt) {
 		try {
 			int success = basicBaseRfidprintService.createBasicBaseRfidSuppprintWithOrg(id, jwt);

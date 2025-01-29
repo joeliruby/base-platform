@@ -2,47 +2,38 @@ package com.matariky.commonservice.log.controller;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.matariky.commonservice.commondict.bean.CommonDict;
+import com.matariky.commonservice.commondict.bean.CommonDictType;
+import com.matariky.commonservice.commondict.service.CommonDictService;
+import com.matariky.commonservice.commondict.service.CommonDictTypeService;
 import com.matariky.commonservice.log.bean.BasicLogBusiness;
 import com.matariky.commonservice.log.service.BasicLogBusinessService;
-
-import io.swagger.annotations.ApiParam;
-
-import org.springframework.web.bind.annotation.PathVariable;
-
-import org.springframework.web.bind.annotation.RequestHeader;
-
-import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.beans.factory.annotation.Value;
-
-import com.matariky.commonservice.commondict.service.CommonDictService;
-
-import com.matariky.commonservice.commondict.bean.CommonDict;
-
-import com.matariky.commonservice.commondict.bean.CommonDictType;
-
-import com.matariky.commonservice.commondict.service.CommonDictTypeService;
-
+import com.matariky.commonservice.upload.constant.MessageKey;
 import com.matariky.constant.PermissionConstant;
-
+import com.matariky.exception.QslException;
+import com.matariky.utils.AjaxResult;
 import com.matariky.utils.TokenUtils;
 
+import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
-
-import com.matariky.exception.QslException;
-
-import com.matariky.commonservice.upload.constant.MessageKey;
 
 /**
  * Controller
@@ -76,7 +67,7 @@ public class BasicLogBusinessController {
 	}
 
 	@RequestMapping("/basicLogBusiness/daclist")
-	public Object daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
+	public PageInfo<BasicLogBusiness> daclist(HttpServletRequest request, @ApiIgnore @RequestParam Map<String, Object> params,
 			@ApiParam(value = " Tenant ID", required = true) @PathVariable("tenantId") String tenantId,
 			@ApiParam(value = "JWT Token", required = true) @RequestHeader("Authorization") String jwt) {
 		String hid = request.getHeader("id");
@@ -156,7 +147,7 @@ public class BasicLogBusinessController {
 	}
 
 	@RequestMapping(value = "/basicLogBusiness/{basicLogBusinessId}", method = RequestMethod.GET)
-	public Object getOne(@PathVariable("/basicLogBusinessId") Long id, HttpServletRequest request,
+	public BasicLogBusiness getOne(@PathVariable("/basicLogBusinessId") Long id, HttpServletRequest request,
 			HttpServletResponse response) {
 		return basicLogBusinessService.selectById(id);
 	}
