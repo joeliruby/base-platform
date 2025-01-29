@@ -36,6 +36,12 @@ In particular, data scope access control applies to the predominant corporate sc
 
 A simple user manually to use the automation service is availble under the Automation module.
 
+** User Service **<br>
+This is moudle or micro service that manages all tenant, user, persission, role , group and organization and application data. The concept of applications could be web or mobile applications ported per device. Permission set can be tailored for the same application for the different tenants. It can be augmented with user related data and funtionalities.<br>
+
+** Common Service ** <dr>
+The service takes charge of business neutral functionalities like file management, data dictionary, internationalization, logging, data scope sharing. It also encapsulate building block libraries like proprietary algorithm, date utils, string utils and cache tools etc. Last but not least, at the early stages of DDD, it is likely embedded in the other applications. All the Spring boot configuration classes are pushed down to the common service.<br>
+
 ## Collaborate with your team
 
 - [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
