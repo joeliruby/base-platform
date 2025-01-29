@@ -24,7 +24,7 @@ The SpringBoot project is imported using IDEA
 ![输入 Image 说明](https://gitee.com/uploads/images/2018/0604/091539_b5066fb2_424304.png "屏幕截图.png")
 
 6.Copy the project to the server or another computer for installation (The environment must be JDK 17)<br> 7.Use the command to start the project: java -jar automation.jar
-![输入 Image 说明](start.png "屏幕截图.png")
+![输入 Image 说明](start.png)
 Note: Navigate to the parent directory of the jar file, hold Shift + Right Click, then select "Open Command Window Here" and enter the start command: java -jar automation.jar. If the following page appears, the startup is successful:
 
 ![输入 Image 说明](https://gitee.com/uploads/images/2018/0604/092022_146c2dc3_424304.png "屏幕截图.png")
