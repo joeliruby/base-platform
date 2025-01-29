@@ -2,23 +2,25 @@
 
 Base Platform
 
-## Getting started
+## Introduction
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The Base Platform is a simple generic platform flexible for different scenrios. It is build on top of a general data model that can fulfil access control requirements however diverse the scenarios can can be.It also generalizes a common set of building blocks agnostic to specific business usage of different scales. Though the majority of the framework is set, it is still a work in progress.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Flexibility
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin http://172.28.1.10/public-project/base-platform.git
-git branch -M main
-git push -uf origin main
-```
+![Generic Access Aontrol Model](er.png)
+User:
+A stakeholder that can login the system to use its functionalities
+Permission:
+A unique token to represent a user's allocated resources of the system. The resources comprises HTTP Restful interface, static HTTP UI components.
+Role:
+A template set of permissions designated to a specific type of business operator. It simplifies
+user permission assignment.
+Group:
+A collection of users who share a common purpose or need to access similar resources. Groups can be used to manage user accounts and permissions collectively. For instance it can be used for a temporary workforce external to a cooperation.
+Relations:
+For any 2 entities of User, Permission, Role and Group there is a multiple-to-multiple relationship between them. I semantic of the relationship is self explanatory as per the ER diagram and I shall not elaborate.
+This generic and comprehensive access control data model maximizes the framwork's adaptability to different authorization requirements of different business scenarios.
 
 ## Integrate with your tools
 
