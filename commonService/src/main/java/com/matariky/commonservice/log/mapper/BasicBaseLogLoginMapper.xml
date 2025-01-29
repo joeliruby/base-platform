@@ -2,37 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.log.mapper.BasicBaseLogLoginMapper">
-
-
-
-	<select id="getBasicLogLoginAll"  resultType="com.matariky.commonservice.log.vo.BasicBaseLogLoginInfo" parameterType="com.matariky.commonservice.base.vo.BasicLogLoginVO">
+    <select id="getBasicLogLoginAll"  resultType="com.matariky.commonservice.log.vo.BasicBaseLogLoginInfo" parameterType="com.matariky.commonservice.base.vo.BasicLogLoginVO">
         SELECT  l.id , l.access_terminal, l.user_name, l.out_ip, l.in_ip, l.login_address,
                 l.browser, l.operating_system, l.operate_status, l.access_time, l.remark, l.create_time,
                 l.update_time, l.delete_time, l.create_by, l.update_by, l.operator_org_code, l.operator_self_org_code,
                 l.tenant_id , t.tenant_name  from  basic_log_login  l left join  user_tenant t on l.tenant_id = t.id
-            <where>
+        <where>
                 l.delete_time = 0
-                <if test="userName!=null and userName!='' ">
+            <if test="userName!=null and userName!='' ">
                     and l.user_name like  concat('%',#{userName},'%')
                 </if>
-                <if test="loginAddress!=null and loginAddress!='' ">
+            <if test="loginAddress!=null and loginAddress!='' ">
                     and l.login_address =#{loginAddress}
                 </if>
-                <if test="tenantName!=null and tenantName!='' ">
+            <if test="tenantName!=null and tenantName!='' ">
                     and t.tenant_name like concat('%',#{tenantName},'%')
                 </if>
-                <if test="createStartTime!=null and createStartTime!='' ">
-                    and l.create_time <![CDATA[>=]]> #{createStartTime}
-                </if>
-                <if test="createEndTime!=null and createEndTime!='' ">
-                    and l.create_time <![CDATA[<=]]> #{createEndTime}
-                </if>
-            </where>
+            <if test="createStartTime!=null and createStartTime!='' ">
+                    and l.create_time
+                <![CDATA[>=]]> #{createStartTime}
+            </if>
+            <if test="createEndTime!=null and createEndTime!='' ">
+                    and l.create_time
+                <![CDATA[<=]]> #{createEndTime}
+            </if>
+        </where>
         order by  l.create_time desc
-	</select>
-
-
-
-
-
+    </select>
 </mapper>

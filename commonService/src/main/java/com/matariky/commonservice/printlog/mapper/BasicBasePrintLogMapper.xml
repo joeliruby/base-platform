@@ -2,15 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.printlog.mapper.BasicBasePrintLogMapper">
-
-<sql id="baseQueryListSql">
+    <sql id="baseQueryListSql">
  SELECT t.id,t.system_version_number,t.print_task_number,t.print_detail_id,t.print_time,t.print_status,t.sku,t.print_content,t.rfid_setting,t.device_code,t.mac_address,t.access_account,t.server_ip,t.create_time,t.update_time,t.delete_time,t.create_by,t.update_by,t.operator_org_code,t.operator_self_org_code,t.tenant_id
  FROM
     basic_base_print_log t
  WHERE
     t.delete_time = 0
  </sql>
- <sql id="baseQueryCountSql">
+    <sql id="baseQueryCountSql">
    SELECT
     count(1)
  FROM
@@ -18,7 +17,7 @@
  WHERE
     t.delete_time = 0
  </sql>
-	<select id="getBasicBasePrintLogAll" parameterType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog" resultType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
+    <select id="getBasicBasePrintLogAll" parameterType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog" resultType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
 
         select a.id,a.system_version_number,a.print_task_number,a.print_detail_id,a.print_time,a.print_status,
                a.sku,a.print_content,a.rfid_setting,a.device_code,a.mac_address,a.access_account,
@@ -29,308 +28,302 @@
             <if test="params.accessAccount!=null  and params.accessAccount!='' ">
                 and a.access_account  = #{params.accessAccount}
             </if>
-        <if test="params.businessTimeStart!=null and params.businessTimeStart!='' ">
+            <if test="params.businessTimeStart!=null and params.businessTimeStart!='' ">
             and a.print_time  &gt;= #{params.businessTimeStart}
         </if>
-        <if test="params.businessTimeEnd!=null  and params.businessTimeEnd!='' ">
+            <if test="params.businessTimeEnd!=null  and params.businessTimeEnd!='' ">
             and a.print_time  &lt;= #{params.businessTimeEnd}
         </if>
         order by  a.create_time desc
         </where>
-	</select>
-
-	<select id="getBasicBasePrintLogAllCount" parameterType="Map" resultType="int">
+    </select>
+    <select id="getBasicBasePrintLogAllCount" parameterType="Map" resultType="int">
         select count(1) from basic_base_print_log where delete_time=0
 	</select>
-
-	<insert id="createBasicBasePrintLog" parameterType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
+    <insert id="createBasicBasePrintLog" parameterType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
         insert into basic_base_print_log(id,system_version_number,print_task_number,print_detail_id,print_time,print_status,sku,print_content,rfid_setting,device_code,mac_address,access_account,server_ip,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id, return_tid, business_time)
         values(#{id},#{systemVersionNumber},#{printTaskNumber},#{printDetailId},#{printTime},#{printStatus},#{sku},#{printContent},#{rfidSetting},#{deviceCode},#{macAddress},#{accessAccount},#{serverIp},#{createTime},#{updateTime},#{deleteTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode},#{tenantId},#{returnTid}, #{businessTime})
 	</insert>
-
-	<update id="updateBasicBasePrintLog" parameterType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
+    <update id="updateBasicBasePrintLog" parameterType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
         update basic_base_print_log
         set id=#{params.id}
-<if test="params.systemVersionNumber != null ">
+        <if test="params.systemVersionNumber != null ">
         	,system_version_number=#{params.systemVersionNumber}
         </if>
-<if test="params.printTaskNumber != null ">
+        <if test="params.printTaskNumber != null ">
         	,print_task_number=#{params.printTaskNumber}
         </if>
-<if test="params.printDetailId != null ">
+        <if test="params.printDetailId != null ">
         	,print_detail_id=#{params.printDetailId}
         </if>
-<if test="params.printTime != null ">
+        <if test="params.printTime != null ">
         	,print_time=#{params.printTime}
         </if>
-<if test="params.printStatus != null ">
+        <if test="params.printStatus != null ">
         	,print_status=#{params.printStatus}
         </if>
-<if test="params.sku != null ">
+        <if test="params.sku != null ">
         	,sku=#{params.sku}
         </if>
-<if test="params.printContent != null ">
+        <if test="params.printContent != null ">
         	,print_content=#{params.printContent}
         </if>
-<if test="params.rfidSetting != null ">
+        <if test="params.rfidSetting != null ">
         	,rfid_setting=#{params.rfidSetting}
         </if>
-<if test="params.deviceCode != null ">
+        <if test="params.deviceCode != null ">
         	,device_code=#{params.deviceCode}
         </if>
-<if test="params.macAddress != null ">
+        <if test="params.macAddress != null ">
         	,mac_address=#{params.macAddress}
         </if>
-<if test="params.accessAccount != null ">
+        <if test="params.accessAccount != null ">
         	,access_account=#{params.accessAccount}
         </if>
-<if test="params.serverIp != null ">
+        <if test="params.serverIp != null ">
         	,server_ip=#{params.serverIp}
         </if>
-<if test="params.createTime != null ">
+        <if test="params.createTime != null ">
         	,create_time=#{params.createTime}
         </if>
-<if test="params.updateTime != null ">
+        <if test="params.updateTime != null ">
         	,update_time=#{params.updateTime}
         </if>
-<if test="params.deleteTime != null ">
+        <if test="params.deleteTime != null ">
         	,delete_time=#{params.deleteTime}
         </if>
-<if test="params.createBy != null ">
+        <if test="params.createBy != null ">
         	,create_by=#{params.createBy}
         </if>
-<if test="params.updateBy != null ">
+        <if test="params.updateBy != null ">
         	,update_by=#{params.updateBy}
         </if>
-<if test="params.operatorOrgCode != null ">
+        <if test="params.operatorOrgCode != null ">
         	,operator_org_code=#{params.operatorOrgCode}
         </if>
-<if test="params.operatorSelfOrgCode != null ">
+        <if test="params.operatorSelfOrgCode != null ">
         	,operator_self_org_code=#{params.operatorSelfOrgCode}
         </if>
-<if test="params.tenantId != null ">
+        <if test="params.tenantId != null ">
         	,tenant_id=#{params.tenantId}
         </if>
         where id = #{params.id} and delete_time=0
-	</update>
-
-	<update id="delBasicBasePrintLogById" parameterType="int">
+    </update>
+    <update id="delBasicBasePrintLogById" parameterType="int">
         update  basic_base_print_log set delete_time=now() where id=#{value}
 	</update>
-
-	<select id="getBasicBasePrintLogById"  parameterType="Integer" resultType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog" >
+    <select id="getBasicBasePrintLogById"  parameterType="Integer" resultType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog" >
         select id,system_version_number,print_task_number,print_detail_id,print_time,print_status,sku,print_content,rfid_setting,device_code,mac_address,access_account,server_ip,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id from basic_base_print_log where id=#{value} and delete_time=0
 	</select>
-
-<select id="getBasicBasePrintLogDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
-   <if test="params.strategyCode =='1'.toString()">
-  <include refid="baseQueryCountSql" />
-    <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+    <select id="getBasicBasePrintLogDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        <if test="params.strategyCode =='1'.toString()">
+            <include refid="baseQueryCountSql" />
+            <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
        and  t.operator_self_org_code=#{params.selfOrgCode}
     </if>
-   <if test="params.tenantId != null and params.tenantId !=''">
+            <if test="params.tenantId != null and params.tenantId !=''">
      and t.tenant_id  = #{params.tenantId}
  </if>
-       <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+            <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
    or t.operator_self_org_code in
-	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+                <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
         #{soc}
     </foreach>
-    </if>
-         <if test="params.sharingOrgCodes != null  and params.sharingOrgCodes.size()>0  ">
+            </if>
+            <if test="params.sharingOrgCodes != null  and params.sharingOrgCodes.size()>0  ">
         or   t.operator_org_code in
-    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+                <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
             #{oc}
         </foreach>
-    </if>
-</if>
-   <if test=" params.strategyCode =='0'.toString()">
-  <include refid="baseQueryCountSql" />
-       <if test="params.tenantId != null and params.tenantId !=''">
+            </if>
+        </if>
+        <if test=" params.strategyCode =='0'.toString()">
+            <include refid="baseQueryCountSql" />
+            <if test="params.tenantId != null and params.tenantId !=''">
            and t.tenant_id  = #{params.tenantId}
        </if>
-   </if>
-   <if test=" params.strategyCode =='2'.toString()">
-  <include refid="baseQueryCountSql" />
-       <if test="params.orgCode != null and params.orgCode !=''">
+        </if>
+        <if test=" params.strategyCode =='2'.toString()">
+            <include refid="baseQueryCountSql" />
+            <if test="params.orgCode != null and params.orgCode !=''">
         and   t.operator_org_code=#{params.orgCode}
     </if>
-   <if test="params.tenantId != null and params.tenantId !=''">
+            <if test="params.tenantId != null and params.tenantId !=''">
         and t.tenant_id  = #{params.tenantId}
     </if>
-   <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
+            <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
             or  t.operator_self_org_code in
-    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+                <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
             #{soc}
         </foreach>
-   </if>
-   <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+            </if>
+            <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
              or   t.operator_org_code in
-     	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+                <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
              #{oc}
          </foreach>
-         </if>
- </if>
-   <if test=" params.strategyCode =='3'.toString()">
-  <include refid="baseQueryCountSql" />
-        <if test="params.orgCode != null and params.orgCode !=''">
+            </if>
+        </if>
+        <if test=" params.strategyCode =='3'.toString()">
+            <include refid="baseQueryCountSql" />
+            <if test="params.orgCode != null and params.orgCode !=''">
          and  t.operator_org_code like concat(#{params.orgCode}, '%')
    		</if>
-       <if test="params.tenantId != null and params.tenantId !=''">
+            <if test="params.tenantId != null and params.tenantId !=''">
          and t.tenant_id  = #{params.tenantId}
        </if>
-   	   <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+            <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
              or   t.operator_self_org_code in
-     	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+                <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
              #{soc}
          </foreach>
-        </if>
-   <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+            </if>
+            <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
              or t.operator_org_code in
-     	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+                <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
              #{oc}
          </foreach>
-         </if>
- </if>
-</select>
-<select id="getBasicBasePrintLogDAC" parameterType="java.util.Map" resultType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
-<if test="params.strategyCode =='1'.toString()">
-  <include refid="baseQueryListSql" />
-   <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+            </if>
+        </if>
+    </select>
+    <select id="getBasicBasePrintLogDAC" parameterType="java.util.Map" resultType="com.matariky.commonservice.printlog.bean.BasicBasePrintLog">
+        <if test="params.strategyCode =='1'.toString()">
+            <include refid="baseQueryListSql" />
+            <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
        and  t.operator_self_org_code=#{params.selfOrgCode}
    </if>
-   <if test="params.tenantId != null and params.tenantId !=''">
+            <if test="params.tenantId != null and params.tenantId !=''">
        and t.tenant_id  = #{params.tenantId}
    </if>
-   <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes.size()>0">
+            <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes.size()>0">
       union
-  <include refid="baseQueryListSql" />
-     <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size()>0">
+                <include refid="baseQueryListSql" />
+                <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size()>0">
       and t.operator_self_org_code in
-  	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+                    <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
         #{soc}
       </foreach>
-       </if>
-       <if test="params.tenantId != null and params.tenantId !=''">
+                </if>
+                <if test="params.tenantId != null and params.tenantId !=''">
            and t.tenant_id  = #{params.tenantId}
        </if>
-  </if>
-  <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes.size()>0">
+            </if>
+            <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes.size()>0">
       union
-  <include refid="baseQueryListSql" />
-        <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0  ">
+                <include refid="baseQueryListSql" />
+                <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0  ">
          and   t.operator_org_code in
-  	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+                    <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
           #{oc}
        </foreach>
-       </if>
-       <if test="params.tenantId != null and params.tenantId !=''">
+                </if>
+                <if test="params.tenantId != null and params.tenantId !=''">
            and t.tenant_id  = #{params.tenantId}
         </if>
-    </if>
-    <if test="params.orderField != null and params.orderField !=''">
+            </if>
+            <if test="params.orderField != null and params.orderField !=''">
     order by  #{params.orderField}
      </if>
-    <if test="params.order != null and params.order !=''">
+            <if test="params.order != null and params.order !=''">
      #{params.order}
    </if>
- </if>
- <if test=" params.strategyCode =='0'.toString()">
-  <include refid="baseQueryListSql" />
-    <if test="params.tenantId != null and params.tenantId !=''">
+        </if>
+        <if test=" params.strategyCode =='0'.toString()">
+            <include refid="baseQueryListSql" />
+            <if test="params.tenantId != null and params.tenantId !=''">
        and t.tenant_id  = #{params.tenantId}
     </if>
-    <if test="params.orderField != null and params.orderField !=''">
+            <if test="params.orderField != null and params.orderField !=''">
     order by  #{params.orderField}
     </if>
-    <if test="params.order != null and params.order !=''">
+            <if test="params.order != null and params.order !=''">
      #{params.order}
     </if>
-</if>
- <if test=" params.strategyCode =='2'.toString()">
-  <include refid="baseQueryListSql" />
-   <if test="params.orgCode != null and params.orgCode !=''">
+        </if>
+        <if test=" params.strategyCode =='2'.toString()">
+            <include refid="baseQueryListSql" />
+            <if test="params.orgCode != null and params.orgCode !=''">
         and   t.operator_org_code=#{params.orgCode}
      </if>
-     <if test="params.tenantId != null and params.tenantId !=''">
+            <if test="params.tenantId != null and params.tenantId !=''">
         and t.tenant_id  = #{params.tenantId}
     </if>
-     <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+            <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
       union
-     <include refid="baseQueryListSql" />
-        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
+                <include refid="baseQueryListSql" />
+                <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0 ">
             and  t.operator_self_org_code in
-    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+                    <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
            #{soc}
         </foreach>
-        </if>
-        <if test="params.tenantId != null and params.tenantId !=''">
+                </if>
+                <if test="params.tenantId != null and params.tenantId !=''">
             and t.tenant_id  = #{params.tenantId}
         </if>
-    </if>
-    <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+            </if>
+            <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
       union
-     <include refid="baseQueryListSql" />
-         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+                <include refid="baseQueryListSql" />
+                <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
             and   t.operator_org_code in
-    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+                    <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
             #{oc}
         </foreach>
-        </if>
-        <if test="params.tenantId != null and params.tenantId !=''">
+                </if>
+                <if test="params.tenantId != null and params.tenantId !=''">
             and t.tenant_id  = #{params.tenantId}
         </if>
-     </if>
-    <if test="params.orderField != null and params.orderField !=''">
+            </if>
+            <if test="params.orderField != null and params.orderField !=''">
     order by  #{params.orderField}
     </if>
-    <if test="params.order != null and params.order !=''">
+            <if test="params.order != null and params.order !=''">
       #{params.order}
     </if>
-</if>
-<if test=" params.strategyCode =='3'.toString()">
-  <include refid="baseQueryListSql" />
-     <if test="params.orgCode != null and params.orgCode !=''">
+        </if>
+        <if test=" params.strategyCode =='3'.toString()">
+            <include refid="baseQueryListSql" />
+            <if test="params.orgCode != null and params.orgCode !=''">
         and  t.operator_org_code like concat(#{params.orgCode}, '%')
     </if>
-    <if test="params.tenantId != null and params.tenantId !=''">
+            <if test="params.tenantId != null and params.tenantId !=''">
         and t.tenant_id  = #{params.tenantId}
     </if>
-     <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+            <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
       union
-      <include refid="baseQueryListSql" />
-        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
+                <include refid="baseQueryListSql" />
+                <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size() >0">
             and   t.operator_self_org_code in
-   	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+                    <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
            #{soc}
         </foreach>
-        </if>
-        <if test="params.tenantId != null and params.tenantId !=''">
+                </if>
+                <if test="params.tenantId != null and params.tenantId !=''">
             and t.tenant_id  = #{params.tenantId}
         </if>
-    </if>
-     <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+            </if>
+            <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
       union
-      <include refid="baseQueryListSql" />
-       		<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
+                <include refid="baseQueryListSql" />
+                <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size()>0">
             and t.operator_org_code in
-    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+                    <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
             #{oc}
         </foreach>
-        </if>
-        <if test="params.tenantId != null and params.tenantId !=''">
+                </if>
+                <if test="params.tenantId != null and params.tenantId !=''">
            and t.tenant_id  = #{params.tenantId}
         </if>
-    </if>
-    <if test="params.orderField != null and params.orderField !=''">
+            </if>
+            <if test="params.orderField != null and params.orderField !=''">
     order by  #{params.orderField}
     </if>
-    <if test="params.order != null and params.order !=''">
+            <if test="params.order != null and params.order !=''">
      #{params.order}
    </if>
- </if>
- <if test="params.pageStart != null and params.pageSize != null  ">
+        </if>
+        <if test="params.pageStart != null and params.pageSize != null  ">
      limit #{params.pageStart}, #{params.pageSize}
   </if>
-</select>
+    </select>
 </mapper>

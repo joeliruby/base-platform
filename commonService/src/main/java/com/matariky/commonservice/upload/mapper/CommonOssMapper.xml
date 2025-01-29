@@ -2,22 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.upload.mapper.CommonOssMapper">
-
-	<select id="getCommonOssAll" parameterType="Map" resultType="com.matariky.commonservice.upload.bean.CommonOss">
+    <select id="getCommonOssAll" parameterType="Map" resultType="com.matariky.commonservice.upload.bean.CommonOss">
         select id,url,tenant_id,domain_name,old_name,file_name,extension,size,content_type,service_provider,create_time,update_time,created_by,updated_by from common_oss 
         where 1=1 
         and  delete_time=0
         <if test="params.tenantId != null and params.tenantId !=''">
             and  tenant_id= #{params.tenantId}
         </if>
-		<if test="params.file_name != null and params.nickname !=''">
+        <if test="params.file_name != null and params.nickname !=''">
             and file_name like '%${params.file_name}%'
         </if>
         <if test="params.sizeStart != null and params.sizeStart !=''">
             and size>=#{params.sizeStart}
         </if>
         <if test="params.sizeEnd != null and params.sizeEnd !=''">
-            <![CDATA[and size<=#{params.sizeEnd}]]>   
+            <![CDATA[and size<=#{params.sizeEnd}]]>
         </if>
         <!--and date_format(create_time,'%Y-%m-%d')>=${params.createTimeStart}  -->
         <if test="params.createTimeStart != null and params.createTimeStart !=''">
@@ -25,24 +24,23 @@
         </if>
         <!-- and date_format(create_time,'%Y-%m-%d')<=${params.createTimeEnd}  -->
         <if test="params.createTimeEnd !=null and params.createTimeEnd!=''">
-        <![CDATA[ and  create_time <= ${params.createTimeEnd}   ]]>     
+            <![CDATA[ and  create_time <= ${params.createTimeEnd}   ]]>
         </if>
-	</select>
-
-	<select id="getCommonOssAllCount" parameterType="Map" resultType="int">
+    </select>
+    <select id="getCommonOssAllCount" parameterType="Map" resultType="int">
         select count(1) from common_oss 
-         where 1=1 
+         where 1=1
         <if test="params.tenantId != null and params.tenantId !=''">
             and  tenant_id= #{params.tenantId}
         </if>
-		<if test="params.file_name != null and params.nickname !=''">
+        <if test="params.file_name != null and params.nickname !=''">
             and file_name like '%${params.file_name}%'
         </if>
         <if test="params.sizeStart != null and params.sizeStart !=''">
             and size>=#{params.sizeStart}
         </if>
         <if test="params.sizeEnd != null and params.sizeEnd !=''">
-            <![CDATA[and size<=#{params.sizeEnd}]]>   
+            <![CDATA[and size<=#{params.sizeEnd}]]>
         </if>
         <!--and date_format(create_time,'%Y-%m-%d')>=${params.createTimeStart}  -->
         <if test="params.createTimeStart != null and params.createTimeStart !=''">
@@ -50,38 +48,32 @@
         </if>
         <!-- and date_format(create_time,'%Y-%m-%d')<=${params.createTimeEnd}  -->
         <if test="params.createTimeEnd !=null and params.createTimeEnd!=''">
-        <![CDATA[ and create_time <= ${params.createTimeEnd}   ]]>     
+            <![CDATA[ and create_time <= ${params.createTimeEnd}   ]]>
         </if>
-	</select>
-
-	<insert id="createCommonOss" parameterType="com.matariky.commonservice.upload.bean.CommonOss">
+    </select>
+    <insert id="createCommonOss" parameterType="com.matariky.commonservice.upload.bean.CommonOss">
         insert into common_oss(id,url,tenant_id,domain_name,old_name,file_name,extension,size,content_type,service_provider,create_time,update_time,created_by,updated_by) 
         values(#{id},#{url},#{tenantId},#{domainName},#{oldName},#{fileName},#{extension},#{size},#{contentType},#{serviceProvider},#{createTime},#{updateTime},#{createdBy},#{updatedBy})
 	</insert>
-
-	<update id="updatecommon_oss" parameterType="com.matariky.commonservice.upload.bean.CommonOss">
+    <update id="updatecommon_oss" parameterType="com.matariky.commonservice.upload.bean.CommonOss">
         update CommonOss 
         set url=#{url},tenant_id=#{tenantId},domain_name=#{domainName},old_name=#{oldName},file_name=#{fileName},extension=#{extension},size=#{size},content_type=#{contentType},service_provider=#{serviceProvider},create_time=#{createTime},update_time=#{updateTime},created_by=#{createdBy},updated_by=#{updatedBy}
         where id = #{id}
 	</update>
-
-	<delete id="delCommonOssById" parameterType="Long">
+    <delete id="delCommonOssById" parameterType="Long">
         delete from common_oss where id=#{value}
 	</delete>
-
-	<select id="getCommonOssById"  parameterType="Integer" resultType="com.matariky.commonservice.upload.bean.CommonOss" >
+    <select id="getCommonOssById"  parameterType="Integer" resultType="com.matariky.commonservice.upload.bean.CommonOss" >
         select id,url,tenant_id,domain_name,old_name,file_name,extension,size,content_type,service_provider,create_time,update_time,created_by,updated_by from common_oss where id=#{value} 
 	</select>
-	
-	<update id="updateDeleteTimeById">
+    <update id="updateDeleteTimeById">
    		update common_oss
-   		<set >
+        <set >
        	delete_time = unix_timestamp()
    		</set>
    		where id in
-   	  <foreach item="id" collection="array" open="(" separator="," close=")">
+        <foreach item="id" collection="array" open="(" separator="," close=")">
            #{id}
        </foreach>
-  	</update>
-
+    </update>
 </mapper>

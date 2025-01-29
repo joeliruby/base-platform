@@ -2,9 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseRfidBindingMapper">
-
-
-	<select id="getBasicBaseRfidBindingAll" parameterType="com.matariky.commonservice.base.vo.BasicBaseRfidBindingListVO" resultType="com.matariky.commonservice.base.vo.BasicBaseRfidBindingInfoVO">
+    <select id="getBasicBaseRfidBindingAll" parameterType="com.matariky.commonservice.base.vo.BasicBaseRfidBindingListVO" resultType="com.matariky.commonservice.base.vo.BasicBaseRfidBindingInfoVO">
         select b.id,b.rfid_id,b.goods_id,b.device_id,b.epc,b.tid,b.remark,b.create_time,b.update_time,b.delete_time,
                b.create_by,b.update_by,b.operator_org_code,b.operator_self_org_code,b.tenant_id , g.goods_name , g.goods_code  , d.type_id , d.device_code ,
                t.type_code , t.type_name , t.device_factory , t.device_model , b.tag_code
@@ -24,8 +22,7 @@
             </if>
             order by  b.tag_code  asc
         </where>
-	</select>
-
+    </select>
     <select id="goodsBatchInfo" resultType="com.matariky.commonservice.base.vo.GoodsBatchInfoVO">
         SELECT
             b.id,
@@ -42,10 +39,12 @@
         <where>
             b.goods_id = #{params.goodsId} AND b.delete_time = 0 AND g.delete_time =0
             <if test="params.createTime!=null and params.createTime!='' ">
-              and b.create_time <![CDATA[ >= ]]> #{params.createTime}
+              and b.create_time
+                <![CDATA[ >= ]]> #{params.createTime}
             </if>
             <if test="params.createTimeEnd!=null and params.createTimeEnd!='' ">
-                and b.create_time <![CDATA[ <= ]]> #{params.createTimeEnd}
+                and b.create_time
+                <![CDATA[ <= ]]> #{params.createTimeEnd}
             </if>
             <if test="params.tid!=null and params.tid!='' ">
                 and b.tid = #{params.tid}
@@ -56,28 +55,22 @@
         </where>
             order by b.create_time desc
     </select>
-
-	<select id="getBasicBaseRfidBindingAllCount" parameterType="Map" resultType="int">
+    <select id="getBasicBaseRfidBindingAllCount" parameterType="Map" resultType="int">
         select count(1) from basic_base_rfid_binding where delete_time=0
 	</select>
-
-	<insert id="createBasicBaseRfidBinding" parameterType="com.matariky.commonservice.base.bean.BasicBaseRfidBinding">
+    <insert id="createBasicBaseRfidBinding" parameterType="com.matariky.commonservice.base.bean.BasicBaseRfidBinding">
         insert into basic_base_rfid_binding(id,tag_code,rfid_id,goods_id,device_id,epc,tid,remark,create_time,update_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id)
         values(#{id},#{tagCode},#{rfidId},#{goodsId},#{deviceId},#{epc},#{tid},#{remark},#{createTime},#{updateTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode},#{tenantId})
 	</insert>
-
-	<update id="updateBasicBaseRfidBinding" parameterType="com.matariky.commonservice.base.bean.BasicBaseRfidBinding">
+    <update id="updateBasicBaseRfidBinding" parameterType="com.matariky.commonservice.base.bean.BasicBaseRfidBinding">
         update basic_base_rfid_binding
         set rfid_id=#{rfidId},goods_id=#{goodsId},device_id=#{deviceId},epc=#{epc},tid=#{tid},remark=#{remark},create_time=#{createTime},update_time=#{updateTime},delete_time=#{deleteTime},create_by=#{createBy},update_by=#{updateBy},operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode},tenant_id=#{tenantId}
         where id = #{id} and delete_time=0
 	</update>
-
-	<update id="delBasicBaseRfidBindingById" parameterType="int">
+    <update id="delBasicBaseRfidBindingById" parameterType="int">
         update  basic_base_rfid_binding set delete_time=now() where id=#{value}
 	</update>
-
-	<select id="getBasicBaseRfidBindingById"  parameterType="Integer" resultType="com.matariky.commonservice.base.bean.BasicBaseRfidBinding" >
+    <select id="getBasicBaseRfidBindingById"  parameterType="Integer" resultType="com.matariky.commonservice.base.bean.BasicBaseRfidBinding" >
         select id,rfid_id,goods_id,device_id,epc,tid,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id from basic_base_rfid_binding where id=#{value} and delete_time=0
 	</select>
-
 </mapper>

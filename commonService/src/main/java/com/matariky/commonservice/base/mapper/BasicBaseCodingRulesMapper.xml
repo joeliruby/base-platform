@@ -2,12 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseCodingRulesMapper">
-
-	<select id="getBasicBaseCodingrulesAll" parameterType="com.matariky.commonservice.base.vo.BasicBaseCodingRulesListVO" resultType="com.matariky.commonservice.base.vo.BasicBaseCodingRulesInfoVO">
+    <select id="getBasicBaseCodingrulesAll" parameterType="com.matariky.commonservice.base.vo.BasicBaseCodingRulesListVO" resultType="com.matariky.commonservice.base.vo.BasicBaseCodingRulesInfoVO">
         select r.id,r.rules_name,r.coding_length,r.remark,r.create_time,r.update_time,r.delete_time,r.create_by,
                r.update_by,r.operator_org_code,r.operator_self_org_code , r.status  , u.real_name , r.rules_type
         from basic_base_codingrules r left join  user_user u on r.update_by = u.id
-         <where>
+        <where>
              r.delete_time = 0
             <if test="params.rulesName!=null and params.rulesName!='' ">
                 and r.rules_name like concat('%',#{params.rulesName},'%')
@@ -18,34 +17,27 @@
             <if test="params.status!=null ">
                 and r.status =#{params.status}
             </if>
-         </where>
+        </where>
          order by  r.create_time desc
-	</select>
-
-	<select id="getBasicBaseCodingrulesAllCount" parameterType="Map" resultType="int">
+    </select>
+    <select id="getBasicBaseCodingrulesAllCount" parameterType="Map" resultType="int">
         select count(1) from basic_base_codingrules where delete_time=0
 	</select>
-
-	<insert id="createBasicBaseCodingrules" parameterType="com.matariky.commonservice.base.bean.BasicBaseCodingRules">
+    <insert id="createBasicBaseCodingrules" parameterType="com.matariky.commonservice.base.bean.BasicBaseCodingRules">
         insert into basic_base_codingrules(id,rules_name,coding_length,remark,create_time,update_time,create_by,update_by,operator_org_code,operator_self_org_code,tenant_id,unique_code,rules_type,rules_code)
         values(#{id},#{rulesName},#{codingLength},#{remark},#{createTime},#{updateTime},#{createBy},#{updateBy},#{operatorOrgCode},#{operatorSelfOrgCode},#{tenantId},#{uniqueCode},#{rulesType},#{rulesCode})
 	</insert>
-
-	<update id="updateBasicBaseCodingrules" parameterType="com.matariky.commonservice.base.bean.BasicBaseCodingRules">
+    <update id="updateBasicBaseCodingrules" parameterType="com.matariky.commonservice.base.bean.BasicBaseCodingRules">
         update basic_base_codingrules
         set rules_name=#{rulesName},coding_length=#{codingLength},remark=#{remark},create_time=#{createTime},update_time=#{updateTime},delete_time=#{deleteTime},create_by=#{createBy},update_by=#{updateBy},operator_org_code=#{operatorOrgCode},operator_self_org_code=#{operatorSelfOrgCode}
         where id = #{id} and delete_time=0
 	</update>
-
-	<update id="delBasicBaseCodingrulesById" parameterType="java.lang.Long">
+    <update id="delBasicBaseCodingrulesById" parameterType="java.lang.Long">
         update  basic_base_codingrules set delete_time=now() where id=#{value}
 	</update>
-
-	<select id="getBasicBaseCodingrulesById"  parameterType="Integer" resultType="com.matariky.commonservice.base.bean.BasicBaseCodingRules" >
+    <select id="getBasicBaseCodingrulesById"  parameterType="Integer" resultType="com.matariky.commonservice.base.bean.BasicBaseCodingRules" >
         select id,rules_name,coding_length,remark,create_time,update_time,delete_time,create_by,update_by,operator_org_code,operator_self_org_code from basic_base_codingrules where id=#{value} and delete_time=0
 	</select>
-
-
     <select id="selectRuleCountFromrfidfactory" resultType="java.lang.Integer">
         SELECT
             count( 1 )
@@ -56,7 +48,6 @@
           and
             epc_rule = #{id}
     </select>
-
     <select id="selectRuleCountFromrrfidprint" resultType="java.lang.Integer">
         SELECT
             count( 1 )
@@ -67,9 +58,7 @@
           and
             epc_rule = #{id}
     </select>
-
     <select id="getOptionList" resultType="com.matariky.commonservice.base.vo.CodingRulesOptionInfo">
         select id,rules_name from  basic_base_codingrules where delete_time=0 and status = 1
     </select>
-
 </mapper>
