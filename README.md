@@ -31,6 +31,10 @@ of domain driven design, as the solution avoid basing comlexity on volatile busi
 A Spring boot application for developers usages only. Like code generate from Intellij Idea, it can generate stub codes from a relational data schema and unlike that of Intellij Idea it does much more.
 
 ![Comparison between Base Platform Automation and IntelliJ IDEA Ultimate ](comparison.png)
+<br>
+In particular, data scope access control applies to the predominant corporate scenario where for the same type data resources, indviduals and corporate organizations need to share data with each other. This is implemented by introducing a sharing pool table in the database to manage the sharing relations between individuals and organizations. The data access query a joined with the sharing pool table, functionalities are auto generate all the way up to the controller level with a dynamic condition query supporting pagination. The data sharing strategry can be configured to a data dictionary table via web UI. For example, the strategy can look like this: "For resources of air monitoring sensors, the data should only visible to the data entry person with special rule that the sensor data enter by Henderson environment council should be visible to Auckland environment council". If interested in implementation, the DataIsonlationAspect class in the common services is the entry point to look into. <br>
+
+A simple user manually to use the automation service is availble under the Automation module.
 
 ## Collaborate with your team
 
