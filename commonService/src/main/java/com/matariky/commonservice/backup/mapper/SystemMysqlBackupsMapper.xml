@@ -16,7 +16,6 @@
         <result column="recovery_time" property="recoveryTime"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
-
     <sql id="Base_Column_List">
         id
         as id,
@@ -32,14 +31,12 @@
         `recovery_time` as recoveryTime,
         `create_time` as createTime
     </sql>
-
     <select id="selectListId" resultMap="Base_Result_Map">
         SELECT *
         FROM `common_mysql_backups`
         WHERE `status` != 0
           AND id = #{id}
     </select>
-
     <select id="selectBackupsList" resultMap="Base_Result_Map">
         SELECT *
         FROM `common_mysql_backups`

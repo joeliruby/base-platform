@@ -5,595 +5,593 @@
 	<select id="getCommonAccessLogDynamicCondition" parameterType="Map" resultType="com.matariky.commonservice.accesslog.bean.CommonAccessLog">
         select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code,operation_name from common_access_log
         where 1=1
-        <if test="params.startTime != null and params.startTime !=''">
+		<if test="params.startTime != null and params.startTime !=''">
             and  access_time >= #{params.startTime}
         </if>
-        <if test="params.endTime != null and params.endTime !=''">
-        <![CDATA[  AND access_time<=  #{params.endTime}  ]]>
-        </if>
-        <if test="params.userId != null and params.userId !=''">
+		<if test="params.endTime != null and params.endTime !=''">
+			<![CDATA[  AND access_time<=  #{params.endTime}  ]]>
+		</if>
+		<if test="params.userId != null and params.userId !=''">
             and  user_id= #{params.userId}
         </if>
-        <if test="params.account != null and params.account !=''">
+		<if test="params.account != null and params.account !=''">
             and real_name  = '${params.account}'
         </if>
-        <if test="params.tenantId != null and params.tenantId !=''">
+		<if test="params.tenantId != null and params.tenantId !=''">
             and tenant_id  = '${params.tenantId}'
         </if>
-         <if test="params.tenantName != null and params.tenantName !=''">
+		<if test="params.tenantName != null and params.tenantName !=''">
             and tenant_name  = '${params.tenantName}'
         </if>
-        <if test="params.clientIp != null and params.clientIp !=''">
+		<if test="params.clientIp != null and params.clientIp !=''">
             and client_ip  = '${params.clientIp}'
         </if>
-        <if test="params.requestUrl != null and params.requestUrl !=''">
+		<if test="params.requestUrl != null and params.requestUrl !=''">
             and request_url  = '${params.requestUrl}'
         </if>
-        <if test="params.operationName != null and params.operationName !=''">
+		<if test="params.operationName != null and params.operationName !=''">
             and operation_name  = '${params.operationName}'
         </if>
-        <if test="params.orderField != null and params.orderField !=''">
+		<if test="params.orderField != null and params.orderField !=''">
         order by  #{params.orderField}
         </if>
-        <if test="params.order != null and params.order !=''">
+		<if test="params.order != null and params.order !=''">
          #{params.order}
         </if>
 	</select>
-
 	<select id="getCommonAccessLogDACCount" parameterType="java.util.Map" resultType="java.lang.Long">
 		<if test="params.strategyCode =='1'.toString()">
 	        select count(1) from common_access_log
 	        where 1=1
-	        <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+			<if test="params.selfOrgCode != null and params.selfOrgCode !=''">
 	            and  operator_self_org_code=#{params.selfOrgCode}
 	        </if>
-	        <if test="params.startTime != null and params.startTime !=''">
+			<if test="params.startTime != null and params.startTime !=''">
 	            and  access_time >= #{params.startTime}
 	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	        <![CDATA[  AND access_time<=  #{params.endTime}  ]]>
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.endTime != null and params.endTime !=''">
+				<![CDATA[  AND access_time<=  #{params.endTime}  ]]>
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.account != null and params.account !=''">
+			<if test="params.account != null and params.account !=''">
 	            and real_name  = #{params.account}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-		        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
+			<if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
 		       or operator_self_org_code in
-		    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+				<foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
 		            #{soc}
 		        </foreach>
-		        </if>
-		         <if test="params.sharingOrgCodes != null ">
+			</if>
+			<if test="params.sharingOrgCodes != null ">
 		            or   operator_org_code in
-			    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+				<foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
 			            #{oc}
 			        </foreach>
-		        </if>
-        </if>
-        <if test=" params.strategyCode =='0'.toString()">
+			</if>
+		</if>
+		<if test=" params.strategyCode =='0'.toString()">
 	        select count(1) from common_access_log
 	        where 1=1
-	        <if test="params.startTime != null and params.startTime !=''">
+			<if test="params.startTime != null and params.startTime !=''">
 	            and  access_time >= #{params.startTime}
 	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	        <![CDATA[  AND access_time<=  #{params.endTime}  ]]>
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.endTime != null and params.endTime !=''">
+				<![CDATA[  AND access_time<=  #{params.endTime}  ]]>
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.account != null and params.account !=''">
+			<if test="params.account != null and params.account !=''">
 	            and real_name  = #{params.account}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-        </if>
-        <if test=" params.strategyCode =='2'.toString()">
+		</if>
+		<if test=" params.strategyCode =='2'.toString()">
 	        select count(1) from common_access_log
 	        where 1=1
-	        <if test="params.orgCode != null and params.orgCode !=''">
+			<if test="params.orgCode != null and params.orgCode !=''">
 	            and   operator_org_code=#{params.orgCode}
 	        </if>
-	        <if test="params.startTime != null and params.startTime !=''">
+			<if test="params.startTime != null and params.startTime !=''">
 	            and  access_time >= #{params.startTime}
 	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	        <![CDATA[  AND access_time<=  #{params.endTime}  ]]>
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.endTime != null and params.endTime !=''">
+				<![CDATA[  AND access_time<=  #{params.endTime}  ]]>
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.account != null and params.account !=''">
+			<if test="params.account != null and params.account !=''">
 	            and real_name  = #{params.account}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-		        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0 ">
+			<if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0 ">
 		            or  operator_self_org_code in
-		    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+				<foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
 		            #{soc}
 		        </foreach>
-		        </if>
-		         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
+			</if>
+			<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
 		            or   operator_org_code in
-		    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+				<foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
 		            #{oc}
 		        </foreach>
-		        </if>
-        </if>
-        <if test=" params.strategyCode =='3'.toString()">
+			</if>
+		</if>
+		<if test=" params.strategyCode =='3'.toString()">
 	        select count(1) from common_access_log
 	        where 1=1
-	         <if test="params.orgCode != null and params.orgCode !=''">
+			<if test="params.orgCode != null and params.orgCode !=''">
 	            and  operator_org_code like concat(#{params.orgCode}, '%')
 	        </if>
-
-	        <if test="params.startTime != null and params.startTime !=''">
+			<if test="params.startTime != null and params.startTime !=''">
 	            and  access_time >= #{params.startTime}
 	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	        <![CDATA[  AND access_time<=  #{params.endTime}  ]]>
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.endTime != null and params.endTime !=''">
+				<![CDATA[  AND access_time<=  #{params.endTime}  ]]>
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.account != null and params.account !=''">
+			<if test="params.account != null and params.account !=''">
 	            and real_name  = #{params.account}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-		        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
+			<if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
 		            or   operator_self_org_code in
-		    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+				<foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
 		            #{soc}
 		        </foreach>
-		        </if>
-		         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
+			</if>
+			<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
 		            or operator_org_code in
-		    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+				<foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
 		            #{oc}
 		        </foreach>
-		        </if>
-        </if>
+			</if>
+		</if>
 	</select>
-
 	<select id="getCommonAccessLogDAC" parameterType="java.util.Map" resultType="com.matariky.commonservice.accesslog.bean.CommonAccessLog">
 		<if test="params.strategyCode =='1'.toString()">
 	        select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,response_body,
 	               account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operation_name_string from common_access_log
 	        where 1=1
-	        <if test="params.selfOrgCode != null and params.selfOrgCode !=''">
+			<if test="params.selfOrgCode != null and params.selfOrgCode !=''">
 	            and  operator_self_org_code=#{params.selfOrgCode}
 	        </if>
-	        <if test="params.startTime != null and params.startTime !=''">
-	            and  access_time  <![CDATA[ >= ]]> #{params.startTime}
-	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	          AND access_time  <![CDATA[ <= ]]>  #{params.endTime}
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.startTime != null and params.startTime !=''">
+	            and  access_time
+				<![CDATA[ >= ]]> #{params.startTime}
+			</if>
+			<if test="params.endTime != null and params.endTime !=''">
+	          AND access_time
+				<![CDATA[ <= ]]>  #{params.endTime}
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.realName != null and params.realName !=''">
+			<if test="params.realName != null and params.realName !=''">
 	            and real_name  = #{params.realName}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-	        <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes.size>0">
+			<if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes.size>0">
 
 		       union  select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,
 		                     client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operation_name_string from common_access_log
 		        where 1=1
-		        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
+				<if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
 		        and operator_self_org_code in
-		    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+					<foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
 		            #{soc}
 		        </foreach>
-		        </if>
-
-		        <if test="params.startTime != null and params.startTime !=''">
-		            and  access_time <![CDATA[>=]]>  #{params.startTime}
-		        </if>
-		        <if test="params.endTime != null and params.endTime !=''">
-		          AND access_time <![CDATA[<=]]>  #{params.endTime}
-		        </if>
-		        <if test="params.userId != null and params.userId !=''">
+				</if>
+				<if test="params.startTime != null and params.startTime !=''">
+		            and  access_time
+					<![CDATA[>=]]>  #{params.startTime}
+				</if>
+				<if test="params.endTime != null and params.endTime !=''">
+		          AND access_time
+					<![CDATA[<=]]>  #{params.endTime}
+				</if>
+				<if test="params.userId != null and params.userId !=''">
 		            and  user_id= #{params.userId}
 		        </if>
-		        <if test="params.realName != null and params.realName !=''">
+				<if test="params.realName != null and params.realName !=''">
 		            and real_name  = #{params.realName}
 		        </if>
-		        <if test="params.tenantId != null and params.tenantId !=''">
+				<if test="params.tenantId != null and params.tenantId !=''">
 		            and tenant_id  = #{params.tenantId}
 		        </if>
-		         <if test="params.tenantName != null and params.tenantName !=''">
+				<if test="params.tenantName != null and params.tenantName !=''">
 		            and tenant_name  = #{params.tenantName}
 		        </if>
-		        <if test="params.clientIp != null and params.clientIp !=''">
+				<if test="params.clientIp != null and params.clientIp !=''">
 		            and client_ip  = #{params.clientIp}
 		        </if>
-		         <if test="params.requestUrl != null and params.requestUrl !=''">
+				<if test="params.requestUrl != null and params.requestUrl !=''">
 		            and request_url  = #{params.requestUrl}
 		        </if>
-	        </if>
+			</if>
 			<if test="params.sharingOrgCodes !=null and params.sharingOrgCodes.size>0">
 		       union  select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,
 		                     client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operation_name_string  from common_access_log
 		        where 1=1
-		         <if test="params.sharingOrgCodes != null ">
+				<if test="params.sharingOrgCodes != null ">
 		            and   operator_org_code in
-		    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+					<foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
 		            #{oc}
 		        </foreach>
-		        </if>
-		        <if test="params.startTime != null and params.startTime !=''">
-		            and  access_time <![CDATA[ >= ]]> #{params.startTime}
-		        </if>
-		        <if test="params.endTime != null and params.endTime !=''">
-		          AND access_time <![CDATA[ <= ]]>  #{params.endTime}
-		        </if>
-		        <if test="params.userId != null and params.userId !=''">
+				</if>
+				<if test="params.startTime != null and params.startTime !=''">
+		            and  access_time
+					<![CDATA[ >= ]]> #{params.startTime}
+				</if>
+				<if test="params.endTime != null and params.endTime !=''">
+		          AND access_time
+					<![CDATA[ <= ]]>  #{params.endTime}
+				</if>
+				<if test="params.userId != null and params.userId !=''">
 		            and  user_id= #{params.userId}
 		        </if>
-		        <if test="params.realName != null and params.realName !=''">
+				<if test="params.realName != null and params.realName !=''">
 		            and real_name  = #{params.realName}
 		        </if>
-		        <if test="params.tenantId != null and params.tenantId !=''">
+				<if test="params.tenantId != null and params.tenantId !=''">
 		            and tenant_id  = #{params.tenantId}
 		        </if>
-		         <if test="params.tenantName != null and params.tenantName !=''">
+				<if test="params.tenantName != null and params.tenantName !=''">
 		            and tenant_name  = #{params.tenantName}
 		        </if>
-		        <if test="params.clientIp != null and params.clientIp !=''">
+				<if test="params.clientIp != null and params.clientIp !=''">
 		            and client_ip  = #{params.clientIp}
 		        </if>
-		         <if test="params.requestUrl != null and params.requestUrl !=''">
+				<if test="params.requestUrl != null and params.requestUrl !=''">
 		            and request_url  = #{params.requestUrl}
 		        </if>
-	        </if>
+			</if>
 			order by  access_time desc
 		</if>
-
-
-        <if test=" params.strategyCode =='0'.toString()">
+		<if test=" params.strategyCode =='0'.toString()">
 	        select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,
 	               response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name ,operation_name_string from common_access_log
 	        where 1=1
-	        <if test="params.startTime != null and params.startTime !=''">
-	            and  access_time <![CDATA[ >= ]]> #{params.startTime}
-	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	          AND access_time <![CDATA[ <= ]]>  #{params.endTime}
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.startTime != null and params.startTime !=''">
+	            and  access_time
+				<![CDATA[ >= ]]> #{params.startTime}
+			</if>
+			<if test="params.endTime != null and params.endTime !=''">
+	          AND access_time
+				<![CDATA[ <= ]]>  #{params.endTime}
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.realName != null and params.realName !=''">
+			<if test="params.realName != null and params.realName !=''">
 	            and real_name  = #{params.realName}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
 			order by  access_time desc
-        </if>
-
-
+		</if>
 		<if test=" params.strategyCode =='2'.toString()">
 	        select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,
 	               client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code,
 	               operation_name ,operation_name_string from common_access_log
 	        where 1=1
-	        <if test="params.orgCode != null and params.orgCode !=''">
+			<if test="params.orgCode != null and params.orgCode !=''">
 	            and   operator_org_code=#{params.orgCode}
 	        </if>
-
-	        <if test="params.startTime != null and params.startTime !=''">
-	            and  access_time <![CDATA[ >= ]]> #{params.startTime}
-	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	            AND access_time  <![CDATA[ <= ]]>  #{params.endTime}
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.startTime != null and params.startTime !=''">
+	            and  access_time
+				<![CDATA[ >= ]]> #{params.startTime}
+			</if>
+			<if test="params.endTime != null and params.endTime !=''">
+	            AND access_time
+				<![CDATA[ <= ]]>  #{params.endTime}
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.realName != null and params.realName !=''">
+			<if test="params.realName != null and params.realName !=''">
 	            and real_name  = #{params.realName}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-	         <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+			<if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
 		       union  select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,
 		                     client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operator_org_code from common_access_log
 		        where 1=1
-		        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0 ">
+				<if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0 ">
 		            and  operator_self_org_code in
-		    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+					<foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
 		            #{soc}
 		        </foreach>
-		        </if>
-		        <if test="params.startTime != null and params.startTime !=''">
-		            and  access_time  <![CDATA[ >= ]]>  #{params.startTime}
-		        </if>
-		        <if test="params.endTime != null and params.endTime !=''">
-		         AND access_time <![CDATA[  <=  ]]>  #{params.endTime}
-		        </if>
-		        <if test="params.userId != null and params.userId !=''">
+				</if>
+				<if test="params.startTime != null and params.startTime !=''">
+		            and  access_time
+					<![CDATA[ >= ]]>  #{params.startTime}
+				</if>
+				<if test="params.endTime != null and params.endTime !=''">
+		         AND access_time
+					<![CDATA[  <=  ]]>  #{params.endTime}
+				</if>
+				<if test="params.userId != null and params.userId !=''">
 		            and  user_id= #{params.userId}
 		        </if>
-		        <if test="params.realName != null and params.realName !=''">
+				<if test="params.realName != null and params.realName !=''">
 		            and real_name  = #{params.realName}
 		        </if>
-		        <if test="params.tenantId != null and params.tenantId !=''">
+				<if test="params.tenantId != null and params.tenantId !=''">
 		            and tenant_id  = #{params.tenantId}
 		        </if>
-		         <if test="params.tenantName != null and params.tenantName !=''">
+				<if test="params.tenantName != null and params.tenantName !=''">
 		            and tenant_name  = #{params.tenantName}
 		        </if>
-		        <if test="params.clientIp != null and params.clientIp !=''">
+				<if test="params.clientIp != null and params.clientIp !=''">
 		            and client_ip  = #{params.clientIp}
 		        </if>
-		         <if test="params.requestUrl != null and params.requestUrl !=''">
+				<if test="params.requestUrl != null and params.requestUrl !=''">
 		            and request_url  = #{params.requestUrl}
 		        </if>
-	        </if>
-	        <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+			</if>
+			<if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
 		       union  select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,
 		                     client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operator_org_code from common_access_log
 		        where 1=1
-		         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
+				<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
 		            and   operator_org_code in
-		    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+					<foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
 		            #{oc}
 		        </foreach>
-		        </if>
-		        <if test="params.startTime != null and params.startTime !=''">
-		            and  access_time <![CDATA[ >= ]]>  #{params.startTime}
-		        </if>
-		        <if test="params.endTime != null and params.endTime !=''">
-		          AND access_time <![CDATA[ <=  ]]>  #{params.endTime}
-		        </if>
-		        <if test="params.userId != null and params.userId !=''">
+				</if>
+				<if test="params.startTime != null and params.startTime !=''">
+		            and  access_time
+					<![CDATA[ >= ]]>  #{params.startTime}
+				</if>
+				<if test="params.endTime != null and params.endTime !=''">
+		          AND access_time
+					<![CDATA[ <=  ]]>  #{params.endTime}
+				</if>
+				<if test="params.userId != null and params.userId !=''">
 		            and  user_id= #{params.userId}
 		        </if>
-		        <if test="params.realName != null and params.realName !=''">
+				<if test="params.realName != null and params.realName !=''">
 		            and real_name  = #{params.realName}
 		        </if>
-		        <if test="params.tenantId != null and params.tenantId !=''">
+				<if test="params.tenantId != null and params.tenantId !=''">
 		            and tenant_id  = #{params.tenantId}
 		        </if>
-		         <if test="params.tenantName != null and params.tenantName !=''">
+				<if test="params.tenantName != null and params.tenantName !=''">
 		            and tenant_name  = #{params.tenantName}
 		        </if>
-		        <if test="params.clientIp != null and params.clientIp !=''">
+				<if test="params.clientIp != null and params.clientIp !=''">
 		            and client_ip  = #{params.clientIp}
 		        </if>
-		         <if test="params.requestUrl != null and params.requestUrl !=''">
+				<if test="params.requestUrl != null and params.requestUrl !=''">
 		            and request_url  = #{params.requestUrl}
 		        </if>
-	        </if>
+			</if>
 			order by  access_time desc
-        </if>
-
-
-        <if test=" params.strategyCode =='3'.toString()">
+		</if>
+		<if test=" params.strategyCode =='3'.toString()">
 	        select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,
 	               response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name  ,operation_name_string from common_access_log
 	        where 1=1
-	         <if test="params.orgCode != null and params.orgCode !=''">
+			<if test="params.orgCode != null and params.orgCode !=''">
 	            and  operator_org_code like concat(#{params.orgCode}, '%')
 	        </if>
-
-	        <if test="params.startTime != null and params.startTime !=''">
-	            and  access_time   <![CDATA[  >=  ]]> #{params.startTime}
-	        </if>
-	        <if test="params.endTime != null and params.endTime !=''">
-	          AND access_time  <![CDATA[ <=  ]]> #{params.endTime}
-	        </if>
-	        <if test="params.userId != null and params.userId !=''">
+			<if test="params.startTime != null and params.startTime !=''">
+	            and  access_time
+				<![CDATA[  >=  ]]> #{params.startTime}
+			</if>
+			<if test="params.endTime != null and params.endTime !=''">
+	          AND access_time
+				<![CDATA[ <=  ]]> #{params.endTime}
+			</if>
+			<if test="params.userId != null and params.userId !=''">
 	            and  user_id= #{params.userId}
 	        </if>
-	        <if test="params.realName != null and params.realName !=''">
+			<if test="params.realName != null and params.realName !=''">
 	            and real_name  = #{params.realName}
 	        </if>
-	        <if test="params.tenantId != null and params.tenantId !=''">
+			<if test="params.tenantId != null and params.tenantId !=''">
 	            and tenant_id  = #{params.tenantId}
 	        </if>
-	         <if test="params.tenantName != null and params.tenantName !=''">
+			<if test="params.tenantName != null and params.tenantName !=''">
 	            and tenant_name  = #{params.tenantName}
 	        </if>
-	        <if test="params.clientIp != null and params.clientIp !=''">
+			<if test="params.clientIp != null and params.clientIp !=''">
 	            and client_ip  = #{params.clientIp}
 	        </if>
-	         <if test="params.requestUrl != null and params.requestUrl !=''">
+			<if test="params.requestUrl != null and params.requestUrl !=''">
 	            and request_url  = #{params.requestUrl}
 	        </if>
-	         <if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
+			<if test="params.sharingSelfOrgCodes !=null and params.sharingSelfOrgCodes !=''">
 
 		       union  select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,
 		                     response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operation_name_string from common_access_log
 		        where 1=1
-		        <if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
+				<if test="params.sharingSelfOrgCodes != null and params.sharingSelfOrgCodes.size >0">
 		            and   operator_self_org_code in
-		    	 <foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
+					<foreach item="soc" collection="params.sharingSelfOrgCodes" open="(" separator="," close=")">
 		            #{soc}
 		        </foreach>
-		        </if>
-		        <if test="params.startTime != null and params.startTime !=''">
-		            and  access_time  <![CDATA[ >=  ]]> #{params.startTime}
-		        </if>
-		        <if test="params.endTime != null and params.endTime !=''">
-		          AND access_time <![CDATA[ <=  ]]>  #{params.endTime}
-		        </if>
-		        <if test="params.userId != null and params.userId !=''">
+				</if>
+				<if test="params.startTime != null and params.startTime !=''">
+		            and  access_time
+					<![CDATA[ >=  ]]> #{params.startTime}
+				</if>
+				<if test="params.endTime != null and params.endTime !=''">
+		          AND access_time
+					<![CDATA[ <=  ]]>  #{params.endTime}
+				</if>
+				<if test="params.userId != null and params.userId !=''">
 		            and  user_id= #{params.userId}
 		        </if>
-		        <if test="params.realName != null and params.realName !=''">
+				<if test="params.realName != null and params.realName !=''">
 		            and real_name  = #{params.realName}
 		        </if>
-		        <if test="params.tenantId != null and params.tenantId !=''">
+				<if test="params.tenantId != null and params.tenantId !=''">
 		            and tenant_id  = #{params.tenantId}
 		        </if>
-		         <if test="params.tenantName != null and params.tenantName !=''">
+				<if test="params.tenantName != null and params.tenantName !=''">
 		            and tenant_name  = #{params.tenantName}
 		        </if>
-		        <if test="params.clientIp != null and params.clientIp !=''">
+				<if test="params.clientIp != null and params.clientIp !=''">
 		            and client_ip  = #{params.clientIp}
 		        </if>
-		         <if test="params.requestUrl != null and params.requestUrl !=''">
+				<if test="params.requestUrl != null and params.requestUrl !=''">
 		            and request_url  = #{params.requestUrl}
 		        </if>
-	        </if>
-	        <if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
+			</if>
+			<if test="params.sharingOrgCodes !=null and params.sharingOrgCodes !=''">
 		       union  select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,
 		                     client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operator_org_code, operation_name , operation_name_string from common_access_log
 		        where 1=1
-		         <if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
+				<if test="params.sharingOrgCodes != null and params.sharingOrgCodes.size>0">
 		            and operator_org_code in
-		    	 <foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
+					<foreach item="oc" collection="params.sharingOrgCodes" open="(" separator="," close=")">
 		            #{oc}
 		        </foreach>
-		        </if>
-		        <if test="params.startTime != null and params.startTime !=''">
-		            and  access_time  <![CDATA[  >= ]]> #{params.startTime}
-		        </if>
-		        <if test="params.endTime != null and params.endTime !=''">
-		         AND access_time <![CDATA[  <=  ]]> #{params.endTime}
-		        </if>
-		        <if test="params.userId != null and params.userId !=''">
+				</if>
+				<if test="params.startTime != null and params.startTime !=''">
+		            and  access_time
+					<![CDATA[  >= ]]> #{params.startTime}
+				</if>
+				<if test="params.endTime != null and params.endTime !=''">
+		         AND access_time
+					<![CDATA[  <=  ]]> #{params.endTime}
+				</if>
+				<if test="params.userId != null and params.userId !=''">
 		            and  user_id= #{params.userId}
 		        </if>
-		        <if test="params.realName != null and params.realName !=''">
+				<if test="params.realName != null and params.realName !=''">
 		            and real_name  = #{params.realName}
 		        </if>
-		        <if test="params.tenantId != null and params.tenantId !=''">
+				<if test="params.tenantId != null and params.tenantId !=''">
 		            and tenant_id  = #{params.tenantId}
 		        </if>
-		         <if test="params.tenantName != null and params.tenantName !=''">
+				<if test="params.tenantName != null and params.tenantName !=''">
 		            and tenant_name  = #{params.tenantName}
 		        </if>
-		        <if test="params.clientIp != null and params.clientIp !=''">
+				<if test="params.clientIp != null and params.clientIp !=''">
 		            and client_ip  = #{params.clientIp}
 		        </if>
-		         <if test="params.requestUrl != null and params.requestUrl !=''">
+				<if test="params.requestUrl != null and params.requestUrl !=''">
 		            and request_url  = #{params.requestUrl}
 		        </if>
-	        </if>
+			</if>
 			order by  access_time desc
-        </if>
-
-         <if test="params.pageStart != null and params.pageSize != null  ">
+		</if>
+		<if test="params.pageStart != null and params.pageSize != null  ">
 	         limit #{params.pageStart}, #{params.pageSize}
 	     </if>
-
 	</select>
-
 	<select id="getCommonAccessLogAll" parameterType="Map" resultType="com.matariky.commonservice.accesslog.bean.CommonAccessLog">
         select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operation_name from common_access_log
 	</select>
-
 	<select id="getCommonAccessLogAllCount" parameterType="Map" resultType="int">
         select count(1) from common_access_log
 	</select>
-
 	<insert id="createCommonAccessLog" parameterType="com.matariky.commonservice.accesslog.bean.CommonAccessLog">
         insert into common_access_log(id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,response_body,account,real_name,user_id,request_body,content_type,request_url, operation_name)
         values(#{id},#{accessTime},#{tenantId},#{tenantName},#{requestMethod},#{requestStatus},#{client},#{clientIp},#{clientAddress},#{responseBody},#{account},#{realName},#{userId},#{requestBody},#{contentType},#{requestUrl},#{operationName})
 	</insert>
-
 	<update id="updatecommon_access_log" parameterType="com.matariky.commonservice.accesslog.bean.CommonAccessLog">
         update CommonAccessLog
         set access_time=#{accessTime},tenant_id=#{tenantId},tenant_name=#{tenantName},request_method=#{requestMethod},request_status=#{requestStatus},client=#{client},client_ip=#{clientIp},client_address=#{clientAddress},response_body=#{responseBody},account=#{account},real_name=#{realName},user_id=#{userId},request_body=#{requestBody},content_type=#{contentType},request_url=#{requestUrl}, operation_name=#{operationName}
         where id = #{id}
 	</update>
-
 	<delete id="delCommonAccessLogById" parameterType="int">
         delete from common_access_log where id=#{value}
 	</delete>
-
 	<select id="getCommonAccessLogById"  parameterType="String" resultType="com.matariky.commonservice.accesslog.bean.CommonAccessLog" >
         select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,response_body,account,real_name,user_id,request_body,content_type,request_url, operation_name from common_access_log where id=#{value}
 	</select>
-
 	<select id="getCommonAccessLogByIds" resultType="com.matariky.commonservice.accesslog.bean.CommonAccessLog">
 		select id,access_time,tenant_id,tenant_name,request_method,request_status,client,client_ip,client_address,response_body,account,real_name,user_id,request_body,content_type,request_url,operation_name from common_access_log
 
     	where id in
-    	 <foreach item="id" collection="array" open="(" separator="," close=")">
+		<foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-  	</select>
-
+	</select>
 </mapper>

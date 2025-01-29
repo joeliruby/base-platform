@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matariky.commonservice.base.mapper.BasicBaseAppVersionMapper">
-
-
     <select id="getBasicBaseAppversionAll" parameterType="com.matariky.commonservice.base.vo.BasicBaseAppVersionQueryVO"
             resultType="com.matariky.commonservice.base.vo.BasicBaseAppVersionListVO">
         select a.id,a.app_name, a.version_name, a.version_no,
@@ -18,8 +16,6 @@
         </where>
         order by a.create_time desc
     </select>
-
-
     <insert id="createBasicBaseAppversion" parameterType="com.matariky.commonservice.base.bean.BasicBaseAppVersion">
         insert into basic_base_appversion(id, app_name, version_name, version_no, upgrade_type, version_content,
                                           upgrade_file, download_qrcode, is_force_updates, remark, create_time,
@@ -29,7 +25,6 @@
                 #{downloadQrcode}, #{isForceUpdates}, #{remark}, #{createTime}, #{updateTime}, #{createBy}, #{updateBy},
                 #{operatorOrgCode}, #{operatorSelfOrgCode}, #{tenantId})
     </insert>
-
     <update id="updateBasicBaseAppversion" parameterType="com.matariky.commonservice.base.bean.BasicBaseAppVersion">
         update basic_base_appversion
         set app_name=#{appName},
@@ -51,13 +46,11 @@
         where id = #{id}
           and delete_time = 0
     </update>
-
     <update id="delBasicBaseAppversionById" parameterType="java.lang.Long">
         update basic_base_appversion
         set delete_time=now()
         where id = #{value}
     </update>
-
     <select id="getBasicBaseAppversionById" parameterType="Integer"
             resultType="com.matariky.commonservice.base.bean.BasicBaseAppVersion">
         select id,
@@ -81,8 +74,6 @@
         where id = #{value}
           and delete_time = 0
     </select>
-
-
     <select id="getBasicBasePrintApp" resultType="com.matariky.commonservice.base.bean.BasicBaseAppVersion">
         select *
         from basic_base_appversion
@@ -90,5 +81,4 @@
           and app_name = '打印机APP'
         order by create_time desc limit 1
     </select>
-
 </mapper>
