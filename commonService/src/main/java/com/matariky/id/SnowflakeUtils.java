@@ -90,7 +90,7 @@ public class SnowflakeUtils {
 		return mill;
 	}
 
-	private long getNewstmp() {
+	public long getNewstmp() {
 		return System.currentTimeMillis();
 	}
 

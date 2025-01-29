@@ -101,7 +101,7 @@ public class DataIsolationAspect implements GetCurrentRequest {
         return joinPoint.proceed();
     }
 
-    private String getStrategyCode(Signature signature, String tenantId) {
+    public String getStrategyCode(Signature signature, String tenantId) {
         /** request resource id **/
         String id = getCurrentRequest().getHeader("id");
         SourcePermission sourcePermission = AnnotationUtils.getAnnotation(((MethodSignature) signature).getMethod(),
@@ -136,7 +136,7 @@ public class DataIsolationAspect implements GetCurrentRequest {
         return PermissionConstant.COMMON_DATA_ACCESS_PRIVATE;
     }
 
-    private void setQueryDataIsolation(QueryDataIsolation dataIsolation, String orgCode, String selfOrgCode) {
+    public void setQueryDataIsolation(QueryDataIsolation dataIsolation, String orgCode, String selfOrgCode) {
         if (StringUtil.isEmpty(dataIsolation.getStrategyCode())) {
             /** Default personal visibility **/
             dataIsolation.setStrategyCode(PermissionConstant.COMMON_DATA_ACCESS_PRIVATE);

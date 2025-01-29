@@ -95,7 +95,7 @@ public class SqlUtils {
      * @param boundSql
      * @return
      */
-    private static String showSql(Configuration configuration, BoundSql boundSql) {
+    public static String showSql(Configuration configuration, BoundSql boundSql) {
         Object parameterObject = boundSql.getParameterObject();
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         String sql = boundSql.getSql().replaceAll("[\\s]+", " ");
@@ -126,7 +126,7 @@ public class SqlUtils {
      * @param obj
      * @return
      */
-    private static String getParameterValue(Object obj) {
+    public static String getParameterValue(Object obj) {
         String value = null;
         if (obj instanceof String) {
             value = "'" + obj.toString() + "'";
@@ -150,7 +150,7 @@ public class SqlUtils {
      * @return
      * @throws IllegalAccessException
      */
-    private static Map<String, String> objectToMap(Object obj) throws IllegalAccessException {
+    public static Map<String, String> objectToMap(Object obj) throws IllegalAccessException {
         Map<String, String> map = new HashMap<>();
         map = BeanUtils.beanToMap(obj);
         return map;

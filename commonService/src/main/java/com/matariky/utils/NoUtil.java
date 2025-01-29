@@ -21,7 +21,7 @@ public class NoUtil implements Serializable {
         return generateNo("TIN", "tape_inventory", 9, Boolean.FALSE);
     }
 
-    private static String generateNo(String prefix, String bizName, int minSeqLen, boolean isRandom) {
+    public static String generateNo(String prefix, String bizName, int minSeqLen, boolean isRandom) {
         RedisUtils redisUtils = SpringContextUtils.getBean(RedisUtils.class);
         String dateStr = LocalDate.now().format(DatePattern.PURE_DATE_FORMATTER);
         String redisKey = String.format(RedisKey.COMMON_NO_SEQ, bizName, dateStr);

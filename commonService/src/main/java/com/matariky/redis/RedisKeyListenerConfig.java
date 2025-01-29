@@ -13,14 +13,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RedisKeyListenerConfig {
-	
-	@Autowired
-	RedisConnectionFactory redisConnectionFactory;
 
-    private
+    @Autowired
+    RedisConnectionFactory redisConnectionFactory;
 
     @Bean
-    ChannelTopic topic() {
+    public ChannelTopic topic() {
         return new ChannelTopic("__keyevent@0__:set");
     }
 
@@ -39,15 +37,12 @@ public class RedisKeyListenerConfig {
     MessageListenerAdapter messageListenerAdapter() {
         return new MessageListenerAdapter(new RedisKeyListener());
     }
-    
-    
 
-	@Bean
-	RedisMessageListenerContainer redisContainer() {
-	    final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-	    container.setConnectionFactory(redisConnectionFactory);
-	    return container;
-	}
-
+    @Bean
+    RedisMessageListenerContainer redisContainer() {
+        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(redisConnectionFactory);
+        return container;
+    }
 
 }
