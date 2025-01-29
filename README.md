@@ -25,9 +25,12 @@ The flexibility of the Basic Platform also lends itself to the applications of d
 Spring boot micro service jar or a library jar that is refenerence by a higher level web application. For corporate scenarios, an all-in-one application could probably be a good fit. The same holds true for projects at the early stage<br> 
 of domain driven design, as the solution avoid basing comlexity on volatile business functions, instead it should build upon business functions they are certain and not susceptble to change according to the first principles.<br>
 
-## Integrate with your tools
+## Modules
 
-- [ ] [Set up project integrations](http://172.28.1.10/public-project/base-platform/-/settings/integrations)
+**Automation**<br>
+A Spring boot application for developers usages only. Like code generate from Intellij Idea, it can generate stub codes from a relational data schema and unlike that of Intellij Idea it does much more.
+
+![Comparison between Base Platform Automation and IntelliJ IDEA Ultimate ](comparison.png)
 
 ## Collaborate with your team
 
