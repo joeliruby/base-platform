@@ -48,4 +48,4 @@ a. Code Download
 b. Database Design Document Export
 
 1.Open the interface, enter database connection details, read the database, select all or specific tables, and click export:
-![输入 Image 说明](093805_3aa9fe94_424304.png "屏幕截图.png")
+![输入 Image 说明](093805_3aa9fe94_424304.png)
