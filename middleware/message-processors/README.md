@@ -1,69 +1,77 @@
 Matariky-message-processor
 
-1 下载 karaf 4.4.5
+1 Download karaf 4.4.5
 https://www.apache.org/dyn/closer.lua/karaf/4.4.5/apache-karaf-4.4.5.zip
 
 ![karafconf.png](karafconf.png)
-2 Update {karaf 目录}\etc\user.properties
+2 Update {karaf directory}\etc\user.properties
 
 ![userproperties.png](userproperties.png)
-加入如下行：
+Enter a line as below：
 karaf = karaf,_g_:admingroup
 _g_\:admingroup = group,admin,manager,viewer,systembundles,ssh
-用来打开 hawtio 默认管理员账号。账密默认是 karaf:karaf
+This is to configure default hawtio default user name and password。The default credentials are karaf:karaf
 
-3 在 bin 目录运行 .\bin\karaf.bat
-启动 karaf,启动成功后 karaf console 是这个样子
+3 Inside the bin director run .\karaf.bat
+Start karaf. After successful start up the karaf console looks like this
 
 ![karafconsole.png](karafconsole.png)
 
 4 Install karaf features
-feature 是 karaf 自带的集成工具 ,包含各种通用协议的 endpoint 和其他工具例如 commons 工具 ,jaxb axis, Gson 等。我们的集成中间件必须要用到一下 features:
+feature is karaf's integral integration modules . It comprises the endpoints of all types of protocols alongside other tools like apache commons utils ,jaxb axis, Gson, etc。The integration middleware needs to leverage the features:
 
-4.1 hawtio: one web 管理工具 ,用于管理 karaf 里面部署的所有 osgi bundle, 查看状态 ,启动停止 ,查看 Current 依赖满足情况等。
+4.1 hawtio: a web console ,which is used to manage the life cycle of all the osgi bundles running on Karaf.The management capabilities include start, stop, check the current status and dependencies of a particular bundle.
 
 feature:repo-add hawtio
 feature:install hawtio
 
-4.2 用于动态 Configuration 集成路由规则 ,集成 endpoint , Message 格式处理逻辑等。
+4.2 For dynamic Configuration of integratioin of routing rules ,integration endpoint , Message formatting logic etc.
 feature:repo-add camel
 
-4.3 Install camel 组件例如 kafak mqtt, http. jms 等。全部内置于 karaf 不会消耗跟多的硬盘空间。
+4.3 Install camel components like kafak mqtt, http, jms etc. All the components runs inside karaf runtime and requires no extra storage volume.
 feature:install camel
 
-4.4 camel-stream 用于 提供 karaf 命令用于查看 Current camel context routes 并且 Activate Deactivate 这些 artifacts.
+4.4 camel-stream provides karaf command to check the Current camel context routes as well as Activate /Deactivate these artifacts.
 feature:install camel-stream
 
-4.5 支持在 sping context Configurationcamel 的元数据 xsd 定义
+4.5 Supports the xsd definition for meta data Sping camel DSL
 feature:install camel-blueprint
 
-全部 Install 完 4 中的 feature 后在 karaf console 运行 list 可以看到如下已经 Activate 的 karaf featrues:
+When all 4 features aforementioned are completely installed, run list command to view all Activated karaf featrues as below:
 
 ![karaflist.png](karaflist.png)
 
-5 对于非标准的功能 ,例如 Reader Message 格式转换（成为 ,索立得）我建议用代码实现 Detail 请见 maven 项目 message-processors
-里面只需要写简单的 java processor 处理 Message 格式处理逻辑。打成 jar 包后放置在 deploy 目录即可完成部署
+5 For custom integration modules that is not available out of the box, such as Reader Message transformation, we can code the custom modules. For the details, refer the maven project for message-processors. The implementation
+requries a simple java processor to normalize Message format, bundle it into OSGI bundle jar and then place it under the deploy folder.
 ![deply.png](deply.png)
 
-7 上图中 test.xml 是 one camel-blueprint 的 spring xml Configurationxml Configuration File
-路由转发 ,格式转换等规则可以动态改变动态生效
+7 In the above image test.xml is a camel-blueprint for Spring Camel DSL, the changes to the Camel DSL configuration can take effect dynamically.
 
 ![springxml.png](springxml.png)
-其中 testProcessor 是在 messageProcessor 中自定义的 java bean
+Among which, the testProcessor is messageProcessor is a custom defined java bean.
 
-8 常见的 karaf 命令：
+8 Common karaf commands：
 
-list 查看 Current 部署的 osgi bundle 和状态
-bundle:diag 123 查看 id 为 123 的 bundle 的依赖解析情况帮助查问题
-log：clear 清空 Log
-log:tai 持续查看 Latest Log
-log:打印 Latest Log 不跟踪
-start 1234:启动 id 为 1234 的 bundle
-stop 1234:停止 id 为 1234 的 bundle
-resolve 1234:为 id 为 1234 的 bundle 装载依赖
-bundle:headers 1234 查看 id 为 1234 的 bundle 的 meta-info 头
+**list:**<br> view Current OSGI bundles and their states.<br>
+bundle:diag 123<br>
+view bundle with ID 123 and the dependency resolution for that bundle, display error logs to troubleshoot<br>
+**log：**<br>
+clear Log<br>
+**log:tail**<br>
+follow the Latest Logs of a bundle<br>
+**log:**<br>
+Print the Latest Log of a bundle without following<br>
+**start 1234:**<br>
+start the bundle with ID 1234<br>
+**stop 1234:**<br>
+Stop the bundle with ID 1234<br>
+resolve 1234:<br>
+resolve dependencies for bundle ID 1234<br>
+bundle:<br>
+headers 1234<br>
+Check the meta-info of a bundle in the head of the bunders meta-info<br>
 
-9Hawtio 控制台看 camel 和 osgi bundle 部署情况
+9 Hawtio console is used for checking the camel context and the deployment of the osgi bundles and camel features.
 http://localhost:8181/hawtio
 karaf:karaf
 
