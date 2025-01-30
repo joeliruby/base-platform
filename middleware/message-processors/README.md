@@ -55,7 +55,7 @@ Among which, the testProcessor is messageProcessor is a custom defined java bean
 **list:**<br> view Current OSGI bundles and their states.<br>
 bundle:diag 123<br>
 view bundle with ID 123 and the dependency resolution for that bundle, display error logs to troubleshoot<br>
-**log：**<br>
+**log:clear**<br>
 clear Log<br>
 **log:tail**<br>
 follow the Latest Logs of a bundle<br>
