@@ -65,10 +65,9 @@ Print the Latest Log of a bundle without following<br>
 start the bundle with ID 1234<br>
 **stop 1234:**<br>
 Stop the bundle with ID 1234<br>
-resolve 1234:<br>
+**resolve 1234:**<br>
 resolve dependencies for bundle ID 1234<br>
-bundle:<br>
-headers 1234<br>
+**headers 1234**<br>
 Check the meta-info of a bundle in the head of the bunders meta-info<br>
 
 9 Hawtio console is used for checking the camel context and the deployment of the osgi bundles and camel features.
