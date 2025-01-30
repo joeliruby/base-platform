@@ -1,3 +1,3 @@
-# customer User Provider (Keycloak User Storage Provider) Example
+# Customer User Provider (Keycloak User Storage Provider)
 
-Demo user storage provider, providing some members of the customer family in a read-only mode, via an external API.
+Customer user storage provider, providing some members of the customer family in a read-only mode, via an external API.
